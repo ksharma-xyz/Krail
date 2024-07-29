@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             StartTheme {
-                StartDemoApp(viewModel = viewModel)
+                KrailApp(viewModel = viewModel)
             }
         }
     }

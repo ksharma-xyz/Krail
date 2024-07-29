@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.start.android.library)
-    alias(libs.plugins.start.android.hilt)
+    alias(libs.plugins.krail.android.library)
+    alias(libs.plugins.krail.android.hilt)
 }
 
 android {
