@@ -27,23 +27,23 @@ dependencies {
 gradlePlugin {
     plugins {
         register("application") {
-            id = "start.android.application"
+            id = "krail.android.application"
             implementationClass = "ApplicationConventionPlugin"
         }
         register("androidHilt") {
-            id = "start.android.hilt"
+            id = "krail.android.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
         register("androidLibrary") {
-            id = "start.android.library"
+            id = "krail.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidLibraryCompose") {
-            id = "start.android.library.compose"
+            id = "krail.android.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
         register("jvmLibrary") {
-            id = "start.jvm.library"
+            id = "krail.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
     }

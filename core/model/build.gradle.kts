@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.start.jvm.library)
+    alias(libs.plugins.krail.jvm.library)
 }
 
 dependencies {

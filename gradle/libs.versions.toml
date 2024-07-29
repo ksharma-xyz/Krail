@@ -85,8 +85,8 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
 #Convention Plugins
-start-android-application = { id = "start.android.application", version = "unspecified" }
-start-android-hilt = { id = "start.android.hilt", version = "unspecified" }
-start-android-library = { id = "start.android.library", version = "unspecified" }
-start-android-library-compose = { id = "start.android.library.compose", version = "unspecified" }
-start-jvm-library = { id = "start.jvm.library", version = "unspecified" }
+krail-android-application = { id = "krail.android.application", version = "unspecified" }
+krail-android-hilt = { id = "krail.android.hilt", version = "unspecified" }
+krail-android-library = { id = "krail.android.library", version = "unspecified" }
+krail-android-library-compose = { id = "krail.android.library.compose", version = "unspecified" }
+krail-jvm-library = { id = "krail.jvm.library", version = "unspecified" }

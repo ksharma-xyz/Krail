@@ -15,7 +15,7 @@ import xyz.ksharma.feature1.DemoUiState
 import xyz.ksharma.feature1.DemoViewModel
 
 @Composable
-internal fun StartDemoApp(
+internal fun KrailApp(
     viewModel: DemoViewModel,
     navController: NavHostController = rememberNavController()
 ) {
