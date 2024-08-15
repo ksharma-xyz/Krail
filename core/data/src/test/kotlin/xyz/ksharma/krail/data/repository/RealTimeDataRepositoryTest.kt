@@ -13,7 +13,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import java.io.ByteArrayInputStream
 
-class DemoRepositoryTest {
+class RealTimeDataRepositoryTest {
 
     private val context: Context = mock()
     private val mockDispatcher: CoroutineDispatcher = UnconfinedTestDispatcher()
@@ -21,7 +21,7 @@ class DemoRepositoryTest {
         on { open("demo.json") } doReturn (ByteArrayInputStream("".toByteArray()))
     }
 
-    private lateinit var demoRepositoryImpl: DemoRepositoryImpl
+    private lateinit var realTimeDataRepositoryImpl: RealTimeDataRepositoryImpl
 
     /**
      * This test may not work as it is a bit challenging to mock Context in Junit.
@@ -34,12 +34,12 @@ class DemoRepositoryTest {
         whenever(context.assets.open("demo.json")).thenReturn(ByteArrayInputStream(jsonStr.toByteArray()))
         whenever(mockAssets.open("demo.json")).thenReturn(ByteArrayInputStream(jsonStr.toByteArray()))
 
-        demoRepositoryImpl = DemoRepositoryImpl(
+        realTimeDataRepositoryImpl = RealTimeDataRepositoryImpl(
             ioDispatcher = mockDispatcher,
             context = context
         )
 
-        val data = demoRepositoryImpl.fetchData()
+        val data = realTimeDataRepositoryImpl.fetchData()
         data.test {
             val item = awaitItem()
             assertThat(item.data.size).isEqualTo(3)
