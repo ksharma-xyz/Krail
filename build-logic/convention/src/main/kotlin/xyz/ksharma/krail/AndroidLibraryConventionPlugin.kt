@@ -48,6 +48,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                         "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
                     )
                 }
+
+                buildFeatures {
+                    buildConfig = true
+                }
             }
         }
     }
