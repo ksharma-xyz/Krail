@@ -6,7 +6,7 @@ import xyz.ksharma.krail.data.model.DemoDataModel
 /**
  * The repository for fetching the [DemoDataModel].
  */
-interface DemoRepository {
+interface RealTimeDataRepository {
 
     /**
      * This method will fetch the demo data from the assets and return a cold flow.
@@ -14,4 +14,6 @@ interface DemoRepository {
      * @return - Returns a flow of [DemoDataModel]
      */
     suspend fun fetchData(): Flow<DemoDataModel>
+
+    suspend fun getSydneyTrains()
 }

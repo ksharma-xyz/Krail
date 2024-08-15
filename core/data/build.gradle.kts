@@ -10,6 +10,7 @@ android {
 
 dependencies {
     api(projects.core.di)
+    implementation(projects.core.network)
 
     implementation(libs.retrofit.converter.gson)
     implementation(libs.androidx.core.ktx)

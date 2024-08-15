@@ -4,13 +4,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import xyz.ksharma.krail.data.repository.DemoRepository
-import xyz.ksharma.krail.data.repository.DemoRepositoryImpl
+import xyz.ksharma.krail.data.repository.RealTimeDataRepository
+import xyz.ksharma.krail.data.repository.RealTimeDataRepositoryImpl
 
 @InstallIn(SingletonComponent::class)
 @Module
 abstract class DataModule {
 
     @Binds
-    abstract fun bindDemoRepository(impl: DemoRepositoryImpl): DemoRepository
+    abstract fun bindDemoRepository(impl: RealTimeDataRepositoryImpl): RealTimeDataRepository
 }
