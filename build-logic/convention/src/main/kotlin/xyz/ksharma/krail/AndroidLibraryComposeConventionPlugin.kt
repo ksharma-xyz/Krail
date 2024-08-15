@@ -52,6 +52,7 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
 
                 buildFeatures {
                     compose = true
+                    buildConfig = true
                 }
             }
         }
