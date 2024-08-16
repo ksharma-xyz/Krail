@@ -2,10 +2,20 @@ plugins {
     alias(libs.plugins.krail.android.library)
     alias(libs.plugins.krail.android.hilt)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.wire)
 }
 
 android {
     namespace = "xyz.ksharma.krail.network"
+}
+
+wire {
+    kotlin {
+        javaInterop = true
+    }
+    sourcePath {
+        srcDir("src/main/proto")
+    }
 }
 
 dependencies {

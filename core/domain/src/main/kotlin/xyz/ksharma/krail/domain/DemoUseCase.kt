@@ -1,11 +1,6 @@
 package xyz.ksharma.krail.domain
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import xyz.ksharma.krail.data.repository.RealTimeDataRepository
-import xyz.ksharma.krail.domain.mapper.toDomainModel
-import xyz.ksharma.krail.model.DemoData
 import javax.inject.Inject
 
 /**
@@ -16,21 +11,13 @@ import javax.inject.Inject
  * states for UI.
  */
 interface DemoUseCase {
-    suspend operator fun invoke(): Flow<Result<DemoData>>
+    suspend operator fun invoke()
 }
 
 class DemoUseCaseImpl @Inject constructor(
     private val realTimeDataRepository: RealTimeDataRepository,
 ) : DemoUseCase {
-    override suspend operator fun invoke(): Flow<Result<DemoData>> {
-
-        return runCatching {
-            realTimeDataRepository.fetchData()
-                .map {
-                    runCatching { Result.success(it.toDomainModel()) }.getOrElse { exception ->
-                        Result.failure(exception)
-                    }
-                }
-        }.getOrElse { exception -> flowOf(Result.failure(exception)) }
+    override suspend operator fun invoke() {
+        realTimeDataRepository.getSydneyTrains()
     }
 }

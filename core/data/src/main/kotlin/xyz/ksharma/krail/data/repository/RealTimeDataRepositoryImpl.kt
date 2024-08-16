@@ -1,6 +1,7 @@
 package xyz.ksharma.krail.data.repository
 
 import android.content.Context
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -20,13 +21,11 @@ class RealTimeDataRepositoryImpl @Inject constructor(
     private val realTimeService: RealTimeService,
 ) : RealTimeDataRepository {
 
-    override suspend fun fetchData(): Flow<DemoDataModel> =
-        withContext(ioDispatcher) {
-            val jsonString = context.readJsonFromAssets(fileName = "demo.json")
-            return@withContext flow { emit(jsonString.parseJsonToDataModel()) }
-        }
+    private val TAG = "RealTimeDataRepositoryI"
 
     override suspend fun getSydneyTrains() {
-        realTimeService.getRealtimeSydneyTrainsSchedule()
+        Log.d(TAG, "getSydneyTrains: ")
+        val x = realTimeService.getRealtimeSydneyTrainsSchedule()
+        Log.d(TAG, "getSydneyTrains: $x")
     }
 }
