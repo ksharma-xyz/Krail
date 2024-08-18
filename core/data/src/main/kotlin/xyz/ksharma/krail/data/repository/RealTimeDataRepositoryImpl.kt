@@ -4,12 +4,6 @@ import android.content.Context
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.withContext
-import xyz.ksharma.krail.data.model.DemoDataModel
-import xyz.ksharma.krail.data.util.parseJsonToDataModel
-import xyz.ksharma.krail.data.util.readJsonFromAssets
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.network.RealTimeService
@@ -26,6 +20,5 @@ class RealTimeDataRepositoryImpl @Inject constructor(
     override suspend fun getSydneyTrains() {
         Log.d(TAG, "getSydneyTrains: ")
         val x = realTimeService.getRealtimeSydneyTrainsSchedule()
-        Log.d(TAG, "getSydneyTrains: $x")
     }
 }
