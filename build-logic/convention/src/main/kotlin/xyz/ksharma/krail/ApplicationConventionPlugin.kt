@@ -5,6 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
 
@@ -61,6 +62,10 @@ class ApplicationConventionPlugin : Plugin<Project> {
                     resources {
                         excludes += "/META-INF/{AL2.0,LGPL2.1}"
                     }
+                }
+
+                dependencies {
+                    "implementation"(libs.findLibrary("timber").get())
                 }
             }
         }
