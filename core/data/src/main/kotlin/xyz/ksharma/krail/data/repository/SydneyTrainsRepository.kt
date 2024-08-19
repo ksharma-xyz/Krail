@@ -5,7 +5,7 @@ import xyz.ksharma.krail.data.model.DemoDataModel
 /**
  * The repository for fetching the [DemoDataModel].
  */
-interface RealTimeDataRepository {
+interface SydneyTrainsRepository {
 
     suspend fun getSydneyTrains()
 }

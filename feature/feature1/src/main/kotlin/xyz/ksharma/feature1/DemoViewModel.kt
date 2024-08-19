@@ -3,6 +3,7 @@ package xyz.ksharma.feature1
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -27,14 +28,8 @@ class DemoViewModel @Inject constructor(
 
     @VisibleForTesting
     fun getDemoData() {
-        viewModelScope.launch {
-            demoUseCase().collectLatest { result ->
-                if (result.isSuccess) {
-                    _uiState.value = DemoUiState.Success(result.getOrNull()!!)
-                } else {
-                    _uiState.value = DemoUiState.Error
-                }
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            demoUseCase()
         }
     }
 }

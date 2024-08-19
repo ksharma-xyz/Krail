@@ -2,7 +2,7 @@
 // Source: transit_realtime.FeedHeader in xyz/ksharma/transport/gtfs_realtime.proto
 @file:Suppress("DEPRECATION")
 
-package xyz.ksharma.krail.network.model
+package xyz.ksharma.krail.model.gtfs_realtime.proto
 
 import com.squareup.wire.EnumAdapter
 import com.squareup.wire.FieldEncoding
@@ -28,7 +28,14 @@ import kotlin.Suppress
 import kotlin.Unit
 import okio.ByteString
 
+/**
+ * Metadata about a feed, included in feed messages.
+ */
 public class FeedHeader(
+  /**
+   * Version of the feed specification.
+   * The current version is 2.0.  Valid versions are "2.0", "1.0".
+   */
   @field:WireField(
     tag = 1,
     adapter = "com.squareup.wire.ProtoAdapter#STRING",
@@ -39,11 +46,16 @@ public class FeedHeader(
   public val gtfs_realtime_version: String,
   @field:WireField(
     tag = 2,
-    adapter = "xyz.ksharma.krail.network.model.FeedHeader${'$'}Incrementality#ADAPTER",
+    adapter = "xyz.ksharma.krail.model.gtfs_realtime.proto.FeedHeader${'$'}Incrementality#ADAPTER",
     schemaIndex = 1,
   )
   @JvmField
   public val incrementality: Incrementality? = null,
+  /**
+   * This timestamp identifies the moment when the content of this feed has been
+   * created (in server time). In POSIX time (i.e., number of seconds since
+   * January 1st 1970 00:00:00 UTC).
+   */
   @field:WireField(
     tag = 3,
     adapter = "com.squareup.wire.ProtoAdapter#UINT64",
@@ -109,6 +121,10 @@ public class FeedHeader(
     @JvmField
     public var timestamp: Long? = null
 
+    /**
+     * Version of the feed specification.
+     * The current version is 2.0.  Valid versions are "2.0", "1.0".
+     */
     public fun gtfs_realtime_version(gtfs_realtime_version: String): Builder {
       this.gtfs_realtime_version = gtfs_realtime_version
       return this
@@ -119,6 +135,11 @@ public class FeedHeader(
       return this
     }
 
+    /**
+     * This timestamp identifies the moment when the content of this feed has been
+     * created (in server time). In POSIX time (i.e., number of seconds since
+     * January 1st 1970 00:00:00 UTC).
+     */
     public fun timestamp(timestamp: Long?): Builder {
       this.timestamp = timestamp
       return this
@@ -204,6 +225,13 @@ public class FeedHeader(
     public inline fun build(body: Builder.() -> Unit): FeedHeader = Builder().apply(body).build()
   }
 
+  /**
+   * Determines whether the current fetch is incremental.  Currently,
+   * DIFFERENTIAL mode is unsupported and behavior is unspecified for feeds
+   * that use this mode.  There are discussions on the GTFS Realtime mailing
+   * list around fully specifying the behavior of DIFFERENTIAL mode and the
+   * documentation will be updated when those discussions are finalized.
+   */
   public enum class Incrementality(
     override val `value`: Int,
   ) : WireEnum {

@@ -2,7 +2,7 @@
 // Source: transit_realtime.EntitySelector in xyz/ksharma/transport/gtfs_realtime.proto
 @file:Suppress("DEPRECATION")
 
-package xyz.ksharma.krail.network.model
+package xyz.ksharma.krail.model.gtfs_realtime.proto
 
 import com.squareup.wire.FieldEncoding
 import com.squareup.wire.Message
@@ -24,7 +24,16 @@ import kotlin.Suppress
 import kotlin.Unit
 import okio.ByteString
 
+/**
+ * A selector for an entity in a GTFS feed.
+ */
 public class EntitySelector(
+  /**
+   * The values of the fields should correspond to the appropriate fields in the
+   * GTFS feed.
+   * At least one specifier must be given. If several are given, then the
+   * matching has to apply to all the given specifiers.
+   */
   @field:WireField(
     tag = 1,
     adapter = "com.squareup.wire.ProtoAdapter#STRING",
@@ -39,6 +48,9 @@ public class EntitySelector(
   )
   @JvmField
   public val route_id: String? = null,
+  /**
+   * corresponds to route_type in GTFS.
+   */
   @field:WireField(
     tag = 3,
     adapter = "com.squareup.wire.ProtoAdapter#INT32",
@@ -48,7 +60,7 @@ public class EntitySelector(
   public val route_type: Int? = null,
   @field:WireField(
     tag = 4,
-    adapter = "xyz.ksharma.krail.network.model.TripDescriptor#ADAPTER",
+    adapter = "xyz.ksharma.krail.model.gtfs_realtime.proto.TripDescriptor#ADAPTER",
     schemaIndex = 3,
   )
   @JvmField
@@ -61,7 +73,8 @@ public class EntitySelector(
   @JvmField
   public val stop_id: String? = null,
   /**
-   * NEW
+   * Corresponds to trip direction_id in GTFS trips.txt. If provided the
+   * route_id must also be provided.
    */
   @field:WireField(
     tag = 6,
@@ -153,6 +166,12 @@ public class EntitySelector(
     @JvmField
     public var direction_id: Int? = null
 
+    /**
+     * The values of the fields should correspond to the appropriate fields in the
+     * GTFS feed.
+     * At least one specifier must be given. If several are given, then the
+     * matching has to apply to all the given specifiers.
+     */
     public fun agency_id(agency_id: String?): Builder {
       this.agency_id = agency_id
       return this
@@ -163,6 +182,9 @@ public class EntitySelector(
       return this
     }
 
+    /**
+     * corresponds to route_type in GTFS.
+     */
     public fun route_type(route_type: Int?): Builder {
       this.route_type = route_type
       return this
@@ -179,7 +201,8 @@ public class EntitySelector(
     }
 
     /**
-     * NEW
+     * Corresponds to trip direction_id in GTFS trips.txt. If provided the
+     * route_id must also be provided.
      */
     public fun direction_id(direction_id: Int?): Builder {
       this.direction_id = direction_id

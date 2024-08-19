@@ -2,7 +2,7 @@
 // Source: transit_realtime.Position in xyz/ksharma/transport/gtfs_realtime.proto
 @file:Suppress("DEPRECATION")
 
-package xyz.ksharma.krail.network.model
+package xyz.ksharma.krail.model.gtfs_realtime.proto
 
 import com.squareup.wire.FieldEncoding
 import com.squareup.wire.Message
@@ -26,7 +26,13 @@ import kotlin.Suppress
 import kotlin.Unit
 import okio.ByteString
 
+/**
+ * A position.
+ */
 public class Position(
+  /**
+   * Degrees North, in the WGS-84 coordinate system.
+   */
   @field:WireField(
     tag = 1,
     adapter = "com.squareup.wire.ProtoAdapter#FLOAT",
@@ -35,6 +41,9 @@ public class Position(
   )
   @JvmField
   public val latitude: Float,
+  /**
+   * Degrees East, in the WGS-84 coordinate system.
+   */
   @field:WireField(
     tag = 2,
     adapter = "com.squareup.wire.ProtoAdapter#FLOAT",
@@ -43,6 +52,13 @@ public class Position(
   )
   @JvmField
   public val longitude: Float,
+  /**
+   * Bearing, in degrees, clockwise from North, i.e., 0 is North and 90 is East.
+   * This can be the compass bearing, or the direction towards the next stop
+   * or intermediate location.
+   * This should not be direction deduced from the sequence of previous
+   * positions, which can be computed from previous data.
+   */
   @field:WireField(
     tag = 3,
     adapter = "com.squareup.wire.ProtoAdapter#FLOAT",
@@ -50,6 +66,9 @@ public class Position(
   )
   @JvmField
   public val bearing: Float? = null,
+  /**
+   * Odometer value, in meters.
+   */
   @field:WireField(
     tag = 4,
     adapter = "com.squareup.wire.ProtoAdapter#DOUBLE",
@@ -57,6 +76,9 @@ public class Position(
   )
   @JvmField
   public val odometer: Double? = null,
+  /**
+   * Momentary speed measured by the vehicle, in meters per second.
+   */
   @field:WireField(
     tag = 5,
     adapter = "com.squareup.wire.ProtoAdapter#FLOAT",
@@ -64,17 +86,6 @@ public class Position(
   )
   @JvmField
   public val speed: Float? = null,
-  /**
-   * NEW
-   * Extension source: xyz/ksharma/transport/gtfs_realtime.proto
-   */
-  @field:WireField(
-    tag = 1_007,
-    adapter = "xyz.ksharma.krail.network.model.TrackDirection#ADAPTER",
-    schemaIndex = 5,
-  )
-  @JvmField
-  public val track_direction: TrackDirection? = null,
   unknownFields: ByteString = ByteString.EMPTY,
 ) : Message<Position, Position.Builder>(ADAPTER, unknownFields) {
   override fun newBuilder(): Builder {
@@ -84,7 +95,6 @@ public class Position(
     builder.bearing = bearing
     builder.odometer = odometer
     builder.speed = speed
-    builder.track_direction = track_direction
     builder.addUnknownFields(unknownFields)
     return builder
   }
@@ -98,7 +108,6 @@ public class Position(
     if (bearing != other.bearing) return false
     if (odometer != other.odometer) return false
     if (speed != other.speed) return false
-    if (track_direction != other.track_direction) return false
     return true
   }
 
@@ -111,7 +120,6 @@ public class Position(
       result = result * 37 + (bearing?.hashCode() ?: 0)
       result = result * 37 + (odometer?.hashCode() ?: 0)
       result = result * 37 + (speed?.hashCode() ?: 0)
-      result = result * 37 + (track_direction?.hashCode() ?: 0)
       super.hashCode = result
     }
     return result
@@ -124,7 +132,6 @@ public class Position(
     if (bearing != null) result += """bearing=$bearing"""
     if (odometer != null) result += """odometer=$odometer"""
     if (speed != null) result += """speed=$speed"""
-    if (track_direction != null) result += """track_direction=$track_direction"""
     return result.joinToString(prefix = "Position{", separator = ", ", postfix = "}")
   }
 
@@ -134,10 +141,8 @@ public class Position(
     bearing: Float? = this.bearing,
     odometer: Double? = this.odometer,
     speed: Float? = this.speed,
-    track_direction: TrackDirection? = this.track_direction,
     unknownFields: ByteString = this.unknownFields,
-  ): Position = Position(latitude, longitude, bearing, odometer, speed, track_direction,
-      unknownFields)
+  ): Position = Position(latitude, longitude, bearing, odometer, speed, unknownFields)
 
   public class Builder : Message.Builder<Position, Builder>() {
     @JvmField
@@ -155,39 +160,47 @@ public class Position(
     @JvmField
     public var speed: Float? = null
 
-    @JvmField
-    public var track_direction: TrackDirection? = null
-
+    /**
+     * Degrees North, in the WGS-84 coordinate system.
+     */
     public fun latitude(latitude: Float): Builder {
       this.latitude = latitude
       return this
     }
 
+    /**
+     * Degrees East, in the WGS-84 coordinate system.
+     */
     public fun longitude(longitude: Float): Builder {
       this.longitude = longitude
       return this
     }
 
+    /**
+     * Bearing, in degrees, clockwise from North, i.e., 0 is North and 90 is East.
+     * This can be the compass bearing, or the direction towards the next stop
+     * or intermediate location.
+     * This should not be direction deduced from the sequence of previous
+     * positions, which can be computed from previous data.
+     */
     public fun bearing(bearing: Float?): Builder {
       this.bearing = bearing
       return this
     }
 
+    /**
+     * Odometer value, in meters.
+     */
     public fun odometer(odometer: Double?): Builder {
       this.odometer = odometer
       return this
     }
 
+    /**
+     * Momentary speed measured by the vehicle, in meters per second.
+     */
     public fun speed(speed: Float?): Builder {
       this.speed = speed
-      return this
-    }
-
-    /**
-     * NEW
-     */
-    public fun track_direction(track_direction: TrackDirection?): Builder {
-      this.track_direction = track_direction
       return this
     }
 
@@ -197,7 +210,6 @@ public class Position(
       bearing = bearing,
       odometer = odometer,
       speed = speed,
-      track_direction = track_direction,
       unknownFields = buildUnknownFields()
     )
   }
@@ -219,7 +231,6 @@ public class Position(
         size += ProtoAdapter.FLOAT.encodedSizeWithTag(3, value.bearing)
         size += ProtoAdapter.DOUBLE.encodedSizeWithTag(4, value.odometer)
         size += ProtoAdapter.FLOAT.encodedSizeWithTag(5, value.speed)
-        size += TrackDirection.ADAPTER.encodedSizeWithTag(1_007, value.track_direction)
         return size
       }
 
@@ -229,13 +240,11 @@ public class Position(
         ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.bearing)
         ProtoAdapter.DOUBLE.encodeWithTag(writer, 4, value.odometer)
         ProtoAdapter.FLOAT.encodeWithTag(writer, 5, value.speed)
-        TrackDirection.ADAPTER.encodeWithTag(writer, 1_007, value.track_direction)
         writer.writeBytes(value.unknownFields)
       }
 
       override fun encode(writer: ReverseProtoWriter, `value`: Position) {
         writer.writeBytes(value.unknownFields)
-        TrackDirection.ADAPTER.encodeWithTag(writer, 1_007, value.track_direction)
         ProtoAdapter.FLOAT.encodeWithTag(writer, 5, value.speed)
         ProtoAdapter.DOUBLE.encodeWithTag(writer, 4, value.odometer)
         ProtoAdapter.FLOAT.encodeWithTag(writer, 3, value.bearing)
@@ -249,7 +258,6 @@ public class Position(
         var bearing: Float? = null
         var odometer: Double? = null
         var speed: Float? = null
-        var track_direction: TrackDirection? = null
         val unknownFields = reader.forEachTag { tag ->
           when (tag) {
             1 -> latitude = ProtoAdapter.FLOAT.decode(reader)
@@ -257,11 +265,6 @@ public class Position(
             3 -> bearing = ProtoAdapter.FLOAT.decode(reader)
             4 -> odometer = ProtoAdapter.DOUBLE.decode(reader)
             5 -> speed = ProtoAdapter.FLOAT.decode(reader)
-            1_007 -> try {
-              track_direction = TrackDirection.ADAPTER.decode(reader)
-            } catch (e: ProtoAdapter.EnumConstantNotFoundException) {
-              reader.addUnknownField(tag, FieldEncoding.VARINT, e.value.toLong())
-            }
             else -> reader.readUnknownField(tag)
           }
         }
@@ -271,7 +274,6 @@ public class Position(
           bearing = bearing,
           odometer = odometer,
           speed = speed,
-          track_direction = track_direction,
           unknownFields = unknownFields
         )
       }

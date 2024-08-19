@@ -2,7 +2,7 @@
 // Source: transit_realtime.TranslatedString in xyz/ksharma/transport/gtfs_realtime.proto
 @file:Suppress("DEPRECATION")
 
-package xyz.ksharma.krail.network.model
+package xyz.ksharma.krail.model.gtfs_realtime.proto
 
 import com.squareup.wire.FieldEncoding
 import com.squareup.wire.Message
@@ -29,13 +29,28 @@ import kotlin.Unit
 import kotlin.collections.List
 import okio.ByteString
 
+/**
+ * An internationalized message containing per-language versions of a snippet of
+ * text or a URL.
+ * One of the strings from a message will be picked up. The resolution proceeds
+ * as follows:
+ * 1. If the UI language matches the language code of a translation,
+ *    the first matching translation is picked.
+ * 2. If a default UI language (e.g., English) matches the language code of a
+ *    translation, the first matching translation is picked.
+ * 3. If some translation has an unspecified language code, that translation is
+ *    picked.
+ */
 public class TranslatedString(
   translation: List<Translation> = emptyList(),
   unknownFields: ByteString = ByteString.EMPTY,
 ) : Message<TranslatedString, TranslatedString.Builder>(ADAPTER, unknownFields) {
+  /**
+   * At least one translation must be provided.
+   */
   @field:WireField(
     tag = 1,
-    adapter = "xyz.ksharma.krail.network.model.TranslatedString${'$'}Translation#ADAPTER",
+    adapter = "xyz.ksharma.krail.model.gtfs_realtime.proto.TranslatedString${'$'}Translation#ADAPTER",
     label = WireField.Label.REPEATED,
     schemaIndex = 0,
   )
@@ -80,6 +95,9 @@ public class TranslatedString(
     @JvmField
     public var translation: List<Translation> = emptyList()
 
+    /**
+     * At least one translation must be provided.
+     */
     public fun translation(translation: List<Translation>): Builder {
       checkElementsNotNull(translation)
       this.translation = translation
@@ -146,6 +164,9 @@ public class TranslatedString(
   }
 
   public class Translation(
+    /**
+     * A UTF-8 string containing the message.
+     */
     @field:WireField(
       tag = 1,
       adapter = "com.squareup.wire.ProtoAdapter#STRING",
@@ -154,6 +175,11 @@ public class TranslatedString(
     )
     @JvmField
     public val text: String,
+    /**
+     * BCP-47 language code. Can be omitted if the language is unknown or if
+     * no i18n is done at all for the feed. At most one translation is
+     * allowed to have an unspecified language tag.
+     */
     @field:WireField(
       tag = 2,
       adapter = "com.squareup.wire.ProtoAdapter#STRING",
@@ -211,11 +237,19 @@ public class TranslatedString(
       @JvmField
       public var language: String? = null
 
+      /**
+       * A UTF-8 string containing the message.
+       */
       public fun text(text: String): Builder {
         this.text = text
         return this
       }
 
+      /**
+       * BCP-47 language code. Can be omitted if the language is unknown or if
+       * no i18n is done at all for the feed. At most one translation is
+       * allowed to have an unspecified language tag.
+       */
       public fun language(language: String?): Builder {
         this.language = language
         return this

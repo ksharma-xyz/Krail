@@ -11,10 +11,12 @@ android {
 dependencies {
     api(projects.core.di)
     implementation(projects.core.network)
+    implementation(projects.core.model)
 
     implementation(libs.retrofit.converter.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization.json)
+    implementation("com.opencsv:opencsv:5.5.2")
 
     testImplementation(libs.turbine)
     testImplementation(libs.google.truth)

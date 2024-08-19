@@ -2,7 +2,7 @@
 // Source: transit_realtime.TimeRange in xyz/ksharma/transport/gtfs_realtime.proto
 @file:Suppress("DEPRECATION")
 
-package xyz.ksharma.krail.network.model
+package xyz.ksharma.krail.model.gtfs_realtime.proto
 
 import com.squareup.wire.FieldEncoding
 import com.squareup.wire.Message
@@ -23,7 +23,19 @@ import kotlin.Suppress
 import kotlin.Unit
 import okio.ByteString
 
+/**
+ *
+ * Low level data structures used above.
+ *
+ * A time interval. The interval is considered active at time 't' if 't' is
+ * greater than or equal to the start time and less than the end time.
+ */
 public class TimeRange(
+  /**
+   * Start time, in POSIX time (i.e., number of seconds since January 1st 1970
+   * 00:00:00 UTC).
+   * If missing, the interval starts at minus infinity.
+   */
   @field:WireField(
     tag = 1,
     adapter = "com.squareup.wire.ProtoAdapter#UINT64",
@@ -31,6 +43,11 @@ public class TimeRange(
   )
   @JvmField
   public val start: Long? = null,
+  /**
+   * End time, in POSIX time (i.e., number of seconds since January 1st 1970
+   * 00:00:00 UTC).
+   * If missing, the interval ends at plus infinity.
+   */
   @field:WireField(
     tag = 2,
     adapter = "com.squareup.wire.ProtoAdapter#UINT64",
@@ -88,11 +105,21 @@ public class TimeRange(
     @JvmField
     public var end: Long? = null
 
+    /**
+     * Start time, in POSIX time (i.e., number of seconds since January 1st 1970
+     * 00:00:00 UTC).
+     * If missing, the interval starts at minus infinity.
+     */
     public fun start(start: Long?): Builder {
       this.start = start
       return this
     }
 
+    /**
+     * End time, in POSIX time (i.e., number of seconds since January 1st 1970
+     * 00:00:00 UTC).
+     * If missing, the interval ends at plus infinity.
+     */
     public fun end(end: Long?): Builder {
       this.end = end
       return this
