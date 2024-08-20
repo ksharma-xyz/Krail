@@ -34,31 +34,34 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
         val sydneyTrainsResponse: ByteArray = sydneyTrainsService.fetchSydneyTrains() // Zip
         //println(sydneyTrainsResponse.toString(UTF_8))
 
-        val files = extractGtfsFiles(sydneyTrainsResponse)
-        Log.d(TAG, "files[${files.size}]: ${files.keys}")
+        //val files = extractGtfsFiles(sydneyTrainsResponse)
+        //Log.d(TAG, "files[${files.size}]: ${files.keys}")
+        //Log.d(TAG, "file[1]: ${files.values.first()}")
 
-/*
-        val stopsFile:ByteArray? = files.filter { it.key == "stops.txt" }.values.firstOrNull()
-        Log.d(TAG, "stopsFile: ${stopsFile?.decodeToString()}")
-        Log.d(TAG, "parse stopsFile: ${stopsFile?.parseStops()}")
-*/
+        /*
+                val stopsFile:ByteArray? = files.filter { it.key == "stops.txt" }.values.firstOrNull()
+                Log.d(TAG, "stopsFile: ${stopsFile?.decodeToString()}")
+                Log.d(TAG, "parse stopsFile: ${stopsFile?.parseStops()}")
+        */
     }
 
-    private fun extractGtfsFiles(zipData: ByteArray): Map<String, String> {
+    private fun extractGtfsFiles(zipData: ByteArray): Map<String, ByteArray> {
         val zipInputStream = ZipInputStream(ByteArrayInputStream(zipData))
-        val files = mutableMapOf<String, String>() // Consider using ByteArrayOutputStream for binary data
+        val files = mutableMapOf<String, ByteArray>()
 
         var entry: ZipEntry? = zipInputStream.nextEntry
         while (entry != null) {
             if (!entry.isDirectory) {
-                val buffer = ByteArray(1024) // Adjust buffer size based on needs
-                val outputStream = FileOutputStream(File(context.cacheDir, entry.name)) // Change to desired output location
-                var length: Int
-                while ((zipInputStream.read(buffer).also { length = it }) > 0) {
-                    outputStream.write(buffer, 0, length)
+                val byteArrayOutputStream = ByteArrayOutputStream()
+                val buffer = ByteArray(8192) // Adjust buffer size if needed
+                var bytesRead: Int
+
+                while (zipInputStream.read(buffer).also { bytesRead = it } != -1) {
+                    byteArrayOutputStream.write(buffer, 0, bytesRead)
                 }
-                outputStream.close()
-                files[entry.name] = entry.name // Change to actual data if needed
+
+                files[entry.name] = byteArrayOutputStream.toByteArray()
+                byteArrayOutputStream.close()
             }
             entry = zipInputStream.nextEntry
         }
@@ -66,7 +69,6 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
 
         return files
     }
-
 
     private fun ByteArray.parseStops(): List<Stop> {
         val stops = mutableListOf<Stop>()
@@ -116,7 +118,6 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
         // Create and return the TranslatedString object containing the translation
         return TranslatedString(translation = listOf(translation))
     }
-
 }
 
 private fun Int?.toWheelchairBoarding() = when (this) {
