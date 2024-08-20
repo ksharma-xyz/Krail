@@ -18,16 +18,15 @@ import javax.inject.Inject
 import java.nio.file.Path
 import javax.inject.Singleton
 
-
 @Singleton
-class SydneyTrainsServiceImpl @Inject constructor(
+class GtfsServiceImpl @Inject constructor(
     private val okHttpClient: OkHttpClient,
     @ApplicationContext private val context: Context,
-) : SydneyTrainsService {
+) : GtfsService {
 
     private val TAG = "SydneyTrainsServiceImpl"
 
-    override suspend fun fetchSydneyTrains(): ByteArray {
+    override suspend fun getSydneyTrainSchedule(): ByteArray {
         val request = Request.Builder()
             .addHeader("accept", "application/x-google-protobuf")
             .addHeader("Authorization", "apikey $API_KEY")
@@ -37,7 +36,7 @@ class SydneyTrainsServiceImpl @Inject constructor(
         val response = okHttpClient.newCall(request).execute()
 //        Log.d(TAG, "fetchSydneyTrains: ${response.body?.string()}")
 
-        val x = getHTMLZip("$BASE_URL/v1/gtfs/schedule/sydneytrains")
+        val x = getHTMLZipOk("$BASE_URL/v1/gtfs/schedule/sydneytrains")
 
         return response.body?.bytes() ?: throw IOException("Failed to fetchSydneyTrains data")
     }
@@ -104,4 +103,49 @@ class SydneyTrainsServiceImpl @Inject constructor(
         }
     }
 
+    @Throws(IOException::class)
+    fun getHTMLZipOk(url: String, targetDir: Path = context.cacheDir.toPath()) {
+
+        val request = Request.Builder()
+            .url(url) // Assuming url is not null in this case
+            .addHeader("Authorization", "apikey $API_KEY")
+            .build()
+
+        val call = okHttpClient.newCall(request)
+        val response = call.execute()
+
+        if (!response.isSuccessful) {
+            throw IOException("Unexpected code ${response.code}")
+        }
+
+        val responseBody = response.body!!
+
+        ZipInputStream(responseBody.byteStream()).use { zis ->
+            // List files in zip
+            var zipEntry = zis.nextEntry
+
+            while (zipEntry != null) {
+                val isDirectory = zipEntry.name.endsWith(File.separator)
+
+                val newPath: Path = targetDir.resolve(zipEntry.name).normalize()
+
+                if (isDirectory) {
+                    Files.createDirectories(newPath)
+                } else {
+                    // Handle creation of parent directories
+                    if (newPath.parent != null && Files.notExists(newPath.parent)) {
+                        Files.createDirectories(newPath.parent)
+                    }
+
+                    // Copy files using NIO
+                    Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING)
+                }
+
+                zipEntry = zis.nextEntry
+            }
+            zis.closeEntry()
+        }
+
+        response.close()
+    }
 }

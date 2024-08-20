@@ -7,31 +7,27 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
-import xyz.ksharma.krail.network.SydneyTrainsService
+import xyz.ksharma.krail.network.GtfsService
 import javax.inject.Inject
 import xyz.ksharma.krail.model.gtfs_realtime.proto.TranslatedString
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
 import java.io.InputStreamReader
-import java.nio.charset.Charset
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
-import kotlin.text.Charsets.UTF_8
 
 class SydneyTrainsRepositoryImpl @Inject constructor(
     @ApplicationContext val context: Context,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-    private val sydneyTrainsService: SydneyTrainsService,
+    private val gtfsService: GtfsService,
 ) : SydneyTrainsRepository {
 
     private val TAG = "RealTimeDataRepositoryI"
 
     override suspend fun getSydneyTrains() {
         Log.d(TAG, "getSydneyTrains: ")
-        val sydneyTrainsResponse: ByteArray = sydneyTrainsService.fetchSydneyTrains() // Zip
+        val sydneyTrainsResponse: ByteArray = gtfsService.getSydneyTrainSchedule() // Zip
         //println(sydneyTrainsResponse.toString(UTF_8))
 
         //val files = extractGtfsFiles(sydneyTrainsResponse)

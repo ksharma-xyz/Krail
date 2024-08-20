@@ -12,7 +12,6 @@ class AuthInterceptor : Interceptor {
         return chain.proceed(
             Request
                 .Builder()
-                .addHeader("accept", "application/x-google-protobuf")
                 .addHeader("Authorization", "apikey $API_KEY")
                 .url(chain.request().url)
                 .build()

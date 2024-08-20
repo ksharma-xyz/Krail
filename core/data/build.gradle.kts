@@ -13,7 +13,6 @@ dependencies {
     implementation(projects.core.network)
     implementation(projects.core.model)
 
-    implementation(libs.retrofit.converter.gson)
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization.json)
     implementation("com.opencsv:opencsv:5.5.2")
