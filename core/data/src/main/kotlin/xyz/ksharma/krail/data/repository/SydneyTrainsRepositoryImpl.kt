@@ -8,17 +8,18 @@ import kotlinx.coroutines.CoroutineDispatcher
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.network.SydneyTrainsService
-import java.io.ByteArrayInputStream
-import java.util.zip.ZipEntry
-import java.util.zip.ZipInputStream
 import javax.inject.Inject
-import com.opencsv.CSVReader
-import okio.ByteString.Companion.toByteString
-import xyz.ksharma.krail.model.gtfs_realtime.proto.EntitySelector
 import xyz.ksharma.krail.model.gtfs_realtime.proto.TranslatedString
 import java.io.BufferedReader
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStreamReader
-import java.io.StringReader
+import java.nio.charset.Charset
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
+import kotlin.text.Charsets.UTF_8
 
 class SydneyTrainsRepositoryImpl @Inject constructor(
     @ApplicationContext val context: Context,
@@ -30,19 +31,53 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
 
     override suspend fun getSydneyTrains() {
         Log.d(TAG, "getSydneyTrains: ")
-        val sydneyTrainsResponse = sydneyTrainsService.fetchSydneyTrains()
+        val sydneyTrainsResponse: ByteArray = sydneyTrainsService.fetchSydneyTrains() // Zip
+        //println(sydneyTrainsResponse.toString(UTF_8))
 
+        val files = extractGtfsFiles(sydneyTrainsResponse)
+        Log.d(TAG, "files[${files.size}]: ${files.keys}")
 
+/*
+        val stopsFile:ByteArray? = files.filter { it.key == "stops.txt" }.values.firstOrNull()
+        Log.d(TAG, "stopsFile: ${stopsFile?.decodeToString()}")
+        Log.d(TAG, "parse stopsFile: ${stopsFile?.parseStops()}")
+*/
     }
 
-    private fun ByteArray.parseStopsCsvDynamic(): List<Stop> {
-        val stops = mutableListOf<Stop>()
-        val reader = BufferedReader(InputStreamReader(this.inputStream()))
-        val header = reader.readLine()?.split(",") ?: return emptyList()
+    private fun extractGtfsFiles(zipData: ByteArray): Map<String, String> {
+        val zipInputStream = ZipInputStream(ByteArrayInputStream(zipData))
+        val files = mutableMapOf<String, String>() // Consider using ByteArrayOutputStream for binary data
 
-        val columnIndices = header.mapIndexed { index, columnName -> columnName to index }.toMap()
+        var entry: ZipEntry? = zipInputStream.nextEntry
+        while (entry != null) {
+            if (!entry.isDirectory) {
+                val buffer = ByteArray(1024) // Adjust buffer size based on needs
+                val outputStream = FileOutputStream(File(context.cacheDir, entry.name)) // Change to desired output location
+                var length: Int
+                while ((zipInputStream.read(buffer).also { length = it }) > 0) {
+                    outputStream.write(buffer, 0, length)
+                }
+                outputStream.close()
+                files[entry.name] = entry.name // Change to actual data if needed
+            }
+            entry = zipInputStream.nextEntry
+        }
+        zipInputStream.close()
+
+        return files
+    }
+
+
+    private fun ByteArray.parseStops(): List<Stop> {
+        val stops = mutableListOf<Stop>()
+        val reader = BufferedReader(InputStreamReader(inputStream()))
+        val lineList = reader.readLine()?.split(",") ?: return emptyList()
+        Log.d(TAG, "parseStops: rows - ${lineList.size}")
+
+        val columnIndices = lineList.mapIndexed { index, columnName -> columnName to index }.toMap()
 
         var line: String? = reader.readLine()
+        Log.d(TAG, "parseStops: line - $line")
 
         while (line != null) {
             val tokens = line.split(",")
