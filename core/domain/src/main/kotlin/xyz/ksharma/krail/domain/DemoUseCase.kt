@@ -1,36 +1,23 @@
 package xyz.ksharma.krail.domain
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
-import xyz.ksharma.krail.data.repository.RealTimeDataRepository
-import xyz.ksharma.krail.domain.mapper.toDomainModel
-import xyz.ksharma.krail.model.DemoData
+import xyz.ksharma.krail.data.repository.SydneyTrainsRepository
 import javax.inject.Inject
 
 /**
- * [DemoUseCase] will fetch the data from [RealTimeDataRepository] and map the
+ * [DemoUseCase] will fetch the data from [SydneyTrainsRepository] and map the
  * data model objects into domain model.
  *
  * It will also wrap the data into a [Result], so as to provide Error, Success and Loading
  * states for UI.
  */
 interface DemoUseCase {
-    suspend operator fun invoke(): Flow<Result<DemoData>>
+    suspend operator fun invoke()
 }
 
 class DemoUseCaseImpl @Inject constructor(
-    private val realTimeDataRepository: RealTimeDataRepository,
+    private val sydneyTrainsRepository: SydneyTrainsRepository,
 ) : DemoUseCase {
-    override suspend operator fun invoke(): Flow<Result<DemoData>> {
-
-        return runCatching {
-            realTimeDataRepository.fetchData()
-                .map {
-                    runCatching { Result.success(it.toDomainModel()) }.getOrElse { exception ->
-                        Result.failure(exception)
-                    }
-                }
-        }.getOrElse { exception -> flowOf(Result.failure(exception)) }
+    override suspend operator fun invoke() {
+        sydneyTrainsRepository.getSydneyTrains()
     }
 }

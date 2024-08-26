@@ -1,6 +1,7 @@
 package xyz.ksharma.krail
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -22,7 +23,9 @@ internal fun KrailApp(
     NavHost(
         navController = navController,
         startDestination = AppScreen.DemoPage.name,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .safeContentPadding()
     ) {
         composable(route = AppScreen.DemoPage.name) {
             val localUiState: DemoUiState by viewModel.uiState.collectAsStateWithLifecycle()

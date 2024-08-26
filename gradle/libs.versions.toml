@@ -15,10 +15,10 @@ detekt = "1.23.6"
 detektCompose = "0.4.5"
 hilt = "2.51.1"
 okhttpBom = "4.12.0"
-retrofit = "2.9.0"
 kotlinxSerializationJson = "1.7.0"
 ksp = "2.0.0-1.0.22"
 paparazzi = "1.3.2"
+wire = "5.0.0-alpha04"
 
 #SDK
 minSdk = "26"
@@ -48,7 +48,6 @@ hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.r
 
 #Network
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
 okhttp = { module = "com.squareup.okhttp3:okhttp" }
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttpBom" }
@@ -90,3 +89,4 @@ krail-android-hilt = { id = "krail.android.hilt", version = "unspecified" }
 krail-android-library = { id = "krail.android.library", version = "unspecified" }
 krail-android-library-compose = { id = "krail.android.library.compose", version = "unspecified" }
 krail-jvm-library = { id = "krail.jvm.library", version = "unspecified" }
+wire = { id = "com.squareup.wire", version.ref = "wire"}
