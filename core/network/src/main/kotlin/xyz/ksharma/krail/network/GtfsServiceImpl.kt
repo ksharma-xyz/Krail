@@ -7,6 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import xyz.ksharma.krail.network.di.NetworkModule.Companion.BASE_URL
+import xyz.ksharma.krail.network.files.toPath
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -39,10 +40,7 @@ class GtfsServiceImpl @Inject constructor(
     }
 
     @Throws(IOException::class)
-    fun getHTMLZipOk(response: Response): MutableMap<String, ByteArray> {
-
-        val filesMap = mutableMapOf<String, ByteArray>()
-
+    fun getHTMLZipOk(response: Response) {
         if (!response.isSuccessful) {
             throw IOException("Unexpected code ${response.code}")
         }
@@ -55,61 +53,35 @@ class GtfsServiceImpl @Inject constructor(
 
             while (zipEntry != null) {
                 val isDirectory = zipEntry.name.endsWith(File.separator)
-                val path: Path = context.cacheDir.toPath().resolve(zipEntry.name).normalize()
+                val path: Path = context.toPath(zipEntry.name)
 
                 Log.d(TAG, "zipEntry: $zipEntry")
 
-                if (isDirectory) {
-                    Files.createDirectories(path)
-                } else {
-                    // Handle creation of parent directories
-                    if (path.parent != null && Files.notExists(path.parent)) {
-                        Files.createDirectories(path.parent)
-                    }
-
-                    // Copy files using NIO
-                    Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING)
-                    filesMap[zipEntry.name] = path.toFile().readBytes()
-                }
+                writeToCacheFromZip(isDirectory, path, inputStream)
 
                 zipEntry = inputStream.nextEntry
             }
             inputStream.closeEntry()
         }
         response.close()
-
-        return filesMap
     }
 
-
-    /*
-        @Throws(IOException::class)
-        fun unzipResponse(response: Response): Map<String, ByteArray> {
-            if (!response.isSuccessful) {
-                throw IOException("Unexpected code ${response.code}")
+    /**
+     * Extract files from zip and save to a file in cache directory.
+     */
+    private fun writeToCacheFromZip(
+        isDirectory: Boolean,
+        path: Path,
+        inputStream: ZipInputStream
+    ) {
+        if (isDirectory) {
+            Files.createDirectories(path)
+        } else {
+            // Handle creation of parent directories
+            if (path.parent != null && Files.notExists(path.parent)) {
+                Files.createDirectories(path.parent)
             }
-
-            val responseBody = response.body!!
-            val files = mutableMapOf<String, ByteArray>()
-
-            ZipInputStream(responseBody.byteStream()).use { zis ->
-                var zipEntry: ZipEntry?
-                while ((zipEntry = zis.nextEntry) != null) {
-                    val filePath = context.cacheDir.toPath().resolve(zipEntry.name).normalize()
-
-                    if (zipEntry.isDirectory) {
-                        Files.createDirectories(filePath)
-                    } else {
-                        val fileData = ByteArrayOutputStream().use { buffer ->
-                            zis.copyTo(buffer)
-                            buffer.toByteArray()
-                        }
-                        files[filePath.fileName.toString()] = fileData
-                    }
-                }
-            }
-
-            return files
+            Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING)
         }
-    */
+    }
 }
