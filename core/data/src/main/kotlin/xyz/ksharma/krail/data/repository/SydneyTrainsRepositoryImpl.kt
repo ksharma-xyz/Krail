@@ -4,6 +4,8 @@ import android.content.Context
 import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
+import okhttp3.Response
+import xyz.ksharma.krail.data.cacheZipResponse
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.model.gtfs_realtime.proto.Stop
@@ -23,18 +25,8 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
 
     override suspend fun getSydneyTrains() {
         Log.d(TAG, "getSydneyTrains: ")
-         gtfsService.getSydneyTrainSchedule() // Zip
-        //println(sydneyTrainsResponse.toString(UTF_8))
-
-        //val files = extractGtfsFiles(sydneyTrainsResponse)
-        //Log.d(TAG, "files[${files.size}]: ${files.keys}")
-        //Log.d(TAG, "file[1]: ${files.values.first()}")
-
-        /*
-                val stopsFile:ByteArray? = files.filter { it.key == "stops.txt" }.values.firstOrNull()
-                Log.d(TAG, "stopsFile: ${stopsFile?.decodeToString()}")
-                Log.d(TAG, "parse stopsFile: ${stopsFile?.parseStops()}")
-        */
+        val response: Response = gtfsService.getSydneyTrainSchedule()
+        response.cacheZipResponse(dispatcher = ioDispatcher, context = context)
     }
 
     private fun ByteArray.parseStops(): List<Stop> {
@@ -43,7 +35,8 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
         val lineList = reader.readLine()?.split(",") ?: return emptyList()
         Log.d(TAG, "parseStops: rows - ${lineList.size}")
 
-        val columnIndices = lineList.mapIndexed { index, columnName -> columnName to index }.toMap()
+        val columnIndices =
+            lineList.mapIndexed { index, columnName -> columnName to index }.toMap()
 
         var line: String? = reader.readLine()
         Log.d(TAG, "parseStops: line - $line")
@@ -55,7 +48,8 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
                 stop_id = tokens.getOrNull(columnIndices["stop_id"] ?: -1) ?: "",
                 stop_code = tokens.getOrNull(columnIndices["stop_code"] ?: -1)?.translate(),
                 stop_name = tokens.getOrNull(columnIndices["stop_name"] ?: -1)?.translate(),
-                tts_stop_name = tokens.getOrNull(columnIndices["tts_stop_name"] ?: -1)?.translate(),
+                tts_stop_name = tokens.getOrNull(columnIndices["tts_stop_name"] ?: -1)
+                    ?.translate(),
                 stop_desc = tokens.getOrNull(columnIndices["stop_desc"] ?: -1)?.translate(),
                 stop_lat = tokens.getOrNull(columnIndices["stop_lat"] ?: -1)?.toFloatOrNull(),
                 stop_lon = tokens.getOrNull(columnIndices["stop_lon"] ?: -1)?.toFloatOrNull(),
@@ -63,10 +57,13 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
                 stop_url = tokens.getOrNull(columnIndices["stop_url"] ?: -1)?.translate(),
                 parent_station = tokens.getOrNull(columnIndices["parent_station"] ?: -1),
                 stop_timezone = tokens.getOrNull(columnIndices["stop_timezone"] ?: -1),
-                wheelchair_boarding = tokens.getOrNull(columnIndices["wheelchair_boarding"] ?: -1)
+                wheelchair_boarding = tokens.getOrNull(
+                    columnIndices["wheelchair_boarding"] ?: -1
+                )
                     ?.toIntOrNull().toWheelchairBoarding(),
                 level_id = tokens.getOrNull(columnIndices["level_id"] ?: -1),
-                platform_code = tokens.getOrNull(columnIndices["platform_code"] ?: -1)?.translate(),
+                platform_code = tokens.getOrNull(columnIndices["platform_code"] ?: -1)
+                    ?.translate(),
             )
             stops.add(stop)
             line = reader.readLine()

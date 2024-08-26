@@ -10,6 +10,7 @@ android {
 
 dependencies {
     api(projects.core.di)
+    implementation(projects.core.coroutinesExt)
     implementation(projects.core.network)
     implementation(projects.core.model)
 

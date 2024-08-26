@@ -15,4 +15,4 @@ internal fun Path.readFile(): ByteArray = this.toFile().readBytes()
  *
  * @return The file contents as a [ByteArray].
  */
-internal fun Context.toPath(fileName: String): Path = cacheDir.toPath().resolve(fileName).normalize()
+fun Context.toPath(fileName: String): Path = cacheDir.toPath().resolve(fileName).normalize()
