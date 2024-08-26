@@ -31,7 +31,8 @@ class GtfsServiceImpl @Inject constructor(
             .build()
 
         val response = okHttpClient.newCall(request).execute()
-//        Log.d(TAG, "fetchSydneyTrains: ${response.body?.string()}")
+        // don't log it's entire response body,which is huge.
+        // Log.d(TAG, "fetchSydneyTrains: ${response.body?.string()}")
 
         val map = getHTMLZipOk(response)
         Log.d(TAG, "filesMap: $map")
