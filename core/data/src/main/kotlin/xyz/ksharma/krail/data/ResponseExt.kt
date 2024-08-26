@@ -3,6 +3,7 @@ package xyz.ksharma.krail.data
 import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.Response
+import timber.log.Timber
 import xyz.ksharma.krail.coroutines.ext.safeResult
 import xyz.ksharma.krail.network.files.toPath
 import java.io.File
@@ -37,7 +38,7 @@ suspend fun Response.cacheZipResponse(dispatcher: CoroutineDispatcher, context: 
                 val isDirectory = zipEntry.name.endsWith(File.separator)
                 val path: Path = context.toPath(zipEntry.name)
 
-                println("zipEntry: $zipEntry")
+                Timber.d("zipEntry: $zipEntry")
 
                 writeToCacheFromZip(isDirectory, path, inputStream)
 
@@ -47,5 +48,5 @@ suspend fun Response.cacheZipResponse(dispatcher: CoroutineDispatcher, context: 
         }
         close()
     }.getOrElse { error ->
-        println("cacheZipResponse: $error")
+        Timber.d("cacheZipResponse", error)
     }

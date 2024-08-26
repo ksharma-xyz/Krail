@@ -18,6 +18,6 @@ class DemoUseCaseImpl @Inject constructor(
     private val sydneyTrainsRepository: SydneyTrainsRepository,
 ) : DemoUseCase {
     override suspend operator fun invoke() {
-        sydneyTrainsRepository.getSydneyTrains()
+        sydneyTrainsRepository.fetchStaticSydneyTrainsScheduleAndCache()
     }
 }
