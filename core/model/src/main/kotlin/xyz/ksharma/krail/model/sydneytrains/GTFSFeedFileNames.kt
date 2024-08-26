@@ -1,6 +1,6 @@
 package xyz.ksharma.krail.model.sydneytrains
 
-enum class GTFSRealtimeFiles(val fileName: String) {
+enum class GTFSFeedFileNames(val fileName: String) {
     AGENCY(fileName = "agency.txt"),
     ROUTES(fileName = "routes.txt"),
     SHAPES(fileName = "shapes.txt"),
