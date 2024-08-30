@@ -7,11 +7,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.Response
 import timber.log.Timber
 import xyz.ksharma.krail.data.cacheZipResponse
-import xyz.ksharma.krail.data.gtfs_static.parser.OccupancyParser.parseOccupancy
-import xyz.ksharma.krail.data.gtfs_static.parser.RouteParser.parseRoutes
-import xyz.ksharma.krail.data.gtfs_static.parser.StopTimesParser.parseStopTimes
-import xyz.ksharma.krail.data.gtfs_static.parser.StopsParser.parseStops
-import xyz.ksharma.krail.data.gtfs_static.parser.TripParser.parseTrips
+import xyz.ksharma.krail.data.gtfs_static.parser.CalendarParser.parseCalendar
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
@@ -38,7 +34,9 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
         //Timber.d("stopTimesList: ${stopTimesList.size}") Huge data do not log.
         //val routesList = context.toPath(GTFSFeedFileNames.ROUTES.fileName).parseRoutes()
 //        Timber.d("routesList: $routesList")
-        val occupancyList = context.toPath(GTFSFeedFileNames.OCCUPANCIES.fileName).parseOccupancy()
-        Timber.d("occupancyList: ${occupancyList.size}")
+        //val occupancyList = context.toPath(GTFSFeedFileNames.OCCUPANCIES.fileName).parseOccupancy()
+        //Timber.d("occupancyList: ${occupancyList.size}")
+        val calendarList = context.toPath(GTFSFeedFileNames.CALENDAR.fileName).parseCalendar()
+        Timber.d("calendarList: ${calendarList}")
     }
 }
