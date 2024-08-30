@@ -1,16 +1,16 @@
-package xyz.ksharma.krail.data.gtfs_static.parser
+package xyz.ksharma.krail.domain.parser
 
 import timber.log.Timber
-import xyz.ksharma.krail.model.gtfs_static.StopTimes
+import xyz.ksharma.krail.model.gtfs_static.Occupancy
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 import java.nio.file.Path
 
-object StopTimesParser {
+object OccupancyParser {
 
-    fun Path.parseStopTimes(): List<StopTimes> {
-        val stopTimesList = mutableListOf<StopTimes>()
+    fun Path.parseOccupancy(): List<Occupancy> {
+        val occupancyList = mutableListOf<Occupancy>()
 
         try {
             BufferedReader(FileReader(this.toString())).use { reader ->
@@ -51,16 +51,21 @@ object StopTimesParser {
 
                     fieldsList.add(currentField.trim('\"'))
 
-                    stopTimesList.add(
-                        StopTimes(
-                            trip_id = fieldsList[0],
-                            arrival_time = fieldsList[1],
-                            departure_time = fieldsList[2],
-                            stop_id = fieldsList[3],
-                            stop_sequence = fieldsList[4].toIntOrNull(),
-                            stop_headsign = fieldsList[5],
-                            pickup_type = fieldsList[6].toIntOrNull(),
-                            drop_off_type = fieldsList[7].toIntOrNull(),
+                    occupancyList.add(
+                        Occupancy(
+                            tripId = fieldsList[0],
+                            stopSequence = fieldsList[1],
+                            occupancyStatus = fieldsList[2],
+                            monday = fieldsList[3],
+                            tuesday = fieldsList[4],
+                            wednesday = fieldsList[5],
+                            thursday = fieldsList[6],
+                            friday = fieldsList[7],
+                            saturday = fieldsList[8],
+                            sunday = fieldsList[9],
+                            startDate = fieldsList[10],
+                            endDate = fieldsList[11],
+                            exception = fieldsList[11],
                         )
                     )
                 }
@@ -73,7 +78,6 @@ object StopTimesParser {
             Timber.e(e, "readStopsFromCSV: ")
         }
 
-        return stopTimesList
+        return occupancyList
     }
-
 }

@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.network.files
+package xyz.ksharma.krail.utils
 
 import android.content.Context
 import java.nio.file.Path

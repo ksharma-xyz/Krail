@@ -10,6 +10,7 @@ android {
 dependencies {
     api(projects.core.data)
     api(projects.core.model)
+    implementation(projects.core.utils)
 
     testImplementation(libs.junit)
     testImplementation(libs.turbine)

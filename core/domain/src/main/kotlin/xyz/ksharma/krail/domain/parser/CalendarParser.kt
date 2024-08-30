@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.data.gtfs_static.parser
+package xyz.ksharma.krail.domain.parser
 
 import timber.log.Timber
 import xyz.ksharma.krail.model.gtfs_static.Calendar
@@ -47,12 +47,5 @@ object CalendarParser {
         }
 
         return calendarList
-    }
-
-    private fun Int.toWheelchairBoarding() = when (this) {
-        0 -> xyz.ksharma.krail.model.gtfs_realtime.proto.Stop.WheelchairBoarding.UNKNOWN
-        1 -> xyz.ksharma.krail.model.gtfs_realtime.proto.Stop.WheelchairBoarding.AVAILABLE
-        2 -> xyz.ksharma.krail.model.gtfs_realtime.proto.Stop.WheelchairBoarding.NOT_AVAILABLE
-        else -> null
     }
 }
