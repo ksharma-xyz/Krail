@@ -1,16 +1,17 @@
 package xyz.ksharma.krail.data.gtfs_static.parser
 
+
 import timber.log.Timber
-import xyz.ksharma.krail.model.gtfs_static.StopTimes
+import xyz.ksharma.krail.model.gtfs_static.Route
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 import java.nio.file.Path
 
-object StopTimesParser {
+object RouteParser {
 
-    fun Path.parseStopTimes(): List<StopTimes> {
-        val stopTimesList = mutableListOf<StopTimes>()
+    fun Path.parseRoutes(): List<Route> {
+        val routesList = mutableListOf<Route>()
 
         try {
             BufferedReader(FileReader(this.toString())).use { reader ->
@@ -51,29 +52,28 @@ object StopTimesParser {
 
                     fieldsList.add(currentField.trim('\"'))
 
-                    stopTimesList.add(
-                        StopTimes(
-                            trip_id = fieldsList[0],
-                            arrival_time = fieldsList[1],
-                            departure_time = fieldsList[2],
-                            stop_id = fieldsList[3],
-                            stop_sequence = fieldsList[4].toIntOrNull(),
-                            stop_headsign = fieldsList[5],
-                            pickup_type = fieldsList[6].toIntOrNull(),
-                            drop_off_type = fieldsList[7].toIntOrNull(),
+                    routesList.add(
+                        Route(
+                            routeId = fieldsList[0],
+                            agencyId = fieldsList[1],
+                            routeShortName = fieldsList[2],
+                            routeLongName = fieldsList[3],
+                            routeDesc = fieldsList[4],
+                            routeType = fieldsList[5].toIntOrNull(),
+                            routeUrl = fieldsList[6],
+                            routeColor = fieldsList[7],
+                            routeTextColor = fieldsList[8],
                         )
                     )
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Timber.e(e, "readStopsFromCSV: ")
+            Timber.e(e, "parseRoutes: ")
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
-            Timber.e(e, "readStopsFromCSV: ")
+            Timber.e(e, "parseRoutes: ")
         }
-
-        return stopTimesList
+        return routesList
     }
-
 }
