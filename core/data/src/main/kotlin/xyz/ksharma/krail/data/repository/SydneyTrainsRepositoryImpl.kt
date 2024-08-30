@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.Response
 import timber.log.Timber
 import xyz.ksharma.krail.data.cacheZipResponse
+import xyz.ksharma.krail.data.gtfs_static.parser.OccupancyParser.parseOccupancy
 import xyz.ksharma.krail.data.gtfs_static.parser.RouteParser.parseRoutes
 import xyz.ksharma.krail.data.gtfs_static.parser.StopTimesParser.parseStopTimes
 import xyz.ksharma.krail.data.gtfs_static.parser.StopsParser.parseStops
@@ -33,9 +34,11 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
         //val stopsList = context.toPath(GTFSFeedFileNames.STOPS.fileName).parseStops()
         //Timber.d("stopsList: $stopsList")
         //val tripsList = context.toPath(GTFSFeedFileNames.TRIPS.fileName).parseTrips()
-        val stopTimesList = context.toPath(GTFSFeedFileNames.STOP_TIMES.fileName).parseStopTimes()
+        //val stopTimesList = context.toPath(GTFSFeedFileNames.STOP_TIMES.fileName).parseStopTimes()
         //Timber.d("stopTimesList: ${stopTimesList.size}") Huge data do not log.
-        val routesList = context.toPath(GTFSFeedFileNames.ROUTES.fileName).parseRoutes()
+        //val routesList = context.toPath(GTFSFeedFileNames.ROUTES.fileName).parseRoutes()
 //        Timber.d("routesList: $routesList")
+        val occupancyList = context.toPath(GTFSFeedFileNames.OCCUPANCIES.fileName).parseOccupancy()
+        Timber.d("occupancyList: ${occupancyList.size}")
     }
 }
