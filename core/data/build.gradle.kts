@@ -13,10 +13,11 @@ dependencies {
     implementation(projects.core.coroutinesExt)
     implementation(projects.core.network)
     implementation(projects.core.model)
+    implementation(projects.core.utils)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization.json)
-    implementation("com.opencsv:opencsv:5.5.2")
+    implementation(libs.opencsv)
     implementation(libs.okhttp)
     implementation(libs.timber)
 

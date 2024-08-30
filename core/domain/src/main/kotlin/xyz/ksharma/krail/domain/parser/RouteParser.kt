@@ -1,5 +1,4 @@
-package xyz.ksharma.krail.data.gtfs_static.parser
-
+package xyz.ksharma.krail.domain.parser
 
 import timber.log.Timber
 import xyz.ksharma.krail.model.gtfs_static.Route

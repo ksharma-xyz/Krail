@@ -5,7 +5,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.Response
 import timber.log.Timber
 import xyz.ksharma.krail.coroutines.ext.safeResult
-import xyz.ksharma.krail.network.files.toPath
+import xyz.ksharma.krail.utils.toPath
 import java.io.File
 import java.io.IOException
 import java.nio.file.Path
