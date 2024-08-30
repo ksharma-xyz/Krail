@@ -7,7 +7,9 @@ import kotlinx.coroutines.withContext
 import okhttp3.Response
 import timber.log.Timber
 import xyz.ksharma.krail.data.cacheZipResponse
+import xyz.ksharma.krail.data.gtfs_static.parser.StopTimesParser.parseStopTimes
 import xyz.ksharma.krail.data.gtfs_static.parser.StopsParser.parseStops
+import xyz.ksharma.krail.data.gtfs_static.parser.TripParser.parseTrips
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
@@ -27,7 +29,10 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
         response.cacheZipResponse(dispatcher = ioDispatcher, context = context)
 
         // TODO - provide boolean response if files were cached successfully.
-        val stopsList = context.toPath(GTFSFeedFileNames.STOPS.fileName).parseStops()
-        Timber.d("stopsList: $stopsList")
+        //val stopsList = context.toPath(GTFSFeedFileNames.STOPS.fileName).parseStops()
+        //Timber.d("stopsList: $stopsList")
+        //val tripsList = context.toPath(GTFSFeedFileNames.TRIPS.fileName).parseTrips()
+        val stopTimesList = context.toPath(GTFSFeedFileNames.STOP_TIMES.fileName).parseStopTimes()
+        Timber.d("stopTimesList: ${stopTimesList.size}")
     }
 }

@@ -6,8 +6,8 @@ data class Trip(
     val trip_id: String,
     val trip_headsign: String,
     val trip_short_name: String,
-    val direction_id: Int,
+    val direction_id: Int?,
     val block_id: String,
     val shape_id: String,
-    val wheelchair_accessible: Int,
+    val wheelchair_accessible: Int?,
 )
