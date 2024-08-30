@@ -33,6 +33,6 @@ class SydneyTrainsRepositoryImpl @Inject constructor(
         //Timber.d("stopsList: $stopsList")
         //val tripsList = context.toPath(GTFSFeedFileNames.TRIPS.fileName).parseTrips()
         val stopTimesList = context.toPath(GTFSFeedFileNames.STOP_TIMES.fileName).parseStopTimes()
-        Timber.d("stopTimesList: $stopTimesList")
+        Timber.d("stopTimesList: ${stopTimesList.size}")
     }
 }

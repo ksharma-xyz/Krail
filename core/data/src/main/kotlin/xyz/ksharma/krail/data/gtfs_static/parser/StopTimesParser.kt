@@ -9,7 +9,7 @@ import java.nio.file.Path
 
 object StopTimesParser {
 
-    internal fun Path.parseStopTimes(): List<StopTimes> {
+    fun Path.parseStopTimes(): List<StopTimes> {
         val stopTimesList = mutableListOf<StopTimes>()
 
         try {
@@ -18,9 +18,38 @@ object StopTimesParser {
                 // todo use headers instead of hard code later.
                 //Log.d(TAG, "headersList: $headersList")
 
+                var line: String?
+
                 while (true) {
-                    val line = reader.readLine() ?: break
-                    val fieldsList = line.split(",").trimQuotes()
+                    line = reader.readLine() ?: break
+
+                    // Process the line in a buffered manner
+                    val fieldsList = mutableListOf<String>()
+                    var currentField = ""
+                    var inQuotes = false
+
+                    for (char in line) {
+                        if (inQuotes) {
+                            if (char == '"') {
+                                inQuotes = false
+                                fieldsList.add(currentField)
+                                currentField = ""
+                            } else {
+                                currentField += char
+                            }
+                        } else {
+                            if (char == '"') {
+                                inQuotes = true
+                            } else if (char == ',') {
+                                fieldsList.add(currentField.trim('\"'))
+                                currentField = ""
+                            } else {
+                                currentField += char
+                            }
+                        }
+                    }
+
+                    fieldsList.add(currentField.trim('\"'))
 
                     stopTimesList.add(
                         StopTimes(
