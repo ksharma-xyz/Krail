@@ -6,7 +6,7 @@ data class Route(
     val routeShortName: String,
     val routeLongName: String,
     val routeDesc: String,
-    val routeType: Int,
+    val routeType: Int?,
     val routeUrl: String,
     val routeColor: String,
     val routeTextColor: String,

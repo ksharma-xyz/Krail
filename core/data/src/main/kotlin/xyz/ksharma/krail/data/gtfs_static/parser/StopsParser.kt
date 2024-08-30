@@ -51,8 +51,6 @@ object StopsParser {
         return stops
     }
 
-    private fun List<String>.trimQuotes(): List<String> = this.map { it.trim('\"') }
-
     private fun Int.toWheelchairBoarding() = when (this) {
         0 -> xyz.ksharma.krail.model.gtfs_realtime.proto.Stop.WheelchairBoarding.UNKNOWN
         1 -> xyz.ksharma.krail.model.gtfs_realtime.proto.Stop.WheelchairBoarding.AVAILABLE

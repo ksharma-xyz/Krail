@@ -47,6 +47,4 @@ object TripParser {
 
         return trips
     }
-
-    private fun List<String>.trimQuotes(): List<String> = this.map { it.trim('\"') }
 }
