@@ -5,3 +5,6 @@ plugins {
 android {
     namespace = "xyz.ksharma.krail.sydney_trains.database.api"
 }
+
+dependencies {
+}
