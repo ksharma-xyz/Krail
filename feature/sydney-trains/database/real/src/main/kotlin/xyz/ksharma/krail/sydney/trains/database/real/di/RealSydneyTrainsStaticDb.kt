@@ -1,4 +1,4 @@
-package xyz.ksharma.krail
+package xyz.ksharma.krail.sydney.trains.database.real.di
 
 import android.content.Context
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver
@@ -7,9 +7,11 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import xyz.ksharma.krail.database.api.SydneyTrainsStaticDB
+import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
+import xyz.ksharma.krail.sydney.trains.database.StopTimes
+import xyz.ksharma.krail.sydney_trains.database.api.KrailDB
 import javax.inject.Inject
 import javax.inject.Singleton
 

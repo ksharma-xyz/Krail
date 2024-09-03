@@ -1,11 +1,10 @@
-package xyz.ksharma.krail.di
+package xyz.ksharma.krail.sydney.trains.database.real.di
 
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import xyz.ksharma.krail.RealSydneyTrainsStaticDb
-import xyz.ksharma.krail.database.api.SydneyTrainsStaticDB
+import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
 import javax.inject.Singleton
 
 @Module
