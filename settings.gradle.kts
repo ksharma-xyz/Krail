@@ -21,7 +21,6 @@ dependencyResolutionManagement {
 rootProject.name = "Krail"
 include(":app")
 include(":core:coroutines-ext")
-include(":core:data")
 include(":core:di")
 include(":core:domain")
 include(":core:design-system")
