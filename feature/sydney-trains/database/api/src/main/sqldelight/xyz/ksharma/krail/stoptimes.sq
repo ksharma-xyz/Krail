@@ -1,0 +1,27 @@
+CREATE TABLE stopTimes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  trip_id TEXT NOT NULL,
+  arrival_time TEXT,
+  departure_time TEXT,
+  stop_id TEXT,
+  stop_sequence INTEGER,
+  stop_headsign TEXT,
+  pickup_type INTEGER,
+  drop_off_type INTEGER
+);
+
+insertIntoStopTime:
+INSERT INTO stopTimes (
+	trip_id,
+	arrival_time,
+	departure_time,
+	stop_id,
+	stop_sequence,
+	stop_headsign,
+	pickup_type,
+	drop_off_type
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAll:
+SELECT * FROM stopTimes;
