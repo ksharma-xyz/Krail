@@ -4,8 +4,8 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import xyz.ksharma.krail.RealSydneyTrainsDb
-import xyz.ksharma.krail.database.api.SydneyTrainsDB
+import xyz.ksharma.krail.RealSydneyTrainsStaticDb
+import xyz.ksharma.krail.database.api.SydneyTrainsStaticDB
 import javax.inject.Singleton
 
 @Module
@@ -14,5 +14,5 @@ abstract class SydneyTrainsDbModule {
 
     @Binds
     @Singleton
-    abstract fun bindTrainsDb(impl: RealSydneyTrainsDb): SydneyTrainsDB
+    abstract fun bindSydneyTrainsStaticDB(impl: RealSydneyTrainsStaticDb): SydneyTrainsStaticDB
 }
