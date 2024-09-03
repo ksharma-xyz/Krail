@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.data
+package xyz.ksharma.krail.network
 
 import java.nio.file.Files
 import java.nio.file.Path
@@ -13,14 +13,14 @@ import java.util.zip.ZipInputStream
  *
  * **Note:** If the target file already exists, it will be overwritten.
  *
+ * ZipInputStream - The input stream containing the ZIP entry data.
+ *
  * @param isDirectory Indicates whether the entry is a directory.
  * @param path The target path in the cache directory.
- * @param inputStream The input stream containing the ZIP entry data.
  */
-internal fun writeToCacheFromZip(
+internal fun ZipInputStream.writeToCache(
     isDirectory: Boolean,
     path: Path,
-    inputStream: ZipInputStream
 ) {
     if (isDirectory) {
         Files.createDirectories(path)
@@ -29,6 +29,6 @@ internal fun writeToCacheFromZip(
         if (path.parent != null && Files.notExists(path.parent)) {
             Files.createDirectories(path.parent)
         }
-        Files.copy(inputStream, path, StandardCopyOption.REPLACE_EXISTING)
+        Files.copy(this, path, StandardCopyOption.REPLACE_EXISTING)
     }
 }

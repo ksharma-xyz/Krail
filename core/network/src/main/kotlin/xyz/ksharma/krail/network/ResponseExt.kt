@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.data
+package xyz.ksharma.krail.network
 
 import android.content.Context
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,7 +40,7 @@ suspend fun Response.cacheZipResponse(dispatcher: CoroutineDispatcher, context: 
 
                 Timber.d("zipEntry: $zipEntry")
 
-                writeToCacheFromZip(isDirectory, path, inputStream)
+                inputStream.writeToCache(isDirectory, path)
 
                 zipEntry = inputStream.nextEntry
             }
