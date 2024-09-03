@@ -1,25 +1,23 @@
-package xyz.ksharma.krail.network
+package xyz.ksharma.krail.sydney.trains.network.real
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import okhttp3.Response
 import timber.log.Timber
 import xyz.ksharma.krail.network.di.NetworkModule.Companion.BASE_URL
 import xyz.ksharma.krail.network.interceptor.AuthInterceptor.Companion.API_KEY
+import xyz.ksharma.krail.sydney.trains.network.api.SydneyTrainsService
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class GtfsServiceImpl @Inject constructor(
+class RealSydneyTrainsService @Inject constructor(
     private val okHttpClient: OkHttpClient,
-) : GtfsService {
+) : SydneyTrainsService {
 
-    override suspend fun getSydneyTrainSchedule(): Response {
-        val request = Request.Builder()
-            .url("$BASE_URL/v1/gtfs/schedule/sydneytrains")
+    override suspend fun getSydneyTrainsStaticData(): okhttp3.Response {
+        val request = Request.Builder().url("$BASE_URL/v1/gtfs/schedule/sydneytrains")
             .header("Authorization", "apikey $API_KEY")
-            .header("accept", "application/x-google-protobuf")
-            .build()
+            .header("accept", "application/x-google-protobuf").build()
 
         val response = okHttpClient.newCall(request).execute()
         // don't log it's entire response body,which is huge.

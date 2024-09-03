@@ -94,6 +94,8 @@ cash-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+wire = { id = "com.squareup.wire", version.ref = "wire"}
+cash-sqldelight = {id = "app.cash.sqldelight", version.ref ="sqldelight"}
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }
@@ -101,5 +103,3 @@ krail-android-hilt = { id = "krail.android.hilt", version = "unspecified" }
 krail-android-library = { id = "krail.android.library", version = "unspecified" }
 krail-android-library-compose = { id = "krail.android.library.compose", version = "unspecified" }
 krail-jvm-library = { id = "krail.jvm.library", version = "unspecified" }
-wire = { id = "com.squareup.wire", version.ref = "wire"}
-cash-sqldelight = {id = "app.cash.sqldelight", version.ref ="sqldelight"}

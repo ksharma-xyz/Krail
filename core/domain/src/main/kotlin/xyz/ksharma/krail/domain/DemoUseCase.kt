@@ -3,7 +3,6 @@ package xyz.ksharma.krail.domain
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
-import xyz.ksharma.krail.data.repository.SydneyTrainsRepository
 import xyz.ksharma.krail.domain.parser.AgencyParser.parseAgency
 import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
 import xyz.ksharma.krail.utils.toPath
@@ -21,11 +20,9 @@ interface DemoUseCase {
 }
 
 class DemoUseCaseImpl @Inject constructor(
-    private val sydneyTrainsRepository: SydneyTrainsRepository,
     @ApplicationContext private val context: Context,
 ) : DemoUseCase {
     override suspend operator fun invoke() {
-        sydneyTrainsRepository.fetchStaticSydneyTrainsScheduleAndCache()
 
         //val stopsList = context.toPath(GTFSFeedFileNames.STOPS.fileName).parseStops()
         //Timber.d("stopsList: $stopsList")
