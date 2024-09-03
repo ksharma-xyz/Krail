@@ -19,6 +19,8 @@ kotlinxSerializationJson = "1.7.0"
 ksp = "2.0.0-1.0.22"
 opencsv = "5.5.2"
 paparazzi = "1.3.2"
+sqldelight = "2.0.2"
+sqliteAndroidDriver = "2.0.2"
 wire = "5.0.0"
 
 #SDK
@@ -80,6 +82,9 @@ detektFormat = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formattin
 detektCompose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detektCompose" }
 
 
+#Database
+sqlite-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqliteAndroidDriver" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
@@ -97,3 +102,4 @@ krail-android-library = { id = "krail.android.library", version = "unspecified" 
 krail-android-library-compose = { id = "krail.android.library.compose", version = "unspecified" }
 krail-jvm-library = { id = "krail.jvm.library", version = "unspecified" }
 wire = { id = "com.squareup.wire", version.ref = "wire"}
+cash-sqldelight = {id = "app.cash.sqldelight", version.ref ="sqldelight"}
