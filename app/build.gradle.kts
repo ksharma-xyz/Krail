@@ -64,7 +64,10 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.model)
     implementation(projects.core.network)
-    implementation(projects.feature.feature1)
+    implementation(projects.feature.sydneyTrains.database.api)
+    implementation(projects.feature.sydneyTrains.database.real)
+    implementation(projects.feature.sydneyTrains.network.api)
+    implementation(projects.feature.sydneyTrains.network.real)
 
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
