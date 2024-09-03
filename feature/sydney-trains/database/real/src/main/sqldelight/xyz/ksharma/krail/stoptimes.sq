@@ -9,5 +9,6 @@ CREATE TABLE stopTimes (
   drop_off_type INTEGER
 );
 
+insertStopTimes:
 INSERT INTO stopTimes (trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type)
 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
