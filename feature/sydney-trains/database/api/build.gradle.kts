@@ -10,7 +10,7 @@ android {
 sqldelight {
     databases {
         create("KrailDB") {
-            packageName.set("xyz.ksharma.krail")
+            packageName.set("xyz.ksharma.krail.sydney_trains.database.api")
         }
     }
 }

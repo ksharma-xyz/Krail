@@ -1,6 +1,6 @@
-package xyz.ksharma.krail.database.api
+package xyz.ksharma.krail.database.sydney.trains.database.api
 
-import xyz.ksharma.krail.StopTimes
+import xyz.ksharma.krail.sydney.trains.database.StopTimes
 
 interface SydneyTrainsStaticDB {
 

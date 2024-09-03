@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.database.api.SydneyTrainsStaticDB
+import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
 import xyz.ksharma.krail.design.system.theme.StartTheme
 import javax.inject.Inject
 
