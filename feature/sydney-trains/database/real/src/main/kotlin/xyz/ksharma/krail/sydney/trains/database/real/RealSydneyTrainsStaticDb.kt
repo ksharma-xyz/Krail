@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.sydney.trains.database.real.di
+package xyz.ksharma.krail.sydney.trains.database.real
 
 import android.content.Context
 import app.cash.sqldelight.driver.android.AndroidSqliteDriver

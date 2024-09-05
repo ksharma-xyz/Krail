@@ -9,6 +9,7 @@ android {
 
 dependencies {
     implementation(projects.feature.sydneyTrains.network.api)
+    implementation(projects.feature.sydneyTrains.database.api)
 
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)

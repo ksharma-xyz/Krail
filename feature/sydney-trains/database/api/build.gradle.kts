@@ -16,4 +16,6 @@ sqldelight {
 }
 
 dependencies {
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
 }

@@ -8,8 +8,12 @@ android {
 }
 
 dependencies {
-    implementation(projects.krail.feature.sydneyTrains.database.api)
+    implementation(projects.core.coroutinesExt)
     implementation(projects.core.di)
+    implementation(projects.krail.feature.sydneyTrains.database.api)
 
     implementation(libs.sqlite.android.driver)
+    implementation(platform(libs.okhttp.bom))
+    implementation(libs.okhttp)
+    implementation(project(":core:utils"))
 }
