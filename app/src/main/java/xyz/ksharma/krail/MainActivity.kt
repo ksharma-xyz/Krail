@@ -6,11 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
 import xyz.ksharma.krail.design.system.theme.StartTheme
+import xyz.ksharma.krail.sydney.trains.database.real.parser.StopTimesParser.parseStopTimes
+import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
 import xyz.ksharma.krail.sydney.trains.network.api.repository.SydneyTrainsRepository
+import xyz.ksharma.krail.utils.toPath
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,9 +37,28 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             repository.fetchStaticSydneyTrainsScheduleAndCache()
-            realSydneyTrainsStaticDb.insertStopTimes()
-            val x = realSydneyTrainsStaticDb.getStopTimes()
-            Timber.d("$x")
+
+            delay(5000)
+            val startTime = Instant.now()
+            parseStopTimes(
+                path = applicationContext.toPath(GTFSFeedFileNames.STOP_TIMES.fileName),
+                ioDispatcher = Dispatchers.IO,
+                db = realSydneyTrainsStaticDb
+            )
+
+            val endTime = Instant.now()
+            val diff = ChronoUnit.SECONDS.between(startTime, endTime)
+            Timber.d("Time taken - $diff")
+
+/*
+            val dataSize = realSydneyTrainsStaticDb.getStopTimes().size
+            Timber.d("DATA SIZE: $dataSize")
+*/
+            /*
+                        realSydneyTrainsStaticDb.insertStopTimes()
+                        val x = realSydneyTrainsStaticDb.getStopTimes()
+                        Timber.d("$x")
+            */
         }
 
         setContent {

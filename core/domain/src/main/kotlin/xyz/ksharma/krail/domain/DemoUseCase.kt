@@ -2,10 +2,6 @@ package xyz.ksharma.krail.domain
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
-import xyz.ksharma.krail.domain.parser.AgencyParser.parseAgency
-import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
-import xyz.ksharma.krail.utils.toPath
 import javax.inject.Inject
 
 /**
@@ -35,7 +31,7 @@ class DemoUseCaseImpl @Inject constructor(
         //Timber.d("occupancyList: ${occupancyList.size}")
         //val calendarList = context.toPath(GTFSFeedFileNames.CALENDAR.fileName).parseCalendar()
         //Timber.d("calendarList: ${calendarList}")
-        val agencyList = context.toPath(GTFSFeedFileNames.AGENCY.fileName).parseAgency()
-        Timber.d("agencyList: $agencyList")
+       /* val agencyList = context.toPath(GTFSFeedFileNames.AGENCY.fileName).parseAgency()
+        Timber.d("agencyList: $agencyList")*/
     }
 }

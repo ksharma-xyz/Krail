@@ -1,5 +1,4 @@
 CREATE TABLE stopTimes (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
   trip_id TEXT NOT NULL,
   arrival_time TEXT,
   departure_time TEXT,
@@ -7,11 +6,12 @@ CREATE TABLE stopTimes (
   stop_sequence INTEGER,
   stop_headsign TEXT,
   pickup_type INTEGER,
-  drop_off_type INTEGER
+  drop_off_type INTEGER,
+  PRIMARY KEY (trip_id, arrival_time, stop_id)
 );
 
 insertIntoStopTime:
-INSERT INTO stopTimes (
+INSERT OR IGNORE INTO stopTimes (
 	trip_id,
 	arrival_time,
 	departure_time,

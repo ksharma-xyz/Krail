@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.domain.parser
+package xyz.ksharma.krail.sydney.trains.database.real.parser
 
 import timber.log.Timber
 import xyz.ksharma.krail.model.gtfs_static.Trip
