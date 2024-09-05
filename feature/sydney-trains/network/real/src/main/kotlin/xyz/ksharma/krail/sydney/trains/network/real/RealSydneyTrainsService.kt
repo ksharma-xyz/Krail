@@ -2,7 +2,6 @@ package xyz.ksharma.krail.sydney.trains.network.real
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import timber.log.Timber
 import xyz.ksharma.krail.network.di.NetworkModule.Companion.BASE_URL
 import xyz.ksharma.krail.network.interceptor.AuthInterceptor.Companion.API_KEY
 import xyz.ksharma.krail.sydney.trains.network.api.SydneyTrainsService
@@ -20,8 +19,6 @@ class RealSydneyTrainsService @Inject constructor(
             .header("accept", "application/x-google-protobuf").build()
 
         val response = okHttpClient.newCall(request).execute()
-        // don't log it's entire response body,which is huge.
-        Timber.d("fetchSydneyTrains: " + response.body?.string()?.take(500))
         return response
     }
 }
