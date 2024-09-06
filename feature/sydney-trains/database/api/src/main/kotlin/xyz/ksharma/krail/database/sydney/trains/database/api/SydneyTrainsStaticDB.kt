@@ -20,4 +20,6 @@ interface SydneyTrainsStaticDB {
     suspend fun getStopTimes(): List<StopTimes>
 
     suspend fun insertStopTimesBatch(stopTimesList: List<StopTimes>)
+
+    suspend fun stopTimesSize(): Long
 }
