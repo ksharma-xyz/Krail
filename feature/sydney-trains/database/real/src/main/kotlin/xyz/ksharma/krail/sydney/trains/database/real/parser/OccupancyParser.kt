@@ -1,16 +1,16 @@
-package xyz.ksharma.krail.domain.parser
+package xyz.ksharma.krail.sydney.trains.database.real.parser
 
 import timber.log.Timber
-import xyz.ksharma.krail.model.gtfs_static.Route
+import xyz.ksharma.krail.model.gtfs_static.Occupancy
 import java.io.BufferedReader
 import java.io.FileReader
 import java.io.IOException
 import java.nio.file.Path
 
-object RouteParser {
+object OccupancyParser {
 
-    fun Path.parseRoutes(): List<Route> {
-        val routesList = mutableListOf<Route>()
+    fun Path.parseOccupancy(): List<Occupancy> {
+        val occupancyList = mutableListOf<Occupancy>()
 
         try {
             BufferedReader(FileReader(this.toString())).use { reader ->
@@ -51,28 +51,33 @@ object RouteParser {
 
                     fieldsList.add(currentField.trim('\"'))
 
-                    routesList.add(
-                        Route(
-                            routeId = fieldsList[0],
-                            agencyId = fieldsList[1],
-                            routeShortName = fieldsList[2],
-                            routeLongName = fieldsList[3],
-                            routeDesc = fieldsList[4],
-                            routeType = fieldsList[5].toIntOrNull(),
-                            routeUrl = fieldsList[6],
-                            routeColor = fieldsList[7],
-                            routeTextColor = fieldsList[8],
+                    occupancyList.add(
+                        Occupancy(
+                            tripId = fieldsList[0],
+                            stopSequence = fieldsList[1],
+                            occupancyStatus = fieldsList[2],
+                            monday = fieldsList[3],
+                            tuesday = fieldsList[4],
+                            wednesday = fieldsList[5],
+                            thursday = fieldsList[6],
+                            friday = fieldsList[7],
+                            saturday = fieldsList[8],
+                            sunday = fieldsList[9],
+                            startDate = fieldsList[10],
+                            endDate = fieldsList[11],
+                            exception = fieldsList[11],
                         )
                     )
                 }
             }
         } catch (e: IOException) {
             e.printStackTrace()
-            Timber.e(e, "parseRoutes: ")
+            Timber.e(e, "readStopsFromCSV: ")
         } catch (e: IllegalArgumentException) {
             e.printStackTrace()
-            Timber.e(e, "parseRoutes: ")
+            Timber.e(e, "readStopsFromCSV: ")
         }
-        return routesList
+
+        return occupancyList
     }
 }
