@@ -25,3 +25,6 @@ VALUES (?, ?, ?, ?, ?, ?, ?, ?);
 
 selectAll:
 SELECT * FROM stopTimes;
+
+sizeOfStopTimes:
+SELECT COUNT(*) FROM stopTimes;

@@ -32,7 +32,7 @@ object StopTimesParser {
                     while (true) {
                         line = reader.readLine() ?: break
 
-                        val fieldsList = line.split(",").map { it.trim('\"') }
+                        val fieldsList = line.split(",").trimQuotes()
 
                         stopTimesList.add(
                             StopTimes(

@@ -50,15 +50,8 @@ class MainActivity : ComponentActivity() {
             val diff = ChronoUnit.SECONDS.between(startTime, endTime)
             Timber.d("Time taken - $diff")
 
-/*
-            val dataSize = realSydneyTrainsStaticDb.getStopTimes().size
+            val dataSize = realSydneyTrainsStaticDb.stopTimesSize()
             Timber.d("DATA SIZE: $dataSize")
-*/
-            /*
-                        realSydneyTrainsStaticDb.insertStopTimes()
-                        val x = realSydneyTrainsStaticDb.getStopTimes()
-                        Timber.d("$x")
-            */
         }
 
         setContent {
