@@ -23,11 +23,11 @@ abstract class SydneyTrainsDbModule {
 
     @Binds
     @Singleton
-    abstract fun bindStore(impl: RealStopTimesStore): StopTimesStore
+    abstract fun bindStopTimesStore(impl: RealStopTimesStore): StopTimesStore
 
     @Binds
     @Singleton
-    abstract fun bindStore(impl: RealTripsStore): TripsStore
+    abstract fun bindTripsStore(impl: RealTripsStore): TripsStore
 
     @Binds
     @Singleton
