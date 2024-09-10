@@ -11,11 +11,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.database.sydney.trains.database.api.RoutesStore
 import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
+import xyz.ksharma.krail.database.sydney.trains.database.api.StopsStore
 import xyz.ksharma.krail.database.sydney.trains.database.api.TripsStore
 import xyz.ksharma.krail.design.system.theme.StartTheme
 import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
 import xyz.ksharma.krail.sydney.trains.database.real.parser.RouteParser.parseRoutes
 import xyz.ksharma.krail.sydney.trains.database.real.parser.StopTimesParser.parseStopTimes
+import xyz.ksharma.krail.sydney.trains.database.real.parser.StopsParser.parseStops
 import xyz.ksharma.krail.sydney.trains.database.real.parser.TripParser.parseTrips
 import xyz.ksharma.krail.sydney.trains.network.api.repository.SydneyTrainsRepository
 import xyz.ksharma.krail.utils.toPath
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
     lateinit var tripsStore: TripsStore
 
     @Inject
-    lateinit var routeStore: RoutesStore
+    lateinit var stopsStore: StopsStore
 
     @Inject
     lateinit var repository: SydneyTrainsRepository
@@ -74,16 +76,16 @@ class MainActivity : ComponentActivity() {
             Timber.d("tripsCount - ${tripsStore.tripsCount()}")
 */
             val startTime = Instant.now()
-            parseRoutes(
-                path = applicationContext.toPath(GTFSFeedFileNames.ROUTES.fileName),
+            parseStops(
+                path = applicationContext.toPath(GTFSFeedFileNames.STOPS.fileName),
                 ioDispatcher = Dispatchers.IO,
-                routesStore = routeStore,
+                stopsStore = stopsStore,
             )
             val endTime = Instant.now()
             val diff = ChronoUnit.SECONDS.between(startTime, endTime)
             Timber.d("Time taken - $diff")
 
-            Timber.d("routesCount - ${routeStore.routesCount()}")
+            Timber.d("stopsCount - ${stopsStore.stopsCount()}")
         }
 
         setContent {
