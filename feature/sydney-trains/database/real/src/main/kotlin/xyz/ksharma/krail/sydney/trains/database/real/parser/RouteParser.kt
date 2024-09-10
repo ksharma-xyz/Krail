@@ -1,19 +1,26 @@
 package xyz.ksharma.krail.sydney.trains.database.real.parser
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import timber.log.Timber
-import xyz.ksharma.krail.model.gtfs_static.Route
+import xyz.ksharma.krail.database.sydney.trains.database.api.RoutesStore
+import xyz.ksharma.krail.sydney.trains.database.Routes
 import java.io.BufferedReader
 import java.io.FileReader
-import java.io.IOException
 import java.nio.file.Path
 
 object RouteParser {
 
-    fun Path.parseRoutes(): List<Route> {
-        val routesList = mutableListOf<Route>()
+    suspend fun parseRoutes(
+        path: Path,
+        ioDispatcher: CoroutineDispatcher,
+        routesStore: RoutesStore,
+    ): Unit = withContext(ioDispatcher) {
+        runCatching {
+        val routesList = mutableListOf<Routes>()
+        val transactionBatchSize = 50
 
-        try {
-            BufferedReader(FileReader(this.toString())).use { reader ->
+            BufferedReader(FileReader(path.toString())).use { reader ->
                 val headersList = reader.readLine().split(",").trimQuotes()
                 // todo use headers instead of hard code later.
                 //Log.d(TAG, "headersList: $headersList")
@@ -22,57 +29,35 @@ object RouteParser {
 
                 while (true) {
                     line = reader.readLine() ?: break
-
-                    // Process the line in a buffered manner
-                    val fieldsList = mutableListOf<String>()
-                    var currentField = ""
-                    var inQuotes = false
-
-                    for (char in line) {
-                        if (inQuotes) {
-                            if (char == '"') {
-                                inQuotes = false
-                                fieldsList.add(currentField)
-                                currentField = ""
-                            } else {
-                                currentField += char
-                            }
-                        } else {
-                            if (char == '"') {
-                                inQuotes = true
-                            } else if (char == ',') {
-                                fieldsList.add(currentField.trim('\"'))
-                                currentField = ""
-                            } else {
-                                currentField += char
-                            }
-                        }
-                    }
-
-                    fieldsList.add(currentField.trim('\"'))
+                    val fieldsList = line.split(",").trimQuotes()
 
                     routesList.add(
-                        Route(
-                            routeId = fieldsList[0],
-                            agencyId = fieldsList[1],
-                            routeShortName = fieldsList[2],
-                            routeLongName = fieldsList[3],
-                            routeDesc = fieldsList[4],
-                            routeType = fieldsList[5].toIntOrNull(),
-                            routeUrl = fieldsList[6],
-                            routeColor = fieldsList[7],
-                            routeTextColor = fieldsList[8],
+                        Routes(
+                            route_id = fieldsList[0],
+                            agency_id = fieldsList[1],
+                            route_short_name = fieldsList[2],
+                            route_long_name = fieldsList[3],
+                            route_desc = fieldsList[4],
+                            route_type = fieldsList[5].toLongOrNull(),
+                            route_url = fieldsList[6],
+                            route_color = fieldsList[7],
+                            route_text_color = fieldsList[8],
                         )
                     )
+
+                    if (routesList.size == transactionBatchSize) {
+                        routesStore.insertRoutesBatch(routesList)
+                        routesList.clear()
+                    }
+                }
+
+                if (routesList.isNotEmpty()) {
+                    routesStore.insertRoutesBatch(routesList)
+                    routesList.clear()
                 }
             }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            Timber.e(e, "parseRoutes: ")
-        } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
+        }.getOrElse { e ->
             Timber.e(e, "parseRoutes: ")
         }
-        return routesList
     }
 }

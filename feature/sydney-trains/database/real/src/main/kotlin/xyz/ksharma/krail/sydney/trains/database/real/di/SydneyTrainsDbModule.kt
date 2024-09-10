@@ -8,9 +8,11 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import xyz.ksharma.krail.database.sydney.trains.database.api.RoutesStore
 import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
 import xyz.ksharma.krail.database.sydney.trains.database.api.TripsStore
 import xyz.ksharma.krail.database.sydney.trains.database.api.ZipEntryCacheManager
+import xyz.ksharma.krail.sydney.trains.database.real.RealRoutesStore
 import xyz.ksharma.krail.sydney.trains.database.real.RealStopTimesStore
 import xyz.ksharma.krail.sydney.trains.database.real.RealTripsStore
 import xyz.ksharma.krail.sydney.trains.database.real.RealZipCacheManager
@@ -28,6 +30,10 @@ abstract class SydneyTrainsDbModule {
     @Binds
     @Singleton
     abstract fun bindTripsStore(impl: RealTripsStore): TripsStore
+
+    @Binds
+    @Singleton
+    abstract fun bindRoutesStore(impl: RealRoutesStore): RoutesStore
 
     @Binds
     @Singleton

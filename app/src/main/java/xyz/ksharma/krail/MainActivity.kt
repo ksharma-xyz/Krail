@@ -9,10 +9,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import xyz.ksharma.krail.database.sydney.trains.database.api.RoutesStore
 import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
 import xyz.ksharma.krail.database.sydney.trains.database.api.TripsStore
 import xyz.ksharma.krail.design.system.theme.StartTheme
 import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
+import xyz.ksharma.krail.sydney.trains.database.real.parser.RouteParser.parseRoutes
 import xyz.ksharma.krail.sydney.trains.database.real.parser.StopTimesParser.parseStopTimes
 import xyz.ksharma.krail.sydney.trains.database.real.parser.TripParser.parseTrips
 import xyz.ksharma.krail.sydney.trains.network.api.repository.SydneyTrainsRepository
@@ -30,6 +32,8 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var tripsStore: TripsStore
 
+    @Inject
+    lateinit var routeStore: RoutesStore
 
     @Inject
     lateinit var repository: SydneyTrainsRepository
@@ -45,7 +49,7 @@ class MainActivity : ComponentActivity() {
 
             repository.fetchStaticSydneyTrainsScheduleAndCache()
 
-            val startTime = Instant.now()
+
             /*
                         parseStopTimes(
                             path = applicationContext.toPath(GTFSFeedFileNames.STOP_TIMES.fileName),
@@ -61,16 +65,25 @@ class MainActivity : ComponentActivity() {
                         Timber.d("DATA SIZE: $dataSize")
             */
 
-            parseTrips(
+           /* parseTrips(
                 path = applicationContext.toPath(GTFSFeedFileNames.TRIPS.fileName),
                 ioDispatcher = Dispatchers.IO,
                 tripsStore = tripsStore,
+            )
+
+            Timber.d("tripsCount - ${tripsStore.tripsCount()}")
+*/
+            val startTime = Instant.now()
+            parseRoutes(
+                path = applicationContext.toPath(GTFSFeedFileNames.ROUTES.fileName),
+                ioDispatcher = Dispatchers.IO,
+                routesStore = routeStore,
             )
             val endTime = Instant.now()
             val diff = ChronoUnit.SECONDS.between(startTime, endTime)
             Timber.d("Time taken - $diff")
 
-            Timber.d("tripsCount - ${tripsStore.tripsCount()}")
+            Timber.d("routesCount - ${routeStore.routesCount()}")
         }
 
         setContent {

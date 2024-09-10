@@ -13,10 +13,6 @@ import javax.inject.Singleton
 @Singleton
 class RealTripsStore @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-    /*
-        coroutineScope: CoroutineScope,
-        @ApplicationContext private val applicationContext: Context,
-    */
     private val krailDB: KrailDB,
 ) : TripsStore {
 
