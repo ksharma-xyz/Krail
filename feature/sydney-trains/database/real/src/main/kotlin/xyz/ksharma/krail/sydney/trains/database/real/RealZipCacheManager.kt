@@ -3,17 +3,15 @@ package xyz.ksharma.krail.sydney.trains.database.real
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineDispatcher
-import xyz.ksharma.krail.database.sydney.trains.database.api.ZipEntryCacheManager
-import xyz.ksharma.krail.di.AppDispatchers
-import xyz.ksharma.krail.di.Dispatcher
-import java.io.IOException
 import okhttp3.Response
 import timber.log.Timber
 import xyz.ksharma.krail.coroutines.ext.safeResult
-import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
-import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
+import xyz.ksharma.krail.database.sydney.trains.database.api.ZipEntryCacheManager
+import xyz.ksharma.krail.di.AppDispatchers
+import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.utils.toPath
 import java.io.File
+import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
@@ -25,7 +23,6 @@ import javax.inject.Singleton
 class RealZipCacheManager @Inject constructor(
     @Dispatcher(AppDispatchers.IO) val ioDispatcher: CoroutineDispatcher,
     @ApplicationContext val context: Context,
-//    val sydneyTrainsStaticDB : SydneyTrainsStaticDB
 ) : ZipEntryCacheManager {
 
     override suspend fun cacheZipResponse(response: Response) = safeResult(ioDispatcher) {
@@ -44,9 +41,6 @@ class RealZipCacheManager @Inject constructor(
                 val isDirectory = zipEntry.name.endsWith(File.separator)
                 val path: Path = context.toPath(zipEntry.name)
 
-                /*if (zipEntry.name == GTFSFeedFileNames.STOP_TIMES.fileName) {
-                    sydneyTrainsStaticDB.insertStopTimes()
-                }*/
                 inputStream.writeToCache(isDirectory, path)
 
                 zipEntry = inputStream.nextEntry

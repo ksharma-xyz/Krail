@@ -20,53 +20,47 @@ object StopTimesParser {
         path: Path,
         ioDispatcher: CoroutineDispatcher,
         db: SydneyTrainsStaticDB,
-    ) = withContext(ioDispatcher) {
-            try {
-                BufferedReader(FileReader(path.toString())).use { reader ->
-                    val headersList = reader.readLine().split(",").trimQuotes()
-                    Timber.d("headersList: $headersList")
+    ): Unit = withContext(ioDispatcher) {
+        runCatching {
+            BufferedReader(FileReader(path.toString())).use { reader ->
 
-                    val stopTimesList = mutableListOf<StopTimes>()
+                val headersList = reader.readLine().split(",").trimQuotes()
+                Timber.d("headersList: $headersList")
+                val stopTimesList = mutableListOf<StopTimes>()
+                var line: String?
+                val transactionBatchSize = 5_000
 
-                    var line: String?
-                    while (true) {
-                        line = reader.readLine() ?: break
+                while (true) {
+                    line = reader.readLine() ?: break
 
-                        val fieldsList = line.split(",").trimQuotes()
+                    val fieldsList = line.split(",").trimQuotes()
 
-                        stopTimesList.add(
-                            StopTimes(
-                                trip_id = fieldsList[0],
-                                arrival_time = fieldsList[1],
-                                departure_time = fieldsList[2],
-                                stop_id = fieldsList[3],
-                                stop_sequence = fieldsList[4].toLong(),
-                                stop_headsign = fieldsList[5],
-                                pickup_type = fieldsList[6].toLong(),
-                                drop_off_type = fieldsList[7].toLong(),
-                            )
+                    stopTimesList.add(
+                        StopTimes(
+                            trip_id = fieldsList[0],
+                            arrival_time = fieldsList[1],
+                            departure_time = fieldsList[2],
+                            stop_id = fieldsList[3],
+                            stop_sequence = fieldsList[4].toLong(),
+                            stop_headsign = fieldsList[5],
+                            pickup_type = fieldsList[6].toLong(),
+                            drop_off_type = fieldsList[7].toLong(),
                         )
+                    )
 
-                        // Insert in batches to improve performance
-                        if (stopTimesList.size == 5_000) {
-  //                          Timber.d("insert 100 stop times")
-                            db.insertStopTimesBatch(stopTimesList)
-                            stopTimesList.clear() // Clear the batch
-                        }
-                    }
-
-                    // Insert any remaining stop times
-                    if (stopTimesList.isNotEmpty()) {
-//                        Timber.d("insert last left stop times")
+                    // Insert in batches to improve performance
+                    if (stopTimesList.size == transactionBatchSize) {
+                        // Timber.d("insert $transactionBatchSize stop times")
                         db.insertStopTimesBatch(stopTimesList)
+                        stopTimesList.clear() // Clear the batch
                     }
                 }
-            } catch (e: IOException) {
-                e.printStackTrace()
-                Timber.e(e, "readStopsFromCSV: ")
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-                Timber.e(e, "readStopsFromCSV: ")
+
+                // Insert any remaining stop times
+                if (stopTimesList.isNotEmpty()) {
+                    db.insertStopTimesBatch(stopTimesList)
+                }
             }
-        }
+        }.getOrElse { e -> Timber.e(e, "Error while parsing stop times") }
+    }
 }
