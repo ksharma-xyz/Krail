@@ -10,9 +10,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
+import xyz.ksharma.krail.database.sydney.trains.database.api.TripsStore
 import xyz.ksharma.krail.design.system.theme.StartTheme
 import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
 import xyz.ksharma.krail.sydney.trains.database.real.parser.StopTimesParser.parseStopTimes
+import xyz.ksharma.krail.sydney.trains.database.real.parser.TripParser.parseTrips
 import xyz.ksharma.krail.sydney.trains.network.api.repository.SydneyTrainsRepository
 import xyz.ksharma.krail.utils.toPath
 import java.time.Instant
@@ -24,6 +26,10 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var realStopTimesStore: StopTimesStore
+
+    @Inject
+    lateinit var tripsStore: TripsStore
+
 
     @Inject
     lateinit var repository: SydneyTrainsRepository
@@ -40,18 +46,31 @@ class MainActivity : ComponentActivity() {
             repository.fetchStaticSydneyTrainsScheduleAndCache()
 
             val startTime = Instant.now()
-            parseStopTimes(
-                path = applicationContext.toPath(GTFSFeedFileNames.STOP_TIMES.fileName),
-                ioDispatcher = Dispatchers.IO,
-                stopTimesStore = realStopTimesStore,
-            )
+            /*
+                        parseStopTimes(
+                            path = applicationContext.toPath(GTFSFeedFileNames.STOP_TIMES.fileName),
+                            ioDispatcher = Dispatchers.IO,
 
+                            stopTimesStore = realStopTimesStore,
+                        )
+            */
+
+            /*
+
+                        val dataSize = realStopTimesStore.stopTimesSize()
+                        Timber.d("DATA SIZE: $dataSize")
+            */
+
+            parseTrips(
+                path = applicationContext.toPath(GTFSFeedFileNames.TRIPS.fileName),
+                ioDispatcher = Dispatchers.IO,
+                tripsStore = tripsStore,
+            )
             val endTime = Instant.now()
             val diff = ChronoUnit.SECONDS.between(startTime, endTime)
             Timber.d("Time taken - $diff")
 
-            val dataSize = realStopTimesStore.stopTimesSize()
-            Timber.d("DATA SIZE: $dataSize")
+            Timber.d("tripsCount - ${tripsStore.tripsCount()}")
         }
 
         setContent {
