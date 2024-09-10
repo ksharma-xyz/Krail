@@ -35,3 +35,12 @@ SELECT * FROM stop;
 
 stopsCount:
 SELECT COUNT(*) FROM stop;
+
+selectStopIdByName:
+SELECT stop_id
+FROM stop
+WHERE stop_name = ?;
+
+selectStopById:
+SELECT * FROM stop
+WHERE stop_id = ?;

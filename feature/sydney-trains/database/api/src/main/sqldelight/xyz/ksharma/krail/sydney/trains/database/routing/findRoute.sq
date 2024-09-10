@@ -1,0 +1,15 @@
+WITH trips_serving_stops AS (
+  SELECT st1.trip_id, st1.stop_id AS start_stop_id, st2.stop_id AS end_stop_id
+  FROM stopTimes AS st1
+  JOIN stopTimes AS st2 ON st1.trip_id = st2.trip_id
+  WHERE st1.stop_id = :start_stop_id
+    AND st2.stop_id = :end_stop_id
+    AND st1.stop_sequence < st2.stop_sequence
+),
+route_details AS (
+  SELECT t.trip_id, r.route_id, r.route_short_name, r.route_long_name
+  FROM trips_serving_stops AS tss
+  JOIN trip AS t ON tss.trip_id = t.trip_id
+  JOIN routes AS r ON t.route_id = r.route_id
+)
+SELECT * FROM route_details;
