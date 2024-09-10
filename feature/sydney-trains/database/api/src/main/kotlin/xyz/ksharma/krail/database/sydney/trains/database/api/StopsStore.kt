@@ -35,16 +35,11 @@ interface StopsStore {
         stopLon: Double,
         zoneId: String?,
         stopUrl: String?,
-        locationType: Int?,
+        locationType: Long?,
         parentStation: String?,
         stopTimezone: String?,
-        wheelchairBoarding: Int?
+        wheelchairBoarding: Long?
     )
-
-    /**
-     * Removes all stops from the database.
-     */
-    suspend fun clearStops()
 
     /**
      * Adds a batch of stops to the database.
@@ -66,4 +61,9 @@ interface StopsStore {
      * @return The number of stops.
      */
     suspend fun stopsCount(): Long
+
+    /**
+     * Removes all stops from the database.
+     */
+    suspend fun clearStops()
 }
