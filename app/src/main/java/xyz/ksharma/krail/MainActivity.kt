@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
             parseStopTimes(
                 path = applicationContext.toPath(GTFSFeedFileNames.STOP_TIMES.fileName),
                 ioDispatcher = Dispatchers.IO,
-                db = realStopTimesStore
+                stopTimesStore = realStopTimesStore,
             )
 
             val endTime = Instant.now()

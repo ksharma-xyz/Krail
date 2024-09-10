@@ -30,10 +30,10 @@ interface TripsStore {
         tripId: String,
         tripHeadsign: String?,
         tripShortName: String?,
-        directionId: Int?,
+        directionId: Long?,
         blockId: String?,
         shapeId: String?,
-        wheelchairAccessible: Int?
+        wheelchairAccessible: Long?
     )
 
     /**

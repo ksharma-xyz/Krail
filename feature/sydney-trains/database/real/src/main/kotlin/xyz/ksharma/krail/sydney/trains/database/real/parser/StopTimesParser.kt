@@ -18,7 +18,7 @@ object StopTimesParser {
     suspend fun parseStopTimes(
         path: Path,
         ioDispatcher: CoroutineDispatcher,
-        db: StopTimesStore,
+        stopTimesStore: StopTimesStore,
     ): Unit = withContext(ioDispatcher) {
         runCatching {
             BufferedReader(FileReader(path.toString())).use { reader ->
@@ -50,14 +50,14 @@ object StopTimesParser {
                     // Insert in batches to improve performance
                     if (stopTimesList.size == transactionBatchSize) {
                         // Timber.d("insert $transactionBatchSize stop times")
-                        db.insertStopTimesBatch(stopTimesList)
+                        stopTimesStore.insertStopTimesBatch(stopTimesList)
                         stopTimesList.clear() // Clear the batch
                     }
                 }
 
                 // Insert any remaining stop times
                 if (stopTimesList.isNotEmpty()) {
-                    db.insertStopTimesBatch(stopTimesList)
+                    stopTimesStore.insertStopTimesBatch(stopTimesList)
                 }
             }
         }.getOrElse { e -> Timber.e(e, "Error while parsing stop times") }
