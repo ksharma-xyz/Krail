@@ -3,11 +3,10 @@ package xyz.ksharma.krail.sydney.trains.database.real.parser
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
+import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
 import xyz.ksharma.krail.sydney.trains.database.StopTimes
 import java.io.BufferedReader
 import java.io.FileReader
-import java.io.IOException
 import java.nio.file.Path
 
 /**
@@ -19,7 +18,7 @@ object StopTimesParser {
     suspend fun parseStopTimes(
         path: Path,
         ioDispatcher: CoroutineDispatcher,
-        db: SydneyTrainsStaticDB,
+        db: StopTimesStore,
     ): Unit = withContext(ioDispatcher) {
         runCatching {
             BufferedReader(FileReader(path.toString())).use { reader ->

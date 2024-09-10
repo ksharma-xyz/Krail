@@ -7,8 +7,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
-import timber.log.Timber
-import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
+import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.sydney.trains.database.StopTimes
@@ -17,11 +16,11 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RealSydneyTrainsStaticDb @Inject constructor(
+class RealStopTimesStore @Inject constructor(
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
     coroutineScope: CoroutineScope,
     @ApplicationContext private val applicationContext: Context,
-) : SydneyTrainsStaticDB {
+) : StopTimesStore {
 
     private val sydneyTrainsDB: Deferred<KrailDB> by lazy {
         coroutineScope.async(ioDispatcher) {
@@ -57,11 +56,6 @@ class RealSydneyTrainsStaticDb @Inject constructor(
             pickup_type = pickupType?.toLong(),
             drop_off_type = dropOffType?.toLong(),
         )
-    }
-
-    override suspend fun getStopTimes(): List<StopTimes> {
-        val all = getSydneyTrainsDb().stoptimesQueries.selectAll()
-        return all.executeAsList()
     }
 
     override suspend fun insertStopTimesBatch(stopTimesList: List<StopTimes>) =

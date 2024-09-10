@@ -7,7 +7,7 @@ CREATE TABLE stopTimes (
   stop_headsign TEXT,
   pickup_type INTEGER,
   drop_off_type INTEGER,
-  PRIMARY KEY (trip_id, arrival_time, stop_id)
+  PRIMARY KEY (trip_id, stop_sequence)
 );
 
 insertIntoStopTime:
