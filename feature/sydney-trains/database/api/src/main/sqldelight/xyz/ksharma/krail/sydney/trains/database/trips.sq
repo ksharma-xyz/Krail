@@ -30,3 +30,11 @@ SELECT * FROM trip;
 
 tripsCount:
 SELECT COUNT(*) FROM trip;
+
+selectTripById:
+SELECT * FROM trip
+WHERE trip_id = ?;
+
+selectTripsByRoute:
+SELECT * FROM trip
+WHERE route_id = ?;

@@ -30,3 +30,7 @@ SELECT * FROM routes;
 
 routesCount:
 SELECT COUNT(*) FROM routes;
+
+selectRouteById:
+SELECT * FROM routes
+WHERE route_id = ?;
