@@ -7,10 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.database.sydney.trains.database.api.SydneyTrainsStaticDB
+import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
 import xyz.ksharma.krail.design.system.theme.StartTheme
 import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
 import xyz.ksharma.krail.sydney.trains.database.real.parser.StopTimesParser.parseStopTimes
@@ -24,7 +23,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var realSydneyTrainsStaticDb: SydneyTrainsStaticDB
+    lateinit var realStopTimesStore: StopTimesStore
 
     @Inject
     lateinit var repository: SydneyTrainsRepository
@@ -44,14 +43,14 @@ class MainActivity : ComponentActivity() {
             parseStopTimes(
                 path = applicationContext.toPath(GTFSFeedFileNames.STOP_TIMES.fileName),
                 ioDispatcher = Dispatchers.IO,
-                db = realSydneyTrainsStaticDb
+                db = realStopTimesStore
             )
 
             val endTime = Instant.now()
             val diff = ChronoUnit.SECONDS.between(startTime, endTime)
             Timber.d("Time taken - $diff")
 
-            val dataSize = realSydneyTrainsStaticDb.stopTimesSize()
+            val dataSize = realStopTimesStore.stopTimesSize()
             Timber.d("DATA SIZE: $dataSize")
         }
 

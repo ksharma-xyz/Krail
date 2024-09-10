@@ -1,0 +1,32 @@
+CREATE TABLE routes (
+    route_id TEXT NOT NULL,
+    agency_id TEXT,
+    route_short_name TEXT,
+    route_long_name TEXT,
+    route_desc TEXT,
+    route_type INTEGER,
+    route_url TEXT,
+    route_color TEXT,
+    route_text_color TEXT,
+    PRIMARY KEY (route_id)
+);
+
+insertIntoRoutes:
+INSERT OR IGNORE INTO routes (
+    route_id,
+    agency_id,
+    route_short_name,
+    route_long_name,
+    route_desc,
+    route_type,
+    route_url,
+    route_color,
+    route_text_color
+)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAllRoutes:
+SELECT * FROM routes;
+
+routesCount:
+SELECT COUNT(*) FROM routes;
