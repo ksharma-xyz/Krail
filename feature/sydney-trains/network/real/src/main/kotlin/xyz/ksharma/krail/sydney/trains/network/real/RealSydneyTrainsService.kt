@@ -1,7 +1,12 @@
 package xyz.ksharma.krail.sydney.trains.network.real
 
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
+import xyz.ksharma.krail.coroutines.ext.safeResult
+import xyz.ksharma.krail.di.AppDispatchers
+import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.network.di.NetworkModule.Companion.BASE_URL
 import xyz.ksharma.krail.network.interceptor.AuthInterceptor.Companion.API_KEY
 import xyz.ksharma.krail.sydney.trains.network.api.SydneyTrainsService
@@ -11,14 +16,15 @@ import javax.inject.Singleton
 @Singleton
 class RealSydneyTrainsService @Inject constructor(
     private val okHttpClient: OkHttpClient,
+    @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : SydneyTrainsService {
 
-    override suspend fun getSydneyTrainsStaticData(): okhttp3.Response {
+    override suspend fun getSydneyTrainsStaticData(): Result<Response> {
         val request = Request.Builder().url("$BASE_URL/v1/gtfs/schedule/sydneytrains")
-            .header("Authorization", "apikey $API_KEY")
-            .header("accept", "application/x-google-protobuf").build()
+            .header("Authorization", "apikey $API_KEY").build()
 
-        val response = okHttpClient.newCall(request).execute()
-        return response
+        return safeResult(ioDispatcher) {
+            okHttpClient.newCall(request).execute()
+        }
     }
 }

@@ -44,12 +44,10 @@ class RealZipCacheManager @Inject constructor(
                 val isDirectory = zipEntry.name.endsWith(File.separator)
                 val path: Path = context.toPath(zipEntry.name)
 
-/*
-                if (zipEntry.name == GTFSFeedFileNames.STOP_TIMES.fileName) {
+                /*if (zipEntry.name == GTFSFeedFileNames.STOP_TIMES.fileName) {
                     sydneyTrainsStaticDB.insertStopTimes()
-                }
+                }*/
                 inputStream.writeToCache(isDirectory, path)
-*/
 
                 zipEntry = inputStream.nextEntry
             }

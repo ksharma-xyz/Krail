@@ -23,9 +23,16 @@ class RealSydneyTrainsRepository @Inject constructor(
     override suspend fun fetchStaticSydneyTrainsScheduleAndCache(): Unit =
         withContext(ioDispatcher) {
             Timber.d("getSydneyTrains: ")
-            val response: Response = gtfsService.getSydneyTrainsStaticData()
-            cacheManager.cacheZipResponse(response)
+            val result: Result<Response> = gtfsService.getSydneyTrainsStaticData()
 
-            // TODO - provide boolean response if files were cached successfully.
+            Timber.d("Response received")
+            if (result.isSuccess) {
+                result.getOrNull()?.let { response ->
+                    // TODO - provide boolean response if files were cached successfully.
+                    cacheManager.cacheZipResponse(response)
+                }
+            } else if (result.isFailure) {
+                Timber.e("Error fetching Sydney Trains static GTFS data: ${result.exceptionOrNull()}")
+            }
         }
 }
