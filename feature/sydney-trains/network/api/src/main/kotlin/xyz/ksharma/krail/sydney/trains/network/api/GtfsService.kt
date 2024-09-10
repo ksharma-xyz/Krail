@@ -4,5 +4,5 @@ import okhttp3.Response
 
 interface SydneyTrainsService {
 
-    suspend fun getSydneyTrainsStaticData(): Response
+    suspend fun getSydneyTrainsStaticData(): Result<Response>
 }

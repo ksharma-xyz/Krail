@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.coroutinesExt)
     implementation(projects.feature.sydneyTrains.network.api)
     implementation(projects.feature.sydneyTrains.database.api)
 

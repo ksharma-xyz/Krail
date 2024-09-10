@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import xyz.ksharma.krail.network.BuildConfig
 import xyz.ksharma.krail.network.interceptor.AuthInterceptor
+import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -23,6 +24,13 @@ class NetworkModule {
             )
         }
         okhttpBuilder.addInterceptor(AuthInterceptor())
+
+        // Add Timeouts
+        okhttpBuilder
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(5, TimeUnit.MINUTES)
+            .writeTimeout(1, TimeUnit.MINUTES)
+
         return okhttpBuilder.build()
     }
 
