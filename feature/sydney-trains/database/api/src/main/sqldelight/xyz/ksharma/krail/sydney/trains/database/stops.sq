@@ -1,4 +1,4 @@
-CREATE TABLE stops (
+CREATE TABLE stop (
     stop_id TEXT PRIMARY KEY,
     stop_code TEXT,
     stop_name TEXT,
@@ -14,7 +14,7 @@ CREATE TABLE stops (
 );
 
 insertIntoStops:
-INSERT OR IGNORE INTO stops (
+INSERT OR IGNORE INTO stop (
     stop_id,
     stop_code,
     stop_name,
@@ -31,7 +31,7 @@ INSERT OR IGNORE INTO stops (
 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 selectAllStops:
-SELECT * FROM stops;
+SELECT * FROM stop;
 
 stopsCount:
-SELECT COUNT(*) FROM stops;
+SELECT COUNT(*) FROM stop;
