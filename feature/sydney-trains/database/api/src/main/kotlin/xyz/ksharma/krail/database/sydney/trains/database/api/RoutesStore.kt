@@ -29,7 +29,7 @@ interface RoutesStore {
         routeShortName: String,
         routeLongName: String,
         routeDesc: String?,
-        routeType: Int,
+        routeType: Long,
         routeUrl: String?,
         routeColor: String?,
         routeTextColor: String?
