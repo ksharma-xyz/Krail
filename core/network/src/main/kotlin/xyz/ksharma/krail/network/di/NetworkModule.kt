@@ -1,18 +1,23 @@
 package xyz.ksharma.krail.network.di
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
 import xyz.ksharma.krail.network.BuildConfig
 import xyz.ksharma.krail.network.interceptor.AuthInterceptor
 import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NetworkModule {
+object NetworkModule {
 
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
@@ -34,7 +39,24 @@ class NetworkModule {
         return okhttpBuilder.build()
     }
 
-    companion object {
-        const val BASE_URL = "https://api.transport.nsw.gov.au"
+    @OptIn(ExperimentalSerializationApi::class)
+    @Provides
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        val json = Json { ignoreUnknownKeys = true }
+
+        val retrofit: Retrofit = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(
+                json.asConverterFactory(
+                    "application/json; charset=UTF8".toMediaType()
+                )
+            )
+            .build()
+        return retrofit
     }
+
+    fun <T> service(retrofit: Retrofit, clazz: Class<T>): T = retrofit.create(clazz)
+
+    const val BASE_URL = "https://api.transport.nsw.gov.au"
 }
