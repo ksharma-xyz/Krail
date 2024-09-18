@@ -1,7 +1,9 @@
 package xyz.ksharma.krail.trip_planner.network.api.service
 
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
+import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 
 /**
  * https://opendata.transport.nsw.gov.au/dataset/trip-planner-apis/resource/917c66c3-8123-4a0f-b1b1-b4220f32585d
@@ -74,7 +76,7 @@ interface TripPlanningService {
          * Default value : 10.2.1.42
          */
         @Query("version") version: String = "10.2.1.42",
-    )
+    ): Response<StopFinderResponse>
 
     /**
      * This endpoint is used to find a list of journeys between two locations at the specified
