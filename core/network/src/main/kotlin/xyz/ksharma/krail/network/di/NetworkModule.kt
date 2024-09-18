@@ -56,7 +56,5 @@ object NetworkModule {
         return retrofit
     }
 
-    fun <T> service(retrofit: Retrofit, clazz: Class<T>): T = retrofit.create(clazz)
-
     const val BASE_URL = "https://api.transport.nsw.gov.au"
 }
