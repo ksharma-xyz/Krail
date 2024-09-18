@@ -38,6 +38,7 @@ class MainActivity : ComponentActivity() {
             Timber.d("ANY: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
         }
 
+
         setContent {
             StartTheme {
                 KrailApp()

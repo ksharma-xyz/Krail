@@ -56,7 +56,7 @@ interface TripPlanningService {
          *
          * Available values : EPSG:4326
          */
-        @Query("coordOutputFormat") coordOutputFormat: String= "EPSG:4326",
+        @Query("coordOutputFormat") coordOutputFormat: String = "EPSG:4326",
 
         /**
          * Including this parameter enables a number of options that result in the stop finder
@@ -66,7 +66,7 @@ interface TripPlanningService {
          *
          * Default value : true
          */
-        @Query("TfNSWSF") tfNSWSF:String = "true",
+        @Query("TfNSWSF") tfNSWSF: String = "true",
 
         /**
          * Indicates which version of the API the caller is expecting for both request and response
@@ -75,7 +75,7 @@ interface TripPlanningService {
          *
          * Default value : 10.2.1.42
          */
-        @Query("version") version: String = "10.2.1.42",
+        @Query("version") version: String? = null,
     ): Response<StopFinderResponse>
 
     /**
