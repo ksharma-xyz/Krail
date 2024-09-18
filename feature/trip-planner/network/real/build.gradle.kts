@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "xyz.ksharma.krail.tripplanner.network.real"
+    namespace = "xyz.ksharma.krail.trip_planner.network.real"
 }
 
 dependencies {
