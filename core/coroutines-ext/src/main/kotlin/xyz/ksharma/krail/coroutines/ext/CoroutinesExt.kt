@@ -30,3 +30,28 @@ suspend fun <T, R> T.safeResult(
         Result.failure(e)
     }
 }
+
+/**
+ * Safely runs a suspendable block on the given dispatcher.
+ *
+ * Returns a [Result] indicating success or failure.
+ *
+ * **Note:** This function will not catch [CancellationException].
+ *
+ * @param dispatcher The [CoroutineDispatcher] on which to execute the suspend block.
+ * @param block The suspendable block of code to execute, which returns a [Result].
+ * @return A [Result] object containing the success or failure of the block execution.
+ *
+ */
+suspend fun <T, R> T.suspendSafeResult(
+    dispatcher: CoroutineDispatcher,
+    block: suspend T.() -> Result<R>
+): Result<R> = withContext(dispatcher) {
+    try {
+        block()
+    } catch (e: Throwable) {
+        // Should not catch CancellationException
+        coroutineContext.ensureActive()
+        Result.failure(e)
+    }
+}
