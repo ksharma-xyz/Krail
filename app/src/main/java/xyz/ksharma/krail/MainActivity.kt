@@ -11,7 +11,6 @@ import timber.log.Timber
 import xyz.ksharma.krail.design.system.theme.StartTheme
 import xyz.ksharma.krail.trip_planner.network.api.model.StopType
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
-import xyz.ksharma.krail.trip_planner.network.api.service.TripPlanningService
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -20,13 +19,11 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var tripPlanningRepo: TripPlanningRepository
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Configures the system bars with a transparent background.
         enableEdgeToEdge()
-
 
         lifecycleScope.launch {
             var x =
