@@ -29,7 +29,6 @@ class MainActivity : ComponentActivity() {
             var x =
                 tripPlanningRepo.stopFinder(stopType = StopType.STOP, stopSearchQuery = "Central")
             Timber.d("STOP: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
-
             x = tripPlanningRepo.stopFinder(stopType = StopType.POI, stopSearchQuery = "Central")
             Timber.d("POI: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
             x = tripPlanningRepo.stopFinder(stopType = StopType.COORD, stopSearchQuery = "Central")
@@ -42,15 +41,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             StartTheme {
                 KrailApp()
-            }
-        }
-    }
-
-    private fun deleteStaticGtfsFiles() {
-        val cacheDir = cacheDir
-        cacheDir.listFiles()?.forEach { file ->
-            if (file.isFile && file.name.endsWith(".txt")) {
-                file.delete()
             }
         }
     }
