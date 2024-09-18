@@ -6,39 +6,18 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.database.sydney.trains.database.api.RoutesStore
-import xyz.ksharma.krail.database.sydney.trains.database.api.StopTimesStore
-import xyz.ksharma.krail.database.sydney.trains.database.api.StopsStore
-import xyz.ksharma.krail.database.sydney.trains.database.api.TripsStore
 import xyz.ksharma.krail.design.system.theme.StartTheme
-import xyz.ksharma.krail.model.sydneytrains.GTFSFeedFileNames
-import xyz.ksharma.krail.sydney.trains.database.real.parser.RouteParser.parseRoutes
-import xyz.ksharma.krail.sydney.trains.database.real.parser.StopTimesParser.parseStopTimes
-import xyz.ksharma.krail.sydney.trains.database.real.parser.StopsParser.parseStops
-import xyz.ksharma.krail.sydney.trains.database.real.parser.TripParser.parseTrips
-import xyz.ksharma.krail.sydney.trains.network.api.repository.SydneyTrainsRepository
-import xyz.ksharma.krail.utils.toPath
-import java.time.Instant
-import java.time.temporal.ChronoUnit
+import xyz.ksharma.krail.trip_planner.network.api.model.StopType
+import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     @Inject
-    lateinit var realStopTimesStore: StopTimesStore
-
-    @Inject
-    lateinit var tripsStore: TripsStore
-
-    @Inject
-    lateinit var stopsStore: StopsStore
-
-    @Inject
-    lateinit var repository: SydneyTrainsRepository
+    lateinit var tripPlanningRepo: TripPlanningRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,45 +26,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         lifecycleScope.launch {
-            deleteStaticGtfsFiles()
+            var x =
+                tripPlanningRepo.stopFinder(stopType = StopType.STOP, stopSearchQuery = "Central")
+            Timber.d("STOP: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
 
-            repository.fetchStaticSydneyTrainsScheduleAndCache()
-
-
-            /*
-                        parseStopTimes(
-                            path = applicationContext.toPath(GTFSFeedFileNames.STOP_TIMES.fileName),
-                            ioDispatcher = Dispatchers.IO,
-
-                            stopTimesStore = realStopTimesStore,
-                        )
-            */
-
-            /*
-
-                        val dataSize = realStopTimesStore.stopTimesSize()
-                        Timber.d("DATA SIZE: $dataSize")
-            */
-
-           /* parseTrips(
-                path = applicationContext.toPath(GTFSFeedFileNames.TRIPS.fileName),
-                ioDispatcher = Dispatchers.IO,
-                tripsStore = tripsStore,
-            )
-
-            Timber.d("tripsCount - ${tripsStore.tripsCount()}")
-*/
-            val startTime = Instant.now()
-            parseStops(
-                path = applicationContext.toPath(GTFSFeedFileNames.STOPS.fileName),
-                ioDispatcher = Dispatchers.IO,
-                stopsStore = stopsStore,
-            )
-            val endTime = Instant.now()
-            val diff = ChronoUnit.SECONDS.between(startTime, endTime)
-            Timber.d("Time taken - $diff")
-
-            Timber.d("stopsCount - ${stopsStore.stopsCount()}")
+            x = tripPlanningRepo.stopFinder(stopType = StopType.POI, stopSearchQuery = "Central")
+            Timber.d("POI: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
+            x = tripPlanningRepo.stopFinder(stopType = StopType.COORD, stopSearchQuery = "Central")
+            Timber.d("COORD: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
+            x = tripPlanningRepo.stopFinder(stopType = StopType.ANY, stopSearchQuery = "Central")
+            Timber.d("ANY: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
         }
 
         setContent {

@@ -10,9 +10,7 @@ import xyz.ksharma.krail.trip_planner.network.api.model.StopType
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.network.api.service.TripPlanningService
 import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
 class RealTripPlanningRepository @Inject constructor(
     private val tripPlanningService: TripPlanningService,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,

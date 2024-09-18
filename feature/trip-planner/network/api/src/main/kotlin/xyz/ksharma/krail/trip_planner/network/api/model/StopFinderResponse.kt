@@ -45,7 +45,10 @@ data class Location(
     val assignedStops: List<AssignedStop>? = null,
 
     @SerialName("properties")
-    val properties: Properties? = null
+    val properties: Properties? = null,
+
+    @SerialName("productClasses")
+    val productClasses: List<Int>,
 )
 
 @Serializable
