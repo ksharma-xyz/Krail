@@ -79,4 +79,16 @@ class RealZipCacheManager @Inject constructor(
             Files.copy(this, path, StandardCopyOption.REPLACE_EXISTING)
         }
     }
+
+    /**
+     * Clear all static GTFS files (txt) from the cache.
+     */
+    private fun deleteStaticGtfsFiles() {
+        val cacheDir = context.cacheDir
+        cacheDir.listFiles()?.forEach { file ->
+            if (file.isFile && file.name.endsWith(".txt")) {
+                file.delete()
+            }
+        }
+    }
 }
