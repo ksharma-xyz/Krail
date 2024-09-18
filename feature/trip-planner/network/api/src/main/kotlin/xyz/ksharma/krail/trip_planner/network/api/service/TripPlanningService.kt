@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.trip.planner.network.api
+package xyz.ksharma.krail.trip_planner.network.api.service
 
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -25,7 +25,7 @@ interface TripPlanningService {
          *
          * Available values : rapidJSON
          */
-        @Query("outputFormat") outputFormat: String,
+        @Query("outputFormat") outputFormat: String = "rapidJSON",
 
         /**
          * This specifies the type of results expected in the list of returned stops.
