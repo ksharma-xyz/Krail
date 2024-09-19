@@ -7,6 +7,7 @@ import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.network.toSafeResult
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.network.api.model.StopType
+import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.network.api.service.TripPlanningService
 import javax.inject.Inject
@@ -24,7 +25,11 @@ class RealTripPlanningRepository @Inject constructor(
             .toSafeResult()
     }
 
-    override fun trip() {
-        TODO("Not yet implemented")
+    override suspend fun trip(): Result<TripResponse> = suspendSafeResult(ioDispatcher) {
+        tripPlanningService.trip(
+            depArrMacro = "dep",
+            nameOrigin = "221620",
+            nameDestination = "200060",
+        ).toSafeResult()
     }
 }
