@@ -1,0 +1,259 @@
+{
+  "error": {
+    "message": "string",
+    "versions": {
+      "controller": "string",
+      "interfaceMax": "string",
+      "interfaceMin": "string"
+    }
+  },
+  "journeys": [
+    {
+      "isAdditional": true,
+      "legs": [
+        {
+          "coords": [
+            [
+              0
+            ]
+          ],
+          "destination": {
+            "arrivalTimeEstimated": "string",
+            "arrivalTimePlanned": "string",
+            "coord": [
+              0
+            ],
+            "departureTimeEstimated": "string",
+            "departureTimePlanned": "string",
+            "disassembledName": "string",
+            "id": "string",
+            "name": "string",
+            "parent": {
+              "disassembledName": "string",
+              "id": "string",
+              "name": "string",
+              "parent": "string",
+              "type": "poi"
+            },
+            "properties": {
+              "WheelchairAccess": "true",
+              "downloads": [
+                {
+                  "type": "string",
+                  "url": "string"
+                }
+              ]
+            },
+            "type": "poi"
+          },
+          "distance": 0,
+          "duration": 0,
+          "footPathInfo": [
+            {
+              "duration": 0,
+              "footPathElem": [
+                {
+                  "description": "string",
+                  "destination": {
+                    "area": 0,
+                    "georef": "string",
+                    "location": {
+                      "coord": [
+                        0
+                      ],
+                      "id": "string",
+                      "type": "poi"
+                    },
+                    "platform": 0
+                  },
+                  "level": "DOWN",
+                  "levelFrom": 0,
+                  "levelTo": 0,
+                  "origin": {
+                    "area": 0,
+                    "georef": "string",
+                    "location": {
+                      "coord": [
+                        0
+                      ],
+                      "id": "string",
+                      "type": "poi"
+                    },
+                    "platform": 0
+                  },
+                  "type": "ESCALATOR"
+                }
+              ],
+              "position": "BEFORE"
+            }
+          ],
+          "hints": [
+            {
+              "infoText": "string"
+            }
+          ],
+          "infos": [
+            {
+              "content": "string",
+              "id": "string",
+              "priority": "veryLow",
+              "subtitle": "string",
+              "timestamps": {
+                "availability": {
+                  "from": "string",
+                  "to": "string"
+                },
+                "creation": "string",
+                "lastModification": "string",
+                "validity": [
+                  {
+                    "from": "string",
+                    "to": "string"
+                  }
+                ]
+              },
+              "url": "string",
+              "urlText": "string",
+              "version": 0
+            }
+          ],
+          "interchange": {
+            "coords": [
+              [
+                0
+              ]
+            ],
+            "desc": "string",
+            "type": 99
+          },
+          "isRealtimeControlled": true,
+          "origin": {
+            "arrivalTimeEstimated": "string",
+            "arrivalTimePlanned": "string",
+            "coord": [
+              0
+            ],
+            "departureTimeEstimated": "string",
+            "departureTimePlanned": "string",
+            "disassembledName": "string",
+            "id": "string",
+            "name": "string",
+            "parent": {
+              "disassembledName": "string",
+              "id": "string",
+              "name": "string",
+              "parent": "string",
+              "type": "poi"
+            },
+            "properties": {
+              "WheelchairAccess": "true",
+              "downloads": [
+                {
+                  "type": "string",
+                  "url": "string"
+                }
+              ]
+            },
+            "type": "poi"
+          },
+          "pathDescriptions": [
+            {
+              "coord": [
+                0
+              ],
+              "cumDistance": 0,
+              "cumDuration": 0,
+              "distance": 0,
+              "distanceDown": 0,
+              "distanceUp": 0,
+              "duration": 0,
+              "fromCoordsIndex": 0,
+              "manoeuvre": "LEAVE",
+              "name": "string",
+              "skyDirection": 0,
+              "toCoordsIndex": 0,
+              "turnDirection": "UNKNOWN"
+            }
+          ],
+          "properties": {
+            "DIFFERENT_FARES": "string",
+            "PlanLowFloorVehicle": "string",
+            "PlanWheelChairAccess": "string",
+            "lineType": "string",
+            "vehicleAccess": [
+              "string"
+            ]
+          },
+          "stopSequence": [
+            {
+              "arrivalTimeEstimated": "string",
+              "arrivalTimePlanned": "string",
+              "coord": [
+                0
+              ],
+              "departureTimeEstimated": "string",
+              "departureTimePlanned": "string",
+              "disassembledName": "string",
+              "id": "string",
+              "name": "string",
+              "parent": {
+                "disassembledName": "string",
+                "id": "string",
+                "name": "string",
+                "parent": "string",
+                "type": "poi"
+              },
+              "properties": {
+                "WheelchairAccess": "true",
+                "downloads": [
+                  {
+                    "type": "string",
+                    "url": "string"
+                  }
+                ]
+              },
+              "type": "poi"
+            }
+          ],
+          "transportation": {
+            "description": "string",
+            "destination": {
+              "id": "string",
+              "name": "string"
+            },
+            "disassembledName": "string",
+            "iconId": 0,
+            "id": "string",
+            "name": "string",
+            "number": "string",
+            "operator": {
+              "id": "string",
+              "name": "string"
+            },
+            "product": {
+              "class": 0,
+              "iconId": 0,
+              "name": "string"
+            },
+            "properties": {
+              "isTTB": true,
+              "tripCode": 0
+            }
+          }
+        }
+      ],
+      "rating": 0
+    }
+  ],
+  "systemMessages": {
+    "responseMessages": [
+      {
+        "code": 0,
+        "error": "string",
+        "module": "string",
+        "type": "string"
+      }
+    ]
+  },
+  "version": "string"
+}

@@ -7,7 +7,6 @@ import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.network.toSafeResult
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.network.api.model.StopType
-import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.network.api.service.TripPlanningService
 import javax.inject.Inject
