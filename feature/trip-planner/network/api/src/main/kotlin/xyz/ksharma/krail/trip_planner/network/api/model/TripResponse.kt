@@ -1,257 +1,229 @@
 package xyz.ksharma.krail.trip_planner.network.api.model
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 
 @Serializable
 data class TripResponse(
-    @SerialName("error") val error: ErrorResponse?,
-    @SerialName("journeys") val journeys: List<Journey>?,
-    @SerialName("systemMessages") val systemMessages: List<SystemMessages>?,
-    @SerialName("version") val version: String?,
+    @SerialName("") val systemMessages: SystemMessages,
+    @SerialName("") val journeys: List<Journey>,
+    @SerialName("") val error: Error,
+    @SerialName("") val version: String,
 ) {
-
     @Serializable
-    data class ErrorResponse(
-        @SerialName("message") val message: String?,
-        @SerialName("versions") val versions: Versions?,
+    data class Error(
+        @SerialName("") val versions: Versions,
+        @SerialName("") val message: String,
     )
 
     @Serializable
     data class Versions(
-        @SerialName("controller") val controller: String?,
-        @SerialName("interfaceMax") val interfaceMax: String?,
-        @SerialName("interfaceMin") val interfaceMin: String?,
+        @SerialName("") val controller: String,
+        @SerialName("") val interfaceMax: String,
+        @SerialName("") val interfaceMin: String,
     )
 
     @Serializable
     data class Journey(
-        @SerialName("isAdditional") val isAdditional: Boolean,
-        @SerialName("legs") val legs: List<Leg>,
-        @SerialName("rating") val rating: Int,
+        @SerialName("") val legs: List<Leg>,
+        @SerialName("") val rating: Long,
+        @SerialName("") val isAdditional: Boolean,
     )
 
     @Serializable
     data class Leg(
-        @SerialName("coords") val coords: List<List<Double>>,
-        @SerialName("destination") val destination: Destination,
-        @SerialName("distance") val distance: Int,
-        @SerialName("duration") val duration: Int,
-        @SerialName("footPathInfo") val footPathInfo: List<FootPathInfo>?,
-        @SerialName("hints") val hints: List<Hint>?,
-        @SerialName("infos") val infos: List<Info>?,
-        @SerialName("interchange") val interchange: Interchange?,
-        @SerialName("isRealtimeControlled") val isRealtimeControlled: Boolean,
-        @SerialName("origin") val origin: Destination,
-        @SerialName("pathDescriptions") val pathDescriptions: List<PathDescription>?,
-        @SerialName("properties") val properties: LegProperties?,
-        @SerialName("stopSequence") val stopSequence: List<Stop>?,
-        @SerialName("transportation") val transportation: Transportation?,
+        @SerialName("") val stopSequence: List<StopSequenceClass>,
+        @SerialName("") val distance: Long,
+        @SerialName("") val hints: List<Hint>,
+        @SerialName("") val origin: StopSequenceClass,
+        @SerialName("") val destination: StopSequenceClass,
+        @SerialName("") val pathDescriptions: List<PathDescription>,
+        @SerialName("") val isRealtimeControlled: Boolean,
+        @SerialName("") val transportation: Transportation,
+        @SerialName("") val duration: Long,
+        @SerialName("") val footPathInfo: List<FootPathInfo>,
+        @SerialName("") val coords: List<List<Long>>,
+        @SerialName("") val infos: List<Info>,
+        @SerialName("") val interchange: Interchange,
+        @SerialName("") val properties: LegProperties,
     )
 
     @Serializable
-    data class Destination(
-        @SerialName("arrivalTimeEstimated") val arrivalTimeEstimated: String?,
-        @SerialName("arrivalTimePlanned") val arrivalTimePlanned: String?,
-        @SerialName("coord") val coord: List<Double>,
-        @SerialName("departureTimeEstimated") val departureTimeEstimated: String?,
-        @SerialName("departureTimePlanned") val departureTimePlanned: String?,
-        @SerialName("disassembledName") val disassembledName: String?,
-        @SerialName("id") val id: String?,
-        @SerialName("name") val name: String?,
-        @SerialName("parent") val parent: Parent?,
-        @SerialName("properties") val properties: DestinationProperties?,
-        @SerialName("type") val type: String?,
+    data class StopSequenceClass(
+        @SerialName("") val parent: Parent,
+        @SerialName("") val coord: List<Long>,
+        @SerialName("") val arrivalTimePlanned: String,
+        @SerialName("") val disassembledName: String,
+        @SerialName("") val arrivalTimeEstimated: String,
+        @SerialName("") val departureTimeEstimated: String,
+        @SerialName("") val name: String,
+        @SerialName("") val departureTimePlanned: String,
+        @SerialName("") val id: String,
+        @SerialName("") val type: String,
+        @SerialName("") val properties: DestinationProperties,
     )
 
     @Serializable
     data class Parent(
-        @SerialName("disassembledName") val disassembledName: String?,
-        @SerialName("id") val id: String?,
-        @SerialName("name") val name: String?,
-        @SerialName("parent") val parent: String?,
-        @SerialName("type") val type: String?,
+        @SerialName("") val parent: String,
+        @SerialName("") val disassembledName: String,
+        @SerialName("") val name: String,
+        @SerialName("") val id: String,
+        @SerialName("") val type: String,
     )
 
     @Serializable
     data class DestinationProperties(
-        @SerialName("WheelchairAccess") val wheelchairAccess: String?,
-        @SerialName("downloads") val downloads: List<Download>?,
+        @SerialName("") val wheelchairAccess: String,
+        @SerialName("") val downloads: List<Download>,
     )
 
     @Serializable
     data class Download(
-        @SerialName("type") val type: String?,
-        @SerialName("url") val url: String?,
+        @SerialName("") val type: String,
+        @SerialName("") val url: String,
     )
 
     @Serializable
     data class FootPathInfo(
-        @SerialName("duration") val duration: Int,
-        @SerialName("footPathElem") val footPathElem: List<FootPathElem>,
-        @SerialName("position") val position: String?,
+        @SerialName("") val duration: Long,
+        @SerialName("") val footPathElem: List<FootPathElem>,
+        @SerialName("") val position: String,
     )
 
     @Serializable
     data class FootPathElem(
-        @SerialName("description") val description: String?,
-        @SerialName("destination") val destination: FootPathDestination?,
-        @SerialName("level") val level: String?,
-        @SerialName("levelFrom") val levelFrom: Int,
-        @SerialName("levelTo") val levelTo: Int,
-        @SerialName("origin") val origin: FootPathDestination?,
-        @SerialName("type") val type: String?,
+        @SerialName("") val level: String,
+        @SerialName("") val levelTo: Long,
+        @SerialName("") val origin: FootPathElemDestination,
+        @SerialName("") val destination: FootPathElemDestination,
+        @SerialName("") val description: String,
+        @SerialName("") val type: String,
+        @SerialName("") val levelFrom: Long,
     )
 
     @Serializable
-    data class FootPathDestination(
-        @SerialName("area") val area: Int,
-        @SerialName("georef") val georef: String?,
-        @SerialName("location") val location: Location?,
-        @SerialName("platform") val platform: Int,
+    data class FootPathElemDestination(
+        @SerialName("") val area: Long,
+        @SerialName("") val georef: String,
+        @SerialName("") val location: Location,
+        @SerialName("") val platform: Long,
     )
 
     @Serializable
     data class Location(
-        @SerialName("coord") val coord: List<Double>,
-        @SerialName("id") val id: String?,
-        @SerialName("type") val type: String?,
+        @SerialName("") val coord: List<Long>,
+        @SerialName("") val id: String,
+        @SerialName("") val type: String,
     )
 
     @Serializable
     data class Hint(
-        @SerialName("infoText") val infoText: String?,
+        @SerialName("") val infoText: String,
     )
 
     @Serializable
     data class Info(
-        @SerialName("content") val content: String?,
-        @SerialName("id") val id: String?,
-        @SerialName("priority") val priority: String?,
-        @SerialName("subtitle") val subtitle: String?,
-        @SerialName("timestamps") val timestamps: Timestamps?,
-        @SerialName("url") val url: String?,
-        @SerialName("urlText") val urlText: String?,
-        @SerialName("version") val version: Int,
+        @SerialName("") val timestamps: Timestamps,
+        @SerialName("") val subtitle: String,
+        @SerialName("") val urlText: String,
+        @SerialName("") val id: String,
+        @SerialName("") val priority: String,
+        @SerialName("") val version: Long,
+        @SerialName("") val content: String,
+        @SerialName("") val url: String,
     )
 
     @Serializable
     data class Timestamps(
-        @SerialName("availability") val availability: Availability?,
-        @SerialName("creation") val creation: String?,
-        @SerialName("lastModification") val lastModification: String?,
-        @SerialName("validity") val validity: List<Validity>?,
+        @SerialName("") val lastModification: String,
+        @SerialName("") val availability: Ity,
+        @SerialName("") val validity: List<Ity>,
+        @SerialName("") val creation: String,
     )
 
     @Serializable
-    data class Availability(
-        @SerialName("from") val from: String?,
-        @SerialName("to") val to: String?,
-    )
-
-    @Serializable
-    data class Validity(
-        @SerialName("from") val from: String?,
-        @SerialName("to") val to: String?,
+    data class Ity(
+        @SerialName("") val from: String,
+        @SerialName("") val to: String,
     )
 
     @Serializable
     data class Interchange(
-        @SerialName("coords") val coords: List<List<Double>>,
-        @SerialName("desc") val desc: String?,
-        @SerialName("type") val type: Int,
+        @SerialName("") val type: Long,
+        @SerialName("") val coords: List<List<Long>>,
+        @SerialName("") val desc: String,
     )
 
     @Serializable
     data class PathDescription(
-        @SerialName("coord") val coord: List<Double>,
-        @SerialName("cumDistance") val cumDistance: Int,
-        @SerialName("cumDuration") val cumDuration: Int,
-        @SerialName("distance") val distance: Int,
-        @SerialName("distanceDown") val distanceDown: Int,
-        @SerialName("distanceUp") val distanceUp: Int,
-        @SerialName("duration") val duration: Int,
-        @SerialName("fromCoordsIndex") val fromCoordsIndex: Int,
-        @SerialName("manoeuvre") val manoeuvre: String?,
-        @SerialName("name") val name: String?,
-        @SerialName("skyDirection") val skyDirection: Int,
-        @SerialName("toCoordsIndex") val toCoordsIndex: Int,
-        @SerialName("turnDirection") val turnDirection: String?,
+        @SerialName("") val cumDistance: Long,
+        @SerialName("") val distance: Long,
+        @SerialName("") val turnDirection: String,
+        @SerialName("") val distanceDown: Long,
+        @SerialName("") val fromCoordsIndex: Long,
+        @SerialName("") val cumDuration: Long,
+        @SerialName("") val distanceUp: Long,
+        @SerialName("") val duration: Long,
+        @SerialName("") val coord: List<Long>,
+        @SerialName("") val skyDirection: Long,
+        @SerialName("") val manoeuvre: String,
+        @SerialName("") val toCoordsIndex: Long,
+        @SerialName("") val name: String,
     )
 
     @Serializable
     data class LegProperties(
-        @SerialName("DIFFERENT_FARES") val differentFares: String?,
-        @SerialName("PlanLowFloorVehicle") val planLowFloorVehicle: String?,
-        @SerialName("PlanWheelChairAccess") val planWheelChairAccess: String?,
-        @SerialName("lineType") val lineType: String?,
-        @SerialName("vehicleAccess") val vehicleAccess: List<String>?,
-    )
-
-    @Serializable
-    data class Stop(
-        @SerialName("arrivalTimeEstimated") val arrivalTimeEstimated: String?,
-        @SerialName("arrivalTimePlanned") val arrivalTimePlanned: String?,
-        @SerialName("coord") val coord: List<Double>,
-        @SerialName("departureTimeEstimated") val departureTimeEstimated: String?,
-        @SerialName("departureTimePlanned") val departureTimePlanned: String?,
-        @SerialName("disassembledName") val disassembledName: String?,
-        @SerialName("id") val id: String?,
-        @SerialName("name") val name: String?,
-        @SerialName("parent") val parent: Parent?,
-        @SerialName("properties") val properties: DestinationProperties?,
-        @SerialName("type") val type: String?,
+        @SerialName("") val planLowFloorVehicle: String,
+        @SerialName("") val lineType: String,
+        @SerialName("") val differentFares: String,
+        @SerialName("") val planWheelChairAccess: String,
+        @SerialName("") val vehicleAccess: List<String>,
     )
 
     @Serializable
     data class Transportation(
-        @SerialName("description") val description: String?,
-        @SerialName("destination") val destination: DestinationInfo?,
-        @SerialName("disassembledName") val disassembledName: String?,
-        @SerialName("iconId") val iconId: Int,
-        @SerialName("id") val id: String?,
-        @SerialName("name") val name: String?,
-        @SerialName("number") val number: String?,
-        @SerialName("operator") val operator: Operator?,
-        @SerialName("product") val product: Product?,
-        @SerialName("properties") val properties: TransportationProperties?,
+        @SerialName("iconId") val iconId: Long,
+        @SerialName("number") val number: String,
+        @SerialName("product") val product: Product,
+        @SerialName("disassembledName") val disassembledName: String,
+        @SerialName("destination") val destination: OperatorClass,
+        @SerialName("name") val name: String,
+        @SerialName("description") val description: String,
+        @SerialName("id") val id: String,
+        @SerialName("operator") val operator: OperatorClass,
+        @SerialName("properties") val properties: TransportationProperties,
     )
 
     @Serializable
-    data class DestinationInfo(
-        @SerialName("id") val id: String?,
-        @SerialName("name") val name: String?,
-    )
-
-    @Serializable
-    data class Operator(
-        @SerialName("id") val id: String?,
-        @SerialName("name") val name: String?,
+    data class OperatorClass(
+        @SerialName("name") val name: String,
+        @SerialName("id") val id: String,
     )
 
     @Serializable
     data class Product(
-        @SerialName("class") val clazz: Int,
-        @SerialName("iconId") val iconId: Int,
-        @SerialName("name") val name: String?,
+        @SerialName("iconID") val iconID: Long,
+        @SerialName("name") val name: String,
+        @SerialName("productClass") val productClass: Long,
     )
 
     @Serializable
     data class TransportationProperties(
         @SerialName("isTTB") val isTTB: Boolean,
-        @SerialName("tripCode") val tripCode: Int,
+        @SerialName("tripCode") val tripCode: Long,
     )
 
     @Serializable
     data class SystemMessages(
-        @SerialName("responseMessages") val responseMessages: List<ResponseMessage>?,
+        @SerialName("responseMessages") val responseMessages: List<ResponseMessage>,
     )
 
     @Serializable
     data class ResponseMessage(
-        @SerialName("code") val code: Int,
-        @SerialName("error") val error: String?,
-        @SerialName("module") val module: String?,
-        @SerialName("type") val type: String?,
+        @SerialName("code") val code: Long,
+        @SerialName("module") val module: String,
+        @SerialName("error") val error: String,
+        @SerialName("type") val type: String,
     )
 }
