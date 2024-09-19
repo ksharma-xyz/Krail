@@ -4,6 +4,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
+import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 
 /**
  * https://opendata.transport.nsw.gov.au/dataset/trip-planner-apis/resource/917c66c3-8123-4a0f-b1b1-b4220f32585d
@@ -318,7 +319,7 @@ interface TripPlanningService {
         @Query("useElevationData") useElevationData: Int = 1, // Takes elevation data into account
 
         @Query("elevFac") elevFac: Int? = null, // Optional elevation factor
-    )
+    ): Response<TripResponse>
 
     /**
      * This endpoint returns a list of departures for a given location based on the date and time
