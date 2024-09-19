@@ -27,16 +27,16 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             var x =
-                tripPlanningRepo.stopFinder(stopType = StopType.STOP, stopSearchQuery = "Central")
-            Timber.d("STOP: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
-            x = tripPlanningRepo.stopFinder(stopType = StopType.POI, stopSearchQuery = "Central")
-            Timber.d("POI: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
-            x = tripPlanningRepo.stopFinder(stopType = StopType.COORD, stopSearchQuery = "Central")
-            Timber.d("COORD: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
-            x = tripPlanningRepo.stopFinder(stopType = StopType.ANY, stopSearchQuery = "Central")
+                tripPlanningRepo.stopFinder(stopType = StopType.ANY, stopSearchQuery = "Central")
             Timber.d("ANY: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
-        }
 
+            var tripResponse = tripPlanningRepo.trip()
+            tripResponse.onSuccess { trip ->
+                Timber.d("Journeys: ${trip.journeys?.size}")
+            }.onFailure {
+                Timber.e("error: ${it.message}")
+            }
+        }
 
         setContent {
             StartTheme {
