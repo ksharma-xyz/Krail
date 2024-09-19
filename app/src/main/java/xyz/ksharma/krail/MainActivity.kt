@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
             var tripResponse = tripPlanningRepo.trip()
             tripResponse.onSuccess { trip ->
-                Timber.d("Journeys: ${trip.journeys?.size}")
+                Timber.d("Journeys: ${trip.journeys.size}")
             }.onFailure {
                 Timber.e("error: ${it.message}")
             }
