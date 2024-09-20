@@ -38,8 +38,12 @@ data class TripResponse(
         @SerialName("origin") val origin: StopSequenceClass,
         @SerialName("destination") val destination: StopSequenceClass,
         @SerialName("pathDescriptions") val pathDescriptions: List<PathDescription>? = null,
-        @SerialName("isRealtimeControlled") val isRealtimeControlled: Boolean,
+        @SerialName("isRealtimeControlled") val isRealtimeControlled: Boolean? = null,
         @SerialName("transportation") val transportation: Transportation,
+
+        /**
+         * In seconds
+         */
         @SerialName("duration") val duration: Long,
         @SerialName("footPathInfo") val footPathInfo: List<FootPathInfo>? = null,
         @SerialName("coords") val coords: List<List<Double>>,
