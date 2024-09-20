@@ -34,8 +34,10 @@ class RealTripPlanningRepository @Inject constructor(
     }
 }
 
-/**
+/** Stop Ids
  * Rockdale - 221620
  * Central - 200060
- * TownHall -
+ * TownHall - 200070
+ * SevenHills - 214710
+ * NewTown - 204210
  */

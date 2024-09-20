@@ -17,7 +17,7 @@ data class StopFinderResponse(
         val id: String,
 
         @SerialName("isGlobalId")
-        val isGlobalId: Boolean,
+        val isGlobalId: Boolean? = null,
 
         @SerialName("name")
         val name: String,
@@ -47,7 +47,7 @@ data class StopFinderResponse(
         val properties: Properties? = null,
 
         @SerialName("productClasses")
-        val productClasses: List<Int>,
+        val productClasses: List<Int>? = null,
     )
 
     @Serializable
