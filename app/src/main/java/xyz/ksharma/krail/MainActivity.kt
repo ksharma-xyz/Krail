@@ -9,6 +9,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.design.system.theme.StartTheme
+import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
+import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.StopType
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import java.time.ZoneId
@@ -75,26 +77,5 @@ class MainActivity : ComponentActivity() {
                 KrailApp()
             }
         }
-    }
-
-    private fun String.utcToAEST(): String {
-        // Parse the string as a ZonedDateTime in UTC
-        val utcDateTime = ZonedDateTime.parse(this, DateTimeFormatter.ISO_ZONED_DATE_TIME)
-
-        // Convert to AEST time zone (UTC+10)
-        val aestZoneId = ZoneId.of("Australia/Sydney")
-        val aestDateTime = utcDateTime.withZoneSameInstant(aestZoneId)
-        return aestDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
-    }
-
-    fun String.formatTo12HourTime(): String {
-        // Parse the string as ZonedDateTime
-        val zonedDateTime = ZonedDateTime.parse(this)
-
-        // Define the formatter for 12-hour time with AM/PM
-        val timeFormatter = DateTimeFormatter.ofPattern("h:mm a")
-
-        // Format the ZonedDateTime to 12-hour format
-        return zonedDateTime.format(timeFormatter)
     }
 }
