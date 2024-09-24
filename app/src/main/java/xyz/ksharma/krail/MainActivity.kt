@@ -58,16 +58,16 @@ class MainActivity : ComponentActivity() {
 
             var tripResponse = tripPlanningRepo.trip()
             tripResponse.onSuccess { trip ->
-                Timber.d("Journeys: ${trip.journeys.size}")
+                Timber.d("Journeys: ${trip.journeys?.size}")
 
-                trip.journeys.map {
-                    it.legs.forEach {
+                trip.journeys?.map {
+                    it.legs?.forEach {
                         Timber.d(
                             "departureTimeEstimated: ${
-                                it.origin.departureTimeEstimated?.utcToAEST()?.formatTo12HourTime()
+                                it.origin?.departureTimeEstimated?.utcToAEST()?.formatTo12HourTime()
                             }," +
                                     " Destination: ${
-                                        it.destination.arrivalTimeEstimated?.utcToAEST()
+                                        it.destination?.arrivalTimeEstimated?.utcToAEST()
                                             ?.formatTo12HourTime()
                                     }, " +
                                     "Duration: ${it.duration}, " +
