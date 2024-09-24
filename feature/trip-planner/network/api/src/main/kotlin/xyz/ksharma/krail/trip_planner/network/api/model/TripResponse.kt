@@ -80,6 +80,11 @@ data class TripResponse(
     data class DestinationProperties(
         @SerialName("wheelchairAccess") val wheelchairAccess: String? = null,
         @SerialName("downloads") val downloads: List<Download>? = null,
+        @SerialName("NumberOfCars") val numberOfCars: String? = null,
+        @SerialName("TravelInCarsFrom") val travelInCarsFrom: String? = null,
+        @SerialName("TravelInCarsTo") val travelInCarsTo: String? = null,
+        @SerialName("TravelInCarsMessage") val travelInCarsMessage: String? = null,
+        @SerialName("occupancy") val occupancy: String? = null,
     )
 
     @Serializable

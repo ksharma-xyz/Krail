@@ -28,8 +28,8 @@ class RealTripPlanningRepository @Inject constructor(
     override suspend fun trip(): Result<TripResponse> = suspendSafeResult(ioDispatcher) {
         tripPlanningService.trip(
             depArrMacro = "dep",
-            nameOrigin = "221620",
-            nameDestination = "200060",
+            nameOrigin = "214710",
+            nameDestination = "204210",
         ).toSafeResult()
     }
 }
