@@ -6,36 +6,36 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class StopFinderResponse(
     @SerialName("version")
-    val version: String,
+    val version: String? = null,
 
     @SerialName("locations")
-    val locations: List<Location>,
+    val locations: List<Location>? = null,
 ) {
     @Serializable
     data class Location(
         @SerialName("id")
-        val id: String,
+        val id: String? = null,
 
         @SerialName("isGlobalId")
         val isGlobalId: Boolean? = null,
 
         @SerialName("name")
-        val name: String,
+        val name: String? = null,
 
         @SerialName("disassembledName")
         val disassembledName: String? = null,
 
         @SerialName("coord")
-        val coord: List<Double>,
+        val coord: List<Double>? = null,
 
         @SerialName("type")
-        val type: String,
+        val type: String? = null,
 
         @SerialName("matchQuality")
-        val matchQuality: Int,
+        val matchQuality: Int? = null,
 
         @SerialName("isBest")
-        val isBest: Boolean,
+        val isBest: Boolean? = null,
 
         @SerialName("parent")
         val parent: Parent? = null,
@@ -56,45 +56,45 @@ data class StopFinderResponse(
         val id: String? = null,
 
         @SerialName("name")
-        val name: String,
+        val name: String? = null,
 
         @SerialName("type")
-        val type: String,
+        val type: String? = null,
     )
 
     @Serializable
     data class AssignedStop(
         @SerialName("id")
-        val id: String,
+        val id: String? = null,
 
         @SerialName("isGlobalId")
-        val isGlobalId: Boolean,
+        val isGlobalId: Boolean? = null,
 
         @SerialName("name")
-        val name: String,
+        val name: String? = null,
 
         @SerialName("type")
-        val type: String,
+        val type: String? = null,
 
         @SerialName("coord")
-        val coord: List<Double>,
+        val coord: List<Double>? = null,
 
         @SerialName("parent")
-        val parent: Parent,
+        val parent: Parent? = null,
 
         @SerialName("productClasses")
-        val productClasses: List<Int>,
+        val productClasses: List<Int>? = null,
 
         @SerialName("connectingMode")
-        val connectingMode: Int,
+        val connectingMode: Int? = null,
 
         @SerialName("properties")
-        val properties: Properties,
+        val properties: Properties? = null,
     )
 
     @Serializable
     data class Properties(
         @SerialName("stopId")
-        val stopId: String,
+        val stopId: String? = null,
     )
 }

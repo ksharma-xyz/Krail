@@ -35,8 +35,11 @@ class MainActivity : ComponentActivity() {
                 Timber.d("Seven Hills: ${response}")
 
                 val stopIds = response.locations
-                    .filter { location -> location.productClasses?.contains(1) == true && location.type == StopType.STOP.type }
-                    .map { location -> location.id }
+                    ?.filter { location ->
+                        location.productClasses?.contains(
+                            1
+                        ) == true && location.type == StopType.STOP.type
+                    }?.map { location -> location.id }
 
                 Timber.d(
                     "Seven Hills stopId: ${stopIds}"
