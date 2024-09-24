@@ -1,0 +1,56 @@
+{
+  "version": "10.6.14.22",
+  "locations": [
+    {
+      "id": "214710",
+      "isGlobalId": true,
+      "name": "Seven Hills, Seven Hills",
+      "disassembledName": "Seven Hills",
+      "coord": [
+        -33.774351,
+        150.936123
+      ],
+      "type": "stop",
+      "matchQuality": 100000,
+      "isBest": true,
+      "productClasses": [
+        1,
+        5,
+        11
+      ],
+      "parent": {
+        "id": "placeID:95308035:1",
+        "name": "Seven Hills",
+        "type": "locality"
+      },
+      "assignedStops": [
+        {
+          "id": "214710",
+          "isGlobalId": true,
+          "name": "Seven Hills Station",
+          "type": "stop",
+          "coord": [
+            -33.774351,
+            150.936123
+          ],
+          "parent": {
+            "name": "Seven Hills",
+            "type": "locality"
+          },
+          "productClasses": [
+            1,
+            5,
+            11
+          ],
+          "connectingMode": 100,
+          "properties": {
+            "stopId": "10101234"
+          }
+        }
+      ],
+      "properties": {
+        "stopId": "10101234"
+      }
+    }
+  ]
+}
