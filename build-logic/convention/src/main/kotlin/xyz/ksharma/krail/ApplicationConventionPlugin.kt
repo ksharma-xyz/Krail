@@ -3,11 +3,12 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("UNUSED")
 class ApplicationConventionPlugin : Plugin<Project> {
@@ -18,6 +19,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
             val minSdkVersion = libs.findVersion("minSdk").get().toString().toInt()
             val targetSdkVersion = libs.findVersion("targetSdk").get().toString().toInt()
             val compileSdkVersion = libs.findVersion("compileSdk").get().toString().toInt()
+            //val composeCompilerVersion = libs.findPlugin("composeCompiler").get().toString()
 
             with(pluginManager) {
                 apply("com.android.application")
@@ -40,13 +42,14 @@ class ApplicationConventionPlugin : Plugin<Project> {
                     targetCompatibility = JavaVersion.values()[javaVersion - 1]
                 }
 
-                (this as ExtensionAware).configure<KotlinJvmOptions> {
-                    jvmTarget = "$javaVersion"
-                    freeCompilerArgs = freeCompilerArgs + listOf(
-                        "-opt-in=kotlin.RequiresOptIn",
-                        "-opt-in=kotlinx.coroutines.FlowPreview",
-                        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-                    )
+                tasks.withType<KotlinCompile>().configureEach {
+                    compilerOptions {
+                        jvmTarget.set(JvmTarget.JVM_17)
+
+                        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+                        freeCompilerArgs.add("-opt-in=kotlinx.coroutines.FlowPreview")
+                        freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+                    }
                 }
 
                 buildFeatures {
@@ -54,7 +57,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
                     buildConfig = true
                 }
 
-                /*composeOptions {
+               /* composeOptions {
                     kotlinCompilerExtensionVersion = composeCompilerVersion
                 }*/
 

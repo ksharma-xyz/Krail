@@ -7,6 +7,8 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.provideDelegate
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 class JvmLibraryConventionPlugin : Plugin<Project> {
@@ -25,17 +27,18 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
             }
 
             tasks.withType<KotlinCompile>().configureEach {
-                kotlinOptions {
-                    jvmTarget = javaVersion.toString()
+
+                compilerOptions {
                     val warningsAsErrors: String? by project
-                    allWarningsAsErrors = warningsAsErrors.toBoolean()
-                    freeCompilerArgs = freeCompilerArgs + listOf(
-                        // Enable experimental coroutines APIs, including Flow
-                        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    )
+                    allWarningsAsErrors.set(warningsAsErrors.toBoolean())
+
+                    jvmTarget.set(JvmTarget.JVM_17)
+
+                    freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+                    freeCompilerArgs.add("-opt-in=kotlinx.coroutines.FlowPreview")
+                    freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
                 }
             }
-
         }
     }
 }
