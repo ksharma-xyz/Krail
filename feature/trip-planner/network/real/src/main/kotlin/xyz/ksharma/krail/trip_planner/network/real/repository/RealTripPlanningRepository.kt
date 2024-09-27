@@ -10,6 +10,9 @@ import xyz.ksharma.krail.trip_planner.network.api.model.StopType
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.network.api.service.TripPlanningService
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class RealTripPlanningRepository @Inject constructor(
@@ -25,11 +28,16 @@ class RealTripPlanningRepository @Inject constructor(
             .toSafeResult()
     }
 
-    override suspend fun trip(): Result<TripResponse> = suspendSafeResult(ioDispatcher) {
+    override suspend fun trip(
+        originStopId: String,
+        destinationStopId: String,
+        journeyTime: String?,
+    ): Result<TripResponse> = suspendSafeResult(ioDispatcher) {
         tripPlanningService.trip(
             depArrMacro = "dep",
-            nameOrigin = "214710",
-            nameDestination = "204210",
+            nameOrigin = originStopId,
+            nameDestination = destinationStopId,
+            itdTime = journeyTime,
         ).toSafeResult()
     }
 }

@@ -27,4 +27,16 @@ object DateTimeHelper {
         val aestDateTime = utcDateTime.withZoneSameInstant(aestZoneId)
         return aestDateTime.format(DateTimeFormatter.ISO_DATE_TIME)
     }
+
+    // New function to convert a date-time string in AEST to HHMM (24-hour format)
+    fun String.aestToHHMM(): String {
+        // Parse the AEST string as a ZonedDateTime
+        val aestDateTime = ZonedDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
+
+        // Define the formatter for HHMM in 24-hour time format
+        val timeFormatter = DateTimeFormatter.ofPattern("HHmm")
+
+        // Format the ZonedDateTime to HHMM format
+        return aestDateTime.format(timeFormatter)
+    }
 }
