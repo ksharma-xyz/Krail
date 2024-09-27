@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.design.system.theme.StartTheme
+import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.aestToHHMM
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.StopType
@@ -59,7 +60,9 @@ class MainActivity : ComponentActivity() {
                Timber.d("Rockdale: ${x.getOrNull()?.locations?.map { it.productClasses.contains(1) }}")
    */
 
-            var tripResponse = tripPlanningRepo.trip()
+            // Seven Hills to New Town
+            var tripResponse =
+                tripPlanningRepo.trip(originStopId = "214710", destinationStopId = "200060")
             tripResponse.onSuccess { trip ->
                 Timber.d("Journeys: ${trip.journeys?.size}")
 
@@ -79,6 +82,48 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
+
+                with(trip.journeys?.last()?.legs?.last()?.origin) {
+                    Timber.d("arrivalTimeEstimated: ${this?.arrivalTimeEstimated}, departureTimeEstimated: ${this?.departureTimeEstimated}, departureTimePlanned: ${this?.departureTimePlanned}")
+                }
+                // LOGIC for LOAD MORE TIMES
+                val nextLoadItdTime =
+                    trip.journeys?.last()?.legs?.last()?.origin?.let {
+                        it.departureTimeEstimated?.utcToAEST()?.aestToHHMM()
+                        // fallback on the planned time if the estimated time is not available
+                            ?: it.departureTimePlanned?.utcToAEST()?.aestToHHMM()
+                    }
+                Timber.d("itdTime: $nextLoadItdTime")
+                if (nextLoadItdTime != null) {
+                    val tripResponse1 = tripPlanningRepo.trip(
+                        originStopId = "214710",
+                        destinationStopId = "200060",
+                        journeyTime = nextLoadItdTime,
+                    )
+                    tripResponse1.onSuccess { trip1 ->
+                        Timber.d("NEXT Journeys: ${trip.journeys?.size}")
+
+                        trip1.journeys?.map {
+                            it.legs?.forEach {
+                                Timber.d(
+                                    "departureTimeEstimated: ${
+                                        it.origin?.departureTimeEstimated?.utcToAEST()
+                                            ?.formatTo12HourTime()
+                                    }," +
+                                            " Destination: ${
+                                                it.destination?.arrivalTimeEstimated?.utcToAEST()
+                                                    ?.formatTo12HourTime()
+                                            }, " +
+                                            "Duration: ${it.duration}, " +
+                                            "transportation: ${it.transportation}",
+                                )
+                            }
+                        }
+
+                    }.onFailure {
+                        Timber.e("error: ${it.message}")
+                    }
+                }
             }.onFailure {
                 Timber.e("error: ${it.message}")
             }
