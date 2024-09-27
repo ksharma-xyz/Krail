@@ -3,13 +3,6 @@ plugins {
     alias(libs.plugins.wire)
 }
 
-dependencies {
-/*
-    implementation("com.google.protobuf:protobuf-javalite:3.25.3") // Replace with latest version
-    implementation("com.google.protobuf:protobuf-kotlin-lite:3.25.3") // Replace with latest version
-*/
-}
-
 wire {
     kotlin {
         javaInterop = true
@@ -19,9 +12,9 @@ wire {
         singleMethodServices = false
     }
     protoPath {
-        srcDir("src/main/proto")
+        srcDir(files("src/main/proto"))
     }
     sourcePath {
-        srcDir("src/main/proto")
+        srcDir(files("src/main/proto"))
     }
 }
