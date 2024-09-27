@@ -19,9 +19,9 @@ wire {
         singleMethodServices = false
     }
     protoPath {
-        srcDir("src/main/proto")
+        srcDir(files("src/main/proto"))
     }
     sourcePath {
-        srcDir("src/main/proto")
+        srcDir(files("src/main/proto"))
     }
 }
