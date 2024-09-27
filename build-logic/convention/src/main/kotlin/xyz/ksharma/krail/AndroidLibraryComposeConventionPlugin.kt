@@ -58,3 +58,6 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
         }
     }
 }
+
+Kotlin Gradle Plugin: The KotlinJvmOptions class has been replaced by the kotlinOptions property in the KotlinJvmCompilerOptions class. You can access and configure JVM options using this property.
+Kotlin Compiler: The KotlinJvmOptions class has been replaced by the jvmTarget property in the KotlinCompilerOptions class. You can set the JVM target version using this property.
