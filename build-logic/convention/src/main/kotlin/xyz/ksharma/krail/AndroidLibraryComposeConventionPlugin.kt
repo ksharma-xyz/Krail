@@ -3,10 +3,10 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.getByType
-import org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("UNUSED")
 class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
@@ -41,13 +41,12 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
                     targetCompatibility = JavaVersion.values()[javaVersion - 1]
                 }
 
-                (this as ExtensionAware).configure<KotlinJvmOptions> {
-                    jvmTarget = "$javaVersion"
-                    freeCompilerArgs = freeCompilerArgs + listOf(
-                        "-opt-in=kotlin.RequiresOptIn",
-                        "-opt-in=kotlinx.coroutines.FlowPreview",
-                        "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-                    )
+                tasks.withType<KotlinCompile>().configureEach {
+                    compilerOptions {
+                        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+                        freeCompilerArgs.add("-opt-in=kotlinx.coroutines.FlowPreview")
+                        freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+                    }
                 }
 
                 buildFeatures {
@@ -58,6 +57,3 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
         }
     }
 }
-
-Kotlin Gradle Plugin: The KotlinJvmOptions class has been replaced by the kotlinOptions property in the KotlinJvmCompilerOptions class. You can access and configure JVM options using this property.
-Kotlin Compiler: The KotlinJvmOptions class has been replaced by the jvmTarget property in the KotlinCompilerOptions class. You can set the JVM target version using this property.
