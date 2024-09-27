@@ -7,6 +7,7 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("UNUSED")
@@ -43,6 +44,8 @@ class ApplicationConventionPlugin : Plugin<Project> {
 
                 tasks.withType<KotlinCompile>().configureEach {
                     compilerOptions {
+                        jvmTarget.set(JvmTarget.JVM_17)
+
                         freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
                         freeCompilerArgs.add("-opt-in=kotlinx.coroutines.FlowPreview")
                         freeCompilerArgs.add("-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
