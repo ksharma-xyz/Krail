@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.design.system.components
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -8,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import xyz.ksharma.krail.design.system.preview.ComponentPreviewLightDark
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 val LocalTextStyle = compositionLocalOf { TextStyle.Default }
@@ -39,13 +41,15 @@ fun Text(
     }
 }
 
-@PreviewLightDark
+@ComponentPreviewLightDark
 @Composable
 private fun TextPreview() {
     KrailTheme {
-        Text(text = "Hello World!")
-        Text(text = "Hello World!", style = KrailTheme.typography.displayLarge)
-        Text(text = "Hello World!", style = KrailTheme.typography.displayMedium)
-        Text(text = "Hello World!", style = KrailTheme.typography.displaySmall)
+        Column(modifier = Modifier.background(color = KrailTheme.colors.background)) {
+            Text(text = "Typography")
+            Text(text = "DisplayLarge", style = KrailTheme.typography.displayLarge)
+            Text(text = "displayMedium", style = KrailTheme.typography.displayMedium)
+            Text(text = "displaySmall", style = KrailTheme.typography.displaySmall)
+        }
     }
 }
