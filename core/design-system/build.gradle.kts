@@ -9,10 +9,11 @@ android {
 
 dependencies {
     api(platform(libs.compose.bom))
-    api(libs.compose.foundation)
-    api(libs.compose.ui)
-    api(libs.compose.ui.graphics)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.ui)
+    implementation(libs.compose.ui.graphics)
     api(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.material3) // adding for reading code inspiration.
 
     androidTestImplementation(platform(libs.compose.bom))
     debugApi(libs.compose.ui.tooling)

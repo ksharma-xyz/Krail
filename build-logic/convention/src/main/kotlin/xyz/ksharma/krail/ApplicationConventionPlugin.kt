@@ -19,7 +19,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
             val minSdkVersion = libs.findVersion("minSdk").get().toString().toInt()
             val targetSdkVersion = libs.findVersion("targetSdk").get().toString().toInt()
             val compileSdkVersion = libs.findVersion("compileSdk").get().toString().toInt()
-            //val composeCompilerVersion = libs.findPlugin("composeCompiler").get().toString()
+            val kotlinVersion = libs.findVersion("kotlin").get().toString()
 
             with(pluginManager) {
                 apply("com.android.application")
@@ -57,9 +57,10 @@ class ApplicationConventionPlugin : Plugin<Project> {
                     buildConfig = true
                 }
 
-               /* composeOptions {
-                    kotlinCompilerExtensionVersion = composeCompilerVersion
-                }*/
+                composeOptions {
+                    // Kotlin and Compose compiler version is same after K2 is released.
+                    kotlinCompilerExtensionVersion = kotlinVersion
+                }
 
                 packaging {
                     resources {
