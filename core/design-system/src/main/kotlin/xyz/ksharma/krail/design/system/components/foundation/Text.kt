@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import xyz.ksharma.krail.design.system.preview.ComponentPreviewLightDark
+import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 val LocalTextStyle = compositionLocalOf { TextStyle.Default }
@@ -32,9 +32,9 @@ fun Text(
         BasicText(
             text = text,
             style = style.merge(
-                color = color?: LocalTextColor.current,
+                color = color ?: LocalTextColor.current,
                 textAlign = textAlign,
-                ),
+            ),
             maxLines = maxLines,
             modifier = modifier,
         )
@@ -43,7 +43,7 @@ fun Text(
 
 // region Previews
 
-@ComponentPreviewLightDark
+@ComponentPreviews
 @Composable
 private fun TextPreview() {
     KrailTheme {
@@ -56,7 +56,7 @@ private fun TextPreview() {
     }
 }
 
-@ComponentPreviewLightDark
+@ComponentPreviews
 @Composable
 private fun TextWithColorPreview() {
     KrailTheme {
