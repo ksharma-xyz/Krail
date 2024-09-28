@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.components
+package xyz.ksharma.krail.design.system.components.foundation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
