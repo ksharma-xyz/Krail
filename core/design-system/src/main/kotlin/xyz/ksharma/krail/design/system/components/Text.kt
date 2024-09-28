@@ -41,6 +41,8 @@ fun Text(
     }
 }
 
+// region Previews
+
 @ComponentPreviewLightDark
 @Composable
 private fun TextPreview() {
@@ -63,3 +65,5 @@ private fun TextWithColorPreview() {
         }
     }
 }
+
+// endregion
