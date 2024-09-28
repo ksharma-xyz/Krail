@@ -1,2 +1,8 @@
 # Krail
-Sydney Trains real time
+Sydney Transport Android app.
+
+## Features
+1. Trip Planning
+
+## Architecture
+MVVM
