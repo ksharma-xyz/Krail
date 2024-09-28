@@ -21,19 +21,19 @@ fun Text(
     text: String,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
+    color: Color? = null,
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE,
 ) {
     CompositionLocalProvider(
-        LocalTextColor provides KrailTheme.colors.onBackground,
-        LocalTextStyle provides KrailTheme.typography.body,
+        LocalTextColor provides KrailTheme.colors.onBackground, // default color for text
+        LocalTextStyle provides KrailTheme.typography.body,  // default style for text
     ) {
         BasicText(
             text = text,
             style = style.merge(
-                color = LocalTextColor.current,
+                color = color?: LocalTextColor.current,
                 textAlign = textAlign,
-
                 ),
             maxLines = maxLines,
             modifier = modifier,
@@ -50,6 +50,16 @@ private fun TextPreview() {
             Text(text = "DisplayLarge", style = KrailTheme.typography.displayLarge)
             Text(text = "displayMedium", style = KrailTheme.typography.displayMedium)
             Text(text = "displaySmall", style = KrailTheme.typography.displaySmall)
+        }
+    }
+}
+
+@ComponentPreviewLightDark
+@Composable
+private fun TextWithColorPreview() {
+    KrailTheme {
+        Column(modifier = Modifier.background(color = KrailTheme.colors.background)) {
+            Text(text = "Typography", color = KrailTheme.colors.error)
         }
     }
 }
