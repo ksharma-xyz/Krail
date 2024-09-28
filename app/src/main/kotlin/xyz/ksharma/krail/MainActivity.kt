@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
    */
 
             // Seven Hills to New Town
-            var tripResponse =
+            /*var tripResponse =
                 tripPlanningRepo.trip(originStopId = "214710", destinationStopId = "204210")
             tripResponse.onSuccess { trip ->
                 Timber.d("Journeys: ${trip.journeys?.size}")
@@ -91,7 +91,7 @@ class MainActivity : ComponentActivity() {
                 }
             }.onFailure {
                 Timber.e("error: ${it.message}")
-            }
+            }*/
         }
 
         setContent {
