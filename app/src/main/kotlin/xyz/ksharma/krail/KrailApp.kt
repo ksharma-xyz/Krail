@@ -3,9 +3,9 @@ package xyz.ksharma.krail
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.text.BasicText
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -25,9 +25,9 @@ internal fun KrailApp(
     ) {
         composable(route = AppScreen.DemoPage.name) {
             Column {
-                Text("Krail App", style = KrailTheme.typography.bodyLarge)
-                Text("Krail App", style = KrailTheme.typography.bodyMedium)
-                Text("Krail App", style = KrailTheme.typography.bodySmall)
+                BasicText("Krail App", style = KrailTheme.typography.bodyLarge)
+                BasicText("Krail App", style = KrailTheme.typography.bodyMedium)
+                BasicText("Krail App", style = KrailTheme.typography.bodySmall)
             }
         }
     }

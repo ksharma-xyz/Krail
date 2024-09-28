@@ -32,7 +32,6 @@ targetSdk = "34"
 timber = "5.0.1"
 espressoCore = "3.6.1"
 appcompat = "1.7.0"
-material = "1.12.0"
 
 [libraries]
 #ksp-gradle-plugin = { module = "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
@@ -47,11 +46,11 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 #Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-ui = { group = "androidx.compose.ui", name = "ui" }
-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-material3 = { group = "androidx.compose.material3", name = "material3" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
+compose-ui = { group = "androidx.compose.ui", name = "ui" }
+compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
 
 #Hilt
@@ -66,8 +65,8 @@ okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 #Test
-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
 google-truth = { group = "com.google.truth", name = "truth", version = "1.4.2" }
@@ -98,8 +97,8 @@ cash-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-wire = { id = "com.squareup.wire", version.ref = "wire"}
-cash-sqldelight = {id = "app.cash.sqldelight", version.ref ="sqldelight"}
+wire = { id = "com.squareup.wire", version.ref = "wire" }
+cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }

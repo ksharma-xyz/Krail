@@ -72,12 +72,14 @@ dependencies {
     implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.network.real)
 
+    implementation(libs.activity.compose)
+    implementation(libs.compose.foundation)
+    implementation(libs.compose.navigation)
     implementation(libs.core.ktx)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
     implementation(libs.timber)
 
     androidTestImplementation(libs.androidx.test.ext.junit)
-    testImplementation(libs.ui.test.junit4)
+    testImplementation(libs.compose.ui.test.junit4)
     testImplementation(libs.paparazzi)
 }
