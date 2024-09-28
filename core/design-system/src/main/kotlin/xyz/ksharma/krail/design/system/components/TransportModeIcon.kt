@@ -1,10 +1,13 @@
 package xyz.ksharma.krail.design.system.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,9 +27,17 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 fun TransportModeIcon(
     transportModeType: TransportModeType,
     modifier: Modifier = Modifier,
+    borderEnabled: Boolean = false,
 ) {
     Box(
         modifier = modifier
+            .clip(shape = CircleShape)
+            .borderIfEnabled(
+                width = 1.dp.toAdaptiveSize(),
+                color = Color.White,
+                shape = CircleShape,
+                enabled = borderEnabled,
+            )
             .clip(shape = CircleShape)
             .requiredSize(width = 18.dp.toAdaptiveSize(), height = 18.dp.toAdaptiveSize())
             .aspectRatio(1f)
@@ -40,6 +51,13 @@ fun TransportModeIcon(
         )
     }
 }
+
+private fun Modifier.borderIfEnabled(
+    width: Dp,
+    color: Color,
+    shape: RoundedCornerShape,
+    enabled: Boolean,
+): Modifier = if (enabled) border(width = width, color = color, shape = shape) else this
 
 @Composable
 private fun Dp.toAdaptiveSize(): Dp {
@@ -93,6 +111,48 @@ private fun LightRailPreview() {
 private fun FerryPreview() {
     KrailTheme {
         TransportModeIcon(TransportModeType.Ferry)
+    }
+}
+
+
+@ComponentPreviewLightDark
+@Preview(fontScale = 2f)
+@Composable
+private fun TrainWithBackgroundPreview() {
+    KrailTheme {
+        TransportModeIcon(TransportModeType.Train, borderEnabled = true)
+    }
+}
+
+@ComponentPreviews
+@Composable
+private fun BusWithBackgroundPreview() {
+    KrailTheme {
+        TransportModeIcon(TransportModeType.Bus, borderEnabled = true)
+    }
+}
+
+@ComponentPreviews
+@Composable
+private fun MetroWithBackgroundPreview() {
+    KrailTheme {
+        TransportModeIcon(TransportModeType.Metro, borderEnabled = true)
+    }
+}
+
+@ComponentPreviews
+@Composable
+private fun LightRailWithBackgroundPreview() {
+    KrailTheme {
+        TransportModeIcon(TransportModeType.LightRail, borderEnabled = true)
+    }
+}
+
+@ComponentPreviews
+@Composable
+private fun FerryWithBackgroundPreview() {
+    KrailTheme {
+        TransportModeIcon(TransportModeType.Ferry, borderEnabled = true)
     }
 }
 
