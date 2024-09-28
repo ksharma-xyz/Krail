@@ -33,7 +33,7 @@ fun TransportModeIcon(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "${transportModeType.name.first()}",
+            text = "${transportModeType.modeName.first()}",
             color = Color.White,
             style = KrailTheme.typography.labelLarge,
         )
