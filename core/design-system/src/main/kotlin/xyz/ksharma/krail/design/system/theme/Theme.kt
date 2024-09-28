@@ -6,7 +6,6 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
-
 private val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -72,7 +71,7 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 @Composable
-fun StartTheme(
+fun KrailTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

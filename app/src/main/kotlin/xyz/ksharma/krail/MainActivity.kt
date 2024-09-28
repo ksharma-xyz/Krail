@@ -8,7 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.design.system.theme.StartTheme
+import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.StopType
@@ -95,7 +95,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            StartTheme {
+            KrailTheme {
                 KrailApp()
             }
         }
