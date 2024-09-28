@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,12 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.foundation.Text
 import xyz.ksharma.krail.design.system.model.TransportModeType
-import xyz.ksharma.krail.design.system.preview.ComponentPreviewLightDark
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
@@ -73,8 +70,7 @@ private fun String.toColor(): Color = Color(android.graphics.Color.parseColor(th
 
 // region Previews
 
-@ComponentPreviewLightDark
-@Preview(fontScale = 2f)
+@ComponentPreviews
 @Composable
 private fun TrainPreview() {
     KrailTheme {
@@ -114,9 +110,7 @@ private fun FerryPreview() {
     }
 }
 
-
-@ComponentPreviewLightDark
-@Preview(fontScale = 2f)
+@ComponentPreviews
 @Composable
 private fun TrainWithBackgroundPreview() {
     KrailTheme {
