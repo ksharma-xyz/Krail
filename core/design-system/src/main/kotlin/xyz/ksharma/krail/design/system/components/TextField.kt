@@ -1,7 +1,9 @@
 package xyz.ksharma.krail.design.system.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -10,6 +12,8 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.selection.LocalTextSelectionColors
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -20,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.LocaleList
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextColor
@@ -39,10 +44,15 @@ fun TextField(
     imeAction: ImeAction = ImeAction.Default,
 ) {
     val textFieldState = rememberTextFieldState()
+    val textSelectionColors = TextSelectionColors(
+        handleColor = KrailTheme.colors.tertiary,
+        backgroundColor = KrailTheme.colors.tertiary.copy(alpha = 0.4f)
+    )
 
     CompositionLocalProvider(
         LocalTextColor provides KrailTheme.colors.onSecondaryContainer,
         LocalTextStyle provides KrailTheme.typography.titleLarge,
+        LocalTextSelectionColors provides textSelectionColors,
     ) {
         BasicTextField(
             state = textFieldState,
@@ -92,6 +102,24 @@ fun TextField(
     }
 }
 
+// region Previews
+
+@Preview
+@Composable
+private fun DvTextFieldEnabledPreview() {
+    KrailTheme {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = KrailTheme.colors.secondary)
+                .padding(16.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            TextField(placeholder = "Station")
+        }
+    }
+}
+
 @PreviewLightDark
 @Composable
 private fun TextFieldEnabledPreview() {
@@ -107,3 +135,13 @@ private fun TextFieldDisabledPreview() {
         TextField(enabled = false, placeholder = "Station")
     }
 }
+
+// endregion
+
+/**
+ * TODO -
+ * 1. Display cursor when TextField is focused.
+ * 2. Add support for leading and trailing icons.
+ * 3. Change Text Color based on enabled state.
+ * 4. Support Disabled State colors.
+ */
