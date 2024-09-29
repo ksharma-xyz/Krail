@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
@@ -23,6 +24,7 @@ fun Text(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE,
 ) {
+    val contentAlpha = LocalContentAlpha.current
     CompositionLocalProvider(
         LocalTextColor provides KrailTheme.colors.onBackground, // default color for text
         LocalTextStyle provides KrailTheme.typography.body,  // default style for text
@@ -30,7 +32,8 @@ fun Text(
         BasicText(
             text = text,
             style = style.merge(
-                color = color ?: LocalTextColor.current,
+                color = color?.copy(alpha = contentAlpha)
+                    ?: LocalTextColor.current.copy(alpha = contentAlpha),
                 textAlign = textAlign,
             ),
             maxLines = maxLines,

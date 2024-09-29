@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,9 +31,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.LocaleList
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.tokens.TextFieldTokens
 import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.PlaceholderOpacity
 
 val TextFieldHeight = 48.dp
@@ -48,9 +51,9 @@ fun TextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
+    val contentAlpha = TextFieldTokens.DisabledLabelOpacity
 
-    val textFieldState = rememberTextFieldState()
-
+    val textFieldState = rememberTextFieldState("aa")
     val textSelectionColors = TextSelectionColors(
         handleColor = KrailTheme.colors.tertiary,
         backgroundColor = KrailTheme.colors.tertiary.copy(alpha = 0.4f)
@@ -61,6 +64,7 @@ fun TextField(
         LocalTextStyle provides KrailTheme.typography.titleLarge,
         LocalTextSelectionColors provides textSelectionColors,
     ) {
+
         BasicTextField(
             state = textFieldState,
             enabled = enabled,
@@ -81,30 +85,32 @@ fun TextField(
             interactionSource = interactionSource,
             cursorBrush = SolidColor(KrailTheme.colors.onSecondaryContainer),
             decorator = { innerTextField ->
-                Row(
-                    modifier = Modifier
-                        .background(
-                            shape = RoundedCornerShape(TextFieldHeight.div(2)),
-                            color = KrailTheme.colors.secondaryContainer
-                        )
-                        .padding(horizontal = 12.dp, vertical = 4.dp),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    if (textFieldState.text.isEmpty() && isFocused) {
-                        /* Using a Box ensures that cursor and placeholder are displayed on top of
+                CompositionLocalProvider(LocalContentAlpha provides contentAlpha) {
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                shape = RoundedCornerShape(TextFieldHeight.div(2)),
+                                color = KrailTheme.colors.secondaryContainer
+                            )
+                            .padding(horizontal = 12.dp, vertical = 4.dp),
+                        horizontalArrangement = Arrangement.Start,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        if (textFieldState.text.isEmpty() && isFocused) {
+                            /* Using a Box ensures that cursor and placeholder are displayed on top of
                          each other, so the cursor is always displayed at the start if the TextField.
                          */
-                        Box {
-                            innerTextField() // To display cursor
+                            Box {
+                                innerTextField() // To display cursor
+                                TextFieldPlaceholder(placeholder = placeholder)
+                            }
+                        } else if (textFieldState.text.isEmpty()) {
                             TextFieldPlaceholder(placeholder = placeholder)
+                        } else {
+                            // add leading icon here - todo
+                            innerTextField()
+                            // add trailing icon here / Clear - todo
                         }
-                    } else if (textFieldState.text.isEmpty()) {
-                        TextFieldPlaceholder(placeholder = placeholder)
-                    } else {
-                        // add leading icon here - todo
-                        innerTextField()
-                        // add trailing icon here / Clear - todo
                     }
                 }
             }
@@ -136,7 +142,10 @@ private fun TextFieldEnabledPreview() {
 @Composable
 private fun TextFieldDisabledPreview() {
     KrailTheme {
-        TextField(enabled = false, placeholder = "Station")
+        Column {
+            TextField(placeholder = "Station")
+            TextField(enabled = false, placeholder = "Station")
+        }
     }
 }
 
@@ -144,8 +153,6 @@ private fun TextFieldDisabledPreview() {
 
 /**
  * TODO -
- * 1. Display cursor when TextField is focused.
- * 2. Add support for leading and trailing icons.
  * 3. Change Text Color based on enabled state.
  * 4. Support Disabled State colors.
  */
