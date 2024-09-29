@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.PlaceholderOpacity
 
 val TextFieldHeight = 48.dp
 
@@ -96,20 +97,10 @@ fun TextField(
                          */
                         Box {
                             innerTextField() // To display cursor
-                            Text(
-                                text = placeholder.orEmpty(),
-                                style = LocalTextStyle.current,
-                                color = LocalTextColor.current,
-                                maxLines = 1,
-                            )
+                            TextFieldPlaceholder(placeholder = placeholder)
                         }
                     } else if (textFieldState.text.isEmpty()) {
-                        Text(
-                            text = placeholder.orEmpty(),
-                            style = LocalTextStyle.current,
-                            color = LocalTextColor.current,
-                            maxLines = 1,
-                        )
+                        TextFieldPlaceholder(placeholder = placeholder)
                     } else {
                         // add leading icon here - todo
                         innerTextField()
@@ -119,6 +110,16 @@ fun TextField(
             }
         )
     }
+}
+
+@Composable
+private fun TextFieldPlaceholder(placeholder: String? = null) {
+    Text(
+        text = placeholder.orEmpty(),
+        style = LocalTextStyle.current,
+        color = LocalTextColor.current.copy(alpha = PlaceholderOpacity),
+        maxLines = 1,
+    )
 }
 
 // region Previews
