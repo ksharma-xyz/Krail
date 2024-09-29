@@ -3,6 +3,7 @@ package xyz.ksharma.krail.design.system.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.foundation.Text
 import xyz.ksharma.krail.design.system.model.TransportModeType
@@ -39,14 +41,16 @@ fun SavedTripCard(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(color = KrailTheme.colors.secondaryContainer)
-            .clickable(role = Role.Button, onClickLabel = "Open Trip Details", onClick = onCardClick)
+            .clickable(
+                role = Role.Button,
+                onClickLabel = "Open Trip Details",
+                onClick = onCardClick
+            )
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-        TransportModeIcon(
-            transportModeType = transportModeType,
-        )
+        TransportModeIcon(transportModeType = transportModeType)
 
         Column(
             modifier = Modifier
@@ -89,6 +93,39 @@ private fun SavedTripCardPreview() {
             origin = "Edmondson Park Station",
             destination = "Harris Park Station",
         )
+    }
+}
+
+
+@Preview
+@Composable
+private fun SavedTripCardListPreview() {
+    KrailTheme {
+
+        Column(
+            modifier = Modifier
+                .background(color = KrailTheme.colors.background)
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            SavedTripCard(
+                transportModeType = TransportModeType.Train,
+                origin = "Edmondson Park Station",
+                destination = "Harris Park Station",
+            )
+
+            SavedTripCard(
+                transportModeType = TransportModeType.Bus,
+                origin = "Harrington Street, Stand D",
+                destination = "Albert Rd, Stand A",
+            )
+
+            SavedTripCard(
+                transportModeType = TransportModeType.Ferry,
+                origin = "Manly Wharf",
+                destination = "Circular Quay Wharf",
+            )
+        }
     }
 }
 
