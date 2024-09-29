@@ -6,7 +6,6 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,12 +28,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.LocaleList
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.components.foundation.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 val TextFieldHeight = 48.dp
@@ -125,22 +122,6 @@ fun TextField(
 }
 
 // region Previews
-
-@Preview
-@Composable
-private fun DvTextFieldEnabledPreview() {
-    KrailTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(color = KrailTheme.colors.secondary)
-                .padding(16.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            TextField(placeholder = "Station")
-        }
-    }
-}
 
 @PreviewLightDark
 @Composable
