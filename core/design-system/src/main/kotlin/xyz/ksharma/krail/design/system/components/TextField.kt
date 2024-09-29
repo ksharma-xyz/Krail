@@ -1,6 +1,9 @@
 package xyz.ksharma.krail.design.system.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +19,8 @@ import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
@@ -43,7 +48,11 @@ fun TextField(
     readOnly: Boolean = false,
     imeAction: ImeAction = ImeAction.Default,
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isFocused by interactionSource.collectIsFocusedAsState()
+
     val textFieldState = rememberTextFieldState()
+
     val textSelectionColors = TextSelectionColors(
         handleColor = KrailTheme.colors.tertiary,
         backgroundColor = KrailTheme.colors.tertiary.copy(alpha = 0.4f)
@@ -71,6 +80,7 @@ fun TextField(
             ),
             lineLimits = TextFieldLineLimits.SingleLine,
             readOnly = readOnly,
+            interactionSource = interactionSource,
             cursorBrush = SolidColor(KrailTheme.colors.onSecondaryContainer),
             decorator = { innerTextField ->
                 Row(
@@ -80,9 +90,23 @@ fun TextField(
                             color = KrailTheme.colors.secondaryContainer
                         )
                         .padding(horizontal = 12.dp, vertical = 4.dp),
+                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    if (textFieldState.text.isEmpty()) {
+                    if (textFieldState.text.isEmpty() && isFocused) {
+                        /* Using a Box ensures that cursor and placeholder are displayed on top of
+                         each other, so the cursor is always displayed at the start if the TextField.
+                         */
+                        Box {
+                            innerTextField() // To display cursor
+                            Text(
+                                text = placeholder.orEmpty(),
+                                style = LocalTextStyle.current,
+                                color = LocalTextColor.current,
+                                maxLines = 1,
+                            )
+                        }
+                    } else if (textFieldState.text.isEmpty()) {
                         Text(
                             text = placeholder.orEmpty(),
                             style = LocalTextStyle.current,
@@ -90,10 +114,8 @@ fun TextField(
                             maxLines = 1,
                         )
                     } else {
-
-                        // add leading icon here
+                        // add leading icon here - todo
                         innerTextField()
-
                         // add trailing icon here / Clear - todo
                     }
                 }
