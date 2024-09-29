@@ -5,16 +5,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import xyz.ksharma.krail.design.system.LocalTextColor
+import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-
-val LocalTextStyle = compositionLocalOf { TextStyle.Default }
-val LocalTextColor = compositionLocalOf { Color.Unspecified }
 
 @Composable
 fun Text(
