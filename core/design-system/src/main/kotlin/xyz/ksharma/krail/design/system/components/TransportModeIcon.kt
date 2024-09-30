@@ -6,20 +6,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.hexToComposeColor
 import xyz.ksharma.krail.design.system.model.TransportModeType
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.hexToComposeColor
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 
 @Composable
@@ -31,32 +28,24 @@ fun TransportModeIcon(
     Box(
         modifier = modifier
             .clip(shape = CircleShape)
-            .borderIfEnabled(
-                width = 1.dp.toAdaptiveSize(),
-                color = Color.White,
-                shape = CircleShape,
-                enabled = borderEnabled,
-            )
-            .clip(shape = CircleShape)
             .requiredSize(width = 18.dp.toAdaptiveSize(), height = 18.dp.toAdaptiveSize())
             .aspectRatio(1f)
-            .background(color = transportModeType.hexColorCode.hexToComposeColor()),
+            .background(color = transportModeType.hexColorCode.hexToComposeColor())
+            .borderIfEnabled(enabled = borderEnabled),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = "${transportModeType.modeName.first()}",
             color = Color.White,
-            style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+            // todo - need concrete token for style, meanwhile keep same as TransportModeBadge,
+            style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
         )
     }
 }
 
-private fun Modifier.borderIfEnabled(
-    width: Dp,
-    color: Color,
-    shape: RoundedCornerShape,
-    enabled: Boolean,
-): Modifier = if (enabled) border(width = width, color = color, shape = shape) else this
+private fun Modifier.borderIfEnabled(enabled: Boolean): Modifier = if (enabled) {
+    this.then(Modifier.border(width = 1.dp, color = Color.White, shape = CircleShape))
+} else this
 
 // region Previews
 
