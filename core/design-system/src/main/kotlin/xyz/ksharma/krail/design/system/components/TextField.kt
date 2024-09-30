@@ -30,16 +30,20 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.LocaleList
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-
-val TextFieldHeight = 48.dp
+import xyz.ksharma.krail.design.system.tokens.TextFieldTokens
+import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.PlaceholderOpacity
+import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextFieldHeight
+import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextSelectionBackgroundOpacity
 
 @Composable
 fun TextField(
     modifier: Modifier = Modifier,
     placeholder: String? = null,
+    initialText: String? = null,
     enabled: Boolean = true,
     textStyle: TextStyle? = null,
     readOnly: Boolean = false,
@@ -47,33 +51,37 @@ fun TextField(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
+    val contentAlpha = if (enabled) 1f else TextFieldTokens.DisabledLabelOpacity
 
-    val textFieldState = rememberTextFieldState()
-
+    val textFieldState = rememberTextFieldState(initialText.orEmpty())
     val textSelectionColors = TextSelectionColors(
         handleColor = KrailTheme.colors.tertiary,
-        backgroundColor = KrailTheme.colors.tertiary.copy(alpha = 0.4f)
+        backgroundColor = KrailTheme.colors.tertiary.copy(alpha = TextSelectionBackgroundOpacity)
     )
 
     CompositionLocalProvider(
         LocalTextColor provides KrailTheme.colors.onSecondaryContainer,
         LocalTextStyle provides KrailTheme.typography.titleLarge,
         LocalTextSelectionColors provides textSelectionColors,
+        LocalContentAlpha provides contentAlpha,
     ) {
         BasicTextField(
             state = textFieldState,
             enabled = enabled,
             modifier = modifier
                 .fillMaxWidth()
-                .fillMaxWidth()
                 .height(TextFieldHeight),
-            textStyle = textStyle ?: LocalTextStyle.current,
+            // This will change the colors of the innerTextField() composable.
+            textStyle = textStyle
+                ?: LocalTextStyle.current.copy(
+                    color = LocalTextColor.current.copy(alpha = contentAlpha)
+                ),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
                 autoCorrectEnabled = false,
                 keyboardType = KeyboardType.Text,
                 imeAction = imeAction,
-                hintLocales = LocaleList.current
+                hintLocales = LocaleList.current, // todo - required?
             ),
             lineLimits = TextFieldLineLimits.SingleLine,
             readOnly = readOnly,
@@ -86,30 +94,20 @@ fun TextField(
                             shape = RoundedCornerShape(TextFieldHeight.div(2)),
                             color = KrailTheme.colors.secondaryContainer
                         )
-                        .padding(horizontal = 12.dp, vertical = 4.dp),
+                        .padding(horizontal = 16.dp, vertical = 4.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     if (textFieldState.text.isEmpty() && isFocused) {
                         /* Using a Box ensures that cursor and placeholder are displayed on top of
-                         each other, so the cursor is always displayed at the start if the TextField.
-                         */
+                     each other, so the cursor is always displayed at the start if the TextField.
+                     */
                         Box {
                             innerTextField() // To display cursor
-                            Text(
-                                text = placeholder.orEmpty(),
-                                style = LocalTextStyle.current,
-                                color = LocalTextColor.current,
-                                maxLines = 1,
-                            )
+                            TextFieldPlaceholder(placeholder = placeholder)
                         }
                     } else if (textFieldState.text.isEmpty()) {
-                        Text(
-                            text = placeholder.orEmpty(),
-                            style = LocalTextStyle.current,
-                            color = LocalTextColor.current,
-                            maxLines = 1,
-                        )
+                        TextFieldPlaceholder(placeholder = placeholder)
                     } else {
                         // add leading icon here - todo
                         innerTextField()
@@ -119,6 +117,15 @@ fun TextField(
             }
         )
     }
+}
+
+@Composable
+private fun TextFieldPlaceholder(placeholder: String? = null) {
+    Text(
+        text = placeholder.orEmpty(),
+        maxLines = 1,
+        color = LocalTextColor.current.copy(alpha = PlaceholderOpacity),
+    )
 }
 
 // region Previews
@@ -133,18 +140,26 @@ private fun TextFieldEnabledPreview() {
 
 @PreviewLightDark
 @Composable
+private fun TextFieldEnabledPlaceholderPreview() {
+    KrailTheme {
+        TextField(placeholder = "Placeholder")
+    }
+}
+
+@PreviewLightDark
+@Composable
 private fun TextFieldDisabledPreview() {
     KrailTheme {
-        TextField(enabled = false, placeholder = "Station")
+        TextField(enabled = false, initialText = "Disabled TextField")
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun TextFieldDisabledPlaceholderPreview() {
+    KrailTheme {
+            TextField(enabled = false, placeholder = "Disabled Placeholder")
     }
 }
 
 // endregion
-
-/**
- * TODO -
- * 1. Display cursor when TextField is focused.
- * 2. Add support for leading and trailing icons.
- * 3. Change Text Color based on enabled state.
- * 4. Support Disabled State colors.
- */
