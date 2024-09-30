@@ -1,8 +1,7 @@
 package xyz.ksharma.krail.design.system.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,19 +23,19 @@ fun TransportModeBadge(
     backgroundColor: Color,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Box(
         modifier = modifier
             .clip(shape = RoundedCornerShape(percent = 20))
             .background(color = backgroundColor),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = badgeText,
             color = Color.White,
-            style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold), // todo - need concrete token for this
+            // todo - need concrete token for style, meanwhile keep same as TransportModeIcon.
+            style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
             modifier = Modifier
-                .padding(2.dp)
+                .padding(start = 2.dp, end = 1.dp)
                 .wrapContentWidth(),
         )
     }
