@@ -39,6 +39,10 @@ import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.PlaceholderOpacity
 import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextFieldHeight
 import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextSelectionBackgroundOpacity
 
+/**
+ * Important documentation links:
+ * https://developer.android.com/jetpack/androidx/releases/compose-foundation#1.7.0
+ */
 @Composable
 fun TextField(
     modifier: Modifier = Modifier,
