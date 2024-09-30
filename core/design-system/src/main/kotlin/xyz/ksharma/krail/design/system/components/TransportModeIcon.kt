@@ -11,8 +11,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.design.system.hexToComposeColor
 import xyz.ksharma.krail.design.system.model.TransportModeType
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
@@ -25,10 +27,13 @@ fun TransportModeIcon(
     modifier: Modifier = Modifier,
     borderEnabled: Boolean = false,
 ) {
+    val density = LocalDensity.current
+    val size = with (density) { 18.sp.toDp() }
+
     Box(
         modifier = modifier
             .clip(shape = CircleShape)
-            .requiredSize(width = 18.dp.toAdaptiveSize(), height = 18.dp.toAdaptiveSize())
+            .requiredSize(size)
             .aspectRatio(1f)
             .background(color = transportModeType.hexColorCode.hexToComposeColor())
             .borderIfEnabled(enabled = borderEnabled),
