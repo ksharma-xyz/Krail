@@ -2,6 +2,9 @@ package xyz.ksharma.krail.design.system.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,9 +21,9 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 internal fun BasicJourneyCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = KrailTheme.colors.secondaryContainer,
-    headerRow: @Composable () -> Unit = {},
-    secondaryRow: @Composable () -> Unit = {},
-    iconsRow: @Composable () -> Unit = {},
+    headerRow: @Composable RowScope.() -> Unit = {},
+    secondaryRow: @Composable RowScope.() -> Unit = {},
+    iconsRow: @Composable RowScope.() -> Unit = {},
 ) {
     Column(modifier = modifier
         .fillMaxWidth()
@@ -29,9 +32,17 @@ internal fun BasicJourneyCard(
         .semantics(mergeDescendants = true) {}
         .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
-        headerRow()
-        secondaryRow()
-        iconsRow()
+        Row(modifier = Modifier.fillMaxWidth()) {
+            headerRow()
+        }
+        Row(modifier = Modifier.fillMaxWidth()) {
+            secondaryRow()
+        }
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)) {
+            iconsRow()
+        }
     }
 }
 
@@ -39,7 +50,7 @@ internal fun BasicJourneyCard(
 @Composable
 private fun BasicJourneyCardPreview() {
     KrailTheme {
-        BasicJourneyCard(modifier = Modifier,
+        BasicJourneyCard(
             headerRow = { Text(text = "Header") },
             secondaryRow = { Text(text = "Secondary") },
             iconsRow = { Text(text = "Icons") }
