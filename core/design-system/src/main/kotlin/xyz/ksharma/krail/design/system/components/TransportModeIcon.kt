@@ -13,11 +13,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.model.TransportModeType
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.hexToComposeColor
+import xyz.ksharma.krail.design.system.toAdaptiveSize
 
 @Composable
 fun TransportModeIcon(
@@ -37,13 +40,13 @@ fun TransportModeIcon(
             .clip(shape = CircleShape)
             .requiredSize(width = 18.dp.toAdaptiveSize(), height = 18.dp.toAdaptiveSize())
             .aspectRatio(1f)
-            .background(color = transportModeType.hexColorCode.toColor()),
+            .background(color = transportModeType.hexColorCode.hexToComposeColor()),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = "${transportModeType.modeName.first()}",
             color = Color.White,
-            style = KrailTheme.typography.labelLarge,
+            style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
         )
     }
 }
@@ -54,18 +57,6 @@ private fun Modifier.borderIfEnabled(
     shape: RoundedCornerShape,
     enabled: Boolean,
 ): Modifier = if (enabled) border(width = width, color = color, shape = shape) else this
-
-@Composable
-private fun Dp.toAdaptiveSize(): Dp {
-    val density = LocalDensity.current
-    return when {
-        density.fontScale > 1.5f -> this.times(1.6f)
-        density.fontScale > 1f -> this.times(density.fontScale)
-        else -> this
-    }
-}
-
-private fun String.toColor(): Color = Color(android.graphics.Color.parseColor(this))
 
 // region Previews
 
