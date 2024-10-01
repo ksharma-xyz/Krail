@@ -1,11 +1,45 @@
-# Krail
-Sydney Transport Android app.
+# Krail - Making travel simple and fun.
 
-## Features
-1. Trip Planning
+## Technology
 
-## Architecture
-MVVM
+### Architecture
+
+This project follows MVVM [**Modern Android Development Architecture
+**](https://developer.android.com/topic/architecture) with a focus on separation of concerns and
+testability.
+
+* **UI Layer:** Built using Jetpack Compose, providing a declarative and reactive approach to UI
+  development.
+* **Data Layer:** Utilizes repositories to abstract data sources and provide a clean API for
+  accessing data.
+* **Domain Layer:** Contains business logic and use cases, separated from UI and data concerns.
+
+[Diagram here - TBD]
+
+### Navigation
+
+[TBD]
+
+### Design System
+
+Using a fully custom design system built using Compose Foundation APIs. Not using the Material
+Design system but taking inspiration from it.
+
+### Accessibility
+
+[TBD]
+
+### Testing
+
+1. UI / Snapshot Testing - Paparazzi - TBD
+2. Junit 4 - TBD
+
+
+## Contributing
+
+Not accepting any contributions until MVP is ready.
+
+## License
 
 ```
 Copyright 2024 Karan Sharma.
@@ -22,3 +56,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 ```
+
+## Contact
+
+www.ksharma.xyz
