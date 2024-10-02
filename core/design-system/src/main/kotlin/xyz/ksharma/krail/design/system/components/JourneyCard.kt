@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.design.system.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,9 +8,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.hexToComposeColor
+import xyz.ksharma.krail.design.system.model.TransportModeLine
 import xyz.ksharma.krail.design.system.model.TransportModeType.Bus
 import xyz.ksharma.krail.design.system.model.TransportModeType.Train
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
@@ -66,12 +66,7 @@ private fun JourneyCardTrainPreview() {
                 )
             },
             transportModeIconRow = {
-                TransportModeIcon(transportModeType = Train)
-                TransportModeBadge(
-                    backgroundColor = Color.Blue.copy(alpha = 0.8f),
-                    badgeText = "T4",
-                    modifier = Modifier.padding(start = 8.dp)
-                )
+                TransportModeInfo(transportModeLine = TransportModeLine(Train, "T4", "#005aa3"))
             },
         )
     }
@@ -98,28 +93,13 @@ private fun JourneyCardMultipleModesPreview() {
                 )
             },
             transportModeIconRow = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
 
-                    TransportModeIcon(transportModeType = Train)
-
-                    TransportModeBadge(
-                        backgroundColor = Color.Blue.copy(alpha = 0.8f),
-                        badgeText = "T4",
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                    )
+                    TransportModeInfo(transportModeLine = TransportModeLine(Train, "T4", "#005aa3"))
 
                     SeparatorIcon()
 
-                    TransportModeIcon(
-                        transportModeType = Bus,
-                        modifier = Modifier.padding(horizontal = 8.dp)
-                    )
-
-                    TransportModeBadge(
-                        backgroundColor = Bus.hexColorCode.hexToComposeColor(),
-                        badgeText = "700",
-                        modifier = Modifier.padding(end = 8.dp)
-                    )
+                    TransportModeInfo(transportModeLine = TransportModeLine(Bus, "700", "#00B5EF"))
                 }
             },
         )

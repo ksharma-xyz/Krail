@@ -41,14 +41,7 @@ fun JourneyDetailCard(
                     modifier = Modifier,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    TransportModeIcon(
-                        transportModeType = leg.transportLine.transportModeType,
-                    )
-
-                    TransportModeBadge(
-                        backgroundColor = leg.transportLine.lineHexColorCode.hexToComposeColor(),
-                        badgeText = leg.transportLine.lineName,
-                    )
+                    TransportModeInfo(transportModeLine = leg.transportLine)
                 }
 
                 // TODO - Flow to next line instead of same Row for large font size/Measure.
