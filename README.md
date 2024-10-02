@@ -1,5 +1,9 @@
 # Krail - Making travel simple and fun.
 
+### Tag Lines
+- Hop On, Mate!
+- Ride the rail without fail
+
 ## Technology
 
 ### Architecture
