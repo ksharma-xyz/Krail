@@ -2,6 +2,7 @@ package xyz.ksharma.krail.design.system.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -23,14 +24,21 @@ fun JourneyCard(
 ) {
     BasicJourneyCard(
         modifier = modifier,
-        headerRow = {
-            departureText()
-        },
-        secondaryRow = {
-            timeText()
-        },
-        iconsRow = {
-            transportModeIconRow()
+        content = {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                departureText()
+            }
+            Row(modifier = Modifier.fillMaxWidth()) {
+                timeText()
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                transportModeIconRow()
+            }
         },
     )
 }
