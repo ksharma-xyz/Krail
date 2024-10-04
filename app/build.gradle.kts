@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.krail.android.application)
     alias(libs.plugins.krail.android.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -62,7 +63,6 @@ dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.core.domain)
     implementation(projects.core.model)
-    implementation(projects.core.navigation)
     implementation(projects.core.network)
     implementation(projects.core.utils)
     implementation(projects.feature.sydneyTrains.database.api)
@@ -72,11 +72,13 @@ dependencies {
     implementation(projects.feature.tripPlanner.domain) // TODO not really required remove it later
     implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.network.real)
+    implementation(projects.feature.tripPlanner.ui)
 
     implementation(libs.activity.compose)
     implementation(libs.compose.foundation)
     implementation(libs.compose.navigation)
     implementation(libs.core.ktx)
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.timber)
 
