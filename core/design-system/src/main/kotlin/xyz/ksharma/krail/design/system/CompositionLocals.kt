@@ -8,3 +8,6 @@ internal val LocalTextStyle = compositionLocalOf { TextStyle.Default }
 internal val LocalTextColor = compositionLocalOf { Color.Unspecified }
 internal val LocalContentAlpha = compositionLocalOf { 1f }
 internal val LocalTransportColor = compositionLocalOf { Color.Unspecified }
+
+internal  val LocalContentColor = compositionLocalOf { Color.Unspecified }
+internal  val LocalOnContentColor = compositionLocalOf { Color.Unspecified }

@@ -1,6 +1,7 @@
 package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.components.RoundIconButton
 import xyz.ksharma.krail.design.system.components.TextField
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -46,22 +48,16 @@ fun SearchStopRow(modifier: Modifier = Modifier) {
                 .padding(start = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp) // TODO - token "SearchFieldSpacing"
         ) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp) // TODO - token "SearchButtonHeight"
-                    .clip(CircleShape)
-                    .background(color = KrailTheme.colors.secondaryContainer)
-            )
+            RoundIconButton {
+            }
 
-            Box(
-                modifier = Modifier
-                    .size(48.dp) // TODO - token "SearchButtonHeight"
-                    .clip(CircleShape)
-                    .background(color = KrailTheme.colors.secondaryContainer)
-            )
+
+            RoundIconButton {
+            }
         }
     }
 }
+
 
 // region Previews
 
