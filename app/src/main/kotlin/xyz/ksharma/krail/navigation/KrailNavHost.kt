@@ -40,9 +40,7 @@ fun KrailNavHost() {
     NavHost(
         navController = navController,
         startDestination = SplashScreen,
-        modifier = Modifier
-            .fillMaxSize()
-            .safeContentPadding()
+        modifier = Modifier.fillMaxSize()
     ) {
         tripPlannerDestinations(
             onSearchStopClick = navController::navigateToSearchStopScreen,
