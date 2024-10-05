@@ -10,11 +10,13 @@ android {
 
 dependencies {
     implementation(projects.core.designSystem)
+    implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.state)
 
     implementation(libs.compose.foundation)
     implementation(libs.compose.navigation)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.kotlinx.collections.immutable)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.timber)
 }
