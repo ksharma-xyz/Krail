@@ -11,7 +11,6 @@ import xyz.ksharma.krail.trip_planner.ui.savedtrips.SavedTripsScreen
 import xyz.ksharma.krail.trip_planner.ui.savedtrips.SavedTripsViewModel
 import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopScreen
 import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopViewModel
-import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableScreen
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableViewModel
 
@@ -34,14 +33,19 @@ fun NavGraphBuilder.tripPlannerDestinations() {
         }
         composable<TimeTableRoute> {
             val viewModel = hiltViewModel<TimeTableViewModel>()
+            val timeTableState by viewModel.uiState.collectAsState()
 
-            TimeTableScreen()
+            TimeTableScreen(timeTableState) { event ->
+                viewModel.onEvent(event)
+            }
         }
         composable<SearchStopRoute> {
             val viewModel = hiltViewModel<SearchStopViewModel>()
+            val searchStopState by viewModel.uiState.collectAsState()
 
-
-            SearchStopScreen()
+            SearchStopScreen(searchStopState = searchStopState) { event ->
+                viewModel.onEvent(event)
+            }
         }
     }
 }

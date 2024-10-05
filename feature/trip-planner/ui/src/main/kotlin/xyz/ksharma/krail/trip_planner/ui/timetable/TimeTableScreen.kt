@@ -9,9 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
+import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 
 @Composable
-fun TimeTableScreen(modifier: Modifier = Modifier) {
+fun TimeTableScreen(
+    timeTableState: TimeTableState,
+    modifier: Modifier = Modifier,
+    onEvent: (TimeTableUiEvent) -> Unit = {},
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
