@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.trip_planner.ui.navigation
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -9,6 +11,7 @@ import xyz.ksharma.krail.trip_planner.ui.savedtrips.SavedTripsScreen
 import xyz.ksharma.krail.trip_planner.ui.savedtrips.SavedTripsViewModel
 import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopScreen
 import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopViewModel
+import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableScreen
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableViewModel
 
@@ -23,8 +26,11 @@ fun NavGraphBuilder.tripPlannerDestinations() {
     ) {
         composable<SavedTripsRoute> {
             val viewModel = hiltViewModel<SavedTripsViewModel>()
+            val savedTripState by viewModel.uiState.collectAsState()
 
-            SavedTripsScreen()
+            SavedTripsScreen(savedTripState) { event ->
+                viewModel.onEvent(event)
+            }
         }
         composable<TimeTableRoute> {
             val viewModel = hiltViewModel<TimeTableViewModel>()
