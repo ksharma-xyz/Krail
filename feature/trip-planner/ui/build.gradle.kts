@@ -16,4 +16,5 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.timber)
 }
