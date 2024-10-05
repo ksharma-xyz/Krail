@@ -14,6 +14,7 @@ compose-navigation = "2.8.2"
 detekt = "1.23.7"
 detektCompose = "0.4.15"
 hilt = "2.52"
+hiltNavigationCompose = "1.2.0"
 okhttpBom = "4.12.0"
 kotlinxSerializationJson = "1.7.3"
 ksp = "2.0.20-1.0.25" # ksp to kotlin version mapping https://github.com/google/ksp/releases
@@ -44,6 +45,7 @@ opencsv = { module = "com.opencsv:opencsv", version.ref = "opencsv" }
 retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
+
 #Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
 compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
@@ -57,6 +59,7 @@ compose-material3 = { group = "androidx.compose.material3", name = "material3", 
 #Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name =  "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 #Network
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
