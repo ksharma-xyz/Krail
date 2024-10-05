@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
@@ -23,6 +24,7 @@ fun Text(
     color: Color? = null,
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = if (maxLines == Int.MAX_VALUE) TextOverflow.Clip else TextOverflow.Ellipsis,
 ) {
     val contentAlpha = LocalContentAlpha.current
     CompositionLocalProvider(
@@ -36,6 +38,7 @@ fun Text(
                 textAlign = textAlign,
             ),
             maxLines = maxLines,
+            overflow = overflow,
             modifier = modifier,
         )
     }
