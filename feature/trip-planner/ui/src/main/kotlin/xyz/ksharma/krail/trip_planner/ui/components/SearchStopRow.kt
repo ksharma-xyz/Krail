@@ -43,7 +43,6 @@ fun SearchStopRow(
             .navigationBarsPadding(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-
         Column(
             modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(20.dp)
