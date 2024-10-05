@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.krail.android.library.compose)
+    alias(libs.plugins.krail.android.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
