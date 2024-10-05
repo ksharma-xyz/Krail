@@ -4,10 +4,10 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 
-internal val LocalTextStyle = compositionLocalOf { TextStyle.Default }
-internal val LocalTextColor = compositionLocalOf { Color.Unspecified }
-internal val LocalContentAlpha = compositionLocalOf { 1f }
-internal val LocalTransportColor = compositionLocalOf { Color.Unspecified }
+val LocalTextStyle = compositionLocalOf { TextStyle.Default }
+val LocalTextColor = compositionLocalOf { Color.Unspecified }
+val LocalContentAlpha = compositionLocalOf { 1f }
+val LocalTransportColor = compositionLocalOf { Color.Unspecified }
 
 internal  val LocalContentColor = compositionLocalOf { Color.Unspecified }
-internal  val LocalOnContentColor = compositionLocalOf { Color.Unspecified }
+val LocalOnContentColor = compositionLocalOf { Color.Unspecified }
