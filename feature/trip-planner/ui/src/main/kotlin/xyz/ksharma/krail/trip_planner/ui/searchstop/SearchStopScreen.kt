@@ -3,13 +3,10 @@ package xyz.ksharma.krail.trip_planner.ui.searchstop
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,6 +29,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapLatest
 import timber.log.Timber
+import xyz.ksharma.krail.design.system.components.Divider
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
 import xyz.ksharma.krail.design.system.components.TransportModeIcon
@@ -41,6 +39,9 @@ import xyz.ksharma.krail.trip_planner.domain.model.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopUiEvent
 
+/**
+ * TODO - implement scroll to top, when too many search results are displayed.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchStopScreen(
@@ -111,13 +112,7 @@ fun SearchStopScreen(
                             }
                         }
 
-                        // Divider Component
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(1.dp)
-                                .background(color = KrailTheme.colors.onBackground.copy(alpha = 0.2f))
-                        )
+                        Divider()
                     }
                 }
             }
