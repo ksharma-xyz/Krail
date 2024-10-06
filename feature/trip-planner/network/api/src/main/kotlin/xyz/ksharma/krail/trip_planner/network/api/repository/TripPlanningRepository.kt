@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter
 interface TripPlanningRepository {
 
     suspend fun stopFinder(
-        stopType: StopType = StopType.ANY,
+        stopType: StopType = StopType.STOP,
         stopSearchQuery: String,
     ): Result<StopFinderResponse>
 
