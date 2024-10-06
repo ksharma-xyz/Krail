@@ -19,7 +19,11 @@ import xyz.ksharma.krail.trip_planner.domain.StopResultMapper
 import xyz.ksharma.krail.trip_planner.domain.model.TransportMode
 
 @Composable
-fun StopSearchListItem(stop: StopResultMapper.StopResult, modifier: Modifier = Modifier) {
+fun StopSearchListItem(
+    stop: StopResultMapper.StopResult,
+    modifier: Modifier = Modifier,
+    onClick: (StopResultMapper.StopResult) -> Unit = {},
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()

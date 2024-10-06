@@ -2,8 +2,6 @@ package xyz.ksharma.krail.trip_planner.ui.searchstop
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -94,13 +92,21 @@ fun SearchStopScreen(
         } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
             searchStopState.stops.forEach { stop ->
                 item {
-                    StopSearchListItem(stop)
+                    StopSearchListItem(stop) { stop ->
+                        onEvent(
+                            SearchStopUiEvent.StopSelected(
+                                stopId = stop.stopId,
+                                stopName = stop.stopName,
+                                mode = stop.mode,
+                            )
+                        )
+                    }
                     Divider()
                 }
             }
         } else {
             item {
-                Text(text = "Display Recent Search",)
+                Text(text = "Display Recent Search")
             }
         }
     }

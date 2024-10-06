@@ -25,13 +25,17 @@ data class TransportMode(
         else -> null
     },
 ) {
-    enum class TransportModeType(val modeName: String, val priority: Int) {
-        Train(modeName = "Train", priority = 1),
-        Metro(modeName = "Metro", priority = 2),
-        Ferry(modeName = "Ferry", priority = 3), // Lesser Ferry than bus
-        Bus(modeName = "Bus", priority = 4), // lot of results, therefore slipping down.
-        LightRail(modeName = "Light Rail", priority = 5),
-        SchoolBus(modeName = "School Bus", priority = 6),
-        Coach(modeName = "Coach", priority = 7),
+    enum class TransportModeType(val modeName: String, val priority: Int, productClass: Int) {
+        Train(modeName = "Train", priority = 1111, productClass = 1),
+        Metro(modeName = "Metro", priority = 2222, productClass = 2),
+        Ferry(modeName = "Ferry", priority = 3333, productClass = 9), // Lesser Ferry than bus
+        Bus(
+            modeName = "Bus",
+            priority = 4444,
+            productClass = 5,
+        ), // lot of results, therefore slipping down.
+        LightRail(modeName = "Light Rail", priority = 5555, productClass = 4),
+        SchoolBus(modeName = "School Bus", priority = 6666, productClass = 11),
+        Coach(modeName = "Coach", priority = 7777, productClass = 7),
     }
 }
