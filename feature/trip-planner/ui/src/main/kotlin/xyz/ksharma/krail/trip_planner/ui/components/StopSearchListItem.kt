@@ -60,7 +60,7 @@ fun StopSearchListItem(
     }
 }
 
-private fun xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.toDisplayModeType(): TransportModeType =
+internal fun xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.toDisplayModeType(): TransportModeType =
     when (this) {
         xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Train -> TransportModeType.Train
         xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Metro -> TransportModeType.Metro
