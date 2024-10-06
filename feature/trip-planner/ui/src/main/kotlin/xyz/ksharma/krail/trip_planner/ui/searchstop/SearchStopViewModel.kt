@@ -7,8 +7,11 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import xyz.ksharma.krail.trip_planner.domain.StopResultMapper
+import xyz.ksharma.krail.trip_planner.domain.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
@@ -30,35 +33,35 @@ class SearchStopViewModel @Inject constructor(
     }
 
     private fun onSearchTextChanged(query: String) {
-        Timber.d("query: %s", query)
-        viewModelScope.launch {
-            _uiState.value =
-                _uiState.value.copy(isLoading = true, stops = persistentListOf(), isError = false)
+        Timber.d("onSearchTextChanged: $query")
+        updateUiState { displayLoading() }
 
+        viewModelScope.launch {
             tripPlanningRepository.stopFinder(stopSearchQuery = query)
                 .onSuccess { response: StopFinderResponse ->
-                    response.toStopsResult()
-                    _uiState.value =
-                        _uiState.value.copy(
-                            stops = response.toStopsResult().stops.toImmutableList(),
-                            isLoading = false,
-                            isError = false
-                        )
+                    updateUiState { displayData(response.toStopResults()) }
                 }.onFailure {
-                    _uiState.value =
-                        _uiState.value.copy(
-                            isLoading = false,
-                            stops = persistentListOf(),
-                            isError = true
-                        )
+                    updateUiState { displayError() }
                 }
         }
     }
-}
 
-private fun StopFinderResponse.toStopsResult() =
-    StopsResult(
-        stops = locations.orEmpty().mapNotNull { it.name }.distinct()
+    private fun SearchStopState.displayData(stopsResult: List<StopResultMapper.StopResult>) = copy(
+        stops = stopsResult.toImmutableList(),
+        isLoading = false,
+        isError = false
     )
 
-data class StopsResult(val stops: List<String> = emptyList())
+    private fun SearchStopState.displayLoading() =
+        copy(isLoading = true, stops = persistentListOf(), isError = false)
+
+    private fun SearchStopState.displayError() = copy(
+        isLoading = false,
+        stops = persistentListOf(),
+        isError = true
+    )
+
+    private fun updateUiState(block: SearchStopState.() -> SearchStopState) {
+        _uiState.update(block)
+    }
+}

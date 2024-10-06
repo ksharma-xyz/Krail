@@ -3,5 +3,8 @@ plugins {
 }
 
 android {
-    namespace = "xyz.ksharma.krail.trip_planner.demain"
+    namespace = "xyz.ksharma.krail.trip_planner.domain"
+}
+dependencies {
+    implementation(projects.feature.tripPlanner.network.api)
 }

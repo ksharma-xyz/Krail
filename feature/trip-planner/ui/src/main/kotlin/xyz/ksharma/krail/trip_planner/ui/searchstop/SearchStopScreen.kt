@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip_planner.ui.searchstop
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -25,7 +26,10 @@ import kotlinx.coroutines.flow.mapLatest
 import timber.log.Timber
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
+import xyz.ksharma.krail.design.system.components.TransportModeIcon
+import xyz.ksharma.krail.design.system.model.TransportModeType
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip_planner.domain.model.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopUiEvent
 
@@ -72,10 +76,16 @@ fun SearchStopScreen(
         } else if (searchStopState.stops.isNotEmpty()) {
             searchStopState.stops.forEach { stop ->
                 item {
-                    Text(
-                        text = stop,
-                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)
-                    )
+                    Row(modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
+
+                        //stop.mode.map { it.toDisplayModeType() }
+
+//                        TransportModeIcon(transportModeType = stop.mode.toDisplayModeType())
+                        Text(
+                            text = stop.stopName + " - ${stop.mode.map { it.modeType }}",
+                            modifier = Modifier.padding()
+                        )
+                    }
                 }
             }
         } else {
@@ -85,6 +95,22 @@ fun SearchStopScreen(
         }
 
     }
+}
+
+fun TransportMode.TransportModeType.toDisplayModeType() = when (this) {
+    TransportMode.TransportModeType.Bus -> TransportModeType.Bus
+    TransportMode.TransportModeType.Ferry -> TransportModeType.Ferry
+    TransportMode.TransportModeType.LightRail -> TransportModeType.LightRail
+    TransportMode.TransportModeType.Metro -> TransportModeType.Metro
+    TransportMode.TransportModeType.SydneyTrain -> TransportModeType.Train
+    TransportMode.TransportModeType.IntercityTrain,
+    TransportMode.TransportModeType.AirportTrain,
+    TransportMode.TransportModeType.Coach,
+    TransportMode.TransportModeType.OnDemand,
+    TransportMode.TransportModeType.NightRide,
+    TransportMode.TransportModeType.Shuttle,
+    TransportMode.TransportModeType.None,
+    -> null
 }
 
 // region Previews

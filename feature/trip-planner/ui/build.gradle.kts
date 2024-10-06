@@ -10,6 +10,7 @@ android {
 
 dependencies {
     implementation(projects.core.designSystem)
+    implementation(projects.feature.tripPlanner.domain)
     implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.state)
 
