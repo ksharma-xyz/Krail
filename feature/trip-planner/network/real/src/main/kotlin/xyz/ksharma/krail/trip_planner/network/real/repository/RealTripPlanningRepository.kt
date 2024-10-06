@@ -24,8 +24,10 @@ class RealTripPlanningRepository @Inject constructor(
         stopType: StopType,
         stopSearchQuery: String,
     ): Result<StopFinderResponse> = suspendSafeResult(ioDispatcher) {
-        tripPlanningService.stopFinder(typeSf = stopType.type, nameSf = stopSearchQuery)
-            .toSafeResult()
+        tripPlanningService.stopFinder(
+            typeSf = stopType.type,
+            nameSf = stopSearchQuery
+        ).toSafeResult()
     }
 
     override suspend fun trip(

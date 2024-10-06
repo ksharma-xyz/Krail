@@ -7,7 +7,7 @@ import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 
 /**
- * https://opendata.transport.nsw.gov.au/dataset/trip-planner-apis/resource/917c66c3-8123-4a0f-b1b1-b4220f32585d
+ * Swagger: https://opendata.transport.nsw.gov.au/dataset/trip-planner-apis/resource/917c66c3-8123-4a0f-b1b1-b4220f32585d
  */
 interface TripPlanningService {
 
@@ -39,7 +39,7 @@ interface TripPlanningService {
          *
          * Available values : any, coord, poi, stop
          */
-        @Query("type_sf") typeSf: String,
+        @Query("type_sf") typeSf: String = "stop",
 
         /**
          * This is the search term that will be used to find locations.

@@ -22,15 +22,26 @@ object StopResultMapper {
         return locations.orEmpty().mapNotNull { location ->
             val stopName = location.name ?: return@mapNotNull null // Skip if stop name is null
             val stopId = location.id ?: return@mapNotNull null // Skip if stop ID is null
-
             val modes = location.productClasses.orEmpty()
                 .map { TransportMode(it) }
+
             // Filter based on selected mode types
             if (selectedModes.isNotEmpty() && !modes.any { it.modeType in selectedModes }) {
                 return@mapNotNull null
             }
 
             StopResult(stopName = stopName, stopId = stopId, mode = modes)
+        }.sortedBy { stopResult ->
+            stopResult.mode.minOfOrNull { mode ->
+                selectedModes.find { it == mode.modeType }?.priority ?: Int.MAX_VALUE
+            } ?: Int.MAX_VALUE
+
+/*
+            // Calculate priority based on the first matching selected modes
+            selectedModes.indexOfFirst { selectedMode ->
+                stopResult.mode.any { it.modeType == selectedMode }
+            }
+*/
         }
     }
 

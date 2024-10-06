@@ -39,7 +39,11 @@ class SearchStopViewModel @Inject constructor(
         viewModelScope.launch {
             tripPlanningRepository.stopFinder(stopSearchQuery = query)
                 .onSuccess { response: StopFinderResponse ->
-                    updateUiState { displayData(response.toStopResults()) }
+                    updateUiState {
+                        displayData(
+                            response.toStopResults()
+                        )
+                    }
                 }.onFailure {
                     updateUiState { displayError() }
                 }
