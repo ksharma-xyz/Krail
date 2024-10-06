@@ -3,17 +3,22 @@ package xyz.ksharma.krail.trip_planner.ui.timetable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
+import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
+import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState.Journey
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import javax.inject.Inject
 
@@ -45,6 +50,25 @@ class TimeTableViewModel @Inject constructor(
                     // TODO -
                     //   1. Create UI Model
                     //   2. Update UI State
+
+                    updateUiState {
+                        copy(
+                            journeyList = response.journeys?.map { journey ->
+
+                                val origin = journey.legs?.firstOrNull()?.origin?.departureTimeEstimated?.utcToAEST()
+                                    ?.formatTo12HourTime()
+                                val destination = journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated?.utcToAEST()
+                                    ?.formatTo12HourTime()
+
+                                Journey(
+                                    departureText = "in x mins on Platform X",
+                                    timeText = "$origin - $destination (difference)",
+                                    transportModeLineList = persistentListOf(),
+                                )
+
+                            }?.toImmutableList() ?: persistentListOf()
+                        )
+                    }
 
                     Timber.d("Journeys: ${response.journeys?.size}")
                     response.journeys?.mapIndexed { jindex, j ->
@@ -87,6 +111,10 @@ class TimeTableViewModel @Inject constructor(
             ?.formatTo12HourTime() ?: it.departureTimePlanned?.utcToAEST()?.formatTo12HourTime()
 
         if (timeArr == null && depTime == null) null else "\n\t\t\t\t Stop: ${it.name}, depTime: ${timeArr ?: depTime}"
+    }
+
+    private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {
+        _uiState.update(block)
     }
 
     companion object {
