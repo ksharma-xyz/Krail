@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -52,6 +53,7 @@ fun TextField(
     textStyle: TextStyle? = null,
     readOnly: Boolean = false,
     imeAction: ImeAction = ImeAction.Default,
+    onTextChanged: (CharSequence) -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -62,6 +64,10 @@ fun TextField(
         handleColor = KrailTheme.colors.tertiary,
         backgroundColor = KrailTheme.colors.tertiary.copy(alpha = TextSelectionBackgroundOpacity)
     )
+
+    LaunchedEffect(textFieldState.text) {
+        onTextChanged(textFieldState.text)
+    }
 
     CompositionLocalProvider(
         LocalTextColor provides KrailTheme.colors.onSecondaryContainer,
