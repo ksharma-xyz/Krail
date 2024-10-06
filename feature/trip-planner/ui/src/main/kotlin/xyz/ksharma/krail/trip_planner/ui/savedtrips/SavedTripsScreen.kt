@@ -33,7 +33,7 @@ fun SavedTripsScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.secondaryContainer)
+            .background(color = KrailTheme.colors.background)
     ) {
 
         LazyColumn(modifier = Modifier, contentPadding = PaddingValues(bottom = 300.dp)) {

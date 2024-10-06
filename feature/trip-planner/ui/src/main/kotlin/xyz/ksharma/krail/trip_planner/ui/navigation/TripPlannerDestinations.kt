@@ -16,6 +16,8 @@ import xyz.ksharma.krail.trip_planner.ui.savedtrips.SavedTripsViewModel
 import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopScreen
 import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopViewModel
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem.Companion.fromJsonString
+import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableScreen
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableViewModel
 
@@ -31,10 +33,12 @@ fun NavGraphBuilder.tripPlannerDestinations(
             val viewModel = hiltViewModel<SavedTripsViewModel>()
             val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            val fromStopItem =
-                backStackEntry.savedStateHandle.get<StopItem>(SearchStopFieldType.FROM.key)
-            val toStopItem =
-                backStackEntry.savedStateHandle.get<StopItem>(SearchStopFieldType.TO.key)
+            val fromStopItem: StopItem? =
+                backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.FROM.key)
+                    ?.let { fromJsonString(it) }
+            val toStopItem: StopItem? =
+                backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.TO.key)
+                    ?.let { fromJsonString(it) }
 
             LaunchedEffect(fromStopItem) {
                 Timber.d("fromStopItem: $fromStopItem")
@@ -57,16 +61,33 @@ fun NavGraphBuilder.tripPlannerDestinations(
                     navController.navigate(SearchStopRoute(fieldType = SearchStopFieldType.TO))
                 },
                 onSearchButtonClick = {
-
+                    if (fromStopItem != null && toStopItem != null) {
+                        navController.navigate(
+                            TimeTableRoute(
+                                fromStopId = fromStopItem.stopId,
+                                fromStopName = fromStopItem.stopName,
+                                toStopId = toStopItem.stopId,
+                                toStopName = toStopItem.stopName,
+                            )
+                        )
+                    } else {
+                        // TODO - show message - to select both stops
+                        Timber.e("Select both stops")
+                    }
                 },
             ) { event ->
                 viewModel.onEvent(event)
             }
         }
 
-        composable<TimeTableRoute> {
+        composable<TimeTableRoute> { backStackEntry ->
             val viewModel = hiltViewModel<TimeTableViewModel>()
             val timeTableState by viewModel.uiState.collectAsStateWithLifecycle()
+            val route: TimeTableRoute = backStackEntry.toRoute()
+            val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+            if (isLoading) {
+                viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(route.fromStopId, route.toStopId))
+            }
 
             TimeTableScreen(timeTableState) { event ->
                 viewModel.onEvent(event)
@@ -83,9 +104,10 @@ fun NavGraphBuilder.tripPlannerDestinations(
                 searchStopState = searchStopState,
                 onStopSelected = { stopItem ->
                     Timber.d("onStopSelected: fieldTypeKey=${route.fieldType.key} and stopItem: $stopItem")
+
                     navController.previousBackStackEntry?.savedStateHandle?.set(
                         route.fieldType.key,
-                        stopItem
+                        stopItem.toJsonString(),
                     )
                     navController.popBackStack()
                 }) { event -> viewModel.onEvent(event) }
@@ -105,7 +127,12 @@ data object TripPlannerNavRoute
 data object SavedTripsRoute
 
 @Serializable
-data object TimeTableRoute
+data class TimeTableRoute(
+    val fromStopId: String,
+    val fromStopName: String,
+    val toStopId: String,
+    val toStopName: String,
+)
 
 @Serializable
 data class SearchStopRoute(val fieldType: SearchStopFieldType)
