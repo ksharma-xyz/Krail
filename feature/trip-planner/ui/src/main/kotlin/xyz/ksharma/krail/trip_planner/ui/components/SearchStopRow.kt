@@ -2,7 +2,6 @@ package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,11 +22,14 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextFieldButton
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip_planner.ui.R as TripPlannerUiR
 
 @Composable
 fun SearchStopRow(
     modifier: Modifier = Modifier,
+    fromStopItem: StopItem? = null,
+    toStopItem: StopItem? = null,
     fromButtonClick: () -> Unit,
     toButtonClick: () -> Unit,
     onSearchButtonClick: () -> Unit = {},
@@ -48,10 +50,18 @@ fun SearchStopRow(
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             TextFieldButton(onClick = fromButtonClick) {
-                Text(text = stringResource(TripPlannerUiR.string.from_text_field_placeholder))
+                Text(
+                    text = fromStopItem?.stopName
+                        ?: stringResource(TripPlannerUiR.string.from_text_field_placeholder),
+                    maxLines = 1,
+                )
             }
             TextFieldButton(onClick = toButtonClick) {
-                Text(text = stringResource(TripPlannerUiR.string.to_text_field_placeholder))
+                Text(
+                    text = toStopItem?.stopName
+                        ?: stringResource(TripPlannerUiR.string.to_text_field_placeholder),
+                    maxLines = 1,
+                )
             }
         }
 
