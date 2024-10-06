@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -32,10 +31,8 @@ import timber.log.Timber
 import xyz.ksharma.krail.design.system.components.Divider
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
-import xyz.ksharma.krail.design.system.components.TransportModeIcon
-import xyz.ksharma.krail.design.system.model.TransportModeType
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.trip_planner.domain.model.TransportMode
+import xyz.ksharma.krail.trip_planner.ui.components.StopSearchListItem
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopUiEvent
 
@@ -77,7 +74,9 @@ fun SearchStopScreen(
         stickyHeader {
             TextField(
                 placeholder = "Search",
-                modifier = Modifier.focusRequester(focusRequester)
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .padding(bottom = 12.dp),
             ) { value ->
                 Timber.d("value: $value")
                 textFieldText = value.toString()
@@ -95,43 +94,16 @@ fun SearchStopScreen(
         } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
             searchStopState.stops.forEach { stop ->
                 item {
-                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
-                        Text(
-                            text = stop.stopName,
-                            style = KrailTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                        Row(
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp)
-                        ) {
-                            stop.mode.map { it.modeType }.forEach { modeType ->
-                                modeType?.toDisplayModeType()?.let { type ->
-                                    TransportModeIcon(transportModeType = type)
-                                }
-                            }
-                        }
-
-                        Divider()
-                    }
+                    StopSearchListItem(stop)
+                    Divider()
                 }
             }
         } else {
             item {
-                Text(text = "Display Recent Search", modifier = Modifier.padding(vertical = 16.dp))
+                Text(text = "Display Recent Search",)
             }
         }
     }
-}
-
-private fun TransportMode.TransportModeType.toDisplayModeType() = when (this) {
-    TransportMode.TransportModeType.Bus, TransportMode.TransportModeType.SchoolBus -> TransportModeType.Bus
-    TransportMode.TransportModeType.Ferry -> TransportModeType.Ferry
-    TransportMode.TransportModeType.LightRail -> TransportModeType.LightRail
-    TransportMode.TransportModeType.Metro -> TransportModeType.Metro
-    TransportMode.TransportModeType.Train -> TransportModeType.Train
-    TransportMode.TransportModeType.Coach -> TransportModeType.Coach
-    else -> null
 }
 
 // region Previews
