@@ -42,7 +42,7 @@ fun TextFieldButton(
 
     CompositionLocalProvider(
         LocalTextColor provides KrailTheme.colors.onSecondaryContainer,
-        LocalTextStyle provides KrailTheme.typography.titleLarge,
+        LocalTextStyle provides KrailTheme.typography.bodyLarge,
         LocalContentAlpha provides contentAlpha,
     ) {
         Box(

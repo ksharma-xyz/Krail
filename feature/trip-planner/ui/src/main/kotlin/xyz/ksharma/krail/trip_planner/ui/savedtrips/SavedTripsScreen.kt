@@ -17,11 +17,14 @@ import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.components.SearchStopRow
 import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripsState
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 
 @Composable
 fun SavedTripsScreen(
     savedTripsState: SavedTripsState,
     modifier: Modifier = Modifier,
+    fromStopItem: StopItem? = null,
+    toStopItem: StopItem? = null,
     fromButtonClick: () -> Unit = {},
     toButtonClick: () -> Unit = {},
     onSearchButtonClick: () -> Unit = {},
@@ -41,6 +44,8 @@ fun SavedTripsScreen(
 
         SearchStopRow(
             modifier = Modifier.align(Alignment.BottomCenter),
+            fromStopItem = fromStopItem,
+            toStopItem = toStopItem,
             fromButtonClick = fromButtonClick,
             toButtonClick = toButtonClick,
             onSearchButtonClick = onSearchButtonClick,
@@ -54,7 +59,7 @@ fun SavedTripsScreen(
 @Composable
 private fun SavedTripsScreenPreview() {
     KrailTheme {
-        SavedTripsScreen(savedTripsState = SavedTripsState())
+        SavedTripsScreen(savedTripsState = SavedTripsState(),)
     }
 }
 
