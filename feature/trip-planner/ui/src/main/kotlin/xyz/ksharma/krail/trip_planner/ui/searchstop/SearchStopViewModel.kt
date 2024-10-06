@@ -29,6 +29,7 @@ class SearchStopViewModel @Inject constructor(
     fun onEvent(event: SearchStopUiEvent) {
         when (event) {
             is SearchStopUiEvent.SearchTextChanged -> onSearchTextChanged(event.query)
+            is SearchStopUiEvent.StopSelected -> {}
         }
     }
 
