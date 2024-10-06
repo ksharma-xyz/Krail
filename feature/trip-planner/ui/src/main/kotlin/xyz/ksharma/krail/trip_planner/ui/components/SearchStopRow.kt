@@ -2,12 +2,12 @@ package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -26,33 +26,38 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.R as TripPlannerUiR
 
 @Composable
-fun SearchStopRow(modifier: Modifier = Modifier) {
+fun SearchStopRow(
+    modifier: Modifier = Modifier,
+    fromButtonClick: () -> Unit,
+    toButtonClick: () -> Unit,
+    onSearchButtonClick: () -> Unit = {},
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = KrailTheme.colors.primary,
-                shape = RoundedCornerShape(36.dp)
+                color = KrailTheme.colors.secondary,
+                shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp)
             )
-            .padding(vertical = 24.dp, horizontal = 16.dp),
-        horizontalArrangement = Arrangement.End,
+            .padding(vertical = 24.dp, horizontal = 16.dp)
+            .navigationBarsPadding(),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
 
         Column(
-            modifier = Modifier.weight(0.8f),
+            modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            TextFieldButton {
+            TextFieldButton(onClick = fromButtonClick) {
                 Text(text = stringResource(TripPlannerUiR.string.from_text_field_placeholder))
             }
-            TextFieldButton{
+            TextFieldButton(onClick = toButtonClick) {
                 Text(text = stringResource(TripPlannerUiR.string.to_text_field_placeholder))
             }
         }
 
         Column(
             modifier = Modifier
-                .weight(0.2f)
                 .padding(start = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp) // TODO - token "SearchFieldSpacing"
         ) {
@@ -75,7 +80,7 @@ fun SearchStopRow(modifier: Modifier = Modifier) {
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
                 },
-                onClick = {},
+                onClick = onSearchButtonClick,
             )
         }
     }
@@ -87,7 +92,7 @@ fun SearchStopRow(modifier: Modifier = Modifier) {
 @Composable
 private fun SearchStopColumnPreview() {
     KrailTheme {
-        SearchStopRow()
+        SearchStopRow(fromButtonClick = {}, toButtonClick = {})
     }
 }
 

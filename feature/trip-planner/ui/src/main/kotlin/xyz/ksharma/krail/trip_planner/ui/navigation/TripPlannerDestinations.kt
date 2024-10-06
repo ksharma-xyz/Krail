@@ -1,10 +1,10 @@
 package xyz.ksharma.krail.trip_planner.ui.navigation
 
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import kotlinx.serialization.Serializable
@@ -14,26 +14,31 @@ import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopScreen
 import xyz.ksharma.krail.trip_planner.ui.searchstop.SearchStopViewModel
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableScreen
 import xyz.ksharma.krail.trip_planner.ui.timetable.TimeTableViewModel
-import kotlin.reflect.KFunction0
 
 /**
  * Nested navigation graph for the trip planner feature.
  * It contains all the screens in the feature Trip Planner.
  */
 fun NavGraphBuilder.tripPlannerDestinations(
-    onSearchStopClick: () -> Unit,
-    onLoadTimeTableClick: () -> Unit,
+   navController: NavHostController, // TODO -  do not wanna add NavController here, but moving all callbacks to app module is not scaleable.
 ) {
-
-    navigation<TripPlannerNavRoute>(
-        startDestination = SavedTripsRoute,
-    ) {
+    navigation<TripPlannerNavRoute>(startDestination = SavedTripsRoute) {
         composable<SavedTripsRoute> {
             val viewModel = hiltViewModel<SavedTripsViewModel>()
             val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            SavedTripsScreen(savedTripState) { event ->
+            SavedTripsScreen(
+                savedTripsState = savedTripState,
+                fromButtonClick = {
+                    navController.navigate(SearchStopRoute)
+                },
+                toButtonClick = {
+                    navController.navigate(SearchStopRoute)
+                },
+                onSearchButtonClick = {
 
+                },
+            ) { event ->
                 viewModel.onEvent(event)
             }
         }

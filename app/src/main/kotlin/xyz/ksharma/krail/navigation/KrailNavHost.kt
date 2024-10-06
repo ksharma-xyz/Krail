@@ -3,7 +3,6 @@ package xyz.ksharma.krail.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -17,8 +16,6 @@ import kotlinx.serialization.Serializable
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.navigation.SavedTripsRoute
-import xyz.ksharma.krail.trip_planner.ui.navigation.navigateToSearchStopScreen
-import xyz.ksharma.krail.trip_planner.ui.navigation.navigateToTimeTableScreen
 import xyz.ksharma.krail.trip_planner.ui.navigation.tripPlannerDestinations
 
 /**
@@ -42,10 +39,7 @@ fun KrailNavHost() {
         startDestination = SplashScreen,
         modifier = Modifier.fillMaxSize()
     ) {
-        tripPlannerDestinations(
-            onSearchStopClick = navController::navigateToSearchStopScreen,
-            onLoadTimeTableClick = navController::navigateToTimeTableScreen,
-        )
+        tripPlannerDestinations(navController = navController)
 
         composable<SplashScreen> {
             SplashScreen {
