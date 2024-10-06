@@ -2,9 +2,14 @@ package xyz.ksharma.krail.trip_planner.ui.searchstop
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -76,41 +81,49 @@ fun SearchStopScreen(
         } else if (searchStopState.stops.isNotEmpty()) {
             searchStopState.stops.forEach { stop ->
                 item {
-                    Row(modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
-
-                        //stop.mode.map { it.toDisplayModeType() }
-
-//                        TransportModeIcon(transportModeType = stop.mode.toDisplayModeType())
+                    Column(modifier = Modifier.padding(vertical = 8.dp)) {
                         Text(
-                            text = stop.stopName + " - ${stop.mode.map { it.modeType }}",
-                            modifier = Modifier.padding()
+                            text = stop.stopName,
+                            style = KrailTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.padding(vertical = 4.dp, horizontal = 16.dp)
+                        ) {
+                            stop.mode.map { it.modeType }.forEach { modeType ->
+                                modeType?.toDisplayModeType()?.let { type ->
+                                    TransportModeIcon(transportModeType = type)
+                                }
+                            }
+                        }
+
+                        // Divider Component
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
+                                .background(color = KrailTheme.colors.onBackground.copy(alpha = 0.2f))
                         )
                     }
                 }
             }
         } else {
             item {
-                Text(text = "No stops found")
+                Text(text = "Display Recent Search", modifier = Modifier.padding(vertical = 16.dp))
             }
         }
-
     }
 }
 
-fun TransportMode.TransportModeType.toDisplayModeType() = when (this) {
-    TransportMode.TransportModeType.Bus -> TransportModeType.Bus
+private fun TransportMode.TransportModeType.toDisplayModeType() = when (this) {
+    TransportMode.TransportModeType.Bus, TransportMode.TransportModeType.SchoolBus -> TransportModeType.Bus
     TransportMode.TransportModeType.Ferry -> TransportModeType.Ferry
     TransportMode.TransportModeType.LightRail -> TransportModeType.LightRail
     TransportMode.TransportModeType.Metro -> TransportModeType.Metro
-    TransportMode.TransportModeType.SydneyTrain -> TransportModeType.Train
-    TransportMode.TransportModeType.IntercityTrain,
-    TransportMode.TransportModeType.AirportTrain,
-    TransportMode.TransportModeType.Coach,
-    TransportMode.TransportModeType.OnDemand,
-    TransportMode.TransportModeType.NightRide,
-    TransportMode.TransportModeType.Shuttle,
-    TransportMode.TransportModeType.None,
-    -> null
+    TransportMode.TransportModeType.Train -> TransportModeType.Train
+    TransportMode.TransportModeType.Coach -> TransportModeType.Coach
+    else -> null
 }
 
 // region Previews
