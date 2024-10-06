@@ -7,13 +7,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
+import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
+import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
+import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import javax.inject.Inject
 
 @HiltViewModel
 class TimeTableViewModel @Inject constructor(
+    private val tripRepository: TripPlanningRepository,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
@@ -31,6 +37,56 @@ class TimeTableViewModel @Inject constructor(
 
     private fun onLoadTimeTable(fromStopId: String?, toStopId: String?) {
         Timber.d("loadTimeTable API Call- fromStopItem: $fromStopId, toStopItem: $toStopId")
+        viewModelScope.launch {
+            require(!(fromStopId.isNullOrEmpty() || toStopId.isNullOrEmpty())) { "Invalid Stop Ids" }
+            tripRepository.trip(originStopId = fromStopId, destinationStopId = toStopId)
+                .onSuccess { response ->
+
+                    // TODO -
+                    //   1. Create UI Model
+                    //   2. Update UI State
+
+                    Timber.d("Journeys: ${response.journeys?.size}")
+                    response.journeys?.mapIndexed { jindex, j ->
+                        Timber.d("JOURNEY #${jindex + 1}")
+                        j.legs?.forEachIndexed { index, leg ->
+                            Timber.d(" LEG#${index + 1}")
+                            Timber.d(
+                                "\t\t ORG: ${
+                                    leg.origin?.departureTimeEstimated?.utcToAEST()
+                                        ?.formatTo12HourTime()
+                                }," +
+                                        " DEST: ${
+                                            leg.destination?.arrivalTimeEstimated?.utcToAEST()
+                                                ?.formatTo12HourTime()
+                                        }, " +
+                                        //     "Duration: ${leg.duration}, " +
+                                        // "transportation: ${leg.transportation?.name}",
+                                        "interchange: ${leg.interchange?.run { "[desc:$desc, type:$type] " }}" +
+                                        // "leg properties: ${leg.properties}" +
+                                        //"leg origin properties: ${leg.origin?.properties}"
+                                        "\n\t\t\t leg stopSequence: ${leg.stopSequence?.interchangeStopsList()}"
+                            )
+                        }
+                    }
+                }.onFailure {
+                    Timber.e("Error while fetching trip: $it")
+                }
+        }
+    }
+
+    /**
+     * Prints the stops for legs when interchange required.
+     */
+    private fun List<TripResponse.StopSequenceClass>.interchangeStopsList() = this.mapNotNull {
+        // TODO - figure role of ARR vs DEP time
+        val timeArr = it.arrivalTimeEstimated?.utcToAEST()
+            ?.formatTo12HourTime() ?: it.arrivalTimePlanned?.utcToAEST()?.formatTo12HourTime()
+
+        val depTime = it.departureTimeEstimated?.utcToAEST()
+            ?.formatTo12HourTime() ?: it.departureTimePlanned?.utcToAEST()?.formatTo12HourTime()
+
+        if (timeArr == null && depTime == null) null else "\n\t\t\t\t Stop: ${it.name}, depTime: ${timeArr ?: depTime}"
     }
 
     companion object {
