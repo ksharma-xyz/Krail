@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.krail.android.library)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -7,6 +8,8 @@ android {
 }
 
 dependencies {
-    implementation(libs.kotlinx.collections.immutable)
     implementation(projects.feature.tripPlanner.domain)
+
+    implementation(libs.kotlinx.collections.immutable)
+    implementation(libs.kotlinx.serialization.json)
 }

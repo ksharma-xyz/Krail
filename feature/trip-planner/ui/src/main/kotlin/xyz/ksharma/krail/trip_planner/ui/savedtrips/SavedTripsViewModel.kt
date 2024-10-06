@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import timber.log.Timber
 import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripsState
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,7 +22,13 @@ class SavedTripsViewModel @Inject constructor() : ViewModel() {
             is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.savedTrip)
             SavedTripUiEvent.LoadSavedTrips -> onLoadSavedTrips()
             is SavedTripUiEvent.SavedTripClicked -> onSavedTripClicked(event.savedTrip)
+            is SavedTripUiEvent.OnSearchButtonClicked -> onSearchButtonClicked(event.fromStopItem, event.toStopItem)
         }
+    }
+
+    private fun onSearchButtonClicked(fromStopItem: StopItem, toStopItem: StopItem) {
+        Timber.d("onSearchButtonClicked")
+
     }
 
     private fun onSavedTripClicked(savedTrip: String) {

@@ -104,11 +104,9 @@ fun SearchStopScreen(
             searchStopState.stops.forEach { stop ->
                 item {
                     StopSearchListItem(
-                        stopItem = StopItem(
-                            stopId = stop.stopId,
-                            stopName = stop.stopName,
-                            transportModes = stop.transportModeType.toImmutableSet(),
-                        ),
+                        stopId = stop.stopId,
+                        stopName = stop.stopName,
+                        transportModes = stop.transportModeType.toImmutableSet(),
                         onClick = { stopItem -> onStopSelected(stopItem) },
                     )
 
