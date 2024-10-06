@@ -21,6 +21,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.flow.collect
@@ -46,6 +49,13 @@ fun SearchStopScreen(
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
     var textFieldText: String by remember { mutableStateOf("") }
+    val keyboard = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+        keyboard?.show()
+    }
 
     LaunchedEffect(textFieldText) {
         snapshotFlow { textFieldText }
@@ -64,7 +74,10 @@ fun SearchStopScreen(
         contentPadding = PaddingValues(16.dp)
     ) {
         stickyHeader {
-            TextField(placeholder = "Search") { value ->
+            TextField(
+                placeholder = "Search",
+                modifier = Modifier.focusRequester(focusRequester)
+            ) { value ->
                 Timber.d("value: $value")
                 textFieldText = value.toString()
             }
@@ -78,7 +91,7 @@ fun SearchStopScreen(
             item {
                 Text(text = "Error")
             }
-        } else if (searchStopState.stops.isNotEmpty()) {
+        } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
             searchStopState.stops.forEach { stop ->
                 item {
                     Column(modifier = Modifier.padding(vertical = 8.dp)) {
