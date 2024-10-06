@@ -1,7 +1,7 @@
 package xyz.ksharma.krail.trip_planner.domain
 
-import xyz.ksharma.krail.trip_planner.domain.model.TransportMode
-import xyz.ksharma.krail.trip_planner.domain.model.TransportMode.TransportModeType
+import xyz.ksharma.krail.trip_planner.domain.model.TransportModeType
+import xyz.ksharma.krail.trip_planner.domain.model.transportModeType
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 
 object StopResultMapper {
@@ -23,31 +23,24 @@ object StopResultMapper {
             val stopName = location.name ?: return@mapNotNull null // Skip if stop name is null
             val stopId = location.id ?: return@mapNotNull null // Skip if stop ID is null
             val modes = location.productClasses.orEmpty()
-                .map { TransportMode(it) }
+                .mapNotNull { it.transportModeType() }
 
             // Filter based on selected mode types
-            if (selectedModes.isNotEmpty() && !modes.any { it.modeType in selectedModes }) {
+            if (selectedModes.isNotEmpty() && !modes.any { it in selectedModes }) {
                 return@mapNotNull null
             }
 
-            StopResult(stopName = stopName, stopId = stopId, mode = modes)
+            StopResult(stopName = stopName, stopId = stopId, transportModeType = modes)
         }.sortedBy { stopResult ->
-            stopResult.mode.minOfOrNull { mode ->
-                selectedModes.find { it == mode.modeType }?.priority ?: Int.MAX_VALUE
+            stopResult.transportModeType.minOfOrNull { mode ->
+                selectedModes.find { it == mode }?.priority ?: Int.MAX_VALUE
             } ?: Int.MAX_VALUE
-
-/*
-            // Calculate priority based on the first matching selected modes
-            selectedModes.indexOfFirst { selectedMode ->
-                stopResult.mode.any { it.modeType == selectedMode }
-            }
-*/
         }
     }
 
     data class StopResult(
         val stopName: String,
         val stopId: String,
-        val mode: List<TransportMode> = emptyList(),
+        val transportModeType: List<TransportModeType> = emptyList(),
     )
 }

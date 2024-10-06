@@ -20,6 +20,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -33,6 +34,7 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.components.StopSearchListItem
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopUiEvent
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 
 /**
  * TODO - implement scroll to top, when too many search results are displayed.
@@ -67,13 +69,14 @@ fun SearchStopScreen(
             .fillMaxSize()
             .background(color = KrailTheme.colors.background)
             .systemBarsPadding(),
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         stickyHeader {
             TextField(
                 placeholder = "Search",
                 modifier = Modifier
                     .focusRequester(focusRequester)
+                    .padding(horizontal = 16.dp)
                     .padding(bottom = 12.dp),
             ) { value ->
                 Timber.d("value: $value")
@@ -83,30 +86,39 @@ fun SearchStopScreen(
 
         if (searchStopState.isLoading) {
             item {
-                Text(text = "Loading...")
+                Text(
+                    text = "Loading...",
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
         } else if (searchStopState.isError) {
             item {
-                Text(text = "Error")
+                Text(
+                    text = "Error",
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
         } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
+
             searchStopState.stops.forEach { stop ->
                 item {
-                    StopSearchListItem(stop) { stop ->
-                        onEvent(
-                            SearchStopUiEvent.StopSelected(
-                                stopId = stop.stopId,
-                                stopName = stop.stopName,
-                                mode = stop.mode,
-                            )
-                        )
-                    }
+                    StopSearchListItem(
+                        stopItem = StopItem(
+                            stopId = stop.stopId,
+                            stopName = stop.stopName,
+                            transportModes = stop.transportModeType.toImmutableSet(),
+                        ),
+                    ) { stopItem -> onEvent(SearchStopUiEvent.StopSelected(stopItem)) }
+
                     Divider()
                 }
             }
         } else {
             item {
-                Text(text = "Display Recent Search")
+                Text(
+                    text = "Display Recent Search",
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                )
             }
         }
     }
