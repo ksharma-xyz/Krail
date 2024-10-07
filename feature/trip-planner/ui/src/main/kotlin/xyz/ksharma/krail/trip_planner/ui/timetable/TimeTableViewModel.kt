@@ -17,7 +17,6 @@ import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
-import xyz.ksharma.krail.trip_planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState.Journey
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
@@ -110,7 +109,7 @@ class TimeTableViewModel @Inject constructor(
     /**
      * Prints the stops for legs when interchange required.
      */
-    private fun List<TripResponse.StopSequenceClass>.interchangeStopsList() = this.mapNotNull {
+    private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNotNull {
         // TODO - figure role of ARR vs DEP time
         val timeArr = it.arrivalTimeEstimated?.utcToAEST()
             ?.formatTo12HourTime() ?: it.arrivalTimePlanned?.utcToAEST()?.formatTo12HourTime()
