@@ -38,15 +38,18 @@ fun TimeTableScreen(
         }
 
         items(timeTableState.journeyList) { journey ->
-            JourneyCardItem(departureText = journey.departureText,
+            JourneyCardItem(
+                departureText = journey.departureText,
                 timeText = journey.timeText,
-                transportModeLineList = journey.transportModeLineList.map { it.toDisplayModel() }.toImmutableList(),
-                modifier = Modifier.padding(vertical = 10.dp))
+                transportModeLineList = journey.transportModeLineList.map { it.toDisplayModel() }
+                    .toImmutableList(),
+                modifier = Modifier.padding(vertical = 10.dp)
+            )
         }
     }
 }
 
-private fun TimeTableState.TransportModeLine.toDisplayModel() =  TransportModeLine(
+private fun TimeTableState.TransportModeLine.toDisplayModel() = TransportModeLine(
     transportModeType = transportModeType.toDisplayModeType(),
     lineName = lineName,
     lineHexColorCode = lineHexColorCode
@@ -66,16 +69,14 @@ fun JourneyCardItem(
         departureText = {
             Text(
                 text = departureText,
-                style = KrailTheme.typography.bodyMedium,
                 color = KrailTheme.colors.onSecondaryContainer,
             )
         },
         timeText = {
             Text(
                 text = timeText,
-                style = KrailTheme.typography.titleSmall,
                 color = KrailTheme.colors.onSecondaryContainer,
-                modifier = Modifier.alignByBaseline()
+                modifier = Modifier.alignByBaseline(),
             )
         },
         transportModeIconRow = {
