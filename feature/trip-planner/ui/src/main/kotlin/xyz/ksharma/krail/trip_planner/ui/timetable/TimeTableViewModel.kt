@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.calculateTimeDifference
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
@@ -55,14 +56,21 @@ class TimeTableViewModel @Inject constructor(
                         copy(
                             journeyList = response.journeys?.map { journey ->
 
-                                val origin = journey.legs?.firstOrNull()?.origin?.departureTimeEstimated?.utcToAEST()
-                                    ?.formatTo12HourTime()
-                                val destination = journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated?.utcToAEST()
-                                    ?.formatTo12HourTime()
+                                val origin =
+                                    journey.legs?.firstOrNull()?.origin?.departureTimeEstimated?.utcToAEST()
+                                        ?.formatTo12HourTime()
+                                val destination =
+                                    journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated?.utcToAEST()
+                                        ?.formatTo12HourTime()
+
+                                val timeDifference = calculateTimeDifference(
+                                    startDate = journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated ?: "",
+                                    endDate = journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated ?: "",
+                                )
 
                                 Journey(
                                     departureText = "in x mins on Platform X",
-                                    timeText = "$origin - $destination (difference)",
+                                    timeText = "$origin - $destination ($timeDifference)",
                                     transportModeLineList = persistentListOf(),
                                 )
 

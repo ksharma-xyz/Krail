@@ -1,0 +1,67 @@
+JOURNEY #1
+                         LEG#1
+                        		 ORG: 6:20 PM, DEST: 6:28 PM, interchange: null
+                        			 leg stopSequence: [
+                        				 Stop: Newbridge Rd opp Mac Macartney Reserve, depTime: 6:20 PM,
+                        				 Stop: Newbridge Rd opp Holly Ave, Moorebank, depTime: 6:28 PM]
+                         LEG#2
+                        		 ORG: 6:28 PM, DEST: 6:34 PM, interchange: [desc:Fussweg, type:100]
+                        			 leg stopSequence: [
+                        				 Stop: Newbridge Rd opp Holly Ave, Moorebank, depTime: 6:28 PM,
+                        				 Stop: Newbridge Rd at Stockton Ave, Moorebank, depTime: 6:28 PM,
+                        				 Stop: Newbridge Rd after Stockton Ave, Moorebank, depTime: 6:28 PM,
+                        				 Stop: Kelso Park, Newbridge Rd, Moorebank, depTime: 6:29 PM,
+                        				 Stop: Newbridge Rd before Kelso Cres, Moorebank, depTime: 6:29 PM,
+                        				 Stop: Newbridge Rd after Kelso Cres, Moorebank, depTime: 6:29 PM,
+                        				 Stop: Newbridge Rd opp Bridges Rd, Moorebank, depTime: 6:30 PM,
+                        				 Stop: Bigge St opp Liverpool Station, Liverpool, depTime: 6:32 PM,
+                        				 Stop: Moore St opp TAFE South Western Sydney, Liverpool, depTime: 6:34 PM,
+                        				 Stop: Liverpool Station, Stand A, Liverpool, depTime: 6:34 PM]
+                         LEG#3
+                        		 ORG: 6:42 PM, DEST: 7:04 PM, interchange: [desc:Fussweg, type:100]
+                        			 leg stopSequence: [
+                        				 Stop: Liverpool Station, Platform 1, Liverpool, depTime: 6:42 PM,
+                        				 Stop: Warwick Farm Station, Platform 1, Warwick Farm, depTime: 6:44 PM,
+                        				 Stop: Cabramatta Station, Platform 1, Cabramatta, depTime: 6:47 PM,
+                        				 Stop: Canley Vale Station, Platform 1, Canley Vale, depTime: 6:49 PM,
+                        				 Stop: Fairfield Station, Platform 1, Fairfield, depTime: 6:52 PM,
+                        				 Stop: Yennora Station, Platform 1, Yennora, depTime: 6:55 PM,
+                        				 Stop: Guildford Station, Platform 1, Guildford, depTime: 6:57 PM,
+                        				 Stop: Merrylands Station, Platform 1, Merrylands, depTime: 7:00 PM,
+                        				 Stop: Granville Station, Platform 3, Granville, depTime: 7:04 PM]
+                         LEG#4
+                        		 ORG: 7:09 PM, DEST: 7:22 PM, interchange: [desc:Fussweg, type:100]
+                        			 leg stopSequence: [
+                        				 Stop: Granville Station, Platform 4, Granville, depTime: 7:09 PM,
+                        				 Stop: Harris Park Station, Platform 4, Harris Park, depTime: 7:11 PM,
+                        				 Stop: Parramatta Station, Platform 4, Parramatta, depTime: 7:13 PM,
+                        				 Stop: Westmead Station, Platform 4, Westmead, depTime: 7:16 PM,
+                        				 Stop: Seven Hills Station, Platform 4, Seven Hills, depTime: 7:22 PM]
+                         LEG#5
+                        		 ORG: 7:30 PM, DEST: 7:43 PM, interchange: [desc:Fussweg, type:100]
+                        			 leg stopSequence: [
+                        				 Stop: Seven Hills Station, Stand A, Seven Hills, depTime: 7:30 PM,
+                        				 Stop: Prospect Hwy after Lucas Rd, Seven Hills, depTime: 7:31 PM,
+                        				 Stop: Prospect Hwy before Johnson Ave, Seven Hills, depTime: 7:32 PM,
+                        				 Stop: Seven Hills Rd at Marnpar Rd, Seven Hills, depTime: 7:32 PM,
+                        				 Stop: 378 Seven Hills Rd, Seven Hills, depTime: 7:33 PM,
+                        				 Stop: Seven Hills Rd opp Monaro St, Seven Hills, depTime: 7:33 PM,
+                        				 Stop: Seven Hills Rd after Solander Rd, Kings Langley, depTime: 7:34 PM,
+                        				 Stop: Seven Hills Rd opp Seven Hills North Public School, Kings Langley, depTime: 7:34 PM,
+                        				 Stop: Old Windsor Rd after Seven Hills Rd, Kings Langley, depTime: 7:34 PM,
+                        				 Stop: Norbrik Dr at Entertainment Ln, Bella Vista, depTime: 7:37 PM,
+                        				 Stop: Norwest Private Hospital, Norbrik Dr, Bella Vista, depTime: 7:38 PM,
+                        				 Stop: Elizabeth Macarthur Dr after Norbrik Dr, Bella Vista, depTime: 7:39 PM,
+                        				 Stop: Elizabeth Macarthur Dr before Norwest Bvd, Bella Vista, depTime: 7:40 PM,
+                        				 Stop: Norwest Bvd after Lexington Dr, Bella Vista, depTime: 7:41 PM,
+                        				 Stop: Norwest Bvd after Edgewater Dr, Norwest, depTime: 7:42 PM,
+                        				 Stop: Norwest Bvd before Solent Cct, Norwest, depTime: 7:42 PM,
+                        				 Stop: Norwest Bvd opp Norwest Station, Norwest, depTime: 7:43 PM]
+                         LEG#6
+                        		 ORG: 7:51 PM, DEST: 8:02 PM, interchange: null
+                        			 leg stopSequence: [
+                        				 Stop: Norwest Station, Platform 2, Norwest, depTime: 7:51 PM,
+                        				 Stop: Bella Vista Station, Platform 2, Bella Vista, depTime: 7:54 PM,
+                        				 Stop: Kellyville Station, Platform 2, Kellyville, depTime: 7:56 PM,
+                        				 Stop: Rouse Hill Station, Platform 2, Rouse Hill, depTime: 7:59 PM,
+                        				 Stop: Tallawong Station, Platform 2, Tallawong, depTime: 8:02 PM]

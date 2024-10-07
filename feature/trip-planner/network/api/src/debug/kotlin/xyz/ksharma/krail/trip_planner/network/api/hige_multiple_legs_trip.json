@@ -1,0 +1,4652 @@
+{
+  "version": "10.2.1.42",
+  "journeys": [
+    {
+      "isAdditional": false,
+      "interchanges": 4,
+      "legs": [
+        {
+          "duration": 480,
+          "distance": 464,
+          "origin": {
+            "isGlobalId": true,
+            "id": "G217080",
+            "name": "Newbridge Rd opp Mac Macartney Reserve, Chipping Norton",
+            "disassembledName": "Newbridge Rd opp Mac Macartney Reserve",
+            "type": "stop",
+            "parent": {
+              "id": "95335010|-1",
+              "name": "Chipping Norton",
+              "type": "locality"
+            },
+            "departureTimeBaseTimetable": "2024-10-07T07:21:00Z",
+            "departureTimePlanned": "2024-10-07T07:21:00Z",
+            "departureTimeEstimated": "2024-10-07T07:20:00Z",
+            "properties": {
+              "stopId": "10121367"
+            }
+          },
+          "destination": {
+            "isGlobalId": true,
+            "id": "2170574",
+            "name": "Newbridge Rd opp Holly Ave, Moorebank",
+            "disassembledName": "Newbridge Rd opp Holly Ave",
+            "type": "platform",
+            "parent": {
+              "isGlobalId": true,
+              "id": "G2170574",
+              "name": "Newbridge Rd opp Holly Ave, Moorebank",
+              "disassembledName": "Newbridge Rd opp Holly Ave",
+              "type": "stop",
+              "parent": {
+                "id": "95335024|1",
+                "name": "Moorebank",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10121276"
+              },
+              "coord": [
+                -33.92918,
+                150.950398
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              5,
+              11
+            ],
+            "arrivalTimeBaseTimetable": "2024-10-07T07:29:00Z",
+            "arrivalTimePlanned": "2024-10-07T07:29:00Z",
+            "arrivalTimeEstimated": "2024-10-07T07:28:00Z"
+          },
+          "transportation": {
+            "product": {
+              "class": 100,
+              "name": "footpath",
+              "iconId": 100
+            },
+            "properties": {
+              "tripCode": 0,
+              "lineDisplay": "LINE"
+            }
+          },
+          "stopSequence": [
+            {
+              "isGlobalId": true,
+              "id": "G217080",
+              "name": "Newbridge Rd opp Mac Macartney Reserve",
+              "type": "stop",
+              "coord": [
+                -33.929083,
+                150.945572
+              ],
+              "parent": {
+                "id": "95335010|-1",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10121367"
+              },
+              "departureTimePlanned": "2024-10-07T07:20:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2170574",
+              "name": "Newbridge Rd opp Holly Ave, Moorebank",
+              "disassembledName": "Newbridge Rd opp Holly Ave",
+              "type": "platform",
+              "coord": [
+                -33.92918,
+                150.950398
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2170574",
+                "name": "Newbridge Rd opp Holly Ave, Moorebank",
+                "disassembledName": "Newbridge Rd opp Holly Ave",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10121276"
+                },
+                "coord": [
+                  -33.92918,
+                  150.950398
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2170574",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T07:28:00Z"
+            }
+          ]
+        },
+        {
+          "duration": 372,
+          "isRealtimeControlled": true,
+          "realtimeStatus": [
+            "MONITORED"
+          ],
+          "origin": {
+            "isGlobalId": true,
+            "id": "2170574",
+            "name": "Newbridge Rd opp Holly Ave, Moorebank",
+            "disassembledName": "Newbridge Rd opp Holly Ave",
+            "type": "platform",
+            "coord": [
+              -33.92918,
+              150.950398
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "G2170574",
+              "name": "Newbridge Rd opp Holly Ave, Moorebank",
+              "disassembledName": "Newbridge Rd opp Holly Ave",
+              "type": "stop",
+              "parent": {
+                "id": "95335024|1",
+                "name": "Moorebank",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10121276"
+              },
+              "coord": [
+                -33.92918,
+                150.950398
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              5,
+              11
+            ],
+            "departureTimeBaseTimetable": "2024-10-07T07:29:00Z",
+            "departureTimePlanned": "2024-10-07T07:29:00Z",
+            "departureTimeEstimated": "2024-10-07T07:28:00Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202023dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "occupancy": "MANY_SEATS",
+              "areaGid": "G2170574",
+              "area": "0",
+              "platform": "X1"
+            }
+          },
+          "destination": {
+            "isGlobalId": true,
+            "id": "2170805",
+            "name": "Liverpool Station, Stand A, Liverpool",
+            "disassembledName": "Liverpool Station, Stand A",
+            "type": "platform",
+            "coord": [
+              -33.924197,
+              150.927619
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "217020",
+              "name": "Liverpool Station, Stand A, Liverpool",
+              "disassembledName": "Liverpool Station, Stand A",
+              "type": "stop",
+              "parent": {
+                "id": "95335020|1",
+                "name": "Liverpool",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10101289"
+              },
+              "coord": [
+                -33.924927,
+                150.927328
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              1,
+              5,
+              11
+            ],
+            "arrivalTimeBaseTimetable": "2024-10-07T07:38:00Z",
+            "arrivalTimePlanned": "2024-10-07T07:38:00Z",
+            "arrivalTimeEstimated": "2024-10-07T07:34:12Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202024dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "occupancy": "MANY_SEATS",
+              "area": "11",
+              "platform": "A",
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "transportation": {
+            "id": "nsw:13M90: :H:sj2",
+            "name": "Sydney Buses Network M90",
+            "disassembledName": "M90",
+            "number": "M90",
+            "iconId": 5,
+            "description": "Burwood to Liverpool",
+            "product": {
+              "class": 5,
+              "name": "Sydney Buses Network",
+              "iconId": 5
+            },
+            "operator": {
+              "id": "2503",
+              "name": "Transit Systems NSW"
+            },
+            "destination": {
+              "id": "10101289",
+              "name": "Liverpool Stn",
+              "type": "stop"
+            },
+            "properties": {
+              "isTTB": true,
+              "tripCode": 240,
+              "timetablePeriod": "NSW JP",
+              "lineDisplay": "LINE",
+              "globalId": "3002",
+              "AVMSTripID": "2191465",
+              "RealtimeTripId": "2191465",
+              "OperatorURL": "http://transportnsw.info"
+            }
+          },
+          "stopSequence": [
+            {
+              "isGlobalId": true,
+              "id": "2170574",
+              "name": "Newbridge Rd opp Holly Ave, Moorebank",
+              "disassembledName": "Newbridge Rd opp Holly Ave",
+              "type": "platform",
+              "coord": [
+                -33.92918,
+                150.950398
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2170574",
+                "name": "Newbridge Rd opp Holly Ave, Moorebank",
+                "disassembledName": "Newbridge Rd opp Holly Ave",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10121276"
+                },
+                "coord": [
+                  -33.92918,
+                  150.950398
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G2170574",
+                "area": "0",
+                "platform": "X1"
+              },
+              "departureTimePlanned": "2024-10-07T07:29:00Z",
+              "departureTimeEstimated": "2024-10-07T07:28:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "217021",
+              "name": "Newbridge Rd at Stockton Ave, Moorebank",
+              "disassembledName": "Newbridge Rd at Stockton Ave",
+              "type": "platform",
+              "coord": [
+                -33.929282,
+                150.947787
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G217021",
+                "name": "Newbridge Rd at Stockton Ave, Moorebank",
+                "disassembledName": "Newbridge Rd at Stockton Ave",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10120986"
+                },
+                "coord": [
+                  -33.929282,
+                  150.947787
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G217021",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:30:00Z",
+              "departureTimePlanned": "2024-10-07T07:30:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:28:12Z",
+              "departureTimeEstimated": "2024-10-07T07:28:30Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "217022",
+              "name": "Newbridge Rd after Stockton Ave, Moorebank",
+              "disassembledName": "Newbridge Rd after Stockton Ave",
+              "type": "platform",
+              "coord": [
+                -33.929329,
+                150.945205
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G217022",
+                "name": "Newbridge Rd after Stockton Ave, Moorebank",
+                "disassembledName": "Newbridge Rd after Stockton Ave",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10120992"
+                },
+                "coord": [
+                  -33.929329,
+                  150.945205
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G217022",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T07:30:00Z",
+              "departureTimePlanned": "2024-10-07T07:30:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:28:36Z",
+              "departureTimeEstimated": "2024-10-07T07:28:42Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "217023",
+              "name": "Kelso Park, Newbridge Rd, Moorebank",
+              "disassembledName": "Kelso Park, Newbridge Rd",
+              "type": "platform",
+              "coord": [
+                -33.929448,
+                150.942605
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G217023",
+                "name": "Kelso Park, Newbridge Rd, Moorebank",
+                "disassembledName": "Kelso Park, Newbridge Rd",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10121000"
+                },
+                "coord": [
+                  -33.929449,
+                  150.942595
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G217023",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T07:31:00Z",
+              "departureTimePlanned": "2024-10-07T07:31:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:29:06Z",
+              "departureTimeEstimated": "2024-10-07T07:29:24Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "217024",
+              "name": "Newbridge Rd before Kelso Cres, Moorebank",
+              "disassembledName": "Newbridge Rd before Kelso Cres",
+              "type": "platform",
+              "coord": [
+                -33.930279,
+                150.938893
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G217024",
+                "name": "Newbridge Rd before Kelso Cres, Moorebank",
+                "disassembledName": "Newbridge Rd before Kelso Cres",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10121009"
+                },
+                "coord": [
+                  -33.93027,
+                  150.938882
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G217024",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T07:32:00Z",
+              "departureTimePlanned": "2024-10-07T07:32:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:29:36Z",
+              "departureTimeEstimated": "2024-10-07T07:29:42Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "217025",
+              "name": "Newbridge Rd after Kelso Cres, Moorebank",
+              "disassembledName": "Newbridge Rd after Kelso Cres",
+              "type": "platform",
+              "coord": [
+                -33.930374,
+                150.937351
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G217025",
+                "name": "Newbridge Rd after Kelso Cres, Moorebank",
+                "disassembledName": "Newbridge Rd after Kelso Cres",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10146746"
+                },
+                "coord": [
+                  -33.930374,
+                  150.937351
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G217025",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T07:32:00Z",
+              "departureTimePlanned": "2024-10-07T07:32:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:29:48Z",
+              "departureTimeEstimated": "2024-10-07T07:30:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "217026",
+              "name": "Newbridge Rd opp Bridges Rd, Moorebank",
+              "disassembledName": "Newbridge Rd opp Bridges Rd",
+              "type": "platform",
+              "coord": [
+                -33.928901,
+                150.932949
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G217026",
+                "name": "Newbridge Rd opp Bridges Rd, Moorebank",
+                "disassembledName": "Newbridge Rd opp Bridges Rd",
+                "type": "stop",
+                "parent": {
+                  "id": "95335024|1",
+                  "name": "Moorebank",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10121029"
+                },
+                "coord": [
+                  -33.92891,
+                  150.932949
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G217026",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T07:33:00Z",
+              "departureTimePlanned": "2024-10-07T07:33:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:30:18Z",
+              "departureTimeEstimated": "2024-10-07T07:30:24Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "217092",
+              "name": "Bigge St opp Liverpool Station, Liverpool",
+              "disassembledName": "Bigge St opp Liverpool Station",
+              "type": "platform",
+              "coord": [
+                -33.924059,
+                150.926575
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "217020",
+                "name": "Bigge St opp Liverpool Station, Liverpool",
+                "disassembledName": "Bigge St opp Liverpool Station",
+                "type": "stop",
+                "parent": {
+                  "id": "95335020|1",
+                  "name": "Liverpool",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101289"
+                },
+                "coord": [
+                  -33.924927,
+                  150.927328
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "area": "17",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:36:00Z",
+              "departureTimePlanned": "2024-10-07T07:36:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:32:42Z",
+              "departureTimeEstimated": "2024-10-07T07:33:30Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2170233",
+              "name": "Moore St opp TAFE South Western Sydney, Liverpool",
+              "disassembledName": "Moore St opp TAFE South Western Sydney",
+              "type": "platform",
+              "coord": [
+                -33.922803,
+                150.927534
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2170233",
+                "name": "Moore St opp TAFE South Western Sydney, Liverpool",
+                "disassembledName": "Moore St opp TAFE South Western Sydney",
+                "type": "stop",
+                "parent": {
+                  "id": "95335020|1",
+                  "name": "Liverpool",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10121004"
+                },
+                "coord": [
+                  -33.922767,
+                  150.927543
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "areaGid": "G2170233",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:37:00Z",
+              "departureTimePlanned": "2024-10-07T07:37:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:34:00Z",
+              "departureTimeEstimated": "2024-10-07T07:34:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2170805",
+              "name": "Liverpool Station, Stand A, Liverpool",
+              "disassembledName": "Liverpool Station, Stand A",
+              "type": "platform",
+              "coord": [
+                -33.924197,
+                150.927619
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "217020",
+                "name": "Liverpool Station, Stand A, Liverpool",
+                "disassembledName": "Liverpool Station, Stand A",
+                "type": "stop",
+                "parent": {
+                  "id": "95335020|1",
+                  "name": "Liverpool",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101289"
+                },
+                "coord": [
+                  -33.924927,
+                  150.927328
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "occupancy": "MANY_SEATS",
+                "area": "11",
+                "platform": "A",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:38:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:34:12Z"
+            }
+          ],
+          "footPathInfo": [
+            {
+              "position": "AFTER",
+              "duration": 120,
+              "footPathElem": [
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": 0,
+                  "levelTo": 0,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924197,
+                        150.927619
+                      ]
+                    },
+                    "area": 11,
+                    "platform": 0,
+                    "georef": "1002111844:27:GDAV:100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924177,
+                        150.927672
+                      ]
+                    },
+                    "area": 24,
+                    "platform": 0,
+                    "georef": "500414165:3:GDAV:100"
+                  },
+                  "attributes": {
+                    "duration": 3,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "STAIRS",
+                  "levelFrom": 0,
+                  "levelTo": 1,
+                  "level": "UP",
+                  "origin": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924177,
+                        150.927672
+                      ]
+                    },
+                    "area": 24,
+                    "platform": 0,
+                    "georef": "500414165:3:GDAV:100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924453,
+                        150.92749
+                      ]
+                    },
+                    "area": 29,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 7,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": 1,
+                  "levelTo": 1,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924453,
+                        150.92749
+                      ]
+                    },
+                    "area": 29,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924542,
+                        150.927538
+                      ]
+                    },
+                    "area": 30,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 3,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": 1,
+                  "levelTo": 1,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924542,
+                        150.927538
+                      ]
+                    },
+                    "area": 30,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924554,
+                        150.927441
+                      ]
+                    },
+                    "area": 31,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 1,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "STAIRS",
+                  "levelFrom": 1,
+                  "levelTo": 0,
+                  "level": "DOWN",
+                  "origin": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924554,
+                        150.927441
+                      ]
+                    },
+                    "area": 31,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "217020",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.924748,
+                        150.927299
+                      ]
+                    },
+                    "area": 1,
+                    "platform": 0,
+                    "georef": "500637042:1:GDAV:100"
+                  },
+                  "attributes": {
+                    "duration": 5,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                }
+              ]
+            }
+          ],
+          "footPathInfoRedundant": true,
+          "interchange": {
+            "desc": "Fussweg",
+            "type": 100,
+            "coords": [
+              [
+                -33.924189,
+                150.927614
+              ],
+              [
+                -33.924189,
+                150.927604
+              ],
+              [
+                -33.924189,
+                150.927613
+              ],
+              [
+                -33.924204,
+                150.927658
+              ],
+              [
+                -33.92439,
+                150.92755
+              ],
+              [
+                -33.924472,
+                150.927505
+              ],
+              [
+                -33.924502,
+                150.927577
+              ],
+              [
+                -33.924524,
+                150.927559
+              ],
+              [
+                -33.924539,
+                150.927541
+              ],
+              [
+                -33.924592,
+                150.927496
+              ],
+              [
+                -33.924562,
+                150.927433
+              ],
+              [
+                -33.924592,
+                150.927406
+              ],
+              [
+                -33.924733,
+                150.927289
+              ],
+              [
+                -33.924738,
+                150.927302
+              ]
+            ]
+          }
+        },
+        {
+          "duration": 1302,
+          "isRealtimeControlled": true,
+          "realtimeStatus": [
+            "MONITORED"
+          ],
+          "origin": {
+            "isGlobalId": true,
+            "id": "2170821",
+            "name": "Liverpool Station, Platform 1, Liverpool",
+            "disassembledName": "Liverpool Station, Platform 1",
+            "type": "platform",
+            "coord": [
+              -33.924748,
+              150.927299
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "217020",
+              "name": "Liverpool Station, Platform 1, Liverpool",
+              "disassembledName": "Liverpool Station, Platform 1",
+              "type": "stop",
+              "parent": {
+                "id": "95335020|1",
+                "name": "Liverpool",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10101289"
+              },
+              "coord": [
+                -33.924927,
+                150.927328
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              1,
+              5,
+              11
+            ],
+            "departureTimeBaseTimetable": "2024-10-07T07:42:30Z",
+            "departureTimePlanned": "2024-10-07T07:42:30Z",
+            "departureTimeEstimated": "2024-10-07T07:42:30Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202024dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "area": "1",
+              "platform": "LIV1",
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "destination": {
+            "isGlobalId": true,
+            "id": "2142323",
+            "name": "Granville Station, Platform 3, Granville",
+            "disassembledName": "Granville Station, Platform 3",
+            "type": "platform",
+            "coord": [
+              -33.832975,
+              151.012116
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "214240",
+              "name": "Granville Station, Platform 3, Granville",
+              "disassembledName": "Granville Station, Platform 3",
+              "type": "stop",
+              "parent": {
+                "id": "95346007|1",
+                "name": "Granville",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10101227"
+              },
+              "coord": [
+                -33.832758,
+                151.011869
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              1,
+              5,
+              11
+            ],
+            "arrivalTimeBaseTimetable": "2024-10-07T08:04:12Z",
+            "arrivalTimePlanned": "2024-10-07T08:04:12Z",
+            "arrivalTimeEstimated": "2024-10-07T08:04:12Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202025dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "area": "2",
+              "platform": "GVL3",
+              "callType": [
+                "NOBOARDING"
+              ],
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "transportation": {
+            "id": "nsw:020T2: :R:sj2",
+            "name": "Sydney Trains Network T2 Inner West & Leppington Line",
+            "disassembledName": "T2",
+            "number": "T2 Inner West & Leppington Line",
+            "iconId": 1,
+            "description": "Parramatta or Leppington to City",
+            "product": {
+              "class": 1,
+              "name": "Sydney Trains Network",
+              "iconId": 1
+            },
+            "operator": {
+              "id": "x0001",
+              "name": "Sydney Trains"
+            },
+            "destination": {
+              "id": "10101227",
+              "name": "Granville",
+              "type": "stop"
+            },
+            "properties": {
+              "isTTB": true,
+              "tripCode": 601,
+              "timetablePeriod": "NSW JP",
+              "lineDisplay": "LINE",
+              "globalId": "3001",
+              "AVMSTripID": "6--K.1307.157.4.B.8.82135625",
+              "RealtimeTripId": "6--K.1307.157.4.B.8.82135625",
+              "OperatorURL": "http://www.sydneytrains.info/"
+            }
+          },
+          "stopSequence": [
+            {
+              "isGlobalId": true,
+              "id": "2170821",
+              "name": "Liverpool Station, Platform 1, Liverpool",
+              "disassembledName": "Liverpool Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.924748,
+                150.927299
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "217020",
+                "name": "Liverpool Station, Platform 1, Liverpool",
+                "disassembledName": "Liverpool Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95335020|1",
+                  "name": "Liverpool",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101289"
+                },
+                "coord": [
+                  -33.924927,
+                  150.927328
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "1",
+                "platform": "LIV1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "departureTimePlanned": "2024-10-07T07:42:30Z",
+              "departureTimeEstimated": "2024-10-07T07:42:30Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2170831",
+              "name": "Warwick Farm Station, Platform 1, Warwick Farm",
+              "disassembledName": "Warwick Farm Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.913173,
+                150.935067
+              ],
+              "niveau": 1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "217010",
+                "name": "Warwick Farm Station, Platform 1, Warwick Farm",
+                "disassembledName": "Warwick Farm Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95335031|1",
+                  "name": "Warwick Farm",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101288"
+                },
+                "coord": [
+                  -33.913316,
+                  150.935095
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "1",
+                "AREA_NIVEAU_GIS": "1.00",
+                "area": "1",
+                "platform": "WKF1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:44:30Z",
+              "departureTimePlanned": "2024-10-07T07:45:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:44:30Z",
+              "departureTimeEstimated": "2024-10-07T07:45:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2166271",
+              "name": "Cabramatta Station, Platform 1, Cabramatta",
+              "disassembledName": "Cabramatta Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.894896,
+                150.938786
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "216620",
+                "name": "Cabramatta Station, Platform 1, Cabramatta",
+                "disassembledName": "Cabramatta Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95318005|1",
+                  "name": "Cabramatta",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101287"
+                },
+                "coord": [
+                  -33.89474,
+                  150.938876
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "1",
+                "platform": "CAB1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:47:30Z",
+              "departureTimePlanned": "2024-10-07T07:48:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:47:30Z",
+              "departureTimeEstimated": "2024-10-07T07:48:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2166281",
+              "name": "Canley Vale Station, Platform 1, Canley Vale",
+              "disassembledName": "Canley Vale Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.887265,
+                150.943556
+              ],
+              "niveau": 1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "216610",
+                "name": "Canley Vale Station, Platform 1, Canley Vale",
+                "disassembledName": "Canley Vale Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95318008|1",
+                  "name": "Canley Vale",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101286"
+                },
+                "coord": [
+                  -33.887328,
+                  150.943538
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "false",
+                "AREA_NIVEAU_DIVA": "1",
+                "area": "1",
+                "platform": "CNV1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:49:30Z",
+              "departureTimePlanned": "2024-10-07T07:50:00Z",
+              "arrivalTimeEstimated": "2024-10-07T07:49:30Z",
+              "departureTimeEstimated": "2024-10-07T07:50:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2165201",
+              "name": "Fairfield Station, Platform 1, Fairfield",
+              "disassembledName": "Fairfield Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.872456,
+                150.956864
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "216510",
+                "name": "Fairfield Station, Platform 1, Fairfield",
+                "disassembledName": "Fairfield Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95318011|1",
+                  "name": "Fairfield",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101285"
+                },
+                "coord": [
+                  -33.872245,
+                  150.957254
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "1",
+                "platform": "FLD1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:52:12Z",
+              "departureTimePlanned": "2024-10-07T07:52:42Z",
+              "arrivalTimeEstimated": "2024-10-07T07:52:12Z",
+              "departureTimeEstimated": "2024-10-07T07:52:42Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2161261",
+              "name": "Yennora Station, Platform 1, Yennora",
+              "disassembledName": "Yennora Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.864704,
+                150.970926
+              ],
+              "niveau": 1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "216120",
+                "name": "Yennora Station, Platform 1, Yennora",
+                "disassembledName": "Yennora Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95324013|1",
+                  "name": "Yennora",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101284"
+                },
+                "coord": [
+                  -33.864664,
+                  150.971053
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5
+              ],
+              "properties": {
+                "WheelchairAccess": "false",
+                "AREA_NIVEAU_DIVA": "1",
+                "area": "1",
+                "platform": "YNN1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:55:12Z",
+              "departureTimePlanned": "2024-10-07T07:55:42Z",
+              "arrivalTimeEstimated": "2024-10-07T07:55:12Z",
+              "departureTimeEstimated": "2024-10-07T07:55:42Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2161251",
+              "name": "Guildford Station, Platform 1, Guildford",
+              "disassembledName": "Guildford Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.854301,
+                150.98444
+              ],
+              "niveau": 1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "216110",
+                "name": "Guildford Station, Platform 1, Guildford",
+                "disassembledName": "Guildford Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95324003|1",
+                  "name": "Guildford",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101283"
+                },
+                "coord": [
+                  -33.854438,
+                  150.984393
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "1",
+                "area": "1",
+                "platform": "GLD1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T07:57:54Z",
+              "departureTimePlanned": "2024-10-07T07:58:24Z",
+              "arrivalTimeEstimated": "2024-10-07T07:57:54Z",
+              "departureTimeEstimated": "2024-10-07T07:58:24Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2160261",
+              "name": "Merrylands Station, Platform 1, Merrylands",
+              "disassembledName": "Merrylands Station, Platform 1",
+              "type": "platform",
+              "coord": [
+                -33.836547,
+                150.992599
+              ],
+              "niveau": 1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "216010",
+                "name": "Merrylands Station, Platform 1, Merrylands",
+                "disassembledName": "Merrylands Station, Platform 1",
+                "type": "stop",
+                "parent": {
+                  "id": "95324007|1",
+                  "name": "Merrylands",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101282"
+                },
+                "coord": [
+                  -33.836686,
+                  150.992487
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "1",
+                "area": "1",
+                "platform": "MYL1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:00:48Z",
+              "departureTimePlanned": "2024-10-07T08:01:18Z",
+              "arrivalTimeEstimated": "2024-10-07T08:00:48Z",
+              "departureTimeEstimated": "2024-10-07T08:01:18Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2142323",
+              "name": "Granville Station, Platform 3, Granville",
+              "disassembledName": "Granville Station, Platform 3",
+              "type": "platform",
+              "coord": [
+                -33.832975,
+                151.012116
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214240",
+                "name": "Granville Station, Platform 3, Granville",
+                "disassembledName": "Granville Station, Platform 3",
+                "type": "stop",
+                "parent": {
+                  "id": "95346007|1",
+                  "name": "Granville",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101227"
+                },
+                "coord": [
+                  -33.832758,
+                  151.011869
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "2",
+                "platform": "GVL3",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:04:12Z",
+              "arrivalTimeEstimated": "2024-10-07T08:04:12Z"
+            }
+          ],
+          "interchange": {
+            "desc": "Fussweg",
+            "type": 100,
+            "coords": [
+              [
+                -33.832963,
+                151.012123
+              ],
+              [
+                -33.832963,
+                151.012117
+              ],
+              [
+                -33.832955,
+                151.012108
+              ],
+              [
+                -33.832993,
+                151.012063
+              ],
+              [
+                -33.833045,
+                151.012018
+              ],
+              [
+                -33.833045,
+                151.012027
+              ]
+            ]
+          }
+        },
+        {
+          "duration": 798,
+          "isRealtimeControlled": true,
+          "realtimeStatus": [
+            "MONITORED"
+          ],
+          "origin": {
+            "isGlobalId": true,
+            "id": "2142324",
+            "name": "Granville Station, Platform 4, Granville",
+            "disassembledName": "Granville Station, Platform 4",
+            "type": "platform",
+            "coord": [
+              -33.83304,
+              151.012044
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "214240",
+              "name": "Granville Station, Platform 4, Granville",
+              "disassembledName": "Granville Station, Platform 4",
+              "type": "stop",
+              "parent": {
+                "id": "95346007|1",
+                "name": "Granville",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10101227"
+              },
+              "coord": [
+                -33.832758,
+                151.011869
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              1,
+              5,
+              11
+            ],
+            "departureTimeBaseTimetable": "2024-10-07T08:09:12Z",
+            "departureTimePlanned": "2024-10-07T08:09:12Z",
+            "departureTimeEstimated": "2024-10-07T08:09:12Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202025dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "NumberOfCars": "8",
+              "TravelInCarsFrom": "1",
+              "TravelInCarsTo": "8",
+              "TravelInCarsMessage": "any",
+              "area": "2",
+              "platform": "GVL4",
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "destination": {
+            "isGlobalId": true,
+            "id": "2147424",
+            "name": "Seven Hills Station, Platform 4, Seven Hills",
+            "disassembledName": "Seven Hills Station, Platform 4",
+            "type": "platform",
+            "coord": [
+              -33.774499,
+              150.936291
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "214710",
+              "name": "Seven Hills Station, Platform 4, Seven Hills",
+              "disassembledName": "Seven Hills Station, Platform 4",
+              "type": "stop",
+              "parent": {
+                "id": "95308035|1",
+                "name": "Seven Hills",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10101234"
+              },
+              "coord": [
+                -33.774351,
+                150.936123
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              1,
+              5,
+              11
+            ],
+            "arrivalTimeBaseTimetable": "2024-10-07T08:22:30Z",
+            "arrivalTimePlanned": "2024-10-07T08:22:30Z",
+            "arrivalTimeEstimated": "2024-10-07T08:22:30Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202026dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "area": "2",
+              "platform": "SVH4",
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "transportation": {
+            "id": "nsw:020T1:W:H:sj2",
+            "name": "Sydney Trains Network T1 North Shore & Western Line",
+            "disassembledName": "T1",
+            "number": "T1 North Shore & Western Line",
+            "iconId": 1,
+            "description": "City to Emu Plains or Richmond",
+            "product": {
+              "class": 1,
+              "name": "Sydney Trains Network",
+              "iconId": 1
+            },
+            "operator": {
+              "id": "x0001",
+              "name": "Sydney Trains"
+            },
+            "destination": {
+              "id": "10101252",
+              "name": "Penrith",
+              "type": "stop"
+            },
+            "properties": {
+              "isTTB": true,
+              "tripCode": 397,
+              "timetablePeriod": "NSW JP",
+              "lineDisplay": "LINE",
+              "globalId": "3001",
+              "AVMSTripID": "144T.1307.157.4.A.8.83030047",
+              "RealtimeTripId": "144T.1307.157.4.A.8.83030047",
+              "OperatorURL": "http://www.sydneytrains.info/"
+            }
+          },
+          "stopSequence": [
+            {
+              "isGlobalId": true,
+              "id": "2142324",
+              "name": "Granville Station, Platform 4, Granville",
+              "disassembledName": "Granville Station, Platform 4",
+              "type": "platform",
+              "coord": [
+                -33.83304,
+                151.012044
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214240",
+                "name": "Granville Station, Platform 4, Granville",
+                "disassembledName": "Granville Station, Platform 4",
+                "type": "stop",
+                "parent": {
+                  "id": "95346007|1",
+                  "name": "Granville",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101227"
+                },
+                "coord": [
+                  -33.832758,
+                  151.011869
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "2",
+                "platform": "GVL4",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "departureTimePlanned": "2024-10-07T08:09:12Z",
+              "departureTimeEstimated": "2024-10-07T08:09:12Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2150404",
+              "name": "Harris Park Station, Platform 4, Harris Park",
+              "disassembledName": "Harris Park Station, Platform 4",
+              "type": "platform",
+              "coord": [
+                -33.823512,
+                151.007463
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "215010",
+                "name": "Harris Park Station, Platform 4, Harris Park",
+                "disassembledName": "Harris Park Station, Platform 4",
+                "type": "stop",
+                "parent": {
+                  "id": "95346008|1",
+                  "name": "Harris Park",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101228"
+                },
+                "coord": [
+                  -33.823353,
+                  151.00765
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "2",
+                "platform": "HPK4",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:11:18Z",
+              "departureTimePlanned": "2024-10-07T08:11:48Z",
+              "arrivalTimeEstimated": "2024-10-07T08:11:18Z",
+              "departureTimeEstimated": "2024-10-07T08:11:48Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2150414",
+              "name": "Parramatta Station, Platform 4, Parramatta",
+              "disassembledName": "Parramatta Station, Platform 4",
+              "type": "platform",
+              "coord": [
+                -33.817551,
+                151.005133
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "215020",
+                "name": "Parramatta Station, Platform 4, Parramatta",
+                "disassembledName": "Parramatta Station, Platform 4",
+                "type": "stop",
+                "parent": {
+                  "id": "95346013|1",
+                  "name": "Parramatta",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101229"
+                },
+                "coord": [
+                  -33.81749,
+                  151.005325
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "3",
+                "platform": "PTA4",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:13:00Z",
+              "departureTimePlanned": "2024-10-07T08:14:00Z",
+              "arrivalTimeEstimated": "2024-10-07T08:13:00Z",
+              "departureTimeEstimated": "2024-10-07T08:14:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2145664",
+              "name": "Westmead Station, Platform 4, Westmead",
+              "disassembledName": "Westmead Station, Platform 4",
+              "type": "platform",
+              "coord": [
+                -33.808609,
+                150.987996
+              ],
+              "niveau": -1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214510",
+                "name": "Westmead Station, Platform 4, Westmead",
+                "disassembledName": "Westmead Station, Platform 4",
+                "type": "stop",
+                "parent": {
+                  "id": "95346020|1",
+                  "name": "Westmead",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101230"
+                },
+                "coord": [
+                  -33.808478,
+                  150.987892
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "-1",
+                "area": "2",
+                "platform": "WMD4",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:16:42Z",
+              "departureTimePlanned": "2024-10-07T08:17:12Z",
+              "arrivalTimeEstimated": "2024-10-07T08:16:42Z",
+              "departureTimeEstimated": "2024-10-07T08:17:12Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2145654",
+              "name": "Wentworthville Station, Platform 4, Wentworthville",
+              "disassembledName": "Wentworthville Station",
+              "type": "platform",
+              "coord": [
+                -33.807254,
+                150.972497
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214520",
+                "name": "Wentworthville Station, Platform 4, Wentworthville",
+                "disassembledName": "Wentworthville Station",
+                "type": "stop",
+                "parent": {
+                  "id": "95346019|1",
+                  "name": "Wentworthville",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101231"
+                },
+                "coord": [
+                  -33.807069,
+                  150.97237
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "2",
+                "platform": "WVL4"
+              }
+            },
+            {
+              "isGlobalId": true,
+              "id": "2145644",
+              "name": "Pendle Hill Station, Platform 4, Pendle Hill",
+              "disassembledName": "Pendle Hill Station",
+              "type": "platform",
+              "coord": [
+                -33.801436,
+                150.956156
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214530",
+                "name": "Pendle Hill Station, Platform 4, Pendle Hill",
+                "disassembledName": "Pendle Hill Station",
+                "type": "stop",
+                "parent": {
+                  "id": "95346014|1",
+                  "name": "Pendle Hill",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101232"
+                },
+                "coord": [
+                  -33.801204,
+                  150.95608
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "2",
+                "platform": "PDH4"
+              }
+            },
+            {
+              "isGlobalId": true,
+              "id": "2146114",
+              "name": "Toongabbie Station, Platform 4, Toongabbie",
+              "disassembledName": "Toongabbie Station",
+              "type": "platform",
+              "coord": [
+                -33.787284,
+                150.951263
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214610",
+                "name": "Toongabbie Station, Platform 4, Toongabbie",
+                "disassembledName": "Toongabbie Station",
+                "type": "stop",
+                "parent": {
+                  "id": "95308040|1",
+                  "name": "Toongabbie",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101233"
+                },
+                "coord": [
+                  -33.787386,
+                  150.95144
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "2",
+                "platform": "TGB4"
+              }
+            },
+            {
+              "isGlobalId": true,
+              "id": "2147424",
+              "name": "Seven Hills Station, Platform 4, Seven Hills",
+              "disassembledName": "Seven Hills Station, Platform 4",
+              "type": "platform",
+              "coord": [
+                -33.774499,
+                150.936291
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214710",
+                "name": "Seven Hills Station, Platform 4, Seven Hills",
+                "disassembledName": "Seven Hills Station, Platform 4",
+                "type": "stop",
+                "parent": {
+                  "id": "95308035|1",
+                  "name": "Seven Hills",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101234"
+                },
+                "coord": [
+                  -33.774351,
+                  150.936123
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "2",
+                "platform": "SVH4",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:22:30Z",
+              "arrivalTimeEstimated": "2024-10-07T08:22:30Z"
+            }
+          ],
+          "footPathInfoRedundant": true,
+          "pathDescriptions": [
+            {
+              "turnDirection": "UNKNOWN",
+              "manoeuvre": "LEAVE",
+              "name": "leave Underground right",
+              "niveau": 0,
+              "coord": [
+                -33.774508,
+                150.936292
+              ],
+              "skyDirection": 0,
+              "duration": 0,
+              "cumDuration": 0,
+              "distance": 0,
+              "cumDistance": 0,
+              "fromCoordsIndex": 0,
+              "toCoordsIndex": 1,
+              "properties": {
+                "INDOOR_TYPE": "PLATFORM_WAY"
+              }
+            },
+            {
+              "turnDirection": "STRAIGHT",
+              "manoeuvre": "KEEP",
+              "name": "",
+              "niveau": 0,
+              "coord": [
+                -33.77449,
+                150.936291
+              ],
+              "skyDirection": 180,
+              "duration": 20,
+              "cumDuration": 20,
+              "distance": 23,
+              "cumDistance": 23,
+              "fromCoordsIndex": 1,
+              "toCoordsIndex": 5,
+              "properties": {
+                "INDOOR_TYPE": "PLATFORM_WAY"
+              }
+            },
+            {
+              "turnDirection": "RIGHT",
+              "manoeuvre": "LEAVE_BUILTUPAREA",
+              "name": "sidewalk",
+              "niveau": 0,
+              "coord": [
+                -33.774451,
+                150.936084
+              ],
+              "skyDirection": 277,
+              "duration": 1,
+              "cumDuration": 21,
+              "distance": 1,
+              "cumDistance": 24,
+              "fromCoordsIndex": 5,
+              "toCoordsIndex": 6,
+              "properties": {
+                "FLOOR_LEVEL_CHANGE_DIRECTION": "UP"
+              }
+            },
+            {
+              "turnDirection": "SLIGHT_RIGHT",
+              "manoeuvre": "TURN",
+              "name": "",
+              "niveau": 1,
+              "coord": [
+                -33.774451,
+                150.936084
+              ],
+              "skyDirection": 45,
+              "duration": 32,
+              "cumDuration": 54,
+              "distance": 36,
+              "cumDistance": 60,
+              "fromCoordsIndex": 6,
+              "toCoordsIndex": 11,
+              "properties": {
+                "INDOOR_TYPE": "BUILDING_WAY"
+              }
+            },
+            {
+              "turnDirection": "SLIGHT_LEFT",
+              "manoeuvre": "LEAVE_BUILTUPAREA",
+              "name": "",
+              "niveau": 1,
+              "coord": [
+                -33.774133,
+                150.936166
+              ],
+              "skyDirection": 6,
+              "duration": 7,
+              "cumDuration": 62,
+              "distance": 8,
+              "cumDistance": 69,
+              "fromCoordsIndex": 11,
+              "toCoordsIndex": 12,
+              "properties": {
+                "FLOOR_LEVEL_CHANGE_DIRECTION": "DOWN",
+                "OUTDOOR_TYPE": "HIKING_TRAIL",
+                "TRACK_ILLUMINATED": "true"
+              }
+            },
+            {
+              "turnDirection": "STRAIGHT",
+              "manoeuvre": "ENTER_BUILTUPAREA",
+              "name": "",
+              "niveau": 0,
+              "coord": [
+                -33.7741,
+                150.936079
+              ],
+              "skyDirection": 305,
+              "duration": 19,
+              "cumDuration": 81,
+              "distance": 22,
+              "cumDistance": 91,
+              "fromCoordsIndex": 12,
+              "toCoordsIndex": 17,
+              "properties": {
+                "INDOOR_TYPE": "BUILDING_WAY"
+              }
+            },
+            {
+              "turnDirection": "RIGHT",
+              "manoeuvre": "TURN",
+              "name": "rural road",
+              "niveau": 0,
+              "coord": [
+                -33.774007,
+                150.93588
+              ],
+              "skyDirection": 312,
+              "duration": 51,
+              "cumDuration": 132,
+              "distance": 47,
+              "cumDistance": 138,
+              "fromCoordsIndex": 17,
+              "toCoordsIndex": 23
+            },
+            {
+              "turnDirection": "UNKNOWN",
+              "manoeuvre": "ENTER",
+              "name": "enter Low platform bus",
+              "niveau": 0,
+              "coord": [
+                -33.773752,
+                150.936246
+              ],
+              "skyDirection": 0,
+              "duration": 0,
+              "cumDuration": 132,
+              "distance": 0,
+              "cumDistance": 138,
+              "fromCoordsIndex": 23,
+              "toCoordsIndex": 23
+            }
+          ],
+          "interchange": {
+            "desc": "Fussweg",
+            "type": 100,
+            "coords": [
+              [
+                -33.774507,
+                150.936287
+              ],
+              [
+                -33.774486,
+                150.93629
+              ],
+              [
+                -33.774508,
+                150.93629
+              ],
+              [
+                -33.774478,
+                150.936093
+              ],
+              [
+                -33.774456,
+                150.936102
+              ],
+              [
+                -33.774456,
+                150.936084
+              ],
+              [
+                -33.774448,
+                150.936084
+              ],
+              [
+                -33.774433,
+                150.93612
+              ],
+              [
+                -33.774284,
+                150.936138
+              ],
+              [
+                -33.774269,
+                150.936147
+              ],
+              [
+                -33.774187,
+                150.936156
+              ],
+              [
+                -33.774135,
+                150.936165
+              ],
+              [
+                -33.774097,
+                150.936084
+              ],
+              [
+                -33.774082,
+                150.936057
+              ],
+              [
+                -33.774067,
+                150.935985
+              ],
+              [
+                -33.77406,
+                150.935931
+              ],
+              [
+                -33.774045,
+                150.935922
+              ],
+              [
+                -33.774008,
+                150.935877
+              ],
+              [
+                -33.77397,
+                150.93594
+              ],
+              [
+                -33.773911,
+                150.936012
+              ],
+              [
+                -33.773896,
+                150.936084
+              ],
+              [
+                -33.773873,
+                150.936156
+              ],
+              [
+                -33.773746,
+                150.936246
+              ],
+              [
+                -33.773749,
+                150.936251
+              ]
+            ]
+          }
+        },
+        {
+          "duration": 780,
+          "origin": {
+            "isGlobalId": true,
+            "id": "214732",
+            "name": "Seven Hills Station, Stand A, Seven Hills",
+            "disassembledName": "Seven Hills Station, Stand A",
+            "type": "platform",
+            "coord": [
+              -33.773761,
+              150.936268
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "214710",
+              "name": "Seven Hills Station, Stand A, Seven Hills",
+              "disassembledName": "Seven Hills Station, Stand A",
+              "type": "stop",
+              "parent": {
+                "id": "95308035|1",
+                "name": "Seven Hills",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10101234"
+              },
+              "coord": [
+                -33.774351,
+                150.936123
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              1,
+              5,
+              11
+            ],
+            "departureTimeBaseTimetable": "2024-10-07T08:30:00Z",
+            "departureTimePlanned": "2024-10-07T08:30:00Z",
+            "departureTimeEstimated": "2024-10-07T08:30:00Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202026dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "area": "11",
+              "platform": "A",
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "destination": {
+            "isGlobalId": true,
+            "id": "2153481",
+            "name": "Norwest Bvd opp Norwest Station, Norwest",
+            "disassembledName": "Norwest Bvd opp Norwest Station",
+            "type": "platform",
+            "coord": [
+              -33.734099,
+              150.963379
+            ],
+            "niveau": 0,
+            "parent": {
+              "isGlobalId": true,
+              "id": "2153477",
+              "name": "Norwest Bvd opp Norwest Station, Norwest",
+              "disassembledName": "Norwest Bvd opp Norwest Station",
+              "type": "stop",
+              "parent": {
+                "id": "95307025|1",
+                "name": "Norwest",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10104004"
+              },
+              "coord": [
+                -33.734617,
+                150.963522
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              2,
+              5,
+              11
+            ],
+            "arrivalTimeBaseTimetable": "2024-10-07T08:43:00Z",
+            "arrivalTimePlanned": "2024-10-07T08:43:00Z",
+            "arrivalTimeEstimated": "2024-10-07T08:43:00Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202027dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "0",
+              "area": "12",
+              "platform": "X2",
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "transportation": {
+            "id": "nsw:14715: :H:sj2",
+            "name": "Sydney Buses Network 715",
+            "disassembledName": "715",
+            "number": "715",
+            "iconId": 5,
+            "description": "Seven Hills to Rouse Hill Station via Norwest & Kellyville",
+            "product": {
+              "class": 5,
+              "name": "Sydney Buses Network",
+              "iconId": 5
+            },
+            "operator": {
+              "id": "2504",
+              "name": "CDC NSW R4"
+            },
+            "destination": {
+              "id": "10104007",
+              "name": "Rouse Hill Station",
+              "type": "stop"
+            },
+            "properties": {
+              "isTTB": true,
+              "tripCode": 91,
+              "timetablePeriod": "NSW JP",
+              "lineDisplay": "LINE",
+              "globalId": "3002",
+              "RealtimeTripId": "2240684"
+            }
+          },
+          "stopSequence": [
+            {
+              "isGlobalId": true,
+              "id": "214732",
+              "name": "Seven Hills Station, Stand A, Seven Hills",
+              "disassembledName": "Seven Hills Station, Stand A",
+              "type": "platform",
+              "coord": [
+                -33.773761,
+                150.936268
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "214710",
+                "name": "Seven Hills Station, Stand A, Seven Hills",
+                "disassembledName": "Seven Hills Station, Stand A",
+                "type": "stop",
+                "parent": {
+                  "id": "95308035|1",
+                  "name": "Seven Hills",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10101234"
+                },
+                "coord": [
+                  -33.774351,
+                  150.936123
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                1,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "11",
+                "platform": "A",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "departureTimePlanned": "2024-10-07T08:30:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2147250",
+              "name": "Prospect Hwy after Lucas Rd, Seven Hills",
+              "disassembledName": "Prospect Hwy after Lucas Rd",
+              "type": "platform",
+              "coord": [
+                -33.770577,
+                150.939748
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2147250",
+                "name": "Prospect Hwy after Lucas Rd, Seven Hills",
+                "disassembledName": "Prospect Hwy after Lucas Rd",
+                "type": "stop",
+                "parent": {
+                  "id": "95308035|1",
+                  "name": "Seven Hills",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118733"
+                },
+                "coord": [
+                  -33.770577,
+                  150.939737
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2147250",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:31:00Z",
+              "departureTimePlanned": "2024-10-07T08:31:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2147251",
+              "name": "Prospect Hwy before Johnson Ave, Seven Hills",
+              "disassembledName": "Prospect Hwy before Johnson Ave",
+              "type": "platform",
+              "coord": [
+                -33.768562,
+                150.942439
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2147251",
+                "name": "Prospect Hwy before Johnson Ave, Seven Hills",
+                "disassembledName": "Prospect Hwy before Johnson Ave",
+                "type": "stop",
+                "parent": {
+                  "id": "95308035|1",
+                  "name": "Seven Hills",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118740"
+                },
+                "coord": [
+                  -33.768562,
+                  150.942439
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2147251",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:32:00Z",
+              "departureTimePlanned": "2024-10-07T08:32:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "214756",
+              "name": "Seven Hills Rd at Marnpar Rd, Seven Hills",
+              "disassembledName": "Seven Hills Rd at Marnpar Rd",
+              "type": "platform",
+              "coord": [
+                -33.766284,
+                150.946327
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G214756",
+                "name": "Seven Hills Rd at Marnpar Rd, Seven Hills",
+                "disassembledName": "Seven Hills Rd at Marnpar Rd",
+                "type": "stop",
+                "parent": {
+                  "id": "95308035|1",
+                  "name": "Seven Hills",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118711"
+                },
+                "coord": [
+                  -33.766284,
+                  150.946327
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G214756",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:32:00Z",
+              "departureTimePlanned": "2024-10-07T08:32:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "214757",
+              "name": "378 Seven Hills Rd, Seven Hills",
+              "disassembledName": "378 Seven Hills Rd",
+              "type": "platform",
+              "coord": [
+                -33.764401,
+                150.948571
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G214757",
+                "name": "378 Seven Hills Rd, Seven Hills",
+                "disassembledName": "378 Seven Hills Rd",
+                "type": "stop",
+                "parent": {
+                  "id": "95308035|1",
+                  "name": "Seven Hills",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118773"
+                },
+                "coord": [
+                  -33.764401,
+                  150.948571
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G214757",
+                "area": "0",
+                "platform": "X1 ",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:33:00Z",
+              "departureTimePlanned": "2024-10-07T08:33:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "214758",
+              "name": "Seven Hills Rd opp Monaro St, Seven Hills",
+              "disassembledName": "Seven Hills Rd opp Monaro St",
+              "type": "platform",
+              "coord": [
+                -33.762677,
+                150.950347
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G214758",
+                "name": "Seven Hills Rd opp Monaro St, Seven Hills",
+                "disassembledName": "Seven Hills Rd opp Monaro St",
+                "type": "stop",
+                "parent": {
+                  "id": "95308035|1",
+                  "name": "Seven Hills",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118709"
+                },
+                "coord": [
+                  -33.762677,
+                  150.950347
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G214758",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:33:00Z",
+              "departureTimePlanned": "2024-10-07T08:33:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "214759",
+              "name": "Seven Hills Rd after Solander Rd, Kings Langley",
+              "disassembledName": "Seven Hills Rd after Solander Rd",
+              "type": "platform",
+              "coord": [
+                -33.761156,
+                150.952262
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G214759",
+                "name": "Seven Hills Rd after Solander Rd, Kings Langley",
+                "disassembledName": "Seven Hills Rd after Solander Rd",
+                "type": "stop",
+                "parent": {
+                  "id": "95308018|1",
+                  "name": "Kings Langley",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118774"
+                },
+                "coord": [
+                  -33.761156,
+                  150.952262
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G214759",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T08:34:00Z",
+              "departureTimePlanned": "2024-10-07T08:34:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "214760",
+              "name": "Seven Hills Rd opp Seven Hills North Public School, Kings Langley",
+              "disassembledName": "Seven Hills Rd opp Seven Hills North Public School",
+              "type": "platform",
+              "coord": [
+                -33.759929,
+                150.953986
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2147212",
+                "name": "Seven Hills Rd opp Seven Hills North Public School, Kings Langley",
+                "disassembledName": "Seven Hills Rd opp Seven Hills North Public School",
+                "type": "stop",
+                "parent": {
+                  "id": "95308018|1",
+                  "name": "Kings Langley",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118707"
+                },
+                "coord": [
+                  -33.759991,
+                  150.954021
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2147212",
+                "area": "0",
+                "platform": "X2",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:34:00Z",
+              "departureTimePlanned": "2024-10-07T08:34:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "215312",
+              "name": "Old Windsor Rd after Seven Hills Rd, Kings Langley",
+              "disassembledName": "Old Windsor Rd after Seven Hills Rd",
+              "type": "platform",
+              "coord": [
+                -33.75776,
+                150.954739
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G215312",
+                "name": "Old Windsor Rd after Seven Hills Rd, Kings Langley",
+                "disassembledName": "Old Windsor Rd after Seven Hills Rd",
+                "type": "stop",
+                "parent": {
+                  "id": "95308018|1",
+                  "name": "Kings Langley",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10118010"
+                },
+                "coord": [
+                  -33.75776,
+                  150.954739
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G215312",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:34:00Z",
+              "departureTimePlanned": "2024-10-07T08:34:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153460",
+              "name": "Norbrik Dr at Entertainment Ln, Bella Vista",
+              "disassembledName": "Norbrik Dr at Entertainment Ln",
+              "type": "platform",
+              "coord": [
+                -33.747248,
+                150.952389
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2153460",
+                "name": "Norbrik Dr at Entertainment Ln, Bella Vista",
+                "disassembledName": "Norbrik Dr at Entertainment Ln",
+                "type": "stop",
+                "parent": {
+                  "id": "95307004|1",
+                  "name": "Bella Vista",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10142061"
+                },
+                "coord": [
+                  -33.747248,
+                  150.952389
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2153460",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T08:37:00Z",
+              "departureTimePlanned": "2024-10-07T08:37:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153457",
+              "name": "Norwest Private Hospital, Norbrik Dr, Bella Vista",
+              "disassembledName": "Norwest Private Hospital, Norbrik Dr",
+              "type": "platform",
+              "coord": [
+                -33.744731,
+                150.954452
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2153457",
+                "name": "Norwest Private Hospital, Norbrik Dr, Bella Vista",
+                "disassembledName": "Norwest Private Hospital, Norbrik Dr",
+                "type": "stop",
+                "parent": {
+                  "id": "95307004|1",
+                  "name": "Bella Vista",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10130419"
+                },
+                "coord": [
+                  -33.744927,
+                  150.954806
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2153457",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:38:00Z",
+              "departureTimePlanned": "2024-10-07T08:38:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153408",
+              "name": "Elizabeth Macarthur Dr after Norbrik Dr, Bella Vista",
+              "disassembledName": "Elizabeth Macarthur Dr after Norbrik Dr",
+              "type": "platform",
+              "coord": [
+                -33.744999,
+                150.951423
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2153408",
+                "name": "Elizabeth Macarthur Dr after Norbrik Dr, Bella Vista",
+                "disassembledName": "Elizabeth Macarthur Dr after Norbrik Dr",
+                "type": "stop",
+                "parent": {
+                  "id": "95307004|1",
+                  "name": "Bella Vista",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10142916"
+                },
+                "coord": [
+                  -33.744999,
+                  150.951423
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2153408",
+                "area": "0",
+                "platform": "X1",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:39:00Z",
+              "departureTimePlanned": "2024-10-07T08:39:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153455",
+              "name": "Elizabeth Macarthur Dr before Norwest Bvd, Bella Vista",
+              "disassembledName": "Elizabeth Macarthur Dr before Norwest Bvd",
+              "type": "platform",
+              "coord": [
+                -33.740167,
+                150.95064
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2153455",
+                "name": "Elizabeth Macarthur Dr before Norwest Bvd, Bella Vista",
+                "disassembledName": "Elizabeth Macarthur Dr before Norwest Bvd",
+                "type": "stop",
+                "parent": {
+                  "id": "95307004|1",
+                  "name": "Bella Vista",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10130414"
+                },
+                "coord": [
+                  -33.740167,
+                  150.95064
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2153455",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T08:40:00Z",
+              "departureTimePlanned": "2024-10-07T08:40:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153148",
+              "name": "Norwest Bvd after Lexington Dr, Bella Vista",
+              "disassembledName": "Norwest Bvd after Lexington Dr",
+              "type": "platform",
+              "coord": [
+                -33.737985,
+                150.950982
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2153148",
+                "name": "Norwest Bvd after Lexington Dr, Bella Vista",
+                "disassembledName": "Norwest Bvd after Lexington Dr",
+                "type": "stop",
+                "parent": {
+                  "id": "95307004|1",
+                  "name": "Bella Vista",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10119156"
+                },
+                "coord": [
+                  -33.737993,
+                  150.951004
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2153148",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T08:41:00Z",
+              "departureTimePlanned": "2024-10-07T08:41:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153338",
+              "name": "Norwest Bvd after Edgewater Dr, Norwest",
+              "disassembledName": "Norwest Bvd after Edgewater Dr",
+              "type": "platform",
+              "coord": [
+                -33.737275,
+                150.956536
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2153338",
+                "name": "Norwest Bvd after Edgewater Dr, Norwest",
+                "disassembledName": "Norwest Bvd after Edgewater Dr",
+                "type": "stop",
+                "parent": {
+                  "id": "95307025|1",
+                  "name": "Norwest",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10119295"
+                },
+                "coord": [
+                  -33.737275,
+                  150.956536
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2153338",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T08:42:00Z",
+              "departureTimePlanned": "2024-10-07T08:42:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153339",
+              "name": "Norwest Bvd before Solent Cct, Norwest",
+              "disassembledName": "Norwest Bvd before Solent Cct",
+              "type": "platform",
+              "coord": [
+                -33.736944,
+                150.959541
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "G2153339",
+                "name": "Norwest Bvd before Solent Cct, Norwest",
+                "disassembledName": "Norwest Bvd before Solent Cct",
+                "type": "stop",
+                "parent": {
+                  "id": "95307025|1",
+                  "name": "Norwest",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10119296"
+                },
+                "coord": [
+                  -33.736944,
+                  150.959541
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "areaGid": "G2153339",
+                "area": "0",
+                "platform": "X1"
+              },
+              "arrivalTimePlanned": "2024-10-07T08:42:00Z",
+              "departureTimePlanned": "2024-10-07T08:42:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153481",
+              "name": "Norwest Bvd opp Norwest Station, Norwest",
+              "disassembledName": "Norwest Bvd opp Norwest Station",
+              "type": "platform",
+              "coord": [
+                -33.734099,
+                150.963379
+              ],
+              "niveau": 0,
+              "parent": {
+                "isGlobalId": true,
+                "id": "2153477",
+                "name": "Norwest Bvd opp Norwest Station, Norwest",
+                "disassembledName": "Norwest Bvd opp Norwest Station",
+                "type": "stop",
+                "parent": {
+                  "id": "95307025|1",
+                  "name": "Norwest",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10104004"
+                },
+                "coord": [
+                  -33.734617,
+                  150.963522
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                2,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "0",
+                "area": "12",
+                "platform": "X2",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:43:00Z"
+            }
+          ],
+          "footPathInfo": [
+            {
+              "position": "AFTER",
+              "duration": 240,
+              "footPathElem": [
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": 0,
+                  "levelTo": 0,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734099,
+                        150.963379
+                      ]
+                    },
+                    "area": 12,
+                    "platform": 0,
+                    "georef": "1002285057:50:GDAV:100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734358,
+                        150.962916
+                      ]
+                    },
+                    "area": 22,
+                    "platform": 0,
+                    "georef": "500748579:0:GDAV:100"
+                  },
+                  "attributes": {
+                    "duration": 10,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": 0,
+                  "levelTo": 0,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734358,
+                        150.962916
+                      ]
+                    },
+                    "area": 22,
+                    "platform": 0,
+                    "georef": "500748579:0:GDAV:100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734303,
+                        150.962925
+                      ]
+                    },
+                    "area": 23,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 1,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "ESCALATOR",
+                  "levelFrom": 0,
+                  "levelTo": -1,
+                  "level": "DOWN",
+                  "origin": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734303,
+                        150.962925
+                      ]
+                    },
+                    "area": 23,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734095,
+                        150.963239
+                      ]
+                    },
+                    "area": 25,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 5,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": -1,
+                  "levelTo": -1,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734095,
+                        150.963239
+                      ]
+                    },
+                    "area": 25,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734449,
+                        150.963708
+                      ]
+                    },
+                    "area": 26,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 10,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": -1,
+                  "levelTo": -1,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734449,
+                        150.963708
+                      ]
+                    },
+                    "area": 26,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734329,
+                        150.9638
+                      ]
+                    },
+                    "area": 27,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 3,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "LEVEL",
+                  "levelFrom": -1,
+                  "levelTo": -1,
+                  "level": "LEVEL",
+                  "origin": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734329,
+                        150.9638
+                      ]
+                    },
+                    "area": 27,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734347,
+                        150.963822
+                      ]
+                    },
+                    "area": 28,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "attributes": {
+                    "duration": 1,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                },
+                {
+                  "description": "",
+                  "type": "ESCALATOR",
+                  "levelFrom": -1,
+                  "levelTo": -2,
+                  "level": "DOWN",
+                  "origin": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734347,
+                        150.963822
+                      ]
+                    },
+                    "area": 28,
+                    "platform": 0,
+                    "georef": "0:0::100"
+                  },
+                  "destination": {
+                    "location": {
+                      "id": "2153477",
+                      "isGlobalId": true,
+                      "type": "stop",
+                      "coord": [
+                        -33.734334,
+                        150.963918
+                      ]
+                    },
+                    "area": 1,
+                    "platform": 0,
+                    "georef": "1003021759:4:GDAV:100"
+                  },
+                  "attributes": {
+                    "duration": 5,
+                    "distance": 0,
+                    "narrowestWidth": -1,
+                    "elevLength": 0,
+                    "elevWidth": 0,
+                    "elevDoorWidth": 0,
+                    "rampLength": 0,
+                    "rampWidth": 0,
+                    "rampInclination": 0,
+                    "numberSteps": 0,
+                    "maxStepHeight": 0
+                  },
+                  "openingHours": []
+                }
+              ]
+            }
+          ],
+          "interchange": {
+            "desc": "Fussweg",
+            "type": 100,
+            "coords": [
+              [
+                -33.734148,
+                150.963442
+              ],
+              [
+                -33.734364,
+                150.962922
+              ],
+              [
+                -33.734364,
+                150.962922
+              ],
+              [
+                -33.734303,
+                150.962925
+              ],
+              [
+                -33.734303,
+                150.962925
+              ],
+              [
+                -33.734095,
+                150.963239
+              ],
+              [
+                -33.734095,
+                150.963239
+              ],
+              [
+                -33.734449,
+                150.963708
+              ],
+              [
+                -33.734449,
+                150.963708
+              ],
+              [
+                -33.734329,
+                150.9638
+              ],
+              [
+                -33.734329,
+                150.9638
+              ],
+              [
+                -33.734347,
+                150.963822
+              ],
+              [
+                -33.734347,
+                150.963822
+              ],
+              [
+                -33.734339,
+                150.963915
+              ]
+            ]
+          }
+        },
+        {
+          "duration": 612,
+          "isRealtimeControlled": true,
+          "realtimeStatus": [
+            "MONITORED"
+          ],
+          "origin": {
+            "isGlobalId": true,
+            "id": "2153405",
+            "name": "Norwest Station, Platform 2, Norwest",
+            "disassembledName": "Norwest Station, Platform 2",
+            "type": "platform",
+            "coord": [
+              -33.734334,
+              150.963918
+            ],
+            "niveau": -2,
+            "parent": {
+              "isGlobalId": true,
+              "id": "2153477",
+              "name": "Norwest Station, Platform 2, Norwest",
+              "disassembledName": "Norwest Station, Platform 2",
+              "type": "stop",
+              "parent": {
+                "id": "95307025|1",
+                "name": "Norwest",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10104004"
+              },
+              "coord": [
+                -33.734617,
+                150.963522
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              2,
+              5,
+              11
+            ],
+            "departureTimeBaseTimetable": "2024-10-07T08:51:54Z",
+            "departureTimePlanned": "2024-10-07T08:51:54Z",
+            "departureTimeEstimated": "2024-10-07T08:51:54Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202027dep_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "-2",
+              "AREA_NIVEAU_GIS": "-2.00",
+              "area": "1",
+              "platform": "NWZ2",
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "destination": {
+            "isGlobalId": true,
+            "id": "2155269",
+            "name": "Tallawong Station, Platform 2, Tallawong",
+            "disassembledName": "Tallawong Station, Platform 2",
+            "type": "platform",
+            "coord": [
+              -33.691705,
+              150.905653
+            ],
+            "niveau": -1,
+            "parent": {
+              "isGlobalId": true,
+              "id": "2155384",
+              "name": "Tallawong Station, Platform 2, Tallawong",
+              "disassembledName": "Tallawong Station, Platform 2",
+              "type": "stop",
+              "parent": {
+                "id": "95308057|1",
+                "name": "Tallawong",
+                "type": "locality"
+              },
+              "properties": {
+                "stopId": "10104008"
+              },
+              "coord": [
+                -33.691631,
+                150.906006
+              ],
+              "niveau": 0
+            },
+            "modes": [
+              2,
+              5
+            ],
+            "arrivalTimeBaseTimetable": "2024-10-07T09:02:06Z",
+            "arrivalTimePlanned": "2024-10-07T09:02:06Z",
+            "arrivalTimeEstimated": "2024-10-07T09:02:06Z",
+            "properties": {
+              "downloads": [
+                {
+                  "type": "RM",
+                  "url": "FILELOAD?Filename=6456_18202028arr_6456_7276_113336093_000667d.pdf"
+                }
+              ],
+              "WheelchairAccess": "true",
+              "AREA_NIVEAU_DIVA": "-1",
+              "AREA_NIVEAU_GIS": "-1.00",
+              "area": "1",
+              "platform": "TLA2",
+              "callType": [
+                "NOBOARDING"
+              ],
+              "accessArray": [
+                {
+                  "stoppointAccess": {
+                    "equipment": 0,
+                    "maxWeight": 0,
+                    "distanceTrack": 0,
+                    "lengthAvail": 0,
+                    "widthAvail": 0,
+                    "attributes": 0
+                  }
+                }
+              ]
+            }
+          },
+          "transportation": {
+            "id": "nsw:030M1: :H:sj2",
+            "name": "Sydney Metro Network M1 Metro North West & Bankstown Line",
+            "disassembledName": "M1",
+            "number": "M1 Metro North West & Bankstown Line",
+            "iconId": 24,
+            "description": "Sydenham to Tallawong",
+            "product": {
+              "class": 2,
+              "name": "Sydney Metro Network",
+              "iconId": 2
+            },
+            "operator": {
+              "id": "SMNW",
+              "name": "Sydney Metro"
+            },
+            "destination": {
+              "id": "10104008",
+              "name": "Tallawong",
+              "type": "stop"
+            },
+            "properties": {
+              "isTTB": true,
+              "tripCode": 519,
+              "timetablePeriod": "NSW JP",
+              "lineDisplay": "LINE",
+              "globalId": "3001",
+              "AVMSTripID": "0051-001-106-015:1000",
+              "RealtimeTripId": "0051-001-106-015:1000",
+              "OperatorURL": "http://transportnsw.info",
+              "FrequencyLine": "1"
+            }
+          },
+          "stopSequence": [
+            {
+              "isGlobalId": true,
+              "id": "2153405",
+              "name": "Norwest Station, Platform 2, Norwest",
+              "disassembledName": "Norwest Station, Platform 2",
+              "type": "platform",
+              "coord": [
+                -33.734334,
+                150.963918
+              ],
+              "niveau": -2,
+              "parent": {
+                "isGlobalId": true,
+                "id": "2153477",
+                "name": "Norwest Station, Platform 2, Norwest",
+                "disassembledName": "Norwest Station, Platform 2",
+                "type": "stop",
+                "parent": {
+                  "id": "95307025|1",
+                  "name": "Norwest",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10104004"
+                },
+                "coord": [
+                  -33.734617,
+                  150.963522
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                2,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "-2",
+                "AREA_NIVEAU_GIS": "-2.00",
+                "area": "1",
+                "platform": "NWZ2",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "departureTimePlanned": "2024-10-07T08:51:54Z",
+              "departureTimeEstimated": "2024-10-07T08:51:54Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2153403",
+              "name": "Bella Vista Station, Platform 2, Bella Vista",
+              "disassembledName": "Bella Vista Station, Platform 2",
+              "type": "platform",
+              "coord": [
+                -33.730719,
+                150.944037
+              ],
+              "niveau": -1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "2153478",
+                "name": "Bella Vista Station, Platform 2, Bella Vista",
+                "disassembledName": "Bella Vista Station, Platform 2",
+                "type": "stop",
+                "parent": {
+                  "id": "95307004|1",
+                  "name": "Bella Vista",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10104005"
+                },
+                "coord": [
+                  -33.730566,
+                  150.94402
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                2,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "-1",
+                "area": "1",
+                "platform": "BEV2",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:54:00Z",
+              "departureTimePlanned": "2024-10-07T08:54:30Z",
+              "arrivalTimeEstimated": "2024-10-07T08:54:00Z",
+              "departureTimeEstimated": "2024-10-07T08:54:30Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2155266",
+              "name": "Kellyville Station, Platform 2, Kellyville",
+              "disassembledName": "Kellyville Station, Platform 2",
+              "type": "platform",
+              "coord": [
+                -33.713519,
+                150.935227
+              ],
+              "niveau": 2,
+              "parent": {
+                "isGlobalId": true,
+                "id": "2155382",
+                "name": "Kellyville Station, Platform 2, Kellyville",
+                "disassembledName": "Kellyville Station, Platform 2",
+                "type": "stop",
+                "parent": {
+                  "id": "95307011|1",
+                  "name": "Kellyville",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10104006"
+                },
+                "coord": [
+                  -33.713374,
+                  150.935231
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                2,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "2",
+                "AREA_NIVEAU_GIS": "2.00",
+                "area": "2",
+                "platform": "KLV2",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:56:36Z",
+              "departureTimePlanned": "2024-10-07T08:57:06Z",
+              "arrivalTimeEstimated": "2024-10-07T08:56:36Z",
+              "departureTimeEstimated": "2024-10-07T08:57:06Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2155268",
+              "name": "Rouse Hill Station, Platform 2, Rouse Hill",
+              "disassembledName": "Rouse Hill Station, Platform 2",
+              "type": "platform",
+              "coord": [
+                -33.692016,
+                150.924263
+              ],
+              "niveau": 2,
+              "parent": {
+                "isGlobalId": true,
+                "id": "2155383",
+                "name": "Rouse Hill Station, Platform 2, Rouse Hill",
+                "disassembledName": "Rouse Hill Station, Platform 2",
+                "type": "stop",
+                "parent": {
+                  "id": "95307020|1",
+                  "name": "Rouse Hill",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10104007"
+                },
+                "coord": [
+                  -33.691812,
+                  150.924168
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                2,
+                5,
+                11
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "2",
+                "AREA_NIVEAU_GIS": "2.00",
+                "area": "2",
+                "platform": "ROU2",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T08:59:30Z",
+              "departureTimePlanned": "2024-10-07T09:00:00Z",
+              "arrivalTimeEstimated": "2024-10-07T08:59:30Z",
+              "departureTimeEstimated": "2024-10-07T09:00:00Z"
+            },
+            {
+              "isGlobalId": true,
+              "id": "2155269",
+              "name": "Tallawong Station, Platform 2, Tallawong",
+              "disassembledName": "Tallawong Station, Platform 2",
+              "type": "platform",
+              "coord": [
+                -33.691705,
+                150.905653
+              ],
+              "niveau": -1,
+              "parent": {
+                "isGlobalId": true,
+                "id": "2155384",
+                "name": "Tallawong Station, Platform 2, Tallawong",
+                "disassembledName": "Tallawong Station, Platform 2",
+                "type": "stop",
+                "parent": {
+                  "id": "95308057|1",
+                  "name": "Tallawong",
+                  "type": "locality"
+                },
+                "properties": {
+                  "stopId": "10104008"
+                },
+                "coord": [
+                  -33.691631,
+                  150.906006
+                ],
+                "niveau": 0
+              },
+              "modes": [
+                2,
+                5
+              ],
+              "properties": {
+                "WheelchairAccess": "true",
+                "AREA_NIVEAU_DIVA": "-1",
+                "AREA_NIVEAU_GIS": "-1.00",
+                "area": "1",
+                "platform": "TLA2",
+                "accessArray": [
+                  {
+                    "stoppointAccess": {
+                      "equipment": 0,
+                      "maxWeight": 0,
+                      "distanceTrack": 0,
+                      "lengthAvail": 0,
+                      "widthAvail": 0,
+                      "attributes": 0
+                    }
+                  }
+                ]
+              },
+              "arrivalTimePlanned": "2024-10-07T09:02:06Z",
+              "arrivalTimeEstimated": "2024-10-07T09:02:06Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

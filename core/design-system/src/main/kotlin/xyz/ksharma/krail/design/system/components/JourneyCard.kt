@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.model.TransportModeLine
 import xyz.ksharma.krail.design.system.model.TransportModeType.Bus
 import xyz.ksharma.krail.design.system.model.TransportModeType.Train
@@ -26,10 +28,14 @@ fun JourneyCard(
         modifier = modifier,
         content = {
             Row(modifier = Modifier.fillMaxWidth()) {
-                departureText()
+                CompositionLocalProvider(LocalTextStyle provides KrailTheme.typography.bodyMedium) {
+                    departureText()
+                }
             }
             Row(modifier = Modifier.fillMaxWidth()) {
-                timeText()
+                CompositionLocalProvider(LocalTextStyle provides KrailTheme.typography.bodyMedium) {
+                    timeText()
+                }
             }
             Row(
                 modifier = Modifier
@@ -53,14 +59,12 @@ private fun JourneyCardTrainPreview() {
             departureText = {
                 Text(
                     text = "in 5 mins on Platform 1",
-                    style = KrailTheme.typography.bodyMedium,
                     color = KrailTheme.colors.onSecondaryContainer,
                 )
             },
             timeText = {
                 Text(
                     text = "8:25am - 8:40am (23 mins)",
-                    style = KrailTheme.typography.titleSmall,
                     color = KrailTheme.colors.onSecondaryContainer,
                     modifier = Modifier.alignByBaseline()
                 )
@@ -80,20 +84,21 @@ private fun JourneyCardMultipleModesPreview() {
             departureText = {
                 Text(
                     text = "in 5 mins on Platform 1",
-                    style = KrailTheme.typography.bodyMedium,
                     color = KrailTheme.colors.onSecondaryContainer,
                 )
             },
             timeText = {
                 Text(
                     text = "8:25am - 8:40am (23 mins)",
-                    style = KrailTheme.typography.titleSmall,
                     color = KrailTheme.colors.onSecondaryContainer,
                     modifier = Modifier.alignByBaseline()
                 )
             },
             transportModeIconRow = {
-                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
 
                     TransportModeInfo(transportModeLine = TransportModeLine(Train, "T4", "#005aa3"))
 
