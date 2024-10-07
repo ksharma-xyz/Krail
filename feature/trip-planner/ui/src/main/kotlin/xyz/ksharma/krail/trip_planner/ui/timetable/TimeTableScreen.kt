@@ -32,28 +32,45 @@ fun TimeTableScreen(
     modifier: Modifier = Modifier,
     onEvent: (TimeTableUiEvent) -> Unit = {},
 ) {
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(bottom = 100.dp)) {
+    LazyColumn(modifier = modifier, contentPadding = PaddingValues()) {
         item {
             TitleBar(title = stringResource(R.string.time_table_screen_title))
         }
 
-        items(timeTableState.journeyList) { journey ->
-            JourneyCardItem(
-                departureText = journey.departureText,
-                timeText = journey.timeText,
-                transportModeLineList = journey.transportModeLineList.map { it.toDisplayModel() }
-                    .toImmutableList(),
-                modifier = Modifier.padding(vertical = 10.dp)
-            )
+        if (timeTableState.isLoading) {
+            item {
+                Text("Loading...", modifier = Modifier.padding(horizontal = 16.dp))
+            }
+        } else if (timeTableState.journeyList.isNotEmpty()) {
+            items(timeTableState.journeyList) { journey ->
+                JourneyCardItem(
+                    departureText = "in " + journey.timeText + " on " + journey.platformText,
+                    timeText = journey.originTime + " - " + journey.destinationTime + " (${journey.travelTime})",
+                    transportModeLineList = journey.transportModeLines.map {
+                        val displayModeType = it.transportModeType.toDisplayModeType()
+                        TransportModeLine(
+                            transportModeType = displayModeType,
+                            lineName = it.lineName,
+                            lineHexColorCode = displayModeType.hexColorCode
+                        )
+                    }.toImmutableList(),
+                    modifier = Modifier.padding(vertical = 10.dp)
+                )
+            }
+        }
+        else {
+            item {
+                Text("No data found")
+            }
         }
     }
 }
-
+/*
 private fun TimeTableState.TransportModeLine.toDisplayModel() = TransportModeLine(
     transportModeType = transportModeType.toDisplayModeType(),
     lineName = lineName,
     lineHexColorCode = lineHexColorCode
-)
+)*/
 
 @Composable
 fun JourneyCardItem(

@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip_planner.ui.timetable
 
+import xyz.ksharma.krail.trip_planner.domain.model.toTransportModeType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,13 +13,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.calculateTimeDifference
+import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.aestToHHMM
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
-import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState.Journey
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import javax.inject.Inject
 
@@ -42,6 +42,9 @@ class TimeTableViewModel @Inject constructor(
 
     private fun onLoadTimeTable(fromStopId: String?, toStopId: String?) {
         Timber.d("loadTimeTable API Call- fromStopItem: $fromStopId, toStopItem: $toStopId")
+
+        updateUiState { copy(isLoading = true) }
+
         viewModelScope.launch {
             require(!(fromStopId.isNullOrEmpty() || toStopId.isNullOrEmpty())) { "Invalid Stop Ids" }
             tripRepository.trip(originStopId = fromStopId, destinationStopId = toStopId)
@@ -53,24 +56,38 @@ class TimeTableViewModel @Inject constructor(
 
                     updateUiState {
                         copy(
+                            isLoading = false,
                             journeyList = response.journeys?.map { journey ->
 
-                                val origin =
-                                    journey.legs?.firstOrNull()?.origin?.departureTimeEstimated?.utcToAEST()
-                                        ?.formatTo12HourTime()
-                                val destination =
-                                    journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated?.utcToAEST()
-                                        ?.formatTo12HourTime()
+                                // TODO -
+                                //  1. Sanitise data in domain layer.
+                                //  2. Pass non null items only to display in ViewModel.
 
-                                val timeDifference = calculateTimeDifference(
-                                    startDate = journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated ?: "",
-                                    endDate = journey.legs?.lastOrNull()?.destination?.arrivalTimeEstimated ?: "",
-                                )
+                                val firstLeg = journey.legs?.firstOrNull()
+                                val lastLeg = journey.legs?.lastOrNull()
 
-                                Journey(
-                                    departureText = "in x mins on Platform X",
-                                    timeText = "$origin - $destination ($timeDifference)",
-                                    transportModeLineList = persistentListOf(),
+                                val originTime = firstLeg?.origin?.departureTimeEstimated ?: firstLeg?.origin?.departureTimePlanned
+                                val arrivalTime  = lastLeg?.destination?.arrivalTimeEstimated
+                                    ?: lastLeg?.destination?.arrivalTimePlanned
+
+                                TimeTableState.JourneyCardInfo(
+                                    timeText = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL,",
+                                    platformText = firstLeg?.stopSequence?.firstOrNull()?.disassembledName
+                                        ?: "NULL",
+                                    originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+                                    destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+                                    travelTime = "${
+                                        ((journey.legs?.mapNotNull { it.duration }?.sum()) ?: 0)
+                                                % 60
+                                    } min",
+                                    transportModeLines = journey.legs?.mapNotNull { leg ->
+                                        leg.transportation?.product?.productClass?.toInt()?.toTransportModeType()?.let { transportModeType ->
+                                            TimeTableState.TransportModeLine(
+                                                transportModeType = transportModeType,
+                                                lineName = leg.transportation?.disassembledName ?: "NULL"
+                                            )
+                                        }
+                                    }?.toImmutableList() ?: persistentListOf(),
                                 )
 
                             }?.toImmutableList() ?: persistentListOf()

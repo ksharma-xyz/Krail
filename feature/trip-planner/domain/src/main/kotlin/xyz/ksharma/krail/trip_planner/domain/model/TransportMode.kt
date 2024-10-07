@@ -21,7 +21,7 @@ enum class TransportModeType(val modeName: String, val priority: Int, productCla
 /**
  * Map product class number to an internal concrete type for the transport mode.
  */
-fun Int.transportModeType(): TransportModeType? = when (this) {
+fun Int.toTransportModeType(): TransportModeType? = when (this) {
     1 -> TransportModeType.Train
     2 -> TransportModeType.Metro
     4 -> TransportModeType.LightRail
