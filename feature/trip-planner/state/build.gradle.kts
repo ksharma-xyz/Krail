@@ -8,8 +8,6 @@ android {
 }
 
 dependencies {
-    implementation(projects.feature.tripPlanner.domain)
-
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.kotlinx.serialization.json)
 }

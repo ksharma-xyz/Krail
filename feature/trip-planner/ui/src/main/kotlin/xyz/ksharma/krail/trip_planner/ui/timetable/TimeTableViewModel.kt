@@ -1,6 +1,6 @@
 package xyz.ksharma.krail.trip_planner.ui.timetable
 
-import xyz.ksharma.krail.trip_planner.domain.model.toTransportModeType
+import xyz.ksharma.krail.trip_planner.ui.state.toTransportModeType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

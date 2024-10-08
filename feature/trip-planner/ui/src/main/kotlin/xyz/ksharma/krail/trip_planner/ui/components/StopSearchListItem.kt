@@ -26,7 +26,7 @@ fun StopSearchListItem(
     stopName: String,
     stopId: String,
     modifier: Modifier = Modifier,
-    transportModes: ImmutableSet<xyz.ksharma.krail.trip_planner.domain.model.TransportModeType> = persistentSetOf(),
+    transportModes: ImmutableSet<xyz.ksharma.krail.trip_planner.ui.state.TransportModeType> = persistentSetOf(),
     onClick: (StopItem) -> Unit = {},
 ) {
     Column(
@@ -60,15 +60,15 @@ fun StopSearchListItem(
     }
 }
 
-internal fun xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.toDisplayModeType(): TransportModeType =
+internal fun xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.toDisplayModeType(): TransportModeType =
     when (this) {
-        xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Train -> TransportModeType.Train
-        xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Metro -> TransportModeType.Metro
-        xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Ferry -> TransportModeType.Ferry
-        xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Bus -> TransportModeType.Bus
-        xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.LightRail -> TransportModeType.LightRail
-        xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.SchoolBus -> TransportModeType.Bus
-        xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Coach -> TransportModeType.Coach
+        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Train -> TransportModeType.Train
+        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Metro -> TransportModeType.Metro
+        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Ferry -> TransportModeType.Ferry
+        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Bus -> TransportModeType.Bus
+        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.LightRail -> TransportModeType.LightRail
+        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.SchoolBus -> TransportModeType.Bus
+        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Coach -> TransportModeType.Coach
     }
 
 // region Preview
@@ -81,8 +81,8 @@ private fun StopSearchListItemPreview() {
             stopId = "123",
             stopName = "Stop Name",
             transportModes = persistentSetOf(
-                xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Bus,
-                xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.LightRail,
+                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Bus,
+                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.LightRail,
             ),
             modifier = Modifier.background(color = KrailTheme.colors.background),
         )
@@ -97,8 +97,8 @@ private fun StopSearchListItemLongNamePreview() {
             stopId = "123",
             stopName = "This is a very long stop name that should wrap to the next line",
             transportModes = persistentSetOf(
-                xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Train,
-                xyz.ksharma.krail.trip_planner.domain.model.TransportModeType.Ferry,
+                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Train,
+                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Ferry,
             ),
             modifier = Modifier.background(color = KrailTheme.colors.background),
         )
