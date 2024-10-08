@@ -77,15 +77,6 @@ data class TripResponse(
         @SerialName("footPathInfo") val footPathInfo: List<FootPathInfo>? = null,
 
         /**
-         * This elements contains a list of coordinates that this journey leg follows. A line between
-         * can be plotted between these coordinates in order when representing the journey on a map
-         * in order to show where the vehicle travels (or for a walking leg, the path to be walked).
-         *
-         * first value is the latitude, the second value is the longitude.
-         */
-        // Ignore @SerialName("coords") val coords: List<List<Double>>? = null,
-
-        /**
          * This element describes a single information message that may be associated with a journey leg.
          * The data in this is similar to that from add_info endpoint, but is presented differently.
          */
@@ -97,22 +88,10 @@ data class TripResponse(
          * not enough to constitute a standalone walking leg.
          */
         @SerialName("interchange") val interchange: Interchange? = null,
-
-        // Ignore @SerialName("properties") val properties: LegProperties? = null,
     )
 
     @Serializable
     data class StopSequence(
-
-        /**
-         * Describes a parent location. Locations are hierarchical, mean a location has a parent, and
-         * a location may have any number of child locations. A parent location is often included
-         * with locations, which can help traverse the location tree.
-         */
-        // Ignore @SerialName("parent") val parent: Parent? = null,
-
-        // Ignore @SerialName("coord") val coord: List<Double>? = null,
-
         /**
          * A timestamp in YYYY-MM-DDTHH:MM:SSZ format that indicates the estimated arrival time.
          * If real-time information is available then this timestamp is the real-time estimate,
@@ -170,18 +149,6 @@ data class TripResponse(
          */
         @SerialName("properties") val properties: DestinationProperties? = null,
     )
-
-    /* Ignore
-    @Serializable
-    data class Parent(
-        @SerialName("parent") val parent: Parent? = null,
-        /** This is the short version of the location name, which does not include the suburb or other information. */
-        @SerialName("disassembledName") val disassembledName: String? = null,
-        //This is the long version of the location name, which may include the suburb or other information.
-        @SerialName("name") val name: String? = null,
-        @SerialName("id") val id: String? = null,
-        @SerialName("type") val type: String? = null,
-    )*/
 
     @Serializable
     data class DestinationProperties(
@@ -294,21 +261,6 @@ data class TripResponse(
          */
         @SerialName("desc") val desc: String? = null,
     )
-
-    /* // Ignore use stopSequence.properties.WheelchairAccess
-    @Serializable
-    data class LegProperties(
-        /**
-         * This indicates whether or not the vehicle is wheelchair accessible.
-         */
-         @SerialName("planLowFloorVehicle") val planLowFloorVehicle: String? = null,
-
-        /**
-         * This indicates whether or not the stop is wheelchair accessible.
-         */
-        @SerialName("planWheelChairAccess") val planWheelChairAccess: String? = null,
-    )
-    */
 
     @Serializable
     data class Transportation(
@@ -438,13 +390,6 @@ data class TripResponse(
          */
         @SerialName("class") val productClass: Long? = null,
     )
-
-    /* Ignore
-    @Serializable
-    data class TransportationProperties(
-        // @SerialName("isTTB") val isTTB: Boolean? = null, Not used
-        // @SerialName("tripCode") val tripCode: Long? = null,
-    )*/
 
     @Serializable
     data class SystemMessages(
