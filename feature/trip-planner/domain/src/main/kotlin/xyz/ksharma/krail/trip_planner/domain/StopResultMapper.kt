@@ -1,7 +1,7 @@
 package xyz.ksharma.krail.trip_planner.domain
 
 import xyz.ksharma.krail.trip_planner.domain.model.TransportModeType
-import xyz.ksharma.krail.trip_planner.domain.model.transportModeType
+import xyz.ksharma.krail.trip_planner.domain.model.toTransportModeType
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 
 object StopResultMapper {
@@ -23,7 +23,7 @@ object StopResultMapper {
             val stopName = location.name ?: return@mapNotNull null // Skip if stop name is null
             val stopId = location.id ?: return@mapNotNull null // Skip if stop ID is null
             val modes = location.productClasses.orEmpty()
-                .mapNotNull { it.transportModeType() }
+                .mapNotNull { it.toTransportModeType() }
 
             // Filter based on selected mode types
             if (selectedModes.isNotEmpty() && !modes.any { it in selectedModes }) {
