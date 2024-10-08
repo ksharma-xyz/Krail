@@ -1,8 +1,9 @@
-package xyz.ksharma.krail.trip_planner.domain
+package xyz.ksharma.krail.trip_planner.ui.searchstop
 
 import xyz.ksharma.krail.trip_planner.domain.model.TransportModeType
 import xyz.ksharma.krail.trip_planner.domain.model.toTransportModeType
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 
 object StopResultMapper {
 
@@ -17,7 +18,7 @@ object StopResultMapper {
      */
     fun StopFinderResponse.toStopResults(
         selectedModes: List<TransportModeType> = TransportModeType.entries,
-    ): List<StopResult> {
+    ): List<SearchStopState.StopResult> {
 
         return locations.orEmpty().mapNotNull { location ->
             val stopName = location.name ?: return@mapNotNull null // Skip if stop name is null
@@ -30,17 +31,15 @@ object StopResultMapper {
                 return@mapNotNull null
             }
 
-            StopResult(stopName = stopName, stopId = stopId, transportModeType = modes)
+            SearchStopState.StopResult(
+                stopName = stopName,
+                stopId = stopId,
+                transportModeType = modes
+            )
         }.sortedBy { stopResult ->
             stopResult.transportModeType.minOfOrNull { mode ->
                 selectedModes.find { it == mode }?.priority ?: Int.MAX_VALUE
             } ?: Int.MAX_VALUE
         }
     }
-
-    data class StopResult(
-        val stopName: String,
-        val stopId: String,
-        val transportModeType: List<TransportModeType> = emptyList(),
-    )
 }
