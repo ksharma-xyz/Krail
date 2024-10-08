@@ -13,9 +13,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.aestToHHMM
-import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.formatTo12HourTime
-import xyz.ksharma.krail.trip_planner.domain.DateTimeHelper.utcToAEST
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.aestToHHMM
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.formatTo12HourTime
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState

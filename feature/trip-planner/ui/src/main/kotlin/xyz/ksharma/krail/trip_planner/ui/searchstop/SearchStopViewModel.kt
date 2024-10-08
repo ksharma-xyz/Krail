@@ -10,8 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.trip_planner.domain.StopResultMapper
-import xyz.ksharma.krail.trip_planner.domain.StopResultMapper.toStopResults
+import xyz.ksharma.krail.trip_planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
@@ -46,7 +45,7 @@ class SearchStopViewModel @Inject constructor(
         }
     }
 
-    private fun SearchStopState.displayData(stopsResult: List<StopResultMapper.StopResult>) = copy(
+    private fun SearchStopState.displayData(stopsResult: List<SearchStopState.StopResult>) = copy(
         stops = stopsResult.toImmutableList(),
         isLoading = false,
         isError = false

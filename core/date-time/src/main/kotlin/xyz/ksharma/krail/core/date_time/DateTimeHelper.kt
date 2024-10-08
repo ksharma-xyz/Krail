@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.trip_planner.domain
+package xyz.ksharma.krail.core.date_time
 
 import java.time.Duration
 import java.time.ZoneId
