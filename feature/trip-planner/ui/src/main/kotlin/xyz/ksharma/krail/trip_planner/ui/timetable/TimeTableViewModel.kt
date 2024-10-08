@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.aestToHHMM
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
@@ -22,6 +23,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import javax.inject.Inject
+import kotlin.math.absoluteValue
 
 @HiltViewModel
 class TimeTableViewModel @Inject constructor(
@@ -67,19 +69,36 @@ class TimeTableViewModel @Inject constructor(
                                 val firstLeg = journey.legs?.firstOrNull()
                                 val lastLeg = journey.legs?.lastOrNull()
 
-                                val originTime = firstLeg?.origin?.departureTimeEstimated ?: firstLeg?.origin?.departureTimePlanned
-                                val arrivalTime  = lastLeg?.destination?.arrivalTimeEstimated
+                                val originTime = firstLeg?.origin?.departureTimeEstimated
+                                    ?: firstLeg?.origin?.departureTimePlanned
+                                val arrivalTime = lastLeg?.destination?.arrivalTimeEstimated
                                     ?: lastLeg?.destination?.arrivalTimePlanned
 
                                 TimeTableState.JourneyCardInfo(
-                                    timeText = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL,",
-                                    platformText = firstLeg?.stopSequence?.firstOrNull()?.disassembledName
+                                    timeText = originTime?.let {
+                                        val difference = calculateTimeDifferenceFromNow(it)
+                                        val formattedDifference = when {
+                                            difference.toMinutes() < 0 -> "${difference.toMinutes().absoluteValue} mins ago"
+                                            difference.toMinutes() == 0L ->"Now"
+                                            difference.toHours() >= 2 -> "in ${difference.toHours().absoluteValue} hrs"
+                                            else -> "in ${difference.toMinutes().absoluteValue} mins"
+                                        }
+                                        formattedDifference
+                                    } ?: "NULL,",
+
+                                    platformText = firstLeg?.stopSequence?.firstOrNull()?.disassembledName?.split(
+                                        ","
+                                    )?.lastOrNull()
                                         ?: "NULL",
+
                                     originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
-                                    destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+
+                                    destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM()
+                                        ?: "NULL",
+
                                     travelTime = "${
-                                        ((journey.legs?.mapNotNull { it.duration }?.sum()) ?: 0)
-                                                % 60
+                                        ((journey.legs?.mapNotNull { it.duration }
+                                            ?.sum()) ?: 0).div(60).toInt()
                                     } min",
                                     transportModeLines = journey.legs?.mapNotNull { leg ->
                                         leg.transportation?.product?.productClass?.toInt()?.let {
@@ -87,7 +106,8 @@ class TimeTableViewModel @Inject constructor(
                                                 ?.let { it1 ->
                                                     TransportModeLine(
                                                         transportMode = it1,
-                                                        lineName = leg.transportation?.disassembledName ?: "NULL"
+                                                        lineName = leg.transportation?.disassembledName
+                                                            ?: "NULL"
                                                     )
                                                 }
                                         }
@@ -102,7 +122,7 @@ class TimeTableViewModel @Inject constructor(
                     response.journeys?.mapIndexed { jindex, j ->
                         Timber.d("JOURNEY #${jindex + 1}")
                         j.legs?.forEachIndexed { index, leg ->
-                            Timber.d(" LEG#${index + 1}")
+                            Timber.d(" LEG#${index + 1} -- Duration: ${leg.duration}")
                             Timber.d(
                                 "\t\t ORG: ${
                                     leg.origin?.departureTimeEstimated?.utcToAEST()

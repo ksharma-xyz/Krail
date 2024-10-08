@@ -36,20 +36,15 @@ object DateTimeHelper {
 
     /**
      * Converts a date-time string in Australian Eastern Standard Time (AEST)
-     * to a string representing the time in HHMM format (24-hour format).
+     * to a string representing the time in hh:mm a format (12-hour format).
      *
      * The input string is expected to be in ISO 8601 format (e.g., "2024-09-24T19:00:00+10:00").
      *
-     * @return The time in HHMM format (e.g., "1900").
+     * @return The time in hh:mm a format (e.g., "07:00 am").
      */
     fun String.aestToHHMM(): String {
-        // Parse the AEST string as a ZonedDateTime
         val aestDateTime = ZonedDateTime.parse(this, DateTimeFormatter.ISO_DATE_TIME)
-
-        // Define the formatter for HHMM in 24-hour time format
-        val timeFormatter = DateTimeFormatter.ofPattern("HHmm")
-
-        // Format the ZonedDateTime to HHMM format
+        val timeFormatter = DateTimeFormatter.ofPattern("hh:mm a")
         return aestDateTime.format(timeFormatter)
     }
 
@@ -67,7 +62,7 @@ object DateTimeHelper {
         val nowDateTime = ZonedDateTime.ofInstant(timeNow, parsedDateTime.zone)
 
         // Calculate the duration between the two ZonedDateTime instances
-        return Duration.between(parsedDateTime, nowDateTime)
+        return Duration.between(nowDateTime, parsedDateTime)
     }
 
     /**
