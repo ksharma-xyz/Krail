@@ -26,65 +26,167 @@ data class TripResponse(
     @Serializable
     data class Journey(
         @SerialName("legs") val legs: List<Leg>? = null,
-        @SerialName("rating") val rating: Long? = null,
-        @SerialName("isAdditional") val isAdditional: Boolean? = null,
     )
 
     @Serializable
     data class Leg(
-        @SerialName("stopSequence") val stopSequence: List<StopSequenceClass>? = null,
+        /**
+         * The approximate distance in metres travelled to complete this journey leg.
+         */
         @SerialName("distance") val distance: Long? = null,
+
+        /**
+         * Contains a number of additional informational messages that may be useful for travellers.
+         */
         @SerialName("hints") val hints: List<Hint>? = null,
-        @SerialName("origin") val origin: StopSequenceClass? = null,
-        @SerialName("destination") val destination: StopSequenceClass? = null,
-        @SerialName("pathDescriptions") val pathDescriptions: List<PathDescription>? = null,
+
+        @SerialName("origin") val origin: StopSequence? = null,
+        @SerialName("destination") val destination: StopSequence? = null,
+        /**
+         * This is a list of all stops that are made for this leg. It is sorted in order of its
+         * stopping sequence. If the leg is a walking leg between two stops, then this will contain
+         * these two stops in order.
+         *
+         * Contains information about a single stop in the journey leg.
+         * Typically, the first stop in a journey leg will only include departure time information,
+         * while the last stop in a journey leg will only include arrival time information.
+         * Stops in between will include both arrival and departure time information.
+         */
+        @SerialName("stopSequence") val stopSequence: List<StopSequence>? = null,
+
+        /**
+         * This indicates whether or not real-time data has been used to calculate the
+         * departure/arrival timestamps.
+         */
         @SerialName("isRealtimeControlled") val isRealtimeControlled: Boolean? = null,
+
+        /**
+         * This element describes a route, including information about its route number, usual destination,
+         * route type and operator.
+         */
         @SerialName("transportation") val transportation: Transportation? = null,
 
         /**
-         * In seconds
+         * The approximate amount of time in "seconds" required to complete this journey leg.
          */
         @SerialName("duration") val duration: Long? = null,
+
+        /**
+         * If the leg corresponds to a walking leg, this element contains walking directions.
+         */
         @SerialName("footPathInfo") val footPathInfo: List<FootPathInfo>? = null,
-        @SerialName("coords") val coords: List<List<Double>>? = null,
+
+        /**
+         * This elements contains a list of coordinates that this journey leg follows. A line between
+         * can be plotted between these coordinates in order when representing the journey on a map
+         * in order to show where the vehicle travels (or for a walking leg, the path to be walked).
+         *
+         * first value is the latitude, the second value is the longitude.
+         */
+        // Ignore @SerialName("coords") val coords: List<List<Double>>? = null,
+
+        /**
+         * This element describes a single information message that may be associated with a journey leg.
+         * The data in this is similar to that from add_info endpoint, but is presented differently.
+         */
         @SerialName("infos") val infos: List<Info>? = null,
+
+        /**
+         * This object describes walking directions for interchanging between two consecutive legs.
+         * This occurs in the case when there's only a small distance between two transit legs,
+         * not enough to constitute a standalone walking leg.
+         */
         @SerialName("interchange") val interchange: Interchange? = null,
-        @SerialName("properties") val properties: LegProperties? = null,
+
+        // Ignore @SerialName("properties") val properties: LegProperties? = null,
     )
 
     @Serializable
-    data class StopSequenceClass(
-        @SerialName("parent") val parent: Parent? = null,
-        @SerialName("coord") val coord: List<Double>? = null,
-        @SerialName("arrivalTimePlanned") val arrivalTimePlanned: String? = null,
-        @SerialName("disassembledName") val disassembledName: String? = null,
+    data class StopSequence(
+
+        /**
+         * Describes a parent location. Locations are hierarchical, mean a location has a parent, and
+         * a location may have any number of child locations. A parent location is often included
+         * with locations, which can help traverse the location tree.
+         */
+        // Ignore @SerialName("parent") val parent: Parent? = null,
+
+        // Ignore @SerialName("coord") val coord: List<Double>? = null,
+
+        /**
+         * A timestamp in YYYY-MM-DDTHH:MM:SSZ format that indicates the estimated arrival time.
+         * If real-time information is available then this timestamp is the real-time estimate,
+         * otherwise it is the same as the value in [arrivalTimePlanned]
+         */
         @SerialName("arrivalTimeEstimated") val arrivalTimeEstimated: String? = null,
+
+        /**
+         * A timestamp in YYYY-MM-DDTHH:MM:SSZ format that indicates the planned arrival time.
+         * This is the original scheduled time.
+         */
+        @SerialName("arrivalTimePlanned") val arrivalTimePlanned: String? = null,
+
+        /**
+         * A timestamp in YYYY-MM-DDTHH:MM:SSZ format that indicates the estimated departure time.
+         * If real-time information is available then this timestamp is the real-time estimate,
+         * otherwise it is the same as the value in [departureTimePlanned].
+         */
         @SerialName("departureTimeEstimated") val departureTimeEstimated: String? = null,
-        @SerialName("name") val name: String? = null,
+
+        /**
+         * A timestamp in YYYY-MM-DDTHH:MM:SSZ format that indicates the planned departure time.
+         * This is the original scheduled time.
+         */
         @SerialName("departureTimePlanned") val departureTimePlanned: String? = null,
+
+        /**
+         * This is the long version of the location name, which may include the suburb or other information.
+         */
+        @SerialName("name") val name: String? = null,
+
+        /**
+         * This is the short version of the location name, which does not include the suburb or
+         * other information.
+         */
+        @SerialName("disassembledName") val disassembledName: String? = null,
+
+        /**
+         * This is a unique ID for the returned location.
+         * Certain types of ID can be used for subsequent searches performed with stop_finder,
+         * or can be used as the origin or destination in an trip request.
+         * The format of a location ID differs greatly, depending on the type of location it is.
+         */
         @SerialName("id") val id: String? = null,
+
+        /**
+         * This is the type of location being returned. It will typically represent a specific stop
+         * or platform.
+         * [ poi, singlehouse, stop, platform, street, locality, suburb, unknown ]
+         */
         @SerialName("type") val type: String? = null,
+
+        /**
+         * Contains additional information about this stop, such as wheelchair accessibility information.
+         */
         @SerialName("properties") val properties: DestinationProperties? = null,
     )
 
+    /* Ignore
     @Serializable
     data class Parent(
         @SerialName("parent") val parent: Parent? = null,
+        /** This is the short version of the location name, which does not include the suburb or other information. */
         @SerialName("disassembledName") val disassembledName: String? = null,
+        //This is the long version of the location name, which may include the suburb or other information.
         @SerialName("name") val name: String? = null,
         @SerialName("id") val id: String? = null,
         @SerialName("type") val type: String? = null,
-    )
+    )*/
 
     @Serializable
     data class DestinationProperties(
         @SerialName("wheelchairAccess") val wheelchairAccess: String? = null,
         @SerialName("downloads") val downloads: List<Download>? = null,
-        @SerialName("NumberOfCars") val numberOfCars: String? = null,
-        @SerialName("TravelInCarsFrom") val travelInCarsFrom: String? = null,
-        @SerialName("TravelInCarsTo") val travelInCarsTo: String? = null,
-        @SerialName("TravelInCarsMessage") val travelInCarsMessage: String? = null,
-        @SerialName("occupancy") val occupancy: String? = null,
     )
 
     @Serializable
@@ -95,34 +197,26 @@ data class TripResponse(
 
     @Serializable
     data class FootPathInfo(
+        /**
+         * This is approximately how long in seconds the walking instructions contained in this
+         * element take to perform.
+         */
         @SerialName("duration") val duration: Long? = null,
-        @SerialName("footPathElem") val footPathElem: List<FootPathElem>? = null,
+
+        // Not required @SerialName("footPathElem") val footPathElem: List<FootPathElem>? = null,
+
+        /**
+         * This indicates where in the leg the walking part of this legs occurs, since for some legs this
+         * is included with transportation on a vehicle.
+         *
+         * Enum - BEFORE, AFTER, IDEST
+         *
+         * IDEST -This indicates that the walking portion of the leg is the entire leg itself.
+         * In other words, the leg involves walking only, with no vehicle transportation involved.
+         * For example, if you're planning a trip from one location to another that involves walking
+         * the entire distance, the "position" would be "IDEST".
+         */
         @SerialName("position") val position: String? = null,
-    )
-
-    @Serializable
-    data class FootPathElem(
-        @SerialName("level") val level: String? = null,
-        @SerialName("levelTo") val levelTo: Long? = null,
-        @SerialName("origin") val origin: FootPathElemDestination? = null,
-        @SerialName("destination") val destination: FootPathElemDestination? = null,
-        @SerialName("description") val description: String? = null,
-        @SerialName("type") val type: String? = null,
-    )
-
-    @Serializable
-    data class FootPathElemDestination(
-        @SerialName("area") val area: Long? = null,
-        @SerialName("georef") val georef: String? = null,
-        @SerialName("location") val location: Location? = null,
-        @SerialName("platform") val platform: Long? = null,
-    )
-
-    @Serializable
-    data class Location(
-        @SerialName("coord") val coord: List<Double>? = null,
-        @SerialName("id") val id: String? = null,
-        @SerialName("type") val type: String? = null,
     )
 
     @Serializable
@@ -133,12 +227,38 @@ data class TripResponse(
     @Serializable
     data class Info(
         @SerialName("timestamps") val timestamps: Timestamps? = null,
+
+        /**
+         * This is short summary that can be used as a heading for the alert content. It may contain
+         * HTML tags and/or HTML entities.
+         */
         @SerialName("subtitle") val subtitle: String? = null,
+
+        /**
+         * This field contains a title that can be used when displaying the url URL.
+         */
         @SerialName("urlText") val urlText: String? = null,
+
         @SerialName("id") val id: String? = null,
+        /**
+         * 	string
+         * This value indicates how important the service alert is. A value of high or veryHigh likely indicates that
+         * the alert will correspond to an event that impacts the ability to travel for relevant users, while low or veryLow
+         * might be more of an informational message.
+         *
+         * Enum - veryLow, low, normal, high, veryHigh
+         */
         @SerialName("priority") val priority: String? = null,
         @SerialName("version") val version: Long? = null,
+
+        /**
+         * This is the descriptive alert content. It may contain HTML tags and/or HTML entities.
+         */
         @SerialName("content") val content: String? = null,
+
+        /**
+         * This field contains a URL that contains additional information about the alert.
+         */
         @SerialName("url") val url: String? = null,
     )
 
@@ -158,68 +278,173 @@ data class TripResponse(
 
     @Serializable
     data class Interchange(
+        /**
+         * This indicates the mode of travel for the interchange. Both 99 and 100 indicate walking.
+         */
         @SerialName("type") val type: Long? = null,
+
+        /**
+         * This is a list of coordinates that makes up the path of the interchange.
+         * Contains exactly two values: the first value is the latitude, the second value is the longitude.
+         */
         @SerialName("coords") val coords: List<List<Double>>? = null,
+
+        /**
+         * This is a description of the interchange.
+         */
         @SerialName("desc") val desc: String? = null,
     )
 
-    @Serializable
-    data class PathDescription(
-        @SerialName("cumDistance") val cumDistance: Long? = null,
-        @SerialName("distance") val distance: Long? = null,
-        @SerialName("turnDirection") val turnDirection: String? = null,
-        @SerialName("distanceDown") val distanceDown: Long? = null,
-        @SerialName("fromCoordsIndex") val fromCoordsIndex: Long? = null,
-        @SerialName("cumDuration") val cumDuration: Long? = null,
-        @SerialName("distanceUp") val distanceUp: Long? = null,
-        @SerialName("duration") val duration: Long? = null,
-        @SerialName("coord") val coord: List<Double>? = null,
-        @SerialName("skyDirection") val skyDirection: Long? = null,
-        @SerialName("manoeuvre") val manoeuvre: String? = null,
-        @SerialName("toCoordsIndex") val toCoordsIndex: Long? = null,
-        @SerialName("name") val name: String? = null,
-    )
-
+    /* // Ignore use stopSequence.properties.WheelchairAccess
     @Serializable
     data class LegProperties(
-        @SerialName("planLowFloorVehicle") val planLowFloorVehicle: String? = null,
-        @SerialName("lineType") val lineType: String? = null,
-        @SerialName("differentFares") val differentFares: String? = null,
+        /**
+         * This indicates whether or not the vehicle is wheelchair accessible.
+         */
+         @SerialName("planLowFloorVehicle") val planLowFloorVehicle: String? = null,
+
+        /**
+         * This indicates whether or not the stop is wheelchair accessible.
+         */
         @SerialName("planWheelChairAccess") val planWheelChairAccess: String? = null,
     )
+    */
 
     @Serializable
     data class Transportation(
+        /**
+         * Contains an ID for the icon that can be used for this route. Different values here are
+         * used to differentiate different types of the same route type. For example, private ferries
+         * have a different way finding icon to ferries operated by Sydney Ferries.
+         *
+         * 1: Sydney Trains (product class 1)
+         * 2: Intercity Trains (product class 1)
+         * 3: Regional Trains (product class 1)
+         * 19: Temporary Trains (product class 1)
+         *
+         * 24: Sydney Metro (product class 2)
+         *
+         * 13: Sydney Light Rail (product class 4)
+         * 20: Temporary Light Rail (product class 4)
+         * 21: Newcastle Light Rail (product class 4)
+         *
+         * 4: Blue Mountains Buses (product class 5)
+         * 5: Sydney Buses (product class 5)
+         * 6: Central Coast Buses (product class 5)
+         * 14: Temporary Buses (product class 5)
+         * 15: Hunter Buses (product class 5)
+         * 23: On Demand (product class 5)
+         * 31: Central West and Orana (product class 5)
+         * 32: Far West (product class 5)
+         * 33: New England North West (product class 5)
+         * 34: Newcastle and Hunter (product class 5)
+         * 35: North Coast (product class 5)
+         * 36: Riverina Murray (product class 5)
+         * 37: South East and Tablelands (product class 5)
+         *
+         * 38: Sydney and Surrounds (product class 5)
+         * 9: Private Buses (product class 5)
+         * 17: Private Coaches (product class 5)
+         *
+         * 7: Regional Coaches (product class 7)
+         * 22: Temporary Coaches (product class 7)
+         *
+         * 10: Sydney Ferries (product class 9)
+         * 11: Newcastle Ferries (product class 9)
+         * 12: Private Ferries (product class 9)
+         * 18: Temporary Ferries (product class 9)
+         *
+         * 8: School Buses (product class 11)
+         */
         @SerialName("iconId") val iconId: Long? = null,
+
+        /**
+         * Contains a short name for the route.
+         */
         @SerialName("number") val number: String? = null,
+
+        /**
+         * This element contains additional properties about the route.
+         * product class, iconId, name etc.
+         */
         @SerialName("product") val product: Product? = null,
+
+        /**
+         * Contains a very short name for the route.
+         */
         @SerialName("disassembledName") val disassembledName: String? = null,
+
+        /**
+         * This element contains information about where vehicles on this route terminate.
+         */
         @SerialName("destination") val destination: OperatorClass? = null,
+
         @SerialName("name") val name: String? = null,
+
         @SerialName("description") val description: String? = null,
+
         @SerialName("id") val id: String? = null,
+
         @SerialName("operator") val operator: OperatorClass? = null,
-        @SerialName("properties") val properties: TransportationProperties? = null,
+
+        // @SerialName("properties") val properties: TransportationProperties? = null, Not required
     )
 
     @Serializable
     data class OperatorClass(
+        /**
+         * This is the name of the destination for this route.
+         */
         @SerialName("name") val name: String? = null,
+
+        /**
+         * Contains a unique identifier (if available) of the destination for this route.
+         */
         @SerialName("id") val id: String? = null,
     )
 
     @Serializable
     data class Product(
+        /**
+         * This field is used by to determine which icon to use when displaying
+         * this affected route. It will typically match up with the class value.
+         */
         @SerialName("iconID") val iconID: Long? = null,
+
+        /**
+         *
+         */
         @SerialName("name") val name: String? = null,
-        @SerialName("productClass") val productClass: Long? = null,
+
+        /**
+         * This field indicates the type of the route, using the same values
+         * as elsewhere in this API.
+         *
+         * 1: Train
+         * 2: Metro
+         * 4: Light Rail
+         * 5: Bus
+         * 7: Coach
+         * 9: Ferry
+         * 11: School Bus
+         * 99: Walking
+         * 100: Walking (Footpath)
+         * 101: Bicycle
+         * 102: Take Bicycle On Public Transport
+         * 103: Kiss & Ride
+         * 104: Park & Ride
+         * 105: Taxi
+         * 106: Car
+         */
+        @SerialName("class") val productClass: Long? = null,
     )
 
+    /* Ignore
     @Serializable
     data class TransportationProperties(
-        @SerialName("isTTB") val isTTB: Boolean? = null,
-        @SerialName("tripCode") val tripCode: Long? = null,
-    )
+        // @SerialName("isTTB") val isTTB: Boolean? = null, Not used
+        // @SerialName("tripCode") val tripCode: Long? = null,
+    )*/
 
     @Serializable
     data class SystemMessages(
