@@ -1,7 +1,7 @@
 package xyz.ksharma.krail.trip_planner.ui.state.searchstop.model
 
 import kotlinx.serialization.json.Json
-import xyz.ksharma.krail.trip_planner.domain.model.TransportModeType
+import xyz.ksharma.krail.trip_planner.ui.state.TransportModeType
 import java.io.Serializable
 
 /**

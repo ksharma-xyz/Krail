@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.trip_planner.domain.model
+package xyz.ksharma.krail.trip_planner.ui.state
 
 /**
  * NSW Transport Key to icons and line codes

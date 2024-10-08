@@ -2,7 +2,7 @@ package xyz.ksharma.krail.trip_planner.ui.state.timetable
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import xyz.ksharma.krail.trip_planner.domain.model.TransportModeType
+import xyz.ksharma.krail.trip_planner.ui.state.TransportModeType
 
 data class TimeTableState(
     val isLoading: Boolean = false,

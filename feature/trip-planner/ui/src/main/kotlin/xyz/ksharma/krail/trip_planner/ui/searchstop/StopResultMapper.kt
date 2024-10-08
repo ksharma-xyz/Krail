@@ -1,7 +1,7 @@
 package xyz.ksharma.krail.trip_planner.ui.searchstop
 
-import xyz.ksharma.krail.trip_planner.domain.model.TransportModeType
-import xyz.ksharma.krail.trip_planner.domain.model.toTransportModeType
+import xyz.ksharma.krail.trip_planner.ui.state.TransportModeType
+import xyz.ksharma.krail.trip_planner.ui.state.toTransportModeType
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 

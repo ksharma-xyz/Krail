@@ -69,7 +69,6 @@ dependencies {
     implementation(projects.feature.sydneyTrains.database.real)
     implementation(projects.feature.sydneyTrains.network.api)
     implementation(projects.feature.sydneyTrains.network.real)
-    implementation(projects.feature.tripPlanner.domain) // TODO not really required remove it later
     implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.network.real)
     implementation(projects.feature.tripPlanner.ui)
