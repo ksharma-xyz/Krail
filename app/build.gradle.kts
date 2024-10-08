@@ -81,7 +81,7 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.timber)
 
-    androidTestImplementation(libs.androidx.test.ext.junit)
-    testImplementation(libs.compose.ui.test.junit4)
-    testImplementation(libs.paparazzi)
+    androidTestImplementation(libs.test.androidxTestExtJunit)
+    testImplementation(libs.test.composeUiTestJunit4)
+    testImplementation(libs.test.paparazzi)
 }

@@ -11,7 +11,7 @@ dependencies {
     api(projects.core.model)
     implementation(projects.core.utils)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.turbine)
-    testImplementation(libs.google.truth)
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.turbine)
+    testImplementation(libs.test.googleTruth)
 }

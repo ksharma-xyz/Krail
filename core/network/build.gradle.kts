@@ -23,7 +23,7 @@ dependencies {
     implementation(projects.core.coroutinesExt)
     implementation(projects.core.utils)
 
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.test.androidxCoreKtx)
     implementation(libs.kotlinx.serialization.json)
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)

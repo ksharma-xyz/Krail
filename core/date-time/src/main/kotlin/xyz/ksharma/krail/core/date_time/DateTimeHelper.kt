@@ -1,6 +1,7 @@
 package xyz.ksharma.krail.core.date_time
 
 import java.time.Duration
+import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
@@ -56,24 +57,17 @@ object DateTimeHelper {
      * Calculates the time difference between two dates in the UTC format
      * ("2024-09-24T09:00:00Z")
      *
-     * @param startDate The start date string.
-     * @param endDate The end date string.
-     *
      * @return The time difference between the two dates as a kotlin.time.Duration object.
      */
-    fun calculateTimeDifference(startDate: String, endDate: String): kotlin.time.Duration {
-        if (startDate.isBlank() || endDate.isBlank()) {
-            throw IllegalArgumentException("Start and end dates cannot be empty or blank.")
-        }
+    fun calculateTimeDifferenceFromNow(utcDateString: String, timeNow: Instant = Instant.now()): Duration {
+        // Parse the UTC date string to a ZonedDateTime
+        val parsedDateTime = ZonedDateTime.parse(utcDateString, DateTimeFormatter.ISO_ZONED_DATE_TIME)
 
-        val startDateTime = ZonedDateTime.parse(startDate)
-        val endDateTime = ZonedDateTime.parse(endDate)
+        // Convert the Instant to a ZonedDateTime in UTC
+        val nowDateTime = ZonedDateTime.ofInstant(timeNow, parsedDateTime.zone)
 
-        if (endDateTime.isBefore(startDateTime)) {
-            throw IllegalArgumentException("End date must be after start date.")
-        }
-
-        return Duration.between(startDateTime, endDateTime).toKotlinDuration()
+        // Calculate the duration between the two ZonedDateTime instances
+        return Duration.between(parsedDateTime, nowDateTime)
     }
 
     /**
