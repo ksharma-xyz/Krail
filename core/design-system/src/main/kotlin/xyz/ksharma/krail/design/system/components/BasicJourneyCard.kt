@@ -16,7 +16,7 @@ import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
-internal fun BasicJourneyCard(
+fun BasicJourneyCard(
     modifier: Modifier = Modifier,
     backgroundColor: Color = KrailTheme.colors.secondaryContainer,
     content: @Composable ColumnScope.() -> Unit,

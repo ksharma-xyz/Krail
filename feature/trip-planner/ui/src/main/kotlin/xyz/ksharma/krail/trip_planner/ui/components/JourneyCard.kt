@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.components
+package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,9 +11,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.model.TransportModeLine
-import xyz.ksharma.krail.design.system.model.TransportModeType.Bus
-import xyz.ksharma.krail.design.system.model.TransportModeType.Train
+import xyz.ksharma.krail.design.system.components.BasicJourneyCard
+import xyz.ksharma.krail.design.system.components.SeparatorIcon
+import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
@@ -70,7 +70,11 @@ private fun JourneyCardTrainPreview() {
                 )
             },
             transportModeIconRow = {
-                TransportModeInfo(transportModeLine = TransportModeLine(Train, "T4", "#005aa3"))
+                TransportModeInfo(
+                    letter = 'T',
+                    backgroundColor = "#005aa3".hexToComposeColor(),
+                    badgeText = "T4",
+                )
             },
         )
     }
@@ -100,11 +104,18 @@ private fun JourneyCardMultipleModesPreview() {
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-                    TransportModeInfo(transportModeLine = TransportModeLine(Train, "T4", "#005aa3"))
-
+                    TransportModeInfo(
+                        letter = 'T',
+                        backgroundColor = "#005aa3".hexToComposeColor(),
+                        badgeText = "T4",
+                    )
                     SeparatorIcon()
 
-                    TransportModeInfo(transportModeLine = TransportModeLine(Bus, "700", "#00B5EF"))
+                    TransportModeInfo(
+                        letter = 'B',
+                        backgroundColor = "#00B5EF".hexToComposeColor(),
+                        badgeText = "700",
+                    )
                 }
             },
         )

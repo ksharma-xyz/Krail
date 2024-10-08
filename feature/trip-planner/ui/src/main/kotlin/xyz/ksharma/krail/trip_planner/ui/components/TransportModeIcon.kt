@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.components
+package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,32 +15,31 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import xyz.ksharma.krail.design.system.hexToComposeColor
-import xyz.ksharma.krail.design.system.model.TransportModeType
+import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.toAdaptiveSize
 
 @Composable
 fun TransportModeIcon(
-    transportModeType: TransportModeType,
+    letter: Char,
+    backgroundColor: Color,
     modifier: Modifier = Modifier,
     borderEnabled: Boolean = false,
 ) {
     val density = LocalDensity.current
-    val size = with (density) { 18.sp.toDp() }
+    val size = with(density) { 18.sp.toDp() }
 
     Box(
         modifier = modifier
             .clip(shape = CircleShape)
             .requiredSize(size)
             .aspectRatio(1f)
-            .background(color = transportModeType.hexColorCode.hexToComposeColor())
+            .background(color = backgroundColor)
             .borderIfEnabled(enabled = borderEnabled),
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = "${transportModeType.modeName.first()}",
+            text = "$letter",
             color = Color.White,
             // todo - need concrete token for style, meanwhile keep same as TransportModeBadge,
             style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
@@ -58,7 +57,7 @@ private fun Modifier.borderIfEnabled(enabled: Boolean): Modifier = if (enabled) 
 @Composable
 private fun TrainPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Train)
+        TransportModeIcon(backgroundColor = "#F6891F".hexToComposeColor(), letter = 'T')
     }
 }
 
@@ -66,7 +65,10 @@ private fun TrainPreview() {
 @Composable
 private fun BusPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Bus)
+        TransportModeIcon(
+            backgroundColor = "#00B5EF".hexToComposeColor(),
+            letter = 'B',
+        )
     }
 }
 
@@ -74,7 +76,10 @@ private fun BusPreview() {
 @Composable
 private fun MetroPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Metro)
+        TransportModeIcon(
+            backgroundColor = "#009B77".hexToComposeColor(),
+            letter = 'M',
+        )
     }
 }
 
@@ -82,7 +87,10 @@ private fun MetroPreview() {
 @Composable
 private fun LightRailPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.LightRail)
+        TransportModeIcon(
+            backgroundColor = "#EE343F".hexToComposeColor(),
+            letter = 'L',
+        )
     }
 }
 
@@ -90,7 +98,10 @@ private fun LightRailPreview() {
 @Composable
 private fun FerryPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Ferry)
+        TransportModeIcon(
+            backgroundColor = "#5AB031".hexToComposeColor(),
+            letter = 'F',
+        )
     }
 }
 
@@ -98,7 +109,11 @@ private fun FerryPreview() {
 @Composable
 private fun TrainWithBackgroundPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Train, borderEnabled = true)
+        TransportModeIcon(
+            backgroundColor = "#F6891F".hexToComposeColor(),
+            letter = 'T',
+            borderEnabled = true
+        )
     }
 }
 
@@ -106,7 +121,11 @@ private fun TrainWithBackgroundPreview() {
 @Composable
 private fun BusWithBackgroundPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Bus, borderEnabled = true)
+        TransportModeIcon(
+            backgroundColor = "#00B5EF".hexToComposeColor(),
+            letter = 'B',
+            borderEnabled = true
+        )
     }
 }
 
@@ -114,7 +133,11 @@ private fun BusWithBackgroundPreview() {
 @Composable
 private fun MetroWithBackgroundPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Metro, borderEnabled = true)
+        TransportModeIcon(
+            backgroundColor = "#009B77".hexToComposeColor(),
+            letter = 'M',
+            borderEnabled = true
+        )
     }
 }
 
@@ -122,7 +145,10 @@ private fun MetroWithBackgroundPreview() {
 @Composable
 private fun LightRailWithBackgroundPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.LightRail, borderEnabled = true)
+        TransportModeIcon(
+            backgroundColor = "#EE343F".hexToComposeColor(),
+            letter = 'L', borderEnabled = true
+        )
     }
 }
 
@@ -130,7 +156,10 @@ private fun LightRailWithBackgroundPreview() {
 @Composable
 private fun FerryWithBackgroundPreview() {
     KrailTheme {
-        TransportModeIcon(TransportModeType.Ferry, borderEnabled = true)
+        TransportModeIcon(
+            backgroundColor = "#5AB031".hexToComposeColor(),
+            letter = 'F', borderEnabled = true
+        )
     }
 }
 

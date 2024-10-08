@@ -1,6 +1,7 @@
 package xyz.ksharma.krail.trip_planner.ui.state.timetable
 
 import kotlinx.collections.immutable.ImmutableList
+import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 
 data class JourneyDetail(
     val timeText: String, //"in x mins" - journeys.legs.first().origin.departureTimePlanned with Time.now()
@@ -12,7 +13,7 @@ data class JourneyDetail(
     data class Leg(
         // modeType - legs.transportation.product.class
         // lineName - legs.transportation.disassembledName
-        val transportModeLine: TimeTableState.TransportModeLine,
+        val transportModeLine: TransportModeLine,
 
         //transportation.description -> "Burwood to Liverpool",
         val displayText: String, // "towards X via X"

@@ -15,18 +15,17 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.components.TransportModeIcon
-import xyz.ksharma.krail.design.system.model.TransportModeType
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 
 @Composable
 fun StopSearchListItem(
     stopName: String,
     stopId: String,
+    transportModeSet: ImmutableSet<TransportMode>,
     modifier: Modifier = Modifier,
-    transportModes: ImmutableSet<xyz.ksharma.krail.trip_planner.ui.state.TransportModeType> = persistentSetOf(),
     onClick: (StopItem) -> Unit = {},
 ) {
     Column(
@@ -37,7 +36,6 @@ fun StopSearchListItem(
                     StopItem(
                         stopId = stopId,
                         stopName = stopName,
-                        transportModes = transportModes.toSet(),
                     )
                 )
             }
@@ -51,25 +49,15 @@ fun StopSearchListItem(
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // need to map and convert to Set because SchoolBus and Bus have same logo,
-            // but logo should be displayed only once.
-            transportModes.map { it.toDisplayModeType() }.toSet().forEach { modeType ->
-                TransportModeIcon(transportModeType = modeType)
+            transportModeSet.forEach { mode ->
+                TransportModeIcon(
+                    letter = mode.name.first(),
+                    backgroundColor = mode.colorCode.hexToComposeColor(),
+                )
             }
         }
     }
 }
-
-internal fun xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.toDisplayModeType(): TransportModeType =
-    when (this) {
-        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Train -> TransportModeType.Train
-        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Metro -> TransportModeType.Metro
-        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Ferry -> TransportModeType.Ferry
-        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Bus -> TransportModeType.Bus
-        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.LightRail -> TransportModeType.LightRail
-        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.SchoolBus -> TransportModeType.Bus
-        xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Coach -> TransportModeType.Coach
-    }
 
 // region Preview
 
@@ -80,9 +68,9 @@ private fun StopSearchListItemPreview() {
         StopSearchListItem(
             stopId = "123",
             stopName = "Stop Name",
-            transportModes = persistentSetOf(
-                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Bus,
-                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.LightRail,
+            transportModeSet = persistentSetOf(
+               TransportMode.Bus(),
+               TransportMode.LightRail(),
             ),
             modifier = Modifier.background(color = KrailTheme.colors.background),
         )
@@ -96,9 +84,9 @@ private fun StopSearchListItemLongNamePreview() {
         StopSearchListItem(
             stopId = "123",
             stopName = "This is a very long stop name that should wrap to the next line",
-            transportModes = persistentSetOf(
-                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Train,
-                xyz.ksharma.krail.trip_planner.ui.state.TransportModeType.Ferry,
+            transportModeSet = persistentSetOf(
+                TransportMode.Train(),
+                TransportMode.Ferry(),
             ),
             modifier = Modifier.background(color = KrailTheme.colors.background),
         )

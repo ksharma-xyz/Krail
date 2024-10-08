@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.components
+package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,14 +22,13 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.model.TransportModeType
+import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.R as DSR
 
 @Composable
 fun SavedTripCard(
-    transportModeType: TransportModeType,
     origin: String,
     destination: String,
     modifier: Modifier = Modifier,
@@ -49,7 +48,10 @@ fun SavedTripCard(
         verticalAlignment = Alignment.CenterVertically,
     ) {
 
-        TransportModeIcon(transportModeType = transportModeType)
+        TransportModeIcon(
+            letter = 'T',
+            backgroundColor = "#00B5EF".hexToComposeColor(),
+        )
 
         Column(
             modifier = Modifier
@@ -88,7 +90,6 @@ fun SavedTripCard(
 private fun SavedTripCardPreview() {
     KrailTheme {
         SavedTripCard(
-            transportModeType = TransportModeType.Train,
             origin = "Edmondson Park Station",
             destination = "Harris Park Station",
         )
@@ -108,19 +109,16 @@ private fun SavedTripCardListPreview() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             SavedTripCard(
-                transportModeType = TransportModeType.Train,
                 origin = "Edmondson Park Station",
                 destination = "Harris Park Station",
             )
 
             SavedTripCard(
-                transportModeType = TransportModeType.Bus,
                 origin = "Harrington Street, Stand D",
                 destination = "Albert Rd, Stand A",
             )
 
             SavedTripCard(
-                transportModeType = TransportModeType.Ferry,
                 origin = "Manly Wharf",
                 destination = "Circular Quay Wharf",
             )

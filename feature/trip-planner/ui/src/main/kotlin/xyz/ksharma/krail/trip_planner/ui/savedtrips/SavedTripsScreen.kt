@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.R
@@ -37,7 +38,9 @@ fun SavedTripsScreen(
     ) {
         LazyColumn(modifier = Modifier, contentPadding = PaddingValues(bottom = 300.dp)) {
             item {
-                TitleBar(title = stringResource(R.string.saved_trips_screen_title))
+                TitleBar(title = {
+                    Text(text = stringResource(R.string.saved_trips_screen_title))
+                })
             }
         }
 
@@ -58,7 +61,7 @@ fun SavedTripsScreen(
 @Composable
 private fun SavedTripsScreenPreview() {
     KrailTheme {
-        SavedTripsScreen(savedTripsState = SavedTripsState(),)
+        SavedTripsScreen(savedTripsState = SavedTripsState())
     }
 }
 

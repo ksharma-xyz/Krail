@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system
+package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.ui.graphics.Color
 

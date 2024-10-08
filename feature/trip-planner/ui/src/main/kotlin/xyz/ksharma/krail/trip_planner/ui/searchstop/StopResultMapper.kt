@@ -1,7 +1,6 @@
 package xyz.ksharma.krail.trip_planner.ui.searchstop
 
-import xyz.ksharma.krail.trip_planner.ui.state.TransportModeType
-import xyz.ksharma.krail.trip_planner.ui.state.toTransportModeType
+import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 
@@ -17,14 +16,14 @@ object StopResultMapper {
      * @return A list of [StopResult] objects representing the filtered stops.
      */
     fun StopFinderResponse.toStopResults(
-        selectedModes: List<TransportModeType> = TransportModeType.entries,
+        selectedModes: Set<TransportMode> = TransportMode.values(),
     ): List<SearchStopState.StopResult> {
 
         return locations.orEmpty().mapNotNull { location ->
             val stopName = location.name ?: return@mapNotNull null // Skip if stop name is null
             val stopId = location.id ?: return@mapNotNull null // Skip if stop ID is null
             val modes = location.productClasses.orEmpty()
-                .mapNotNull { it.toTransportModeType() }
+                .mapNotNull { productClass -> TransportMode.toTransportModeType(productClass) }
 
             // Filter based on selected mode types
             if (selectedModes.isNotEmpty() && !modes.any { it in selectedModes }) {

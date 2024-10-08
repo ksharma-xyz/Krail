@@ -1,7 +1,10 @@
-package xyz.ksharma.krail.design.system.model
+package xyz.ksharma.krail.trip_planner.ui.components
+
+import androidx.compose.ui.graphics.Color
 
 data class JourneyLeg(
-    val transportLine: TransportModeLine,
+
+    val transportation: Transportation,
 
     /**
      * Vehicle Headline
@@ -18,4 +21,10 @@ data class JourneyLeg(
      * 4 Stops (12 min) etc.
      */
     val summary: String,
-)
+) {
+    data class Transportation(
+        val backgroundColor: Color,
+        val letter: Char,
+        val badgeText: String,
+    )
+}
