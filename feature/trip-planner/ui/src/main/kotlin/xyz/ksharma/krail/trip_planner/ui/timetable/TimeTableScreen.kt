@@ -1,9 +1,11 @@
 package xyz.ksharma.krail.trip_planner.ui.timetable
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -31,7 +33,12 @@ fun TimeTableScreen(
     modifier: Modifier = Modifier,
     onEvent: (TimeTableUiEvent) -> Unit = {},
 ) {
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues(vertical = 16.dp)) {
+    LazyColumn(
+        modifier = modifier
+            .background(color = KrailTheme.colors.background)
+            .systemBarsPadding(),
+        contentPadding = PaddingValues(vertical = 16.dp)
+    ) {
         item {
             TitleBar(title = {
                 Text(text = stringResource(R.string.time_table_screen_title))
