@@ -1,6 +1,5 @@
 package xyz.ksharma.krail.trip_planner.ui.timetable
 
-import xyz.ksharma.krail.trip_planner.ui.state.toTransportModeType
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +17,8 @@ import xyz.ksharma.krail.core.date_time.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
+import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import javax.inject.Inject
@@ -81,11 +82,14 @@ class TimeTableViewModel @Inject constructor(
                                                 % 60
                                     } min",
                                     transportModeLines = journey.legs?.mapNotNull { leg ->
-                                        leg.transportation?.product?.productClass?.toInt()?.toTransportModeType()?.let { transportModeType ->
-                                            TimeTableState.TransportModeLine(
-                                                transportModeType = transportModeType,
-                                                lineName = leg.transportation?.disassembledName ?: "NULL"
-                                            )
+                                        leg.transportation?.product?.productClass?.toInt()?.let {
+                                            TransportMode.toTransportModeType(productClass = it)
+                                                ?.let { it1 ->
+                                                    TransportModeLine(
+                                                        transportMode = it1,
+                                                        lineName = leg.transportation?.disassembledName ?: "NULL"
+                                                    )
+                                                }
                                         }
                                     }?.toImmutableList() ?: persistentListOf(),
                                 )

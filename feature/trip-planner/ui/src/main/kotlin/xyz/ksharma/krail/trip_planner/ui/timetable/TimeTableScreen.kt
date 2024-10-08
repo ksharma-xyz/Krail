@@ -13,15 +13,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.design.system.components.JourneyCard
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
-import xyz.ksharma.krail.design.system.components.TransportModeInfo
-import xyz.ksharma.krail.design.system.model.TransportModeLine
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.R
-import xyz.ksharma.krail.trip_planner.ui.components.toDisplayModeType
+import xyz.ksharma.krail.trip_planner.ui.components.JourneyCard
+import xyz.ksharma.krail.trip_planner.ui.components.TransportModeInfo
+import xyz.ksharma.krail.trip_planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 
@@ -33,7 +33,9 @@ fun TimeTableScreen(
 ) {
     LazyColumn(modifier = modifier, contentPadding = PaddingValues(vertical = 16.dp)) {
         item {
-            TitleBar(title = stringResource(R.string.time_table_screen_title))
+            TitleBar(title = {
+                Text(text = stringResource(R.string.time_table_screen_title))
+            })
         }
 
         if (timeTableState.isLoading) {
@@ -46,11 +48,9 @@ fun TimeTableScreen(
                     departureText = "in " + journey.timeText + " on " + journey.platformText,
                     timeText = journey.originTime + " - " + journey.destinationTime + " (${journey.travelTime})",
                     transportModeLineList = journey.transportModeLines.map {
-                        val displayModeType = it.transportModeType.toDisplayModeType()
                         TransportModeLine(
-                            transportModeType = displayModeType,
+                            transportMode = it.transportMode,
                             lineName = it.lineName,
-                            lineHexColorCode = displayModeType.hexColorCode
                         )
                     }.toImmutableList(),
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
@@ -92,7 +92,11 @@ fun JourneyCardItem(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 transportModeLineList.forEachIndexed { index, line ->
-                    TransportModeInfo(transportModeLine = line)
+                    TransportModeInfo(
+                        letter = line.transportMode.name.first(),
+                        backgroundColor = line.transportMode.colorCode.hexToComposeColor(),
+                        badgeText = line.lineName,
+                    )
                     if (index < transportModeLineList.size - 1) SeparatorIcon()
                 }
             }
