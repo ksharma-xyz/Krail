@@ -17,5 +17,5 @@ dependencies {
 
     androidTestImplementation(platform(libs.compose.bom))
     debugApi(libs.compose.ui.tooling)
-    debugApi(libs.compose.ui.test.manifest)
+    debugApi(libs.test.composeUiTestManifest)
 }

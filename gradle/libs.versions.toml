@@ -71,16 +71,17 @@ okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttp
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 
 #Test
-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-google-truth = { group = "com.google.truth", name = "truth", version = "1.4.4" }
-turbine = { group = "app.cash.turbine", name = "turbine", version = "1.1.0" }
-mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.2.1" }
-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.9.0" }
-androidx-core-ktx = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
-paparazzi = { group = "app.cash.paparazzi", name = "paparazzi-gradle-plugin", version.ref = "paparazzi" }
+test-composeUiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
+test-composeUiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
+test-junit = { group = "junit", name = "junit", version.ref = "junit" }
+test-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+test-androidxTestExtJunit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+test-googleTruth = { group = "com.google.truth", name = "truth", version = "1.4.4" }
+test-turbine = { group = "app.cash.turbine", name = "turbine", version = "1.1.0" }
+test-mockitoKotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.2.1" }
+test-kotlinxCoroutineTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.9.0" }
+test-androidxCoreKtx = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
+test-paparazzi = { group = "app.cash.paparazzi", name = "paparazzi-gradle-plugin", version.ref = "paparazzi" }
 
 #BuildLogic
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
