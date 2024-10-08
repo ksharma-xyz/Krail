@@ -1,6 +1,5 @@
 package xyz.ksharma.krail.trip_planner.ui.timetable
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -32,7 +31,7 @@ fun TimeTableScreen(
     modifier: Modifier = Modifier,
     onEvent: (TimeTableUiEvent) -> Unit = {},
 ) {
-    LazyColumn(modifier = modifier, contentPadding = PaddingValues()) {
+    LazyColumn(modifier = modifier, contentPadding = PaddingValues(vertical = 16.dp)) {
         item {
             TitleBar(title = stringResource(R.string.time_table_screen_title))
         }
@@ -54,23 +53,16 @@ fun TimeTableScreen(
                             lineHexColorCode = displayModeType.hexColorCode
                         )
                     }.toImmutableList(),
-                    modifier = Modifier.padding(vertical = 10.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
                 )
             }
-        }
-        else {
+        } else {
             item {
                 Text("No data found")
             }
         }
     }
 }
-/*
-private fun TimeTableState.TransportModeLine.toDisplayModel() = TransportModeLine(
-    transportModeType = transportModeType.toDisplayModeType(),
-    lineName = lineName,
-    lineHexColorCode = lineHexColorCode
-)*/
 
 @Composable
 fun JourneyCardItem(
@@ -80,9 +72,7 @@ fun JourneyCardItem(
     modifier: Modifier = Modifier,
 ) {
     JourneyCard(
-        modifier = modifier
-            .background(KrailTheme.colors.secondaryContainer)
-            .padding(horizontal = 16.dp),
+        modifier = modifier,
         departureText = {
             Text(
                 text = departureText,

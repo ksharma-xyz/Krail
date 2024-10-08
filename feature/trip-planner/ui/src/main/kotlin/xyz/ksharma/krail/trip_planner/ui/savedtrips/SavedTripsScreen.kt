@@ -35,7 +35,6 @@ fun SavedTripsScreen(
             .fillMaxSize()
             .background(color = KrailTheme.colors.background)
     ) {
-
         LazyColumn(modifier = Modifier, contentPadding = PaddingValues(bottom = 300.dp)) {
             item {
                 TitleBar(title = stringResource(R.string.saved_trips_screen_title))

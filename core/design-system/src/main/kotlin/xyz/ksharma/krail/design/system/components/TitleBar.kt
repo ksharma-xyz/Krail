@@ -3,6 +3,7 @@ package xyz.ksharma.krail.design.system.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -27,8 +28,8 @@ fun TitleBar(
             style = LocalTextStyle.current,
             color = LocalTextColor.current,
             modifier = modifier
+                .statusBarsPadding()
                 .fillMaxWidth()
-                .systemBarsPadding()
                 .padding(vertical = 16.dp, horizontal = 16.dp)
         )
     }
