@@ -45,7 +45,7 @@ fun TimeTableScreen(
         } else if (timeTableState.journeyList.isNotEmpty()) {
             items(timeTableState.journeyList) { journey ->
                 JourneyCardItem(
-                    departureText = "in " + journey.timeText + " on " + journey.platformText,
+                    departureText = journey.timeText + " on " + journey.platformText,
                     timeText = journey.originTime + " - " + journey.destinationTime + " (${journey.travelTime})",
                     transportModeLineList = journey.transportModeLines.map {
                         TransportModeLine(

@@ -13,6 +13,6 @@ class DateTimeHelperTest {
             utcDateString = "2024-10-07T08:20:00Z",
             timeNow = fixedInstant,
         )
-        assertThat(difference.toMinutes()).isEqualTo(40L)
+        assertThat(difference.toMinutes()).isEqualTo(-40L)
     }
 }
