@@ -107,7 +107,10 @@ fun SearchStopScreen(
                         stopId = stop.stopId,
                         stopName = stop.stopName,
                         transportModeSet = stop.transportModeType.toImmutableSet(),
-                        onClick = { stopItem -> onStopSelected(stopItem) },
+                        onClick = { stopItem ->
+                            keyboard?.hide()
+                            onStopSelected(stopItem)
+                        },
                     )
 
                     Divider()
