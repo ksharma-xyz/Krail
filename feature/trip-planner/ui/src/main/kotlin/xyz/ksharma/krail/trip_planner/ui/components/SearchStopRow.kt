@@ -32,6 +32,7 @@ fun SearchStopRow(
     toStopItem: StopItem? = null,
     fromButtonClick: () -> Unit,
     toButtonClick: () -> Unit,
+    onReverseButtonClick: () -> Unit = {},
     onSearchButtonClick: () -> Unit = {},
 ) {
     Row(
@@ -73,12 +74,12 @@ fun SearchStopRow(
             RoundIconButton(
                 content = {
                     Image(
-                        imageVector = ImageVector.vectorResource(TripPlannerUiR.drawable.ic_search),
+                        imageVector = ImageVector.vectorResource(TripPlannerUiR.drawable.ic_swap),
                         contentDescription = null,
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
                 },
-                onClick = {},
+                onClick = onReverseButtonClick,
             )
 
             RoundIconButton(

@@ -1,3 +1,5 @@
 package xyz.ksharma.krail.trip_planner.ui.state.savedtrip
 
-data class SavedTripsState(val trip: String = "Empty")
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
+
+data class SavedTripsState(val fromStopItem: StopItem? = null, val toStopItem: StopItem? = null)
