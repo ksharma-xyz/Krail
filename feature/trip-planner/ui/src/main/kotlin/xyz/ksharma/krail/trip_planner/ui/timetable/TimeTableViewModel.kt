@@ -5,16 +5,21 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.aestToHHMM
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifference
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromFormattedString
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.formatTo12HourTime
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.toFormattedString
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
@@ -23,7 +28,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import javax.inject.Inject
-import kotlin.math.absoluteValue
+import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class TimeTableViewModel @Inject constructor(
@@ -74,19 +79,17 @@ class TimeTableViewModel @Inject constructor(
                                 val arrivalTime = lastLeg?.destination?.arrivalTimeEstimated
                                     ?: lastLeg?.destination?.arrivalTimePlanned
 
-                                TimeTableState.JourneyCardInfo(
-                                    timeText = originTime?.let {
-                                        val difference = calculateTimeDifferenceFromNow(it)
-                                        val formattedDifference = when {
-                                            difference.toMinutes() < 0 -> "${difference.toMinutes().absoluteValue} mins ago"
-                                            difference.toMinutes() == 0L ->"Now"
-                                            difference.toHours() >= 2 -> "in ${difference.toHours().absoluteValue} hrs"
-                                            else -> "in ${difference.toMinutes().absoluteValue} mins"
-                                        }
-                                        formattedDifference
-                                    } ?: "NULL,",
+                                val transportationProductClass =
+                                    firstLeg?.transportation?.product?.productClass
+                                val mode =
+                                    if (transportationProductClass?.toInt() == 99 || transportationProductClass?.toInt() == 100) "Walk" else "Public"
 
-                                    platformText = firstLeg?.stopSequence?.firstOrNull()?.disassembledName?.split(
+
+                                TimeTableState.JourneyCardInfo(
+                                    timeText = originTime?.let { calculateTimeDifferenceFromNow(it).toFormattedString() }
+                                        ?: "NULL,",
+
+                                    platformText = if(mode == "Public") "Walking" else firstLeg?.stopSequence?.firstOrNull()?.disassembledName?.split(
                                         ","
                                     )?.lastOrNull()
                                         ?: "NULL",
@@ -96,10 +99,7 @@ class TimeTableViewModel @Inject constructor(
                                     destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM()
                                         ?: "NULL",
 
-                                    travelTime = "${
-                                        ((journey.legs?.mapNotNull { it.duration }
-                                            ?.sum()) ?: 0).div(60).toInt()
-                                    } min",
+                                    travelTime = calculateTimeDifference(originTime!!, arrivalTime!!).toMinutes().toString() + " mins",
                                     transportModeLines = journey.legs?.mapNotNull { leg ->
                                         leg.transportation?.product?.productClass?.toInt()?.let {
                                             TransportMode.toTransportModeType(productClass = it)
@@ -122,7 +122,15 @@ class TimeTableViewModel @Inject constructor(
                     response.journeys?.mapIndexed { jindex, j ->
                         Timber.d("JOURNEY #${jindex + 1}")
                         j.legs?.forEachIndexed { index, leg ->
-                            Timber.d(" LEG#${index + 1} -- Duration: ${leg.duration}")
+
+                            val transportationProductClass =
+                                leg.transportation?.product?.productClass
+
+                            Timber.d(
+                                " LEG#${index + 1} -- Duration: ${leg.duration} -- " +
+                                        if (transportationProductClass?.toInt() == 99 || transportationProductClass?.toInt() == 100)
+                                            "Mode: Walking" else "Mode: Public"
+                            )
                             Timber.d(
                                 "\t\t ORG: ${
                                     leg.origin?.departureTimeEstimated?.utcToAEST()
@@ -141,9 +149,33 @@ class TimeTableViewModel @Inject constructor(
                             )
                         }
                     }
+                    updateTimeTextPeriodically()
                 }.onFailure {
                     Timber.e("Error while fetching trip: $it")
                 }
+        }
+    }
+
+    private fun updateTimeTextPeriodically() {
+        viewModelScope.launch {
+            flow {
+                while (true) {
+                    emit(Unit)
+                    delay(10.seconds) // variation factor
+                }
+            }.collect {
+                updateUiState {
+                    copy(
+                        journeyList = journeyList.map { journeyCardInfo ->
+                            journeyCardInfo.copy(
+                                timeText = journeyCardInfo.originTime.let {
+                                    calculateTimeDifferenceFromFormattedString(it).toFormattedString()
+                                }
+                            )
+                        }.toImmutableList()
+                    )
+                }
+            }
         }
     }
 
