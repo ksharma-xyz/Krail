@@ -21,11 +21,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import xyz.ksharma.krail.design.system.components.Divider
 import xyz.ksharma.krail.design.system.components.Text
@@ -42,6 +44,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchStopScreen(
+    key: String,
     searchStopState: SearchStopState,
     modifier: Modifier = Modifier,
     onStopSelected: (StopItem) -> Unit = {},
@@ -50,6 +53,7 @@ fun SearchStopScreen(
     var textFieldText: String by remember { mutableStateOf("") }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
+    var stopSelected by remember { mutableStateOf<StopItem?>(null) }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
@@ -63,6 +67,13 @@ fun SearchStopScreen(
             .filter { it.isNotBlank() }
             .mapLatest { text -> onEvent(SearchStopUiEvent.SearchTextChanged(text)) }
             .collect()
+    }
+
+    LaunchedEffect(stopSelected) {
+        if (stopSelected != null) {
+            onEvent(SearchStopUiEvent.StopSelected(key, stopSelected!!))
+            onStopSelected(stopSelected!!)
+        }
     }
 
     LazyColumn(
@@ -108,7 +119,9 @@ fun SearchStopScreen(
                         stopName = stop.stopName,
                         transportModeSet = stop.transportModeType.toImmutableSet(),
                         onClick = { stopItem ->
+                            stopSelected = stopItem
                             keyboard?.hide()
+                            onEvent(SearchStopUiEvent.StopSelected(key, stopItem))
                             onStopSelected(stopItem)
                         },
                     )
@@ -133,7 +146,7 @@ fun SearchStopScreen(
 @Composable
 private fun SearchStopScreenPreview() {
     KrailTheme {
-        SearchStopScreen(searchStopState = SearchStopState())
+        SearchStopScreen(searchStopState = SearchStopState(), key = "")
     }
 }
 

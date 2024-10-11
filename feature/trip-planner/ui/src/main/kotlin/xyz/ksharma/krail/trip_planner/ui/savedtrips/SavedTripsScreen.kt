@@ -22,7 +22,9 @@ import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 
 @Composable
 fun SavedTripsScreen(
-    savedTripsState: SavedTripsState,
+    //savedTripsState: SavedTripsState,
+    fromStopItem: StopItem?,
+    toStopItem: StopItem?,
     modifier: Modifier = Modifier,
     fromButtonClick: () -> Unit = {},
     toButtonClick: () -> Unit = {},
@@ -45,18 +47,16 @@ fun SavedTripsScreen(
 
         SearchStopRow(
             modifier = Modifier.align(Alignment.BottomCenter),
-            fromStopItem = savedTripsState.fromStopItem,
-            toStopItem = savedTripsState.toStopItem,
+            fromStopItem = fromStopItem,
+            toStopItem = toStopItem,
             fromButtonClick = fromButtonClick,
             toButtonClick = toButtonClick,
             onReverseButtonClick = {
-                onReverseButtonClick(savedTripsState.fromStopItem, savedTripsState.toStopItem)
+                onReverseButtonClick(fromStopItem, toStopItem)
             },
             onSearchButtonClick = {
-                val fromStop = savedTripsState.fromStopItem
-                val toStop = savedTripsState.toStopItem
-                if (fromStop != null && toStop != null && fromStop.stopId != toStop.stopId) {
-                    onSearchButtonClick(fromStop, toStop)
+                if (fromStopItem != null && toStopItem != null && fromStopItem.stopId != toStopItem.stopId) {
+                    onSearchButtonClick(fromStopItem, toStopItem)
                 } else {
                     // TODO - show error
                 }
@@ -72,7 +72,9 @@ fun SavedTripsScreen(
 private fun SavedTripsScreenPreview() {
     KrailTheme {
         SavedTripsScreen(
-            savedTripsState = SavedTripsState(),
+            //savedTripsState = SavedTripsState(),
+            fromStopItem = null,
+            toStopItem = null,
         )
     }
 }

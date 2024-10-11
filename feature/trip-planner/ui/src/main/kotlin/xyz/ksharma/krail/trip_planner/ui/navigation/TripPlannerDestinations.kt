@@ -48,14 +48,16 @@ fun NavGraphBuilder.tripPlannerDestinations(
             Timber.d("SearchStopRoute: $route")
 
             SearchStopScreen(
+                key = route.fieldType.key,
                 searchStopState = searchStopState,
                 onStopSelected = { stopItem ->
                     Timber.d("onStopSelected: fieldTypeKey=${route.fieldType.key} and stopItem: $stopItem")
-
+/*
                     navController.previousBackStackEntry?.savedStateHandle?.set(
                         route.fieldType.key,
                         stopItem.toJsonString(),
                     )
+*/
                     navController.popBackStack()
                 }) { event -> viewModel.onEvent(event) }
         }

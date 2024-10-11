@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.trip_planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip_planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
+import xyz.ksharma.krail.trip_planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.SearchStopUiEvent
+import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +29,12 @@ class SearchStopViewModel @Inject constructor(
     fun onEvent(event: SearchStopUiEvent) {
         when (event) {
             is SearchStopUiEvent.SearchTextChanged -> onSearchTextChanged(event.query)
+            is SearchStopUiEvent.StopSelected -> onStopSelected(event.key, event.stop)
+        }
+    }
+
+    private fun onStopSelected(key: String, stop: StopItem) {
+        viewModelScope.launch {
         }
     }
 
