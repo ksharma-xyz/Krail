@@ -28,7 +28,6 @@ class SavedTripsViewModel @Inject constructor() : ViewModel() {
 
     private fun onSearchButtonClicked(fromStopItem: StopItem, toStopItem: StopItem) {
         Timber.d("onSearchButtonClicked")
-
     }
 
     private fun onSavedTripClicked(savedTrip: String) {
@@ -37,7 +36,6 @@ class SavedTripsViewModel @Inject constructor() : ViewModel() {
 
     private fun onLoadSavedTrips() {
         Timber.d("onLoadSavedTrips")
-
         updateUiState {
             copy(trip = "Central to Town Hall")
         }

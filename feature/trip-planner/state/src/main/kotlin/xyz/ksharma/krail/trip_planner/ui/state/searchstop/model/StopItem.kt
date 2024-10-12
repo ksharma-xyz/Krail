@@ -19,6 +19,7 @@ data class StopItem(
     fun toJsonString() = Json.encodeToString(serializer(), this)
 
     companion object {
-        fun fromJsonString(json: String) = Json.decodeFromString(serializer(), json)
+        fun fromJsonString(json: String) =
+            kotlin.runCatching { Json.decodeFromString(serializer(), json) }.getOrNull()
     }
 }
