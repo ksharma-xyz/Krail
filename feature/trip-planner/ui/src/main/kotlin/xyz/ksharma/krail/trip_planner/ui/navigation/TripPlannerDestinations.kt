@@ -2,6 +2,9 @@ package xyz.ksharma.krail.trip_planner.ui.navigation
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -33,19 +36,22 @@ fun NavGraphBuilder.tripPlannerDestinations(
             val viewModel = hiltViewModel<SavedTripsViewModel>()
             val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            val fromStopItem: StopItem? =
-                backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.FROM.key)
-                    ?.let { fromJsonString(it) }
-            val toStopItem: StopItem? =
-                backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.TO.key)
-                    ?.let { fromJsonString(it) }
+            val fromArg = backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.FROM.key)
+                ?.let { fromJsonString(it) }
+            val toArg = backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.TO.key)
+                ?.let { fromJsonString(it) }
 
-            LaunchedEffect(fromStopItem) {
-                Timber.d("fromStopItem: $fromStopItem")
+            var fromStopItem: StopItem? by rememberSaveable { mutableStateOf(fromArg) }
+            var toStopItem: StopItem? by rememberSaveable { mutableStateOf(toArg) }
+
+            LaunchedEffect(fromArg) {
+                fromStopItem = fromArg
+                Timber.d("Change fromStopItem: $fromStopItem")
             }
 
-            LaunchedEffect(toStopItem) {
-                Timber.d("toStopItem: $toStopItem")
+            LaunchedEffect(toArg) {
+                toStopItem = toArg
+                Timber.d("Change toStopItem: $toStopItem")
             }
 
             SavedTripsScreen(
@@ -60,14 +66,26 @@ fun NavGraphBuilder.tripPlannerDestinations(
                     Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
                     navController.navigate(SearchStopRoute(fieldType = SearchStopFieldType.TO))
                 },
+                onReverseButtonClick = {
+                    Timber.d("onReverseButtonClick:")
+                    val bufferStop = fromStopItem
+                    backStackEntry.savedStateHandle[SearchStopFieldType.FROM.key] =
+                        toStopItem?.toJsonString()
+                    backStackEntry.savedStateHandle[SearchStopFieldType.TO.key] =
+                        bufferStop?.toJsonString()
+
+                    fromStopItem = toStopItem
+                    toStopItem = bufferStop
+
+                },
                 onSearchButtonClick = {
                     if (fromStopItem != null && toStopItem != null) {
                         navController.navigate(
                             TimeTableRoute(
-                                fromStopId = fromStopItem.stopId,
-                                fromStopName = fromStopItem.stopName,
-                                toStopId = toStopItem.stopId,
-                                toStopName = toStopItem.stopName,
+                                fromStopId = fromStopItem?.stopId!!,
+                                fromStopName = fromStopItem?.stopName!!,
+                                toStopId = toStopItem?.stopId!!,
+                                toStopName = toStopItem?.stopName!!,
                             )
                         )
                     } else {
@@ -98,7 +116,6 @@ fun NavGraphBuilder.tripPlannerDestinations(
             val viewModel = hiltViewModel<SearchStopViewModel>()
             val searchStopState by viewModel.uiState.collectAsStateWithLifecycle()
             val route: SearchStopRoute = backStackEntry.toRoute()
-            Timber.d("SearchStopRoute: $route")
 
             SearchStopScreen(
                 searchStopState = searchStopState,
