@@ -73,8 +73,8 @@ fun SearchStopRow(
             RoundIconButton(
                 content = {
                     Image(
-                        imageVector = ImageVector.vectorResource(TripPlannerUiR.drawable.ic_search),
-                        contentDescription = null,
+                        imageVector = ImageVector.vectorResource(TripPlannerUiR.drawable.ic_reverse),
+                        contentDescription = "Reverse",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
                 },
@@ -85,7 +85,7 @@ fun SearchStopRow(
                 content = {
                     Image(
                         imageVector = ImageVector.vectorResource(TripPlannerUiR.drawable.ic_search),
-                        contentDescription = null,
+                        contentDescription = "Search",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
                 },
