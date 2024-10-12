@@ -25,7 +25,7 @@ retrofit = "2.9.0"
 retrofit2KotlinxSerializationConverter = "0.8.0"
 sqldelight = "2.0.2"
 sqliteAndroidDriver = "2.0.2"
-wire = "5.0.0"
+wire = "5.1.0"
 
 #SDK
 minSdk = "26"
