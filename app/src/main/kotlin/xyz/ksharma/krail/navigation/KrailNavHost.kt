@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavOptions
@@ -31,7 +33,6 @@ import xyz.ksharma.krail.trip_planner.ui.navigation.tripPlannerDestinations
  */
 @Composable
 fun KrailNavHost() {
-
     val navController = rememberNavController()
 
     NavHost(
@@ -42,7 +43,7 @@ fun KrailNavHost() {
         tripPlannerDestinations(navController = navController)
 
         composable<SplashScreen> {
-            SplashScreen {
+            SplashScreen(onSplashComplete = {
                 navController.navigate(
                     route = SavedTripsRoute,
                     navOptions = NavOptions.Builder()
@@ -50,13 +51,13 @@ fun KrailNavHost() {
                         .setPopUpTo<SplashScreen>(inclusive = true)
                         .build()
                 )
-            }
+            })
         }
     }
 }
 
 @Composable
-private fun SplashScreen(modifier: Modifier = Modifier, onSplashComplete: () -> Unit) {
+private fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -69,9 +70,10 @@ private fun SplashScreen(modifier: Modifier = Modifier, onSplashComplete: () -> 
         //  - Add Splash Screen Anim here
         //  - Load Config
 
+        val splashComplete by rememberUpdatedState(onSplashComplete)
         LaunchedEffect(key1 = Unit) {
             delay(1000)
-            onSplashComplete()
+            splashComplete()
         }
     }
 }

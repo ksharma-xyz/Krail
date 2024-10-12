@@ -82,24 +82,38 @@ class TimeTableViewModel @Inject constructor(
                                 val transportationProductClass =
                                     firstLeg?.transportation?.product?.productClass
                                 val mode =
-                                    if (transportationProductClass?.toInt() == 99 || transportationProductClass?.toInt() == 100) "Walk" else "Public"
-
+                                    if (transportationProductClass?.toInt() == 99 ||
+                                        transportationProductClass?.toInt() == 100
+                                    ) {
+                                        "Walk"
+                                    } else {
+                                        "Public"
+                                    }
 
                                 TimeTableState.JourneyCardInfo(
-                                    timeText = originTime?.let { calculateTimeDifferenceFromNow(it).toFormattedString() }
+                                    timeText = originTime?.let {
+                                        calculateTimeDifferenceFromNow(it).toFormattedString()
+                                    }
                                         ?: "NULL,",
 
-                                    platformText = if(mode == "Public") "Walking" else firstLeg?.stopSequence?.firstOrNull()?.disassembledName?.split(
-                                        ","
-                                    )?.lastOrNull()
-                                        ?: "NULL",
+                                    platformText = if (mode == "Public") {
+                                        "Walking"
+                                    } else {
+                                        firstLeg?.stopSequence?.firstOrNull()?.disassembledName?.split(
+                                            ","
+                                        )?.lastOrNull()
+                                            ?: "NULL"
+                                    },
 
                                     originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
 
                                     destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM()
                                         ?: "NULL",
 
-                                    travelTime = calculateTimeDifference(originTime!!, arrivalTime!!).toMinutes().toString() + " mins",
+                                    travelTime = calculateTimeDifference(
+                                        originTime!!,
+                                        arrivalTime!!
+                                    ).toMinutes().toString() + " mins",
                                     transportModeLines = journey.legs?.mapNotNull { leg ->
                                         leg.transportation?.product?.productClass?.toInt()?.let {
                                             TransportMode.toTransportModeType(productClass = it)
@@ -113,7 +127,6 @@ class TimeTableViewModel @Inject constructor(
                                         }
                                     }?.toImmutableList() ?: persistentListOf(),
                                 )
-
                             }?.toImmutableList() ?: persistentListOf()
                         )
                     }
@@ -128,24 +141,29 @@ class TimeTableViewModel @Inject constructor(
 
                             Timber.d(
                                 " LEG#${index + 1} -- Duration: ${leg.duration} -- " +
-                                        if (transportationProductClass?.toInt() == 99 || transportationProductClass?.toInt() == 100)
-                                            "Mode: Walking" else "Mode: Public"
+                                    if (transportationProductClass?.toInt() == 99 ||
+                                        transportationProductClass?.toInt() == 100
+                                    ) {
+                                        "Mode: Walking"
+                                    } else {
+                                        "Mode: Public"
+                                    }
                             )
                             Timber.d(
                                 "\t\t ORG: ${
                                     leg.origin?.departureTimeEstimated?.utcToAEST()
                                         ?.formatTo12HourTime()
                                 }," +
-                                        " DEST: ${
-                                            leg.destination?.arrivalTimeEstimated?.utcToAEST()
-                                                ?.formatTo12HourTime()
-                                        }, " +
-                                        //     "Duration: ${leg.duration}, " +
-                                        // "transportation: ${leg.transportation?.name}",
-                                        "interchange: ${leg.interchange?.run { "[desc:$desc, type:$type] " }}" +
-                                        // "leg properties: ${leg.properties}" +
-                                        //"leg origin properties: ${leg.origin?.properties}"
-                                        "\n\t\t\t leg stopSequence: ${leg.stopSequence?.interchangeStopsList()}"
+                                    " DEST: ${
+                                        leg.destination?.arrivalTimeEstimated?.utcToAEST()
+                                            ?.formatTo12HourTime()
+                                    }, " +
+                                    //     "Duration: ${leg.duration}, " +
+                                    // "transportation: ${leg.transportation?.name}",
+                                    "interchange: ${leg.interchange?.run { "[desc:$desc, type:$type] " }}" +
+                                    // "leg properties: ${leg.properties}" +
+                                    // "leg origin properties: ${leg.origin?.properties}"
+                                    "\n\t\t\t leg stopSequence: ${leg.stopSequence?.interchangeStopsList()}"
                             )
                         }
                     }

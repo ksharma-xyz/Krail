@@ -47,9 +47,12 @@ fun TransportModeIcon(
     }
 }
 
-private fun Modifier.borderIfEnabled(enabled: Boolean): Modifier = if (enabled) {
-    this.then(Modifier.border(width = 1.dp, color = Color.White, shape = CircleShape))
-} else this
+private fun Modifier.borderIfEnabled(enabled: Boolean): Modifier =
+    if (enabled) {
+        this.then(Modifier.border(width = 1.dp, color = Color.White, shape = CircleShape))
+    } else {
+        this
+    }
 
 // region Previews
 
@@ -147,7 +150,8 @@ private fun LightRailWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             backgroundColor = "#EE343F".hexToComposeColor(),
-            letter = 'L', borderEnabled = true
+            letter = 'L',
+            borderEnabled = true
         )
     }
 }
@@ -158,7 +162,8 @@ private fun FerryWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             backgroundColor = "#5AB031".hexToComposeColor(),
-            letter = 'F', borderEnabled = true
+            letter = 'F',
+            borderEnabled = true
         )
     }
 }

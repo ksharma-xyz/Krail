@@ -14,9 +14,9 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
 fun JourneyDetailCard(
-    modifier: Modifier = Modifier,
     header: String,
     journeyLegList: List<JourneyLeg>,
+    modifier: Modifier = Modifier,
 ) {
     BasicJourneyCard(modifier = modifier) {
         // TODO - consider meaningful text breaks in lines. "Platform" and Platform number text
@@ -76,7 +76,8 @@ fun JourneyDetailCard(
 private fun JourneyDetailCardPreview(modifier: Modifier = Modifier) {
     KrailTheme {
         JourneyDetailCard(
-            header = "in 5 mins on Platform 1 (10 min)", journeyLegList = listOf(
+            header = "in 5 mins on Platform 1 (10 min)",
+            journeyLegList = listOf(
                 JourneyLeg(
                     headline = "City Circle via Parramatta",
                     summary = "4 Stops (12 min)",

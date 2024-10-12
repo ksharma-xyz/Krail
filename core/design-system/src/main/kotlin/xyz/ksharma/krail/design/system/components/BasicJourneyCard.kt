@@ -21,12 +21,13 @@ fun BasicJourneyCard(
     backgroundColor: Color = KrailTheme.colors.secondaryContainer,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Column(modifier = modifier
-        .fillMaxWidth()
-        .clip(RoundedCornerShape(12.dp))
-        .background(backgroundColor)
-        .semantics(mergeDescendants = true) {}
-        .padding(horizontal = 16.dp, vertical = 8.dp)
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .background(backgroundColor)
+            .semantics(mergeDescendants = true) {}
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         content()
     }

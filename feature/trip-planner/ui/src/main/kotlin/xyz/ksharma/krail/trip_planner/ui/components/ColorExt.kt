@@ -15,10 +15,12 @@ import androidx.compose.ui.graphics.Color
  *
  * @return A Compose Color object representing the provided hex color code.
  */
-internal fun String.hexToComposeColor(): Color = if (this.isValidHexColorCode()) {
-    Color(android.graphics.Color.parseColor(this))
-} else throw IllegalArgumentException("Invalid hex color code: $this")
-
+internal fun String.hexToComposeColor(): Color =
+    if (this.isValidHexColorCode()) {
+        Color(android.graphics.Color.parseColor(this))
+    } else {
+        throw IllegalArgumentException("Invalid hex color code: $this")
+    }
 
 /**
  * Checks if a string is a valid hexadecimal color code.

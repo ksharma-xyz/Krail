@@ -4,7 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 
 data class JourneyDetail(
-    val timeText: String, //"in x mins" - journeys.legs.first().origin.departureTimePlanned with Time.now()
+    val timeText: String, // "in x mins" - journeys.legs.first().origin.departureTimePlanned with Time.now()
     val platformText: String, // "on Platform X" - journeys.legs.first().stopSequence.disassembledName
     val journeyTime: String, // "(17 mins)" - journeys.legs.sumBy { it.duration }
     val legs: ImmutableList<Leg>,
@@ -15,7 +15,7 @@ data class JourneyDetail(
         // lineName - legs.transportation.disassembledName
         val transportModeLine: TransportModeLine,
 
-        //transportation.description -> "Burwood to Liverpool",
+        // transportation.description -> "Burwood to Liverpool",
         val displayText: String, // "towards X via X"
 
         // leg.stopSequence.size  (leg.duration seconds)

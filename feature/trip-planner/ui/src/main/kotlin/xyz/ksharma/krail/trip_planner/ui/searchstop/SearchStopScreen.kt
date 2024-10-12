@@ -100,7 +100,6 @@ fun SearchStopScreen(
                 )
             }
         } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
-
             searchStopState.stops.forEach { stop ->
                 item {
                     StopSearchListItem(

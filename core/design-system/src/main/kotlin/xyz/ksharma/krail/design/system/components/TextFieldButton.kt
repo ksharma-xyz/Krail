@@ -33,9 +33,9 @@ import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextFieldHeight
  */
 @Composable
 fun TextFieldButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    onClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     val contentAlpha = if (enabled) 1f else TextFieldTokens.DisabledLabelOpacity

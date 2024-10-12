@@ -34,11 +34,11 @@ import xyz.ksharma.krail.design.system.tokens.ButtonTokens.RoundButtonSize
  */
 @Composable
 fun RoundIconButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     color: Color? = null,
     onClickLabel: String? = null,
     content: @Composable () -> Unit = {},
-    onClick: () -> Unit,
 ) {
     CompositionLocalProvider(
         LocalContentColor provides KrailTheme.colors.secondaryContainer,
@@ -66,13 +66,13 @@ fun RoundIconButton(
 @Composable
 private fun RoundIconButtonPreview() {
     KrailTheme {
-        RoundIconButton(content = {
+        RoundIconButton(onClick = {}) {
             Image(
                 imageVector = ImageVector.vectorResource(R.drawable.star),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(LocalOnContentColor.current),
             )
-        }) {}
+        }
     }
 }
 

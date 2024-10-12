@@ -19,10 +19,10 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
 fun JourneyCard(
-    modifier: Modifier = Modifier,
     departureText: @Composable RowScope.() -> Unit,
     timeText: @Composable RowScope.() -> Unit,
     transportModeIconRow: @Composable RowScope.() -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     BasicJourneyCard(
         modifier = modifier,
@@ -103,7 +103,6 @@ private fun JourneyCardMultipleModesPreview() {
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-
                     TransportModeInfo(
                         letter = 'T',
                         backgroundColor = "#005aa3".hexToComposeColor(),

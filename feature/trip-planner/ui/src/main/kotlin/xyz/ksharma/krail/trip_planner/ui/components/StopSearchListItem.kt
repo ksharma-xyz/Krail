@@ -69,8 +69,8 @@ private fun StopSearchListItemPreview() {
             stopId = "123",
             stopName = "Stop Name",
             transportModeSet = persistentSetOf(
-               TransportMode.Bus(),
-               TransportMode.LightRail(),
+                TransportMode.Bus(),
+                TransportMode.LightRail(),
             ),
             modifier = Modifier.background(color = KrailTheme.colors.background),
         )

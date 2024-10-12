@@ -10,9 +10,6 @@ import xyz.ksharma.krail.trip_planner.network.api.model.StopType
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.network.api.service.TripPlanningService
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 class RealTripPlanningRepository @Inject constructor(

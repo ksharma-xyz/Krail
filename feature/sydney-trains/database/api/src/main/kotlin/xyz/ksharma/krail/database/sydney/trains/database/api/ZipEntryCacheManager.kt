@@ -4,7 +4,6 @@ import okhttp3.Response
 
 interface ZipEntryCacheManager {
 
-
     /**
      * Caches the content of a successful ZIP response in the cache directory associated with the
      * provided context. This function operates on a specified coroutine dispatcher for asynchronous

@@ -1,4 +1,4 @@
-package  xyz.ksharma.krail.domain.di
+package xyz.ksharma.krail.domain.di
 
 import dagger.Binds
 import dagger.Module
