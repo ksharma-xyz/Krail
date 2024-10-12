@@ -10,7 +10,6 @@ android {
 dependencies {
     implementation(projects.core.coroutinesExt)
     implementation(projects.core.di)
-    implementation(projects.core.model)
     implementation(projects.core.utils)
     implementation(projects.krail.feature.sydneyTrains.database.api)
 

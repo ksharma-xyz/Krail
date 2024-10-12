@@ -8,7 +8,6 @@ android {
 }
 
 dependencies {
-    api(projects.core.model)
     implementation(projects.core.utils)
 
     testImplementation(libs.test.junit)
