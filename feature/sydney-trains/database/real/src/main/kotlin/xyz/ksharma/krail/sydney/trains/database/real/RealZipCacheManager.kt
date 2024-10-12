@@ -64,7 +64,8 @@ class RealZipCacheManager @Inject constructor(
      *
      * @param isDirectory Indicates whether the entry is a directory.
      * @param path The target path in the cache directory.
-     */ // TODO - can be reusable across modules?
+     */
+    // TODO - can be reusable across modules?
     private fun ZipInputStream.writeToCache(
         isDirectory: Boolean,
         path: Path,

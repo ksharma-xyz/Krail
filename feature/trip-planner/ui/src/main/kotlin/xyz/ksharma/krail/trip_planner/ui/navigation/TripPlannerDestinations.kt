@@ -76,7 +76,6 @@ fun NavGraphBuilder.tripPlannerDestinations(
 
                     fromStopItem = toStopItem
                     toStopItem = bufferStop
-
                 },
                 onSearchButtonClick = {
                     if (fromStopItem != null && toStopItem != null) {
@@ -107,9 +106,7 @@ fun NavGraphBuilder.tripPlannerDestinations(
                 viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(route.fromStopId, route.toStopId))
             }
 
-            TimeTableScreen(timeTableState) { event ->
-                viewModel.onEvent(event)
-            }
+            TimeTableScreen(timeTableState)
         }
 
         composable<SearchStopRoute> { backStackEntry ->
@@ -127,7 +124,8 @@ fun NavGraphBuilder.tripPlannerDestinations(
                         stopItem.toJsonString(),
                     )
                     navController.popBackStack()
-                }) { event -> viewModel.onEvent(event) }
+                }
+            ) { event -> viewModel.onEvent(event) }
         }
     }
 }

@@ -135,8 +135,10 @@ interface TripPlanningService {
         @Query("itdTime") itdTime: String? = null,
 
         /**
-         * This is the type of data specified in the name_origin field. The origin indicates the starting point when searching for journeys.
-         * The best way to use the trip planner is to use use any for this field then specify a valid location ID in type_origin, or to use coord
+         * This is the type of data specified in the name_origin field. The origin indicates the
+         * starting point when searching for journeys.
+         * The best way to use the trip planner is to use use any for this field then specify a
+         * valid location ID in type_origin, or to use coord
          * in this field and a correctly formatted coordinate in type_origin.
          *
          * Available values : any, coord

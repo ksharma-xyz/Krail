@@ -111,7 +111,7 @@ fun TextField(
                     if (textFieldState.text.isEmpty() && isFocused) {
                         /* Using a Box ensures that cursor and placeholder are displayed on top of
                      each other, so the cursor is always displayed at the start if the TextField.
-                     */
+                         */
                         Box {
                             innerTextField() // To display cursor
                             TextFieldPlaceholder(placeholder = placeholder)
@@ -168,7 +168,7 @@ private fun TextFieldDisabledPreview() {
 @Composable
 private fun TextFieldDisabledPlaceholderPreview() {
     KrailTheme {
-            TextField(enabled = false, placeholder = "Disabled Placeholder")
+        TextField(enabled = false, placeholder = "Disabled Placeholder")
     }
 }
 

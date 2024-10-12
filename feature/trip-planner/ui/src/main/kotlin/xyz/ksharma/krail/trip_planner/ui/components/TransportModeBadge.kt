@@ -65,7 +65,7 @@ private fun TransportModeBadgeTrainPreview() {
     KrailTheme {
         TransportModeBadge(
             badgeText = "T1",
-           backgroundColor =  "#F6891F".hexToComposeColor()
+            backgroundColor = "#F6891F".hexToComposeColor()
         )
     }
 }
@@ -75,7 +75,8 @@ private fun TransportModeBadgeTrainPreview() {
 private fun TransportModeBadgeFerryPreview() {
     KrailTheme {
         TransportModeBadge(
-            badgeText = "F1", backgroundColor = "#5AB031".hexToComposeColor()
+            badgeText = "F1",
+            backgroundColor = "#5AB031".hexToComposeColor()
         )
     }
 }

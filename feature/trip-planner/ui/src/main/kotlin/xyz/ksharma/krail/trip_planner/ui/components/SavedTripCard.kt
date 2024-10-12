@@ -47,7 +47,6 @@ fun SavedTripCard(
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-
         TransportModeIcon(
             letter = 'T',
             backgroundColor = "#00B5EF".hexToComposeColor(),
@@ -96,12 +95,10 @@ private fun SavedTripCardPreview() {
     }
 }
 
-
 @Preview
 @Composable
 private fun SavedTripCardListPreview() {
     KrailTheme {
-
         Column(
             modifier = Modifier
                 .background(color = KrailTheme.colors.background)

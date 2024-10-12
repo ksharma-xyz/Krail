@@ -17,7 +17,6 @@ fun TransportModeInfo(
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-
         TransportModeIcon(letter = letter, backgroundColor = backgroundColor)
 
         TransportModeBadge(

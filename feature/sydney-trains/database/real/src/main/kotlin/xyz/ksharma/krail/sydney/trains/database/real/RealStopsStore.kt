@@ -77,7 +77,6 @@ class RealStopsStore @Inject constructor(
         krailDB.stopsQueries.stopsCount().executeAsOne()
     }
 
-
     override suspend fun clearStops() = withContext(ioDispatcher) {
         TODO("Not yet implemented")
     }

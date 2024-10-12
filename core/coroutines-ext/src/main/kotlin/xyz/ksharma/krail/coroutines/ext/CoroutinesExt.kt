@@ -3,8 +3,8 @@ package xyz.ksharma.krail.coroutines.ext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
-import kotlin.coroutines.cancellation.CancellationException
 import kotlin.Result
+import kotlin.coroutines.cancellation.CancellationException
 
 /**
  * Executes the given block on the specified [CoroutineDispatcher] and returns the result in a [Result] object.

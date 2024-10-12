@@ -27,11 +27,11 @@ import xyz.ksharma.krail.trip_planner.ui.R as TripPlannerUiR
 
 @Composable
 fun SearchStopRow(
+    fromButtonClick: () -> Unit,
+    toButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
     fromStopItem: StopItem? = null,
     toStopItem: StopItem? = null,
-    fromButtonClick: () -> Unit,
-    toButtonClick: () -> Unit,
     onReverseButtonClick: () -> Unit = {},
     onSearchButtonClick: () -> Unit = {},
 ) {

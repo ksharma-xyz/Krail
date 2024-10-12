@@ -19,18 +19,17 @@ class DemoUseCaseImpl @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : DemoUseCase {
     override suspend operator fun invoke() {
-
-        //val stopsList = context.toPath(GTFSFeedFileNames.STOPS.fileName).parseStops()
-        //Timber.d("stopsList: $stopsList")
-        //val tripsList = context.toPath(GTFSFeedFileNames.TRIPS.fileName).parseTrips()
-        //val stopTimesList = context.toPath(GTFSFeedFileNames.STOP_TIMES.fileName).parseStopTimes()
-        //Timber.d("stopTimesList: ${stopTimesList.size}") Huge data do not log.
-        //val routesList = context.toPath(GTFSFeedFileNames.ROUTES.fileName).parseRoutes()
+        // val stopsList = context.toPath(GTFSFeedFileNames.STOPS.fileName).parseStops()
+        // Timber.d("stopsList: $stopsList")
+        // val tripsList = context.toPath(GTFSFeedFileNames.TRIPS.fileName).parseTrips()
+        // val stopTimesList = context.toPath(GTFSFeedFileNames.STOP_TIMES.fileName).parseStopTimes()
+        // Timber.d("stopTimesList: ${stopTimesList.size}") Huge data do not log.
+        // val routesList = context.toPath(GTFSFeedFileNames.ROUTES.fileName).parseRoutes()
 //        Timber.d("routesList: $routesList")
-        //val occupancyList = context.toPath(GTFSFeedFileNames.OCCUPANCIES.fileName).parseOccupancy()
-        //Timber.d("occupancyList: ${occupancyList.size}")
-        //val calendarList = context.toPath(GTFSFeedFileNames.CALENDAR.fileName).parseCalendar()
-        //Timber.d("calendarList: ${calendarList}")
+        // val occupancyList = context.toPath(GTFSFeedFileNames.OCCUPANCIES.fileName).parseOccupancy()
+        // Timber.d("occupancyList: ${occupancyList.size}")
+        // val calendarList = context.toPath(GTFSFeedFileNames.CALENDAR.fileName).parseCalendar()
+        // Timber.d("calendarList: ${calendarList}")
        /* val agencyList = context.toPath(GTFSFeedFileNames.AGENCY.fileName).parseAgency()
         Timber.d("agencyList: $agencyList")*/
     }

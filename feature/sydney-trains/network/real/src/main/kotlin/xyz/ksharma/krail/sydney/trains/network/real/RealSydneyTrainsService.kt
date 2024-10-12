@@ -20,8 +20,10 @@ class RealSydneyTrainsService @Inject constructor(
 ) : SydneyTrainsService {
 
     override suspend fun getSydneyTrainsStaticData(): Result<Response> {
-        val request = Request.Builder().url("$BASE_URL/v1/gtfs/schedule/sydneytrains")
-            .header("Authorization", "apikey $API_KEY").build()
+        val request = Request.Builder()
+            .url("$BASE_URL/v1/gtfs/schedule/sydneytrains")
+            .header("Authorization", "apikey $API_KEY")
+            .build()
 
         return safeResult(ioDispatcher) {
             okHttpClient.newCall(request).execute()

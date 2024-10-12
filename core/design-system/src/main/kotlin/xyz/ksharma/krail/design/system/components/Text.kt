@@ -29,7 +29,7 @@ fun Text(
     val contentAlpha = LocalContentAlpha.current
     CompositionLocalProvider(
         LocalTextColor provides KrailTheme.colors.onBackground, // default color for text
-        LocalTextStyle provides KrailTheme.typography.body,  // default style for text
+        LocalTextStyle provides KrailTheme.typography.body, // default style for text
     ) {
         BasicText(
             text = text,

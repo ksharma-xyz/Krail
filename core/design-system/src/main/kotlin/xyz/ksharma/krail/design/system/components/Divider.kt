@@ -28,13 +28,15 @@ fun Divider(
             modifier = modifier
                 .then(
                     when (type) {
-                        DividerType.HORIZONTAL -> Modifier
-                            .fillMaxWidth()
-                            .height(1.dp)
+                        DividerType.HORIZONTAL ->
+                            Modifier
+                                .fillMaxWidth()
+                                .height(1.dp)
 
-                        DividerType.VERTICAL -> Modifier
-                            .fillMaxHeight()
-                            .width(1.dp)
+                        DividerType.VERTICAL ->
+                            Modifier
+                                .fillMaxHeight()
+                                .width(1.dp)
                     }
                 )
                 .background(color = color ?: LocalContentColor.current)

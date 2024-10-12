@@ -7,7 +7,6 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.absoluteValue
-import kotlin.time.toKotlinDuration
 
 object DateTimeHelper {
 
@@ -83,7 +82,6 @@ object DateTimeHelper {
         }
         return formattedDifference
     }
-
 
     fun calculateTimeDifferenceFromFormattedString(timeString: String): Duration {
         // Define the formatter for the input time string

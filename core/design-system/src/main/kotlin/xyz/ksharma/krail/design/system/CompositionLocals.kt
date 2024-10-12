@@ -7,7 +7,6 @@ import androidx.compose.ui.text.TextStyle
 val LocalTextStyle = compositionLocalOf { TextStyle.Default }
 val LocalTextColor = compositionLocalOf { Color.Unspecified }
 val LocalContentAlpha = compositionLocalOf { 1f }
-val LocalTransportColor = compositionLocalOf { Color.Unspecified }
 
-internal  val LocalContentColor = compositionLocalOf { Color.Unspecified }
+internal val LocalContentColor = compositionLocalOf { Color.Unspecified }
 val LocalOnContentColor = compositionLocalOf { Color.Unspecified }

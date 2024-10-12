@@ -209,8 +209,9 @@ data class TripResponse(
         @SerialName("id") val id: String? = null,
         /**
          * 	string
-         * This value indicates how important the service alert is. A value of high or veryHigh likely indicates that
-         * the alert will correspond to an event that impacts the ability to travel for relevant users, while low or veryLow
+         * This value indicates how important the service alert is. A value of high or veryHigh
+         * likely indicates that the alert will correspond to an event that impacts the ability
+         * to travel for relevant users, while low or veryLow
          * might be more of an informational message.
          *
          * Enum - veryLow, low, normal, high, veryHigh

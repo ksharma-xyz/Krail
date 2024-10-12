@@ -31,9 +31,11 @@ fun SeparatorIcon(modifier: Modifier = Modifier, color: Color = KrailTheme.color
 @Composable
 private fun SeparatorIconPreview() {
     KrailTheme {
-        Box(modifier = Modifier
-            .background(KrailTheme.colors.surface)
-            .padding(10.dp)) {
+        Box(
+            modifier = Modifier
+                .background(KrailTheme.colors.surface)
+                .padding(10.dp)
+        ) {
             SeparatorIcon()
         }
     }
