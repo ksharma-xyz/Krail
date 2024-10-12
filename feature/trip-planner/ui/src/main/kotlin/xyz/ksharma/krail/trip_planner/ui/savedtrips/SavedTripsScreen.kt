@@ -28,6 +28,7 @@ fun SavedTripsScreen(
     toStopItem: StopItem? = null,
     fromButtonClick: () -> Unit = {},
     toButtonClick: () -> Unit = {},
+    onReverseButtonClick: () -> Unit = {},
     onSearchButtonClick: () -> Unit = {},
     onEvent: (SavedTripUiEvent) -> Unit = {},
 ) {
@@ -50,6 +51,7 @@ fun SavedTripsScreen(
             toStopItem = toStopItem,
             fromButtonClick = fromButtonClick,
             toButtonClick = toButtonClick,
+            onReverseButtonClick = onReverseButtonClick,
             onSearchButtonClick = onSearchButtonClick,
         )
     }

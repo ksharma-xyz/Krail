@@ -60,6 +60,9 @@ fun NavGraphBuilder.tripPlannerDestinations(
                     Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
                     navController.navigate(SearchStopRoute(fieldType = SearchStopFieldType.TO))
                 },
+                onReverseButtonClick = {
+
+                },
                 onSearchButtonClick = {
                     if (fromStopItem != null && toStopItem != null) {
                         navController.navigate(

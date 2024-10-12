@@ -32,6 +32,7 @@ fun SearchStopRow(
     toStopItem: StopItem? = null,
     fromButtonClick: () -> Unit,
     toButtonClick: () -> Unit,
+    onReverseButtonClick: () -> Unit = {},
     onSearchButtonClick: () -> Unit = {},
 ) {
     Row(
@@ -78,7 +79,7 @@ fun SearchStopRow(
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
                 },
-                onClick = {},
+                onClick = onReverseButtonClick,
             )
 
             RoundIconButton(
