@@ -23,33 +23,38 @@ internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
     val firstLeg = journey.legs?.firstOrNull()
     val lastLeg = journey.legs?.lastOrNull()
 
-    val originTime = firstLeg?.origin?.departureTimeEstimated
-        ?: firstLeg?.origin?.departureTimePlanned
-    val arrivalTime = lastLeg?.destination?.arrivalTimeEstimated
-        ?: lastLeg?.destination?.arrivalTimePlanned
+    val firstPublicTransportLeg = journey.legs?.firstOrNull { leg ->
+        leg.transportation?.product?.productClass != 99L &&
+                leg.transportation?.product?.productClass != 100L
+    }
+    val lastPublicTransportLeg = journey.legs?.lastOrNull { leg ->
+        leg.transportation?.product?.productClass != 99L &&
+                leg.transportation?.product?.productClass != 100L
+    }
 
-    val transportationProductClass =
-        firstLeg?.transportation?.product?.productClass
+    val originTime = firstPublicTransportLeg?.origin?.departureTimeEstimated
+        ?: firstPublicTransportLeg?.origin?.departureTimePlanned
+    val arrivalTime = lastPublicTransportLeg?.destination?.arrivalTimeEstimated
+        ?: lastPublicTransportLeg?.destination?.arrivalTimePlanned
 
     TimeTableState.JourneyCardInfo(
         timeText = originTime?.let {
             calculateTimeDifferenceFromNow(it).toFormattedString()
-        }
-            ?: "NULL,",
+        } ?: "NULL,",
 
-        platformText = when (firstLeg?.transportation?.product?.productClass) {
-            // Walk
-            99L, 100L -> null
-
+        platformText = when (firstPublicTransportLeg?.transportation?.product?.productClass) {
             // Train or Metro
             1L, 2L -> {
-                firstLeg.stopSequence?.firstOrNull()?.disassembledName?.split(",")?.lastOrNull()
+                firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName?.split(",")
+                    ?.lastOrNull()
             }
 
-            // Others
-            else -> {
-                firstLeg?.stopSequence?.firstOrNull()?.disassembledName
+            // Other Modes
+            9L, 5L, 4L, 7L -> {
+                firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName
             }
+
+            else -> null
         }?.trim(),
 
         originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",

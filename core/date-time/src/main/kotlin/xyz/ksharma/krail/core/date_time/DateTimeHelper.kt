@@ -57,17 +57,14 @@ object DateTimeHelper {
      */
     fun calculateTimeDifferenceFromNow(
         utcDateString: String,
-        timeNow: Instant = Instant.now(),
+        timeNow: ZonedDateTime = ZonedDateTime.now(),
     ): Duration {
         // Parse the UTC date string to a ZonedDateTime
         val parsedDateTime =
             ZonedDateTime.parse(utcDateString, DateTimeFormatter.ISO_ZONED_DATE_TIME)
 
-        // Convert the Instant to a ZonedDateTime in UTC
-        val nowDateTime = ZonedDateTime.ofInstant(timeNow, parsedDateTime.zone)
-
         // Calculate the duration between the two ZonedDateTime instances
-        return Duration.between(nowDateTime, parsedDateTime)
+        return Duration.between(timeNow, parsedDateTime)
     }
 
     fun Duration.toFormattedString(): String {
