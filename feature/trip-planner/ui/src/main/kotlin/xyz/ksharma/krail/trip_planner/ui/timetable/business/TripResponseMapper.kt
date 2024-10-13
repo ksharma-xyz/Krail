@@ -50,7 +50,7 @@ internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
             else -> {
                 firstLeg?.stopSequence?.firstOrNull()?.disassembledName
             }
-        },
+        }?.trim(),
 
         originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
 

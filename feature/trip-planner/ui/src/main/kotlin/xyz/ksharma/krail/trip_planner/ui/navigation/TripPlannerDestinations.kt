@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip_planner.ui.navigation
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -36,21 +37,26 @@ fun NavGraphBuilder.tripPlannerDestinations(
             val viewModel = hiltViewModel<SavedTripsViewModel>()
             val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
-            val fromArg = backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.FROM.key)
-                ?.let { fromJsonString(it) }
-            val toArg = backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.TO.key)
-                ?.let { fromJsonString(it) }
+            val fromArg: String? =
+                backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.FROM.key)
+            val toArg: String? =
+                backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.TO.key)
 
-            var fromStopItem: StopItem? by rememberSaveable { mutableStateOf(fromArg) }
-            var toStopItem: StopItem? by rememberSaveable { mutableStateOf(toArg) }
+            // Cannot use 'rememberSaveable' here because StopItem is not Parcelable.
+            // But it's saved in backStackEntry.savedStateHandle as json, so it's able to
+            // handle config changes properly.
+            var fromStopItem: StopItem? by remember {
+                mutableStateOf(fromArg?.let { fromJsonString(it) })
+            }
+            var toStopItem: StopItem? by remember { mutableStateOf(toArg?.let { fromJsonString(it) }) }
 
             LaunchedEffect(fromArg) {
-                fromStopItem = fromArg
+                fromArg?.let { fromStopItem = fromJsonString(it) }
                 Timber.d("Change fromStopItem: $fromStopItem")
             }
 
             LaunchedEffect(toArg) {
-                toStopItem = toArg
+                toArg?.let { toStopItem = fromJsonString(it) }
                 Timber.d("Change toStopItem: $toStopItem")
             }
 
