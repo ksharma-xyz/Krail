@@ -30,14 +30,6 @@ internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
 
     val transportationProductClass =
         firstLeg?.transportation?.product?.productClass
-    val mode =
-        if (transportationProductClass?.toInt() == 99 ||
-            transportationProductClass?.toInt() == 100
-        ) {
-            "Walk"
-        } else {
-            "Public"
-        }
 
     TimeTableState.JourneyCardInfo(
         timeText = originTime?.let {
@@ -45,13 +37,19 @@ internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
         }
             ?: "NULL,",
 
-        platformText = if (mode == "Public") {
-            "Walking"
-        } else {
-            firstLeg?.stopSequence?.firstOrNull()?.disassembledName?.split(
-                ","
-            )?.lastOrNull()
-                ?: "NULL"
+        platformText = when (firstLeg?.transportation?.product?.productClass) {
+            // Walk
+            99L, 100L -> null
+
+            // Train or Metro
+            1L, 2L -> {
+                firstLeg.stopSequence?.firstOrNull()?.disassembledName?.split(",")?.lastOrNull()
+            }
+
+            // Others
+            else -> {
+                firstLeg?.stopSequence?.firstOrNull()?.disassembledName
+            }
         },
 
         originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
