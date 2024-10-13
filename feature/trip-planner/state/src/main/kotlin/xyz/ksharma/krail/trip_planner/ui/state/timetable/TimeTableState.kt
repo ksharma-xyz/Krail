@@ -18,6 +18,8 @@ data class TimeTableState(
         // else leg.first.destination.arrivalTimeEstimated ?: leg.first.destination.arrivalTimePlanned
         val originTime: String, // "11:30pm" stopSequence.arrivalTimeEstimated ?: stopSequence.arrivalTimePlanned
 
+        val originUtcDateTime: String, // "2024-09-24T19:00:00Z"
+
         // legs.last.destination.arrivalTimeEstimated ?: legs.last.destination.arrivalTimePlanned
         val destinationTime: String, // "11:40pm"
 

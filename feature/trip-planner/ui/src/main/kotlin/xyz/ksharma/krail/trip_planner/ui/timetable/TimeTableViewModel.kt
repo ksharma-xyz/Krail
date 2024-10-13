@@ -14,17 +14,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import xyz.ksharma.krail.core.date_time.DateTimeHelper.aestToHHMM
-import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifference
-import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromFormattedString
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromNow
-import xyz.ksharma.krail.core.date_time.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.toFormattedString
-import xyz.ksharma.krail.core.date_time.DateTimeHelper.utcToAEST
-import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
-import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
-import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip_planner.ui.timetable.business.buildJourneyList
@@ -80,6 +72,8 @@ class TimeTableViewModel @Inject constructor(
     }
 
     private fun updateTimeTextPeriodically() {
+        // TODO - this will keep running even if app is in background as long as the ViewModel is alive. Need to fix this.
+        //  Use kotlin.concurrent.fixedRateTimer
         viewModelScope.launch {
             flow {
                 while (true) {
@@ -91,8 +85,10 @@ class TimeTableViewModel @Inject constructor(
                     copy(
                         journeyList = journeyList.map { journeyCardInfo ->
                             journeyCardInfo.copy(
-                                timeText = journeyCardInfo.originTime.let {
-                                    calculateTimeDifferenceFromFormattedString(it).toFormattedString()
+                                timeText = journeyCardInfo.originUtcDateTime.let {
+                                    val x = calculateTimeDifferenceFromNow(utcDateString = it).toFormattedString()
+                                    Timber.d("\tupdate: $x")
+                                    x
                                 }
                             )
                         }.toImmutableList()

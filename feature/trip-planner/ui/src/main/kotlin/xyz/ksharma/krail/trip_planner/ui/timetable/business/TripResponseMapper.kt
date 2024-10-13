@@ -39,7 +39,8 @@ internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
 
     TimeTableState.JourneyCardInfo(
         timeText = originTime?.let {
-            calculateTimeDifferenceFromNow(it).toFormattedString()
+            Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
+            calculateTimeDifferenceFromNow(utcDateString = it).toFormattedString()
         } ?: "NULL,",
 
         platformText = when (firstPublicTransportLeg?.transportation?.product?.productClass) {
@@ -58,9 +59,9 @@ internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
         }?.trim(),
 
         originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+        originUtcDateTime = originTime ?: "NULL",
 
-        destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM()
-            ?: "NULL",
+        destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
 
         travelTime = calculateTimeDifference(
             originTime!!,
@@ -91,14 +92,7 @@ internal fun TripResponse.logForUnderstandingData() {
                 leg.transportation?.product?.productClass
 
             Timber.d(
-                " LEG#${index + 1} -- Duration: ${leg.duration} -- " +
-                        if (transportationProductClass?.toInt() == 99 ||
-                            transportationProductClass?.toInt() == 100
-                        ) {
-                            "Mode: Walking"
-                        } else {
-                            "Mode: Public"
-                        }
+                " LEG#${index + 1} -- Duration: ${leg.duration} -- productClass:${transportationProductClass?.toInt()}"
             )
             Timber.d(
                 "\t\t ORG: ${
