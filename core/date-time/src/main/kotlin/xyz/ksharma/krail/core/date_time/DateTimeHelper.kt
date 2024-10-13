@@ -1,12 +1,14 @@
 package xyz.ksharma.krail.core.date_time
 
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import timber.log.Timber
 import java.time.Duration
-import java.time.Instant
-import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.absoluteValue
+import kotlin.time.DurationUnit
 
 object DateTimeHelper {
 
@@ -57,19 +59,15 @@ object DateTimeHelper {
      */
     fun calculateTimeDifferenceFromNow(
         utcDateString: String,
-        timeNow: ZonedDateTime = ZonedDateTime.now(),
-    ): Duration {
-        // Parse the UTC date string to a ZonedDateTime
-        val parsedDateTime =
-            ZonedDateTime.parse(utcDateString, DateTimeFormatter.ISO_ZONED_DATE_TIME)
-
-        // Calculate the duration between the two ZonedDateTime instances
-        return Duration.between(timeNow, parsedDateTime)
+        now: Instant = kotlinx.datetime.Clock.System.now(), // Get current Instant in UTC
+    ): kotlin.time.Duration {
+        val instant = Instant.parse(utcDateString) // Parse UTC string to Instant
+        return instant - now
     }
 
-    fun Duration.toFormattedString(): String {
-        val minutes = this.toMinutes()
-        val hours = this.toHours()
+    fun kotlin.time.Duration.toFormattedString(): String {
+        val minutes = this.toLong(DurationUnit.MINUTES)
+        val hours = this.toLong(DurationUnit.HOURS)
 
         val formattedDifference = when {
             minutes < 0 -> "${minutes.absoluteValue} mins ago"
@@ -77,21 +75,8 @@ object DateTimeHelper {
             hours >= 2 -> "in ${hours.absoluteValue} hrs"
             else -> "in ${minutes.absoluteValue} mins"
         }
+        Timber.d("\t minutes: $minutes, hours: $hours, formattedDifference: $formattedDifference -> originTime")
         return formattedDifference
-    }
-
-    fun calculateTimeDifferenceFromFormattedString(timeString: String): Duration {
-        // Define the formatter for the input time string
-        val formatter = DateTimeFormatter.ofPattern("hh:mm a")
-
-        // Parse the input time string to a LocalTime
-        val inputTime = LocalTime.parse(timeString, formatter)
-
-        // Get the current time
-        val currentTime = LocalTime.now()
-
-        // Calculate the duration between the current time and the input time
-        return Duration.between(currentTime, inputTime)
     }
 
     fun calculateTimeDifference(utcDateString1: String, utcDateString2: String): Duration {

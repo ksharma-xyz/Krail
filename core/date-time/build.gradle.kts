@@ -8,4 +8,5 @@ android {
 dependencies {
     testImplementation(libs.test.kotlin)
     testImplementation(libs.test.googleTruth)
+    implementation(libs.kotlinx.datetime)
 }
