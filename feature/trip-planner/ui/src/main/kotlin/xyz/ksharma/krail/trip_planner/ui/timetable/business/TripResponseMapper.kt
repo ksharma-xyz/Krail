@@ -14,7 +14,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 
-internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
+internal fun TripResponse.buildJourneyList() = journeys?.mapNotNull { journey ->
 
     // TODO -
     //  1. Sanitise data in domain layer.
@@ -37,49 +37,55 @@ internal fun TripResponse.buildJourneyList() = journeys?.map { journey ->
     val arrivalTime = lastPublicTransportLeg?.destination?.arrivalTimeEstimated
         ?: lastPublicTransportLeg?.destination?.arrivalTimePlanned
 
-    TimeTableState.JourneyCardInfo(
-        timeText = originTime?.let {
-            Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
-            calculateTimeDifferenceFromNow(utcDateString = it).toFormattedString()
-        } ?: "NULL,",
+    if (originTime != null && arrivalTime != null && firstPublicTransportLeg != null) {
 
-        platformText = when (firstPublicTransportLeg?.transportation?.product?.productClass) {
-            // Train or Metro
-            1L, 2L -> {
-                firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName?.split(",")
-                    ?.lastOrNull()
-            }
+        TimeTableState.JourneyCardInfo(
+            timeText = originTime?.let {
+                Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
+                calculateTimeDifferenceFromNow(utcDateString = it).toFormattedString()
+            } ?: "NULL,",
 
-            // Other Modes
-            9L, 5L, 4L, 7L -> {
-                firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName
-            }
+            platformText = when (firstPublicTransportLeg?.transportation?.product?.productClass) {
+                // Train or Metro
+                1L, 2L -> {
+                    firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName?.split(",")
+                        ?.lastOrNull()
+                }
 
-            else -> null
-        }?.trim(),
+                // Other Modes
+                9L, 5L, 4L, 7L -> {
+                    firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName
+                }
 
-        originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
-        originUtcDateTime = originTime ?: "NULL",
+                else -> null
+            }?.trim(),
 
-        destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+            originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+            originUtcDateTime = originTime ?: "NULL",
 
-        travelTime = calculateTimeDifference(
-            originTime!!,
-            arrivalTime!!
-        ).toMinutes().toString() + " mins",
-        transportModeLines = journey.legs?.mapNotNull { leg ->
-            leg.transportation?.product?.productClass?.toInt()?.let {
-                TransportMode.toTransportModeType(productClass = it)
-                    ?.let { it1 ->
-                        TransportModeLine(
-                            transportMode = it1,
-                            lineName = leg.transportation?.disassembledName
-                                ?: "NULL"
-                        )
-                    }
-            }
-        }?.toImmutableList() ?: persistentListOf(),
-    )
+            destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+
+            travelTime = calculateTimeDifference(
+                originTime!!,
+                arrivalTime!!
+            ).toMinutes().toString() + " mins",
+            transportModeLines = journey.legs?.mapNotNull { leg ->
+                leg.transportation?.product?.productClass?.toInt()?.let {
+                    TransportMode.toTransportModeType(productClass = it)
+                        ?.let { it1 ->
+                            TransportModeLine(
+                                transportMode = it1,
+                                lineName = leg.transportation?.disassembledName
+                                    ?: "NULL"
+                            )
+                        }
+                }
+            }?.toImmutableList() ?: persistentListOf(),
+        )
+
+    } else null
+
+
 }?.toImmutableList()
 
 internal fun TripResponse.logForUnderstandingData() {

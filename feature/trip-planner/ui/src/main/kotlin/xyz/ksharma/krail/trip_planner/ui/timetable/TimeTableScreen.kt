@@ -50,17 +50,17 @@ fun TimeTableScreen(
         } else if (timeTableState.journeyList.isNotEmpty()) {
             items(timeTableState.journeyList) { journey ->
                 JourneyCardItem(
-                    departureText = journey.timeText + if (journey.platformText != null) {
-                        " on ${journey.platformText}"
-                    } else "",
-                    timeText = journey.originTime + " - " + journey.destinationTime + " (${journey.travelTime})",
+                    departureTimeText = journey.timeText,
+                    departureLocationText = journey.platformText?.let { "on ${journey.platformText}" },
+                    originDestinationTimeText = journey.originTime + " - " + journey.destinationTime,
+                    durationText = journey.travelTime,
                     transportModeLineList = journey.transportModeLines.map {
                         TransportModeLine(
                             transportMode = it.transportMode,
                             lineName = it.lineName,
                         )
                     }.toImmutableList(),
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
         } else {
@@ -73,26 +73,19 @@ fun TimeTableScreen(
 
 @Composable
 fun JourneyCardItem(
-    departureText: String,
-    timeText: String,
+    departureTimeText: String,
+    departureLocationText: String? = null,
+    originDestinationTimeText: String,
+    durationText: String,
     transportModeLineList: ImmutableList<TransportModeLine>,
     modifier: Modifier = Modifier,
 ) {
     JourneyCard(
         modifier = modifier,
-        departureText = {
-            Text(
-                text = departureText,
-                color = KrailTheme.colors.onSecondaryContainer,
-            )
-        },
-        timeText = {
-            Text(
-                text = timeText,
-                color = KrailTheme.colors.onSecondaryContainer,
-                modifier = Modifier.alignByBaseline(),
-            )
-        },
+        departureTimeText = departureTimeText,
+        departureLocationText = departureLocationText,
+        originAndDestinationTimeText = originDestinationTimeText,
+        durationText = durationText,
         transportModeIconRow = {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
