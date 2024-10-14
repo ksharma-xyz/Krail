@@ -9,7 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -35,6 +35,14 @@ class TimeTableViewModel @Inject constructor(
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> =
         _isLoading.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
+
+    private val _isActive: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val isActive: StateFlow<Boolean> = _isActive.onStart {
+        while (true) {
+            updateTimeText()
+            delay(REFRESH_TIME_TEXT_DURATION)
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(3000), true)
 
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
@@ -64,38 +72,27 @@ class TimeTableViewModel @Inject constructor(
                     }
 
                     response.logForUnderstandingData()
-                    updateTimeTextPeriodically()
                 }.onFailure {
                     Timber.e("Error while fetching trip: $it")
                 }
         }
     }
 
-    private fun updateTimeTextPeriodically() {
-        // TODO - this will keep running even if app is in background as long as the ViewModel is alive. Need to fix this.
-        //  Use kotlin.concurrent.fixedRateTimer
-        viewModelScope.launch {
-            flow {
-                while (true) {
-                    emit(Unit)
-                    delay(10.seconds) // variation factor
-                }
-            }.collect {
-                updateUiState {
-                    copy(
-                        journeyList = journeyList.map { journeyCardInfo ->
-                            journeyCardInfo.copy(
-                                timeText = journeyCardInfo.originUtcDateTime.let {
-                                    val x = calculateTimeDifferenceFromNow(utcDateString = it).toFormattedString()
-                                    Timber.d("\tupdate: $x")
-                                    x
-                                }
-                            )
-                        }.toImmutableList()
+    /**
+     * As the clock is progressing, the value [TimeTableState.JourneyCardInfo.timeText] of the
+     * journey card should be updated.
+     */
+    private fun updateTimeText() {
+        updateUiState {
+            copy(
+                journeyList = journeyList.map { journeyCardInfo ->
+                    journeyCardInfo.copy(
+                        timeText = calculateTimeDifferenceFromNow(utcDateString = journeyCardInfo.originUtcDateTime).toFormattedString()
                     )
-                }
-            }
+                }.toImmutableList()
+            )
         }
+        Timber.d("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
     }
 
     private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {
@@ -104,5 +101,6 @@ class TimeTableViewModel @Inject constructor(
 
     companion object {
         private const val ANR_TIMEOUT = 5000L
+        private val REFRESH_TIME_TEXT_DURATION = 5.seconds
     }
 }

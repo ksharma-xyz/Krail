@@ -20,6 +20,8 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
         if (isLoading) {
             viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(route.fromStopId, route.toStopId))
         }
+        // Subscribe to the isActive state flow - for updating the TimeText periodically.
+        val isActive by viewModel.isActive.collectAsStateWithLifecycle()
 
         TimeTableScreen(timeTableState)
     }
