@@ -29,6 +29,7 @@ fun TransportModeInfo(
 // region Previews
 
 @Preview
+@Preview(fontScale = 2.0f)
 @Composable
 private fun TransportModeInfoPreview() {
     KrailTheme {
