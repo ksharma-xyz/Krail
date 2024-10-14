@@ -10,7 +10,6 @@ import androidx.navigation.toRoute
 import xyz.ksharma.krail.trip_planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 
-
 internal fun NavGraphBuilder.timeTableDestination(navController: NavHostController) {
     composable<TimeTableRoute> { backStackEntry ->
         val viewModel = hiltViewModel<TimeTableViewModel>()

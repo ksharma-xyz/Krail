@@ -42,7 +42,11 @@ class TimeTableViewModel @Inject constructor(
             updateTimeText()
             delay(REFRESH_TIME_TEXT_DURATION)
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(3000), true)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(STOP_TIME_TEXT_UPDATES_THRESHOLD.inWholeMilliseconds),
+        initialValue = true,
+    )
 
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
@@ -102,5 +106,6 @@ class TimeTableViewModel @Inject constructor(
     companion object {
         private const val ANR_TIMEOUT = 5000L
         private val REFRESH_TIME_TEXT_DURATION = 5.seconds
+        private val STOP_TIME_TEXT_UPDATES_THRESHOLD = 3.seconds
     }
 }
