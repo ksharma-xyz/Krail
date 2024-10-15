@@ -74,7 +74,7 @@ internal fun TripResponse.buildJourneyList() = journeys?.mapNotNull { journey ->
             }.toImmutableList(),
             legs = legs.mapNotNull { it.toUiModel() }.toImmutableList(),
         ).also {
-            Timber.d("\tJourneyCardId: ${it.journeyId}")
+            Timber.d("\tJourneyId: ${it.journeyId}")
         }
 
     } else null

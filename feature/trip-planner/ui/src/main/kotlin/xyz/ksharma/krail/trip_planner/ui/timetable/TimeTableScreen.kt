@@ -9,20 +9,19 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import timber.log.Timber
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.components.JourneyCard
+import xyz.ksharma.krail.trip_planner.ui.components.JourneyDetailCard
 import xyz.ksharma.krail.trip_planner.ui.components.TransportModeInfo
 import xyz.ksharma.krail.trip_planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
@@ -32,6 +31,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 @Composable
 fun TimeTableScreen(
     timeTableState: TimeTableState,
+    expandedJourneyId: String?,
     onEvent: (TimeTableUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -53,27 +53,33 @@ fun TimeTableScreen(
             }
         } else if (timeTableState.journeyList.isNotEmpty()) {
             items(timeTableState.journeyList) { journey ->
-
-                LaunchedEffect(journey) {
-                    Timber.d("journeyId: ${journey.journeyId}")
+                if (expandedJourneyId == journey.journeyId) {
+                    JourneyDetailCard(
+                        header = "Journey Details",
+                        journeyLegList = emptyList(),
+                        onClick = {
+                            onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    )
+                } else {
+                    JourneyCardItem(
+                        departureTimeText = journey.timeText,
+                        departureLocationText = journey.platformText?.let { "on ${journey.platformText}" },
+                        originDestinationTimeText = journey.originTime + " - " + journey.destinationTime,
+                        durationText = journey.travelTime,
+                        transportModeLineList = journey.transportModeLines.map {
+                            TransportModeLine(
+                                transportMode = it.transportMode,
+                                lineName = it.lineName,
+                            )
+                        }.toImmutableList(),
+                        onClick = {
+                            onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                    )
                 }
-
-                JourneyCardItem(
-                    departureTimeText = journey.timeText,
-                    departureLocationText = journey.platformText?.let { "on ${journey.platformText}" },
-                    originDestinationTimeText = journey.originTime + " - " + journey.destinationTime,
-                    durationText = journey.travelTime,
-                    transportModeLineList = journey.transportModeLines.map {
-                        TransportModeLine(
-                            transportMode = it.transportMode,
-                            lineName = it.lineName,
-                        )
-                    }.toImmutableList(),
-                    onClick = {
-                        onEvent(TimeTableUiEvent.JourneyCardClicked(journey))
-                    },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                )
             }
         } else {
             item {
