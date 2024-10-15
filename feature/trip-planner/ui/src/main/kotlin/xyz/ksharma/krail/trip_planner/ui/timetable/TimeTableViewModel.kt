@@ -51,7 +51,12 @@ class TimeTableViewModel @Inject constructor(
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
             is TimeTableUiEvent.LoadTimeTable -> onLoadTimeTable(event.fromStopId, event.toStopId)
+            is TimeTableUiEvent.JourneyCardClicked -> onJourneyCardClicked(event.journeyCardInfo)
         }
+    }
+
+    private fun onJourneyCardClicked(journeyCardInfo: TimeTableState.JourneyCardInfo) {
+        Timber.d("Journey Card Clicked: $journeyCardInfo")
     }
 
     private fun onLoadTimeTable(fromStopId: String?, toStopId: String?) {
@@ -63,18 +68,12 @@ class TimeTableViewModel @Inject constructor(
             require(!(fromStopId.isNullOrEmpty() || toStopId.isNullOrEmpty())) { "Invalid Stop Ids" }
             tripRepository.trip(originStopId = fromStopId, destinationStopId = toStopId)
                 .onSuccess { response ->
-
-                    // TODO -
-                    //   1. Create UI Model
-                    //   2. Update UI State
-
                     updateUiState {
                         copy(
                             isLoading = false,
                             journeyList = response.buildJourneyList() ?: persistentListOf()
                         )
                     }
-
                     response.logForUnderstandingData()
                 }.onFailure {
                     Timber.e("Error while fetching trip: $it")
