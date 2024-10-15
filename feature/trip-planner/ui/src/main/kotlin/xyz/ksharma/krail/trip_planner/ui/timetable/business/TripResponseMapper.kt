@@ -10,7 +10,6 @@ import xyz.ksharma.krail.core.date_time.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.toFormattedString
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
-import xyz.ksharma.krail.trip_planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
@@ -106,12 +105,17 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
             stops = stops,
             walkInterchange = null,
         )
-    } else null
+    } else {
+        null
+    }
 }
 
 private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInfo.Stop? {
     val stopName = disassembledName ?: name
-    val time = departureTimeEstimated ?: departureTimePlanned
+    // For last leg there is no departure time, so using arrival time
+    // For first leg there is no arrival time, so using departure time.
+    val time =
+        departureTimeEstimated ?: departureTimePlanned ?: arrivalTimeEstimated ?: arrivalTimePlanned
     return if (stopName != null && time != null) {
         TimeTableState.JourneyCardInfo.Stop(
             name = stopName,
