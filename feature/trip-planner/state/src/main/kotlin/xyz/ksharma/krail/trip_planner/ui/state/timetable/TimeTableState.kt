@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip_planner.ui.state.timetable
 
+import android.graphics.Color
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
@@ -36,7 +37,6 @@ data class TimeTableState(
     ) {
         val journeyId: String
             get() = (originUtcDateTime + destinationTime).filter { it.isLetterOrDigit() }
-
 
         data class Leg(
             // modeType - legs.transportation.product.class
