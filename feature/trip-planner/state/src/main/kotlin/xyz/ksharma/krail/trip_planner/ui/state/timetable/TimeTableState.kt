@@ -7,6 +7,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 data class TimeTableState(
     val isLoading: Boolean = false,
     val journeyList: ImmutableList<JourneyCardInfo> = persistentListOf(),
+    val journeyDetail: JourneyDetail? = null,
 ) {
     data class JourneyCardInfo(
         val timeText: String, // "in x mins" - journeys.legs.first().origin.departureTimePlanned with Time.now()
@@ -31,5 +32,8 @@ data class TimeTableState(
          * transportation.product.class -> TransportModeType
          */
         val transportModeLines: ImmutableList<TransportModeLine>,
-    )
+    ) {
+        val journeyId: String
+            get() = (originUtcDateTime + destinationTime).filter { it.isLetterOrDigit() }
+    }
 }
