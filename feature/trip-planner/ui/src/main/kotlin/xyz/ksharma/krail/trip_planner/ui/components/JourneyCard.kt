@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip_planner.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -11,6 +12,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextColor
@@ -30,10 +32,11 @@ fun JourneyCard(
     durationText: String,
     backgroundColor: Color = KrailTheme.colors.tertiaryContainer.copy(alpha = 0.8f),
     transportModeIconRow: @Composable RowScope.() -> Unit,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BasicJourneyCard(
-        modifier = modifier,
+        modifier = modifier.clickable(role = Role.Button, onClick = onClick),
         backgroundColor = backgroundColor,
         content = {
             FlowRow(
@@ -119,7 +122,6 @@ private fun JourneyCardTrainLongTextPreview() {
             originAndDestinationTimeText = "8:25am - 8:40am",
             durationText = "23 mins",
             transportModeIconRow = {
-
                 TransportModeInfo(
                     letter = 'T',
                     backgroundColor = "#005aa3".hexToComposeColor(),
@@ -150,6 +152,7 @@ private fun JourneyCardTrainLongTextPreview() {
                     badgeText = "T4",
                 )
             },
+            onClick = {}
         )
     }
 }
@@ -176,6 +179,7 @@ private fun JourneyCardMultipleModesPreview() {
                     badgeText = "700",
                 )
             },
+            onClick = {},
         )
     }
 }

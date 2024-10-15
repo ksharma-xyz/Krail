@@ -25,10 +25,12 @@ import xyz.ksharma.krail.trip_planner.ui.components.TransportModeInfo
 import xyz.ksharma.krail.trip_planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
+import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
 
 @Composable
 fun TimeTableScreen(
     timeTableState: TimeTableState,
+    onEvent: (TimeTableUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -60,6 +62,9 @@ fun TimeTableScreen(
                             lineName = it.lineName,
                         )
                     }.toImmutableList(),
+                    onClick = {
+                        onEvent(TimeTableUiEvent.JourneyCardClicked(journey))
+                    },
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                 )
             }
@@ -78,6 +83,7 @@ fun JourneyCardItem(
     originDestinationTimeText: String,
     durationText: String,
     transportModeLineList: ImmutableList<TransportModeLine>,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     JourneyCard(
@@ -100,6 +106,7 @@ fun JourneyCardItem(
                     if (index < transportModeLineList.size - 1) SeparatorIcon()
                 }
             }
-        }
+        },
+        onClick = onClick,
     )
 }
