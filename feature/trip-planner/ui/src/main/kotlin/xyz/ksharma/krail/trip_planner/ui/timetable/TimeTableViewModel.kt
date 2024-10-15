@@ -48,15 +48,19 @@ class TimeTableViewModel @Inject constructor(
         initialValue = true,
     )
 
+    private val _expandedJourneyId: MutableStateFlow<String?> = MutableStateFlow(null)
+    val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
+
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
             is TimeTableUiEvent.LoadTimeTable -> onLoadTimeTable(event.fromStopId, event.toStopId)
-            is TimeTableUiEvent.JourneyCardClicked -> onJourneyCardClicked(event.journeyCardInfo)
+            is TimeTableUiEvent.JourneyCardClicked -> onJourneyCardClicked(event.journeyId)
         }
     }
 
-    private fun onJourneyCardClicked(journeyCardInfo: TimeTableState.JourneyCardInfo) {
-        Timber.d("Journey Card Clicked: $journeyCardInfo")
+    private fun onJourneyCardClicked(journeyId: String) {
+        Timber.d("Journey Card Clicked(JourneyId): $journeyId")
+        _expandedJourneyId.update { if (it == journeyId) null else journeyId }
     }
 
     private fun onLoadTimeTable(fromStopId: String?, toStopId: String?) {

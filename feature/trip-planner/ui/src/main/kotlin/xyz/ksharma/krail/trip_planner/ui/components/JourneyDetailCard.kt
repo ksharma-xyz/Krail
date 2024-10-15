@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip_planner.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.BasicJourneyCard
 import xyz.ksharma.krail.design.system.components.Text
@@ -19,9 +21,10 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 fun JourneyDetailCard(
     header: String,
     journeyLegList: List<JourneyLeg>,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    BasicJourneyCard(modifier = modifier) {
+    BasicJourneyCard(modifier = modifier.clickable(role = Role.Button, onClick = onClick)) {
         // TODO - consider meaningful text breaks in lines. "Platform" and Platform number text
         //  should be on same line.
         Text(header, style = KrailTheme.typography.titleMedium)
