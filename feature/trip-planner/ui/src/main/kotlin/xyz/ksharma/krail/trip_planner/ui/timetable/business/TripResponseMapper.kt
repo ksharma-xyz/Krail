@@ -16,13 +16,6 @@ import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 
 internal fun TripResponse.buildJourneyList() = journeys?.mapNotNull { journey ->
 
-    // TODO -
-    //  1. Sanitise data in domain layer.
-    //  2. Pass non null items only to display in ViewModel.
-
-    val firstLeg = journey.legs?.firstOrNull()
-    val lastLeg = journey.legs?.lastOrNull()
-
     val firstPublicTransportLeg = journey.legs?.firstOrNull { leg ->
         leg.transportation?.product?.productClass != 99L &&
                 leg.transportation?.product?.productClass != 100L
@@ -40,12 +33,12 @@ internal fun TripResponse.buildJourneyList() = journeys?.mapNotNull { journey ->
     if (originTime != null && arrivalTime != null && firstPublicTransportLeg != null) {
 
         TimeTableState.JourneyCardInfo(
-            timeText = originTime?.let {
+            timeText = originTime.let {
                 Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
                 calculateTimeDifferenceFromNow(utcDateString = it).toFormattedString()
-            } ?: "NULL,",
+            },
 
-            platformText = when (firstPublicTransportLeg?.transportation?.product?.productClass) {
+            platformText = when (firstPublicTransportLeg.transportation?.product?.productClass) {
                 // Train or Metro
                 1L, 2L -> {
                     firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName?.split(",")
@@ -60,14 +53,14 @@ internal fun TripResponse.buildJourneyList() = journeys?.mapNotNull { journey ->
                 else -> null
             }?.trim(),
 
-            originTime = originTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
-            originUtcDateTime = originTime ?: "NULL",
+            originTime = originTime.utcToAEST().aestToHHMM(),
+            originUtcDateTime = originTime ,
 
-            destinationTime = arrivalTime?.utcToAEST()?.aestToHHMM() ?: "NULL",
+            destinationTime = arrivalTime.utcToAEST().aestToHHMM(),
 
             travelTime = calculateTimeDifference(
-                originTime!!,
-                arrivalTime!!
+                originTime,
+                arrivalTime,
             ).toMinutes().toString() + " mins",
             transportModeLines = journey.legs?.mapNotNull { leg ->
                 leg.transportation?.product?.productClass?.toInt()?.let {
@@ -81,7 +74,9 @@ internal fun TripResponse.buildJourneyList() = journeys?.mapNotNull { journey ->
                         }
                 }
             }?.toImmutableList() ?: persistentListOf(),
-        )
+        ).also {
+            Timber.d("\tJourneyCardId: ${it.journeyId}")
+        }
 
     } else null
 

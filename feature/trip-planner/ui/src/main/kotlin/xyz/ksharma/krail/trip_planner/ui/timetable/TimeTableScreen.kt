@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import timber.log.Timber
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
@@ -51,6 +53,11 @@ fun TimeTableScreen(
             }
         } else if (timeTableState.journeyList.isNotEmpty()) {
             items(timeTableState.journeyList) { journey ->
+
+                LaunchedEffect(journey) {
+                    Timber.d("journeyId: ${journey.journeyId}")
+                }
+
                 JourneyCardItem(
                     departureTimeText = journey.timeText,
                     departureLocationText = journey.platformText?.let { "on ${journey.platformText}" },
