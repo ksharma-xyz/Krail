@@ -13,6 +13,7 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 fun TransportModeInfo(
     letter: Char,
     backgroundColor: Color,
+    badgeColor: Color? = null,
     badgeText: String,
     modifier: Modifier = Modifier,
 ) {
@@ -20,7 +21,7 @@ fun TransportModeInfo(
         TransportModeIcon(letter = letter, backgroundColor = backgroundColor)
 
         TransportModeBadge(
-            backgroundColor = backgroundColor,
+            backgroundColor = badgeColor ?: backgroundColor,
             badgeText = badgeText,
         )
     }
@@ -36,6 +37,7 @@ private fun TransportModeInfoPreview() {
         TransportModeInfo(
             badgeText = "T4",
             backgroundColor = "#F6891F".hexToComposeColor(),
+            badgeColor = "#005aa3".hexToComposeColor(),
             letter = 'T'
         )
     }
