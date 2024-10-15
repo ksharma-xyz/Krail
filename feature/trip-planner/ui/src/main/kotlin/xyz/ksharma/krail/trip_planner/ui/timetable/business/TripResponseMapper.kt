@@ -7,7 +7,8 @@ import xyz.ksharma.krail.core.date_time.DateTimeHelper.aestToHHMM
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifference
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.formatTo12HourTime
-import xyz.ksharma.krail.core.date_time.DateTimeHelper.toFormattedString
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.toFormattedDurationTimeString
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.trip_planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
@@ -36,7 +37,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.let {
                     Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
-                    calculateTimeDifferenceFromNow(utcDateString = it).toFormattedString()
+                    calculateTimeDifferenceFromNow(utcDateString = it).toGenericFormattedTimeString()
                 },
 
                 platformText = when (firstPublicTransportLeg.transportation?.product?.productClass) {
@@ -62,7 +63,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 travelTime = calculateTimeDifference(
                     originTimeUTC,
                     arrivalTimeUTC,
-                ).toMinutes().toString() + " mins",
+                ).toFormattedDurationTimeString(),
                 transportModeLines = legs.mapNotNull { leg ->
                     leg.transportation?.product?.productClass?.toInt()?.let {
                         TransportMode.toTransportModeType(productClass = it)
