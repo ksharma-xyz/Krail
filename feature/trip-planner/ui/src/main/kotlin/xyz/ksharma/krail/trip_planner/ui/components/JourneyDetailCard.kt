@@ -2,6 +2,8 @@ package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -12,6 +14,7 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyDetailCard(
     header: String,
@@ -24,26 +27,21 @@ fun JourneyDetailCard(
         Text(header, style = KrailTheme.typography.titleMedium)
 
         journeyLegList.forEach { leg ->
-            Row(
+            FlowRow(
                 modifier = Modifier.padding(vertical = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                Row(
-                    modifier = Modifier,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    TransportModeInfo(
-                        backgroundColor = leg.transportation.backgroundColor,
-                        letter = leg.transportation.letter,
-                        badgeText = leg.transportation.badgeText,
-                    )
-                }
+                TransportModeInfo(
+                    backgroundColor = leg.transportation.backgroundColor,
+                    letter = leg.transportation.letter,
+                    badgeText = leg.transportation.badgeText,
+                )
 
-                // TODO - Flow to next line instead of same Row for large font size/Measure.
                 Text(
-                    leg.headline,
-                    style = KrailTheme.typography.bodyLarge,
-                    modifier = Modifier.weight(1f)
+                    text = leg.headline,
+                    color = KrailTheme.colors.onPrimaryContainer,
+                    style = KrailTheme.typography.bodyMedium,
                 )
             }
 
