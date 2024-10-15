@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip_planner.ui.timetable.business
 
+import androidx.compose.foundation.layout.size
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
@@ -32,8 +33,10 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         val legs = journey.legs?.filter {
             it.transportation != null && it.stopSequence != null
         }
+        // Sometimes there are no legs, so we need to handle that case, can happen when, the train is Now.
+        val totalStops = legs?.sumOf { leg -> leg.stopSequence?.size ?: 0 } ?: 0
 
-        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null) {
+        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0) {
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.let {
                     Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
