@@ -11,16 +11,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.BasicJourneyCard
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
+import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyDetailCard(
     header: String,
-    journeyLegList: List<JourneyLeg>,
+    journeyLegList: List<TimeTableState.JourneyCardInfo.Leg>,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
@@ -36,13 +40,13 @@ fun JourneyDetailCard(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 TransportModeInfo(
-                    backgroundColor = leg.transportation.backgroundColor,
-                    letter = leg.transportation.letter,
-                    badgeText = leg.transportation.badgeText,
+                    backgroundColor = leg.transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                    letter = leg.transportModeLine.transportMode.name.first(),
+                    badgeText = leg.transportModeLine.lineName,
                 )
 
                 Text(
-                    text = leg.headline,
+                    text = leg.displayText,
                     color = KrailTheme.colors.onPrimaryContainer,
                     style = KrailTheme.typography.bodyMedium,
                 )
@@ -54,12 +58,12 @@ fun JourneyDetailCard(
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
                         Text(
-                            stop.departureTime,
+                            text = stop.time,
                             style = KrailTheme.typography.bodyMedium,
                         )
 
                         Text(
-                            stop.name,
+                            text = stop.name,
                             style = KrailTheme.typography.bodyMedium,
                             modifier = Modifier.weight(1f)
                         )
@@ -79,31 +83,41 @@ private fun JourneyDetailCardPreview(modifier: Modifier = Modifier) {
         JourneyDetailCard(
             header = "in 5 mins on Platform 1 (10 min)",
             journeyLegList = listOf(
-                JourneyLeg(
-                    headline = "City Circle via Parramatta",
-                    summary = "4 Stops (12 min)",
-                    transportation = JourneyLeg.Transportation(
-                        letter = 'T',
-                        badgeText = "T1",
-                        backgroundColor = "#f99d1c".hexToComposeColor(),
+                TimeTableState.JourneyCardInfo.Leg(
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "600",
                     ),
+                    displayText = "Dessert via Rainy Road",
+                    stopsInfo = "4 stops (12 min)",
                     stops = listOf(
-                        Stop(name = "TownHall Station", departureTime = "8:25am"),
-                        Stop(name = "Central Station", departureTime = "8:25am"),
-                    )
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "TownHall Station",
+                            time = "8:25am",
+                        ),
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Central Station",
+                            time = "8:25am"
+                        ),
+                    ).toImmutableList()
                 ),
-                JourneyLeg(
-                    headline = "Dessert via Rainy Road",
-                    summary = "4 Stops (12 min)",
-                    transportation = JourneyLeg.Transportation(
-                        letter = 'B',
-                        badgeText = "600",
-                        backgroundColor = "#f91d1c".hexToComposeColor(),
+                TimeTableState.JourneyCardInfo.Leg(
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Train(),
+                        lineName = "T4",
                     ),
+                    displayText = "Dessert via Rainy Road",
+                    stopsInfo = "4 stops (12 min)",
                     stops = listOf(
-                        Stop(name = "Umbrella Rd.", departureTime = "8:25am"),
-                        Stop(name = "KitKat Rd.", departureTime = "8:25am"),
-                    )
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "TownHall Station",
+                            time = "8:25am",
+                        ),
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Central Station",
+                            time = "8:25am"
+                        ),
+                    ).toImmutableList()
                 ),
             )
         )

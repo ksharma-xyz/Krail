@@ -55,8 +55,8 @@ fun TimeTableScreen(
             items(timeTableState.journeyList) { journey ->
                 if (expandedJourneyId == journey.journeyId) {
                     JourneyDetailCard(
-                        header = "Journey Details",
-                        journeyLegList = emptyList(),
+                        header = journey.timeText + journey.platformText?.let { " on ${journey.platformText}" } + " (${journey.travelTime})",
+                        journeyLegList = journey.legs,
                         onClick = {
                             onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
                         },
