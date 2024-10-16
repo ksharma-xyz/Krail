@@ -19,6 +19,7 @@ import xyz.ksharma.krail.core.date_time.DateTimeHelper.toGenericFormattedTimeStr
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
+import xyz.ksharma.krail.trip_planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.trip_planner.ui.timetable.business.buildJourneyList
 import xyz.ksharma.krail.trip_planner.ui.timetable.business.logForUnderstandingData
 import javax.inject.Inject
@@ -51,10 +52,23 @@ class TimeTableViewModel @Inject constructor(
     private val _expandedJourneyId: MutableStateFlow<String?> = MutableStateFlow(null)
     val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
 
+    var trip: Trip? = null
+
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
-            is TimeTableUiEvent.LoadTimeTable -> onLoadTimeTable(event.fromStopId, event.toStopId)
+            is TimeTableUiEvent.LoadTimeTable -> onLoadTimeTable(event.trip)
             is TimeTableUiEvent.JourneyCardClicked -> onJourneyCardClicked(event.journeyId)
+            TimeTableUiEvent.SaveTripButtonClicked -> onSaveTripButtonClicked()
+        }
+    }
+
+    private fun onSaveTripButtonClicked() {
+        Timber.d("Save Trip Button Clicked")
+        // TODO: Implement Save Trip Functionality
+        trip?.let {
+            Timber.d("Save Trip: $it")
+            // TODO save trip to cache
+            // TODO update ui with confirmation / error
         }
     }
 
@@ -63,13 +77,13 @@ class TimeTableViewModel @Inject constructor(
         _expandedJourneyId.update { if (it == journeyId) null else journeyId }
     }
 
-    private fun onLoadTimeTable(fromStopId: String?, toStopId: String?) {
-        Timber.d("loadTimeTable API Call- fromStopItem: $fromStopId, toStopItem: $toStopId")
-
+    private fun onLoadTimeTable(tripInfo: Trip) = with(tripInfo) {
+        Timber.d("loadTimeTable API Call- fromStopItem: ${fromStopId}, toStopItem: ${toStopId}")
+        trip = this
         updateUiState { copy(isLoading = true) }
 
         viewModelScope.launch {
-            require(!(fromStopId.isNullOrEmpty() || toStopId.isNullOrEmpty())) { "Invalid Stop Ids" }
+            require(!(fromStopId.isEmpty() || toStopId.isEmpty())) { "Invalid Stop Ids" }
             tripRepository.trip(originStopId = fromStopId, destinationStopId = toStopId)
                 .onSuccess { response ->
                     updateUiState {
