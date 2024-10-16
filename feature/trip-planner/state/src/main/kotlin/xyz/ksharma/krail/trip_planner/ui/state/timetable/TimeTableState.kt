@@ -89,4 +89,5 @@ data class TimeTableState(
 
         companion object
     }
+
 }
