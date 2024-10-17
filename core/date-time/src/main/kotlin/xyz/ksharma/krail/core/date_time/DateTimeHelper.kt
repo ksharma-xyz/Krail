@@ -7,7 +7,9 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 import kotlin.math.absoluteValue
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.DurationUnit
+import kotlin.time.toKotlinDuration
 
 object DateTimeHelper {
 
@@ -64,21 +66,35 @@ object DateTimeHelper {
         return instant - now
     }
 
-    fun kotlin.time.Duration.toFormattedString(): String {
-        val minutes = this.toLong(DurationUnit.MINUTES)
+    fun kotlin.time.Duration.toGenericFormattedTimeString(): String {
+        val totalMinutes = this.toLong(DurationUnit.MINUTES)
         val hours = this.toLong(DurationUnit.HOURS)
+        val partialMinutes = totalMinutes - (hours * 60.minutes.inWholeMinutes)
 
         val formattedDifference = when {
-            minutes < 0 -> "${minutes.absoluteValue} mins ago"
-            minutes == 0L -> "Now"
+            totalMinutes < 0 -> "${totalMinutes.absoluteValue} mins ago"
+            totalMinutes == 0L -> "Now"
+            hours == 1L  -> "in ${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
             hours >= 2 -> "in ${hours.absoluteValue} hrs"
-            else -> "in ${minutes.absoluteValue} mins"
+            else -> "in ${totalMinutes.absoluteValue} ${if(totalMinutes.absoluteValue == 1L) "min" else "mins"}"
         }
-        Timber.d("\t minutes: $minutes, hours: $hours, formattedDifference: $formattedDifference -> originTime")
+        Timber.d("\t minutes: $partialMinutes, hours: $hours, formattedDifference: $formattedDifference -> originTime")
         return formattedDifference
     }
 
-    fun calculateTimeDifference(utcDateString1: String, utcDateString2: String): Duration {
+    fun kotlin.time.Duration.toFormattedDurationTimeString(): String {
+        val totalMinutes = this.toLong(DurationUnit.MINUTES)
+        val hours = this.toLong(DurationUnit.HOURS)
+        val partialMinutes = totalMinutes - (hours * 60.minutes.inWholeMinutes)
+
+        val formattedDifference = when {
+            hours >= 1 -> "${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
+            else -> "${totalMinutes.absoluteValue} ${if(totalMinutes.absoluteValue == 1L) "min" else "mins"}"
+        }
+        return formattedDifference
+    }
+
+    fun calculateTimeDifference(utcDateString1: String, utcDateString2: String): kotlin.time.Duration {
         // Parse the first UTC date string to a ZonedDateTime
         val dateTime1 = ZonedDateTime.parse(utcDateString1, DateTimeFormatter.ISO_ZONED_DATE_TIME)
 
@@ -86,6 +102,6 @@ object DateTimeHelper {
         val dateTime2 = ZonedDateTime.parse(utcDateString2, DateTimeFormatter.ISO_ZONED_DATE_TIME)
 
         // Calculate the duration between the two ZonedDateTime instances
-        return Duration.between(dateTime1, dateTime2)
+        return Duration.between(dateTime1, dateTime2).toKotlinDuration()
     }
 }

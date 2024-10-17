@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromNow
-import xyz.ksharma.krail.core.date_time.DateTimeHelper.toFormattedString
+import xyz.ksharma.krail.core.date_time.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
@@ -94,7 +94,7 @@ class TimeTableViewModel @Inject constructor(
             copy(
                 journeyList = journeyList.map { journeyCardInfo ->
                     journeyCardInfo.copy(
-                        timeText = calculateTimeDifferenceFromNow(utcDateString = journeyCardInfo.originUtcDateTime).toFormattedString()
+                        timeText = calculateTimeDifferenceFromNow(utcDateString = journeyCardInfo.originUtcDateTime).toGenericFormattedTimeString()
                     )
                 }.toImmutableList()
             )
