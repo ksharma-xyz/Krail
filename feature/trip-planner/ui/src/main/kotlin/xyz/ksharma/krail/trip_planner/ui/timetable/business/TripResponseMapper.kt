@@ -65,15 +65,12 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                     arrivalTimeUTC,
                 ).toFormattedDurationTimeString(),
                 transportModeLines = legs.mapNotNull { leg ->
-                    leg.transportation?.product?.productClass?.toInt()?.let {
-                        TransportMode.toTransportModeType(productClass = it)
-                            ?.let { it1 ->
-                                TransportModeLine(
-                                    transportMode = it1,
-                                    lineName = leg.transportation?.disassembledName
-                                        ?: "NULL"
-                                )
-                            }
+                    leg.transportation?.product?.productClass?.toInt()?.let { productClass ->
+                        val mode = TransportMode.toTransportModeType(productClass)
+                        val lineName = leg.transportation?.disassembledName
+                        if (mode != null && lineName != null) {
+                            TransportModeLine(transportMode = mode, lineName = lineName)
+                        } else null
                     }
                 }.toImmutableList(),
                 legs = legs.mapNotNull { it.toUiModel() }.toImmutableList(),

@@ -125,6 +125,7 @@ private fun JourneyCardTrainLongTextPreview() {
                 TransportModeInfo(
                     letter = 'T',
                     backgroundColor = "#005aa3".hexToComposeColor(),
+                    badgeColor = "#005aa3".hexToComposeColor(),
                     badgeText = "T4",
                 )
                 SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))

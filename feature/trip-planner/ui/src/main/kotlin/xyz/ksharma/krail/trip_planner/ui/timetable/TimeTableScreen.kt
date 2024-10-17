@@ -139,6 +139,7 @@ fun JourneyCardItem(
                     TransportModeInfo(
                         letter = line.transportMode.name.first(),
                         backgroundColor = line.transportMode.colorCode.hexToComposeColor(),
+                        badgeColor = line.lineColorCode?.hexToComposeColor(),
                         badgeText = line.lineName,
                     )
                     if (index < transportModeLineList.size - 1) SeparatorIcon()

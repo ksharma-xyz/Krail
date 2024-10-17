@@ -43,6 +43,7 @@ fun JourneyDetailCard(
                     backgroundColor = leg.transportModeLine.transportMode.colorCode.hexToComposeColor(),
                     letter = leg.transportModeLine.transportMode.name.first(),
                     badgeText = leg.transportModeLine.lineName,
+                    badgeColor = leg.transportModeLine.lineColorCode?.hexToComposeColor(),
                 )
 
                 Text(
