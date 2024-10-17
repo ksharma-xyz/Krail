@@ -5,7 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -68,8 +68,7 @@ fun SearchStopScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.background)
-            .systemBarsPadding(),
+            .background(color = KrailTheme.colors.background),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         stickyHeader {
@@ -78,7 +77,8 @@ fun SearchStopScreen(
                 modifier = Modifier
                     .focusRequester(focusRequester)
                     .padding(horizontal = 16.dp)
-                    .padding(bottom = 12.dp),
+                    .padding(bottom = 12.dp)
+                    .statusBarsPadding(),
             ) { value ->
                 Timber.d("value: $value")
                 textFieldText = value.toString()

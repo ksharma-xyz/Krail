@@ -5,14 +5,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -43,7 +45,13 @@ fun SearchStopRow(
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp)
             )
             .padding(vertical = 24.dp, horizontal = 16.dp)
-            .navigationBarsPadding(),
+            .padding(bottom = with(LocalDensity.current) {
+                WindowInsets.navigationBars
+                    .getBottom(
+                        this
+                    )
+                    .toDp()
+            }),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
