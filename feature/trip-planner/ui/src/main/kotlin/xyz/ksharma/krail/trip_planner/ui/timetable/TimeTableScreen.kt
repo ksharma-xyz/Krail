@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkOut
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -14,14 +13,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.design.system.components.RoundIconButton
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -55,20 +50,6 @@ fun TimeTableScreen(
                 Text("Loading...", modifier = Modifier.padding(horizontal = 16.dp))
             }
         } else if (timeTableState.journeyList.isNotEmpty()) {
-
-            item {
-                RoundIconButton(
-                    onClick = { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                ) {
-                    Image(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.ic_star),
-                        contentDescription = "Save trip",
-                        colorFilter = ColorFilter.tint(color = KrailTheme.colors.secondary),
-                    )
-                }
-            }
-
             items(timeTableState.journeyList) { journey ->
 
                 AnimatedVisibility(
