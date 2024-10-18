@@ -22,6 +22,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
@@ -30,6 +31,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.components.BasicJourneyCard
@@ -39,6 +42,7 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip_planner.ui.R
+import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 
 /**
  * A card that displays information about a journey.
@@ -61,7 +65,7 @@ fun JourneyCard(
     totalTravelTime: String,
     platformNumber: Char,
     isWheelchairAccessible: Boolean,
-    transportModeIconRow: @Composable RowScope.() -> Unit,
+    transportModeList: ImmutableList<TransportMode>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -70,6 +74,13 @@ fun JourneyCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(color = KrailTheme.colors.surface)
+            .border(
+                width = 2.dp,
+                brush = Brush.linearGradient(
+                    colors = transportModeList.map { it.colorCode.hexToComposeColor() }
+                ),
+                shape = RoundedCornerShape(12.dp)
+            )
             .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
     ) {
@@ -80,14 +91,22 @@ fun JourneyCard(
         ) {
             Text(
                 text = timeToDeparture, style = KrailTheme.typography.titleMedium,
-                color = "#127766".hexToComposeColor(),
+                color = transportModeList.first().colorCode.hexToComposeColor(),
                 modifier = Modifier.padding(end = 8.dp)
             )
             Row(
                 modifier = Modifier.align(Alignment.CenterVertically),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                transportModeIconRow()
+                transportModeList.forEachIndexed { index, mode ->
+                    TransportModeIcon(
+                        letter = mode.name.first(),
+                        backgroundColor = mode.colorCode.hexToComposeColor(),
+                    )
+                    if (index != transportModeList.lastIndex) {
+                        SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                    }
+                }
             }
             Spacer(modifier = Modifier.weight(1f))
             Box(
@@ -96,7 +115,7 @@ fun JourneyCard(
                     .size(28.dp.toAdaptiveDecorativeIconSize())
                     .border(
                         width = 3.dp,
-                        color = "#127766".hexToComposeColor(),
+                        color = transportModeList.first().colorCode.hexToComposeColor(),
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center,
@@ -171,17 +190,10 @@ private fun PreviewJourneyCard() {
             totalTravelTime = "15 mins",
             platformNumber = '1',
             isWheelchairAccessible = true,
-            transportModeIconRow = {
-                TransportModeIcon(
-                    letter = 'T',
-                    backgroundColor = "#F59A24".hexToComposeColor(),
-                )
-                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-                TransportModeIcon(
-                    letter = 'B',
-                    backgroundColor = "#00B5EF".hexToComposeColor(),
-                )
-            },
+            transportModeList = listOf(
+                TransportMode.Train(),
+                TransportMode.Bus()
+            ).toImmutableList(),
             onClick = {},
         )
     }
@@ -199,32 +211,13 @@ private fun PreviewJourneyCardLongData() {
             totalTravelTime = "45h 15minutes",
             platformNumber = 'A',
             isWheelchairAccessible = true,
-            transportModeIconRow = {
-                TransportModeIcon(
-                    letter = 'T',
-                    backgroundColor = "#F59A24".hexToComposeColor(),
-                )
-                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-                TransportModeIcon(
-                    letter = 'B',
-                    backgroundColor = "#00B5EF".hexToComposeColor(),
-                )
-                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-                TransportModeIcon(
-                    letter = 'T',
-                    backgroundColor = "#F59A24".hexToComposeColor(),
-                )
-                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-                TransportModeIcon(
-                    letter = 'T',
-                    backgroundColor = "#F59A24".hexToComposeColor(),
-                )
-                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-                TransportModeIcon(
-                    letter = 'B',
-                    backgroundColor = "#00B5EF".hexToComposeColor(),
-                )
-            },
+            transportModeList = listOf(
+                TransportMode.Ferry(),
+                TransportMode.Bus(),
+                TransportMode.Train(),
+                TransportMode.Coach(),
+                TransportMode.Metro(),
+            ).toImmutableList(),
             onClick = {},
         )
     }
