@@ -9,36 +9,35 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
 import xyz.ksharma.krail.design.system.components.BasicJourneyCard
-import xyz.ksharma.krail.design.system.components.Divider
+import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
+import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip_planner.ui.R
 
 /**
@@ -53,6 +52,7 @@ import xyz.ksharma.krail.trip_planner.ui.R
  * @param onClick The action to perform when the card is clicked.
  * @param modifier The modifier to apply to the card.
  */
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyCard(
     timeToDeparture: String,
@@ -61,100 +61,106 @@ fun JourneyCard(
     totalTravelTime: String,
     platformNumber: Char,
     isWheelchairAccessible: Boolean,
-    transportModeIconRow: @Composable () -> Unit,
+    transportModeIconRow: @Composable RowScope.() -> Unit,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min)
+            .clip(RoundedCornerShape(12.dp))
+            .background(color = KrailTheme.colors.surface)
+            .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column {
+        FlowRow(
+            horizontalArrangement = Arrangement.Start,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
             Text(
                 text = timeToDeparture, style = KrailTheme.typography.titleMedium,
-                color = "#127766".hexToComposeColor()
+                color = "#127766".hexToComposeColor(),
+                modifier = Modifier.padding(end = 8.dp)
             )
-            Text(
-                text = originTime,
-                style = KrailTheme.typography.titleMedium,
-                color = KrailTheme.colors.onSurface
-            )
+            Row(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                transportModeIconRow()
+            }
+            Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
-                    .background(
-                        color = KrailTheme.colors.primary,
-                        shape = RectangleShape
-                    )
-                //.siz,//"#9F9F9F".hexToComposeColor())
-            )
+                    .align(Alignment.CenterVertically)
+                    .size(28.dp.toAdaptiveDecorativeIconSize())
+                    .border(
+                        width = 3.dp,
+                        color = "#127766".hexToComposeColor(),
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = platformNumber.toString(),
+                    textAlign = TextAlign.Center,
+                    style = KrailTheme.typography.labelLarge,
+                )
+            }
+        }
+
+        Text(
+            text = originTime,
+            style = KrailTheme.typography.titleMedium,
+            color = KrailTheme.colors.onSurface
+        )
+
+        FlowRow(
+            horizontalArrangement = Arrangement.Start,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
+        ) {
             Text(
                 text = destinationTime,
                 style = KrailTheme.typography.titleMedium,
                 color = KrailTheme.colors.onSurface,
             )
-        }
-
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-                .padding(horizontal = 8.dp),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            transportModeIconRow()
             Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.CenterVertically),
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_clock),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-
-                )
-                Text(text = totalTravelTime, style = KrailTheme.typography.bodyMedium)
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f), horizontalArrangement = Arrangement.End
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                Box(
                     modifier = Modifier
-                        .size(24.dp)
-                        .border(2.dp, KrailTheme.colors.onBackground, shape = CircleShape),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = platformNumber.toString(),
-                        textAlign = TextAlign.Center,
-                    )
-                }
-                if (isWheelchairAccessible) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_a11y),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-                        modifier = Modifier.size(24.dp),
-                    )
-                }
+                        .padding(horizontal = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .size(14.dp.toAdaptiveSize()),
+                )
+                Text(
+                    text = totalTravelTime, style = KrailTheme.typography.bodyMedium,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            if (isWheelchairAccessible) {
+                Image(
+                    painter = painterResource(R.drawable.ic_a11y),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    modifier = Modifier
+                        .size(14.dp.toAdaptiveSize())
+                        .align(Alignment.CenterVertically),
+                )
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
+@Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyCard() {
     KrailTheme {
@@ -166,20 +172,58 @@ private fun PreviewJourneyCard() {
             platformNumber = '1',
             isWheelchairAccessible = true,
             transportModeIconRow = {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    TransportModeIcon(
-                        letter = 'T',
-                        backgroundColor = "#F59A24".hexToComposeColor(),
-                    )
-                    TransportModeIcon(
-                        letter = 'B',
-                        backgroundColor = "#00B5EF".hexToComposeColor(),
-                    )
-                }
+                TransportModeIcon(
+                    letter = 'T',
+                    backgroundColor = "#F59A24".hexToComposeColor(),
+                )
+                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                TransportModeIcon(
+                    letter = 'B',
+                    backgroundColor = "#00B5EF".hexToComposeColor(),
+                )
+            },
+            onClick = {},
+        )
+    }
+}
+
+@Preview
+@Preview(fontScale = 2f)
+@Composable
+private fun PreviewJourneyCardLongData() {
+    KrailTheme {
+        JourneyCard(
+            timeToDeparture = "in 1h 5mins",
+            originTime = "12:25am",
+            destinationTime = "12:40am",
+            totalTravelTime = "45h 15minutes",
+            platformNumber = 'A',
+            isWheelchairAccessible = true,
+            transportModeIconRow = {
+                TransportModeIcon(
+                    letter = 'T',
+                    backgroundColor = "#F59A24".hexToComposeColor(),
+                )
+                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                TransportModeIcon(
+                    letter = 'B',
+                    backgroundColor = "#00B5EF".hexToComposeColor(),
+                )
+                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                TransportModeIcon(
+                    letter = 'T',
+                    backgroundColor = "#F59A24".hexToComposeColor(),
+                )
+                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                TransportModeIcon(
+                    letter = 'T',
+                    backgroundColor = "#F59A24".hexToComposeColor(),
+                )
+                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                TransportModeIcon(
+                    letter = 'B',
+                    backgroundColor = "#00B5EF".hexToComposeColor(),
+                )
             },
             onClick = {},
         )
