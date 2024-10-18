@@ -32,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
@@ -77,8 +78,12 @@ fun JourneyCard(
             .border(
                 width = 2.dp,
                 brush = Brush.linearGradient(
-                    colors = transportModeList.map { it.colorCode.hexToComposeColor() }
-                ),
+                    colors = if (transportModeList.size >= 2) {
+                        transportModeList.map { it.colorCode.hexToComposeColor() }
+                    } else {
+                        val color = transportModeList.first().colorCode.hexToComposeColor()
+                        listOf(color, color)
+                    }),
                 shape = RoundedCornerShape(12.dp)
             )
             .clickable(role = Role.Button, onClick = onClick)
@@ -92,7 +97,7 @@ fun JourneyCard(
             Text(
                 text = timeToDeparture, style = KrailTheme.typography.titleMedium,
                 color = transportModeList.first().colorCode.hexToComposeColor(),
-                modifier = Modifier.padding(end = 8.dp)
+                modifier = Modifier.padding(end = 8.dp).align(Alignment.CenterVertically)
             )
             Row(
                 modifier = Modifier.align(Alignment.CenterVertically),
@@ -178,52 +183,7 @@ fun JourneyCard(
     }
 }
 
-@PreviewLightDark
-@Preview(fontScale = 2f)
-@Composable
-private fun PreviewJourneyCard() {
-    KrailTheme {
-        JourneyCard(
-            timeToDeparture = "in 5 mins",
-            originTime = "8:25am",
-            destinationTime = "8:40am",
-            totalTravelTime = "15 mins",
-            platformNumber = '1',
-            isWheelchairAccessible = true,
-            transportModeList = listOf(
-                TransportMode.Train(),
-                TransportMode.Bus()
-            ).toImmutableList(),
-            onClick = {},
-        )
-    }
-}
-
-@Preview
-@Preview(fontScale = 2f)
-@Composable
-private fun PreviewJourneyCardLongData() {
-    KrailTheme {
-        JourneyCard(
-            timeToDeparture = "in 1h 5mins",
-            originTime = "12:25am",
-            destinationTime = "12:40am",
-            totalTravelTime = "45h 15minutes",
-            platformNumber = 'A',
-            isWheelchairAccessible = true,
-            transportModeList = listOf(
-                TransportMode.Ferry(),
-                TransportMode.Bus(),
-                TransportMode.Train(),
-                TransportMode.Coach(),
-                TransportMode.Metro(),
-            ).toImmutableList(),
-            onClick = {},
-        )
-    }
-}
-
-
+/*
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyCard(
@@ -308,83 +268,54 @@ fun JourneyCard(
             }
         },
     )
-}
+}*/
+
 
 // region Previews
-/**
+
+@PreviewLightDark
+@Preview(fontScale = 2f)
+@Composable
+private fun PreviewJourneyCard() {
+    KrailTheme {
+        JourneyCard(
+            timeToDeparture = "in 5 mins",
+            originTime = "8:25am",
+            destinationTime = "8:40am",
+            totalTravelTime = "15 mins",
+            platformNumber = '1',
+            isWheelchairAccessible = true,
+            transportModeList = listOf(
+                TransportMode.Train(),
+                TransportMode.Bus()
+            ).toImmutableList(),
+            onClick = {},
+        )
+    }
+}
+
 @Preview
 @Preview(fontScale = 2f)
 @Composable
-private fun JourneyCardTrainLongTextPreview() {
-KrailTheme {
-JourneyCard(
-departureTimeText = "in 2h 3mins",
-departureLocationText = "on Parramatta Station, Stand A",
-originAndDestinationTimeText = "8:25am - 8:40am",
-durationText = "23 mins",
-transportModeIconRow = {
-TransportModeInfo(
-letter = 'T',
-backgroundColor = "#005aa3".hexToComposeColor(),
-badgeColor = "#005aa3".hexToComposeColor(),
-badgeText = "T4",
-)
-SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-TransportModeInfo(
-letter = 'T',
-backgroundColor = "#005aa3".hexToComposeColor(),
-badgeText = "T4",
-)
-SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-TransportModeInfo(
-letter = 'T',
-backgroundColor = "#005aa3".hexToComposeColor(),
-badgeText = "T4",
-)
-SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-TransportModeInfo(
-letter = 'T',
-backgroundColor = "#005aa3".hexToComposeColor(),
-badgeText = "T4",
-)
-SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-TransportModeInfo(
-letter = 'T',
-backgroundColor = "#005aa3".hexToComposeColor(),
-badgeText = "T4",
-)
-},
-onClick = {}
-)
-}
-}
-
-@ComponentPreviews
-@Composable
-private fun JourneyCardMultipleModesPreview() {
-KrailTheme {
-JourneyCard(
-departureTimeText = "in 5 mins",
-departureLocationText = "on Platform 1",
-originAndDestinationTimeText = "8:25am - 8:40am",
-durationText = "15 mins",
-transportModeIconRow = {
-TransportModeInfo(
-letter = 'T',
-backgroundColor = "#005aa3".hexToComposeColor(),
-badgeText = "T4",
-)
-SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
-TransportModeInfo(
-letter = 'B',
-backgroundColor = "#00B5EF".hexToComposeColor(),
-badgeText = "700",
-)
-},
-onClick = {},
-)
-}
+private fun PreviewJourneyCardLongData() {
+    KrailTheme {
+        JourneyCard(
+            timeToDeparture = "in 1h 5mins",
+            originTime = "12:25am",
+            destinationTime = "12:40am",
+            totalTravelTime = "45h 15minutes",
+            platformNumber = 'A',
+            isWheelchairAccessible = true,
+            transportModeList = listOf(
+                TransportMode.Ferry(),
+                TransportMode.Bus(),
+                TransportMode.Train(),
+                TransportMode.Coach(),
+                TransportMode.Metro(),
+            ).toImmutableList(),
+            onClick = {},
+        )
+    }
 }
 
 // endregion
- */

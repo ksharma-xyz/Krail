@@ -8,36 +8,26 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.RoundIconButton
-import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip_planner.ui.components.JourneyDetailCard
-import xyz.ksharma.krail.trip_planner.ui.components.TransportModeInfo
-import xyz.ksharma.krail.trip_planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
@@ -87,7 +77,7 @@ fun TimeTableScreen(
                     exit = fadeOut() + shrinkOut(),
                 ) {
                     JourneyDetailCard(
-                        header = journey.timeText + journey.platformText?.let { " on ${journey.platformText}" } + " (${journey.travelTime})",
+                        header = journey.timeText + journey.platformText.let { " on ${journey.platformText}" } + " (${journey.travelTime})",
                         journeyLegList = journey.legs,
                         onClick = {
                             onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
@@ -103,9 +93,10 @@ fun TimeTableScreen(
                     exit = fadeOut(),
                 ) {
                     JourneyCardItem(
-                        departureTimeText = journey.timeText,
-                        departureLocationText = journey.platformText?.let { "on ${journey.platformText}" },
-                        originDestinationTimeText = journey.originTime + " - " + journey.destinationTime,
+                        timeToDeparture = journey.timeText,
+                        departureLocationNumber = journey.platformText,
+                        originTime = journey.originTime,
+                        destinationTime = journey.destinationTime,
                         durationText = journey.travelTime,
                         transportModeLineList = journey.transportModeLines.map {
                             TransportModeLine(
@@ -130,36 +121,24 @@ fun TimeTableScreen(
 
 @Composable
 fun JourneyCardItem(
-    departureTimeText: String,
-    departureLocationText: String? = null,
-    originDestinationTimeText: String,
+    timeToDeparture: String,
+    departureLocationNumber: Char,
+    originTime: String,
     durationText: String,
+    destinationTime: String,
     transportModeLineList: ImmutableList<TransportModeLine>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     JourneyCard(
-        modifier = modifier,
-        departureTimeText = departureTimeText,
-        departureLocationText = departureLocationText,
-        originAndDestinationTimeText = originDestinationTimeText,
-        durationText = durationText,
-        transportModeIconRow = {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                transportModeLineList.forEachIndexed { index, line ->
-                    TransportModeInfo(
-                        letter = line.transportMode.name.first(),
-                        backgroundColor = line.transportMode.colorCode.hexToComposeColor(),
-                        badgeColor = line.lineColorCode?.hexToComposeColor(),
-                        badgeText = line.lineName,
-                    )
-                    if (index < transportModeLineList.size - 1) SeparatorIcon()
-                }
-            }
-        },
+        timeToDeparture = timeToDeparture,
+        originTime = originTime,
+        destinationTime = destinationTime,
+        totalTravelTime = durationText,
+        platformNumber = departureLocationNumber,
+        isWheelchairAccessible = false,
+        transportModeList = transportModeLineList.map { it.transportMode }.toImmutableList(),
         onClick = onClick,
+        modifier = modifier,
     )
 }

@@ -1,6 +1,5 @@
 package xyz.ksharma.krail.trip_planner.ui.timetable.business
 
-import androidx.compose.foundation.layout.size
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import timber.log.Timber
@@ -35,30 +34,26 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         }
         // Sometimes there are no legs, so we need to handle that case, can happen when, the train is Now.
         val totalStops = legs?.sumOf { leg -> leg.stopSequence?.size ?: 0 } ?: 0
+        val platformText = when (firstPublicTransportLeg?.transportation?.product?.productClass) {
+            // Train or Metro
+            1L, 2L -> firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName?.split(
+                ","
+            )?.lastOrNull()
 
-        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0) {
+            // Other Modes
+            9L, 5L, 4L, 7L -> firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName
+
+            else -> null
+        }?.trim()
+
+        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0 && platformText != null) {
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.let {
                     Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
                     calculateTimeDifferenceFromNow(utcDateString = it).toGenericFormattedTimeString()
                 },
 
-                platformText = when (firstPublicTransportLeg.transportation?.product?.productClass) {
-                    // Train or Metro
-                    1L, 2L -> {
-                        firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName?.split(
-                            ","
-                        )
-                            ?.lastOrNull()
-                    }
-
-                    // Other Modes
-                    9L, 5L, 4L, 7L -> {
-                        firstPublicTransportLeg.stopSequence?.firstOrNull()?.disassembledName
-                    }
-
-                    else -> null
-                }?.trim(),
+                platformText = platformText.last(),
 
                 originTime = originTimeUTC.fromUTCToDisplayTimeString(),
                 originUtcDateTime = originTimeUTC,
