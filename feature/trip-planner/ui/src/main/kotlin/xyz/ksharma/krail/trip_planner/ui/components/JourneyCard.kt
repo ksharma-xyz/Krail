@@ -66,7 +66,7 @@ fun JourneyCard(
     originTime: String,
     destinationTime: String,
     totalTravelTime: String,
-    platformNumber: Char,
+    platformNumber: Char?=null,
     isWheelchairAccessible: Boolean,
     transportModeList: ImmutableList<TransportMode>,
     onClick: () -> Unit,

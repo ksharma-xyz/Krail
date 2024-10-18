@@ -103,7 +103,7 @@ fun TimeTableScreen(
 @Composable
 fun JourneyCardItem(
     timeToDeparture: String,
-    departureLocationNumber: Char,
+    departureLocationNumber: Char?,
     originTime: String,
     durationText: String,
     destinationTime: String,
