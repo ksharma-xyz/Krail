@@ -100,7 +100,7 @@ fun JourneyCard(
                 modifier = Modifier.padding(end = 8.dp).align(Alignment.CenterVertically)
             )
             Row(
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 transportModeList.forEachIndexed { index, mode ->
