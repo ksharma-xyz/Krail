@@ -152,14 +152,18 @@ data class TripResponse(
 
     @Serializable
     data class DestinationProperties(
-        @SerialName("WheelchairAccess") val wheelchairAccess: String? = null,
+        @SerialName("wheelchairAccess") val wheelchairAccess: String? = null,
+
         @SerialName("downloads") val downloads: List<Download>? = null,
+
         /**
-         *
+         * No official documentation on this. Adding values as I see in the response.
+         * Enum - STANDING_ONLY, MANY_SEATS,
          */
         @SerialName("occupancy") val occupancy: String? = null,
+
         /**
-         *
+         * No official documentation on this.
          */
         @SerialName("platform") val platform: String? = null,
     )
