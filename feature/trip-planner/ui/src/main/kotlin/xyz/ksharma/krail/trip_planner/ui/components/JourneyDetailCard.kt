@@ -13,13 +13,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.BasicJourneyCard
 import xyz.ksharma.krail.design.system.components.Text
@@ -31,6 +31,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyDetailCard(
     timeToDeparture: String,
@@ -42,14 +43,30 @@ fun JourneyDetailCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(vertical = 12.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = "In $timeToDeparture")
-            Text(text = "Platform $platformNumber")
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Text(
+                text = "In $timeToDeparture",
+                style = KrailTheme.typography.titleLarge,
+                color = legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
+            )
+            Text(
+                text = "Platform $platformNumber",
+                style = KrailTheme.typography.titleLarge,
+                color = legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
+            )
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
+
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Row(
@@ -59,14 +76,18 @@ fun JourneyDetailCard(
                 Image(
                     painter = painterResource(id = R.drawable.ic_alert),
                     contentDescription = "Wheelchair accessible",
-                    colorFilter = ColorFilter.tint(KrailTheme.colors.onPrimaryContainer),
-                    modifier = Modifier.size(14.dp.toAdaptiveDecorativeIconSize()),
+                    colorFilter = ColorFilter.tint(Color(0xFFF4B400)),
+                    modifier = Modifier
+                        .size(14.dp.toAdaptiveDecorativeIconSize())
+                        .padding(end = 4.dp),
                 )
-                Text(text = "In $timeToDeparture", modifier = Modifier.padding(start = 8.dp))
+                Text(text = "Info", style = KrailTheme.typography.bodyLarge)
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(top = 8.dp),
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_clock),
@@ -78,17 +99,24 @@ fun JourneyDetailCard(
                         .size(14.dp.toAdaptiveSize()),
                 )
                 Text(
-                    text = totalTravelTime, style = KrailTheme.typography.bodyMedium,
+                    text = totalTravelTime, style = KrailTheme.typography.bodyLarge,
                 )
             }
         }
 
-        legList.forEach {
-            JourneyLeg()
+        legList.forEach { leg ->
+            JourneyLeg(
+                transportModeLine = leg.transportModeLine,
+                stopsNumber = leg.stops.size,
+                duration = leg.stopsInfo,
+                departureTime = leg.stops.first().time,
+                stopName = leg.stops.first().name,
+                isWheelchairAccessible = false,
+                modifier = Modifier.padding(top = 16.dp, start = 8.dp, end = 8.dp),
+            )
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
@@ -98,7 +126,26 @@ private fun PreviewJourneyDetailCard() {
             timeToDeparture = "5 mins",
             platformNumber = '1',
             totalTravelTime = "1h 30mins",
-            legList = persistentListOf(),
+            legList = listOf(
+                TimeTableState.JourneyCardInfo.Leg(
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "600",
+                    ),
+                    displayText = "Dessert via Rainy Road",
+                    stopsInfo = "4 stops (12 min)",
+                    stops = listOf(
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "TownHall Station",
+                            time = "8:25am",
+                        ),
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Central Station",
+                            time = "8:30am"
+                        ),
+                    ).toImmutableList()
+                ),
+            ).toImmutableList(),
         )
     }
 }
@@ -127,7 +174,7 @@ fun JourneyDetailCard(
                     backgroundColor = leg.transportModeLine.transportMode.colorCode.hexToComposeColor(),
                     letter = leg.transportModeLine.transportMode.name.first(),
                     badgeText = leg.transportModeLine.lineName,
-                    badgeColor = leg.transportModeLine.lineColorCode?.hexToComposeColor(),
+                    badgeColor = leg.transportModeLine.lineColorCode.hexToComposeColor(),
                 )
 
                 Text(
