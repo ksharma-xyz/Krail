@@ -1,6 +1,6 @@
 [versions]
 java = "17"
-agp = "8.5.2"
+agp = "8.7.0"
 kotlin = "2.0.21"
 androidGradlePlugin = "8.2.2"
 core-ktx = "1.13.1"
