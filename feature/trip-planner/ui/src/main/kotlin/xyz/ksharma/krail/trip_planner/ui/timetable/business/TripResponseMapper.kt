@@ -34,9 +34,11 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         }
         // Sometimes there are no legs, so we need to handle that case, can happen when, the train is Now.
         val totalStops = legs?.sumOf { leg -> leg.stopSequence?.size ?: 0 } ?: 0
-        val platformText = firstPublicTransportLeg?.stopSequence?.firstOrNull()?.properties?.platform?.last()?.let {
-            it.takeIf { it != '0' && it.isLetterOrDigit() }?.uppercaseChar()
-        }
+        val platformText =
+            firstPublicTransportLeg?.stopSequence?.firstOrNull()?.properties?.platform?.last()
+                ?.let {
+                    it.takeIf { it != '0' && it.isLetterOrDigit() }?.uppercaseChar()
+                }
         Timber.d("PlatformText: $platformText -- ${firstPublicTransportLeg?.stopSequence?.firstOrNull()?.properties?.platform}")
 
         if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0) {
@@ -90,10 +92,35 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
             displayText = displayText,
             stopsInfo = "$numberOfStops stops ($displayDuration)",
             stops = stops,
-            walkInterchange = null,
+            walkInterchange = footPathInfo?.firstOrNull()?.let { foot ->
+                foot.toWalkInterchange(foot.duration.toDisplayString())
+            },
         )
     } else {
         null
+    }
+}
+
+internal fun TripResponse.FootPathInfo.toWalkInterchange(displayDuration: String): TimeTableState.JourneyCardInfo.WalkInterchange? {
+    return position?.let { position ->
+        when (position) {
+            TimeTableState.JourneyCardInfo.WalkPosition.BEFORE.position -> TimeTableState.JourneyCardInfo.WalkInterchange(
+                duration = displayDuration,
+                position = TimeTableState.JourneyCardInfo.WalkPosition.BEFORE,
+            )
+
+            TimeTableState.JourneyCardInfo.WalkPosition.AFTER.position -> TimeTableState.JourneyCardInfo.WalkInterchange(
+                duration = displayDuration,
+                position = TimeTableState.JourneyCardInfo.WalkPosition.AFTER,
+            )
+
+            TimeTableState.JourneyCardInfo.WalkPosition.IDEST.position -> TimeTableState.JourneyCardInfo.WalkInterchange(
+                duration = displayDuration,
+                position = TimeTableState.JourneyCardInfo.WalkPosition.IDEST,
+            )
+
+            else -> null
+        }
     }
 }
 
@@ -102,7 +129,8 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
     // For last leg there is no departure time, so using arrival time
     // For first leg there is no arrival time, so using departure time.
     val time =
-        departureTimeEstimated ?: departureTimePlanned ?: arrivalTimeEstimated ?: arrivalTimePlanned
+        departureTimeEstimated ?: departureTimePlanned ?: arrivalTimeEstimated
+        ?: arrivalTimePlanned
     return if (stopName != null && time != null) {
         TimeTableState.JourneyCardInfo.Stop(
             name = stopName,
