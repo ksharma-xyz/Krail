@@ -12,7 +12,7 @@ data class TimeTableState(
     data class JourneyCardInfo(
         val timeText: String, // "in x mins"
 
-        val platformText: Char, // "on Platform X" or Stand A etc.
+        val platformText: Char?=null, // "on Platform X" or Stand A etc.
 
         // If first leg is not walking then,
         //      leg.first.origin.departureTimeEstimated ?: leg.first.origin.departureTimePlanned

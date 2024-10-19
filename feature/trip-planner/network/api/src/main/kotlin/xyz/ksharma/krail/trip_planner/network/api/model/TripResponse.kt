@@ -152,8 +152,16 @@ data class TripResponse(
 
     @Serializable
     data class DestinationProperties(
-        @SerialName("wheelchairAccess") val wheelchairAccess: String? = null,
+        @SerialName("WheelchairAccess") val wheelchairAccess: String? = null,
         @SerialName("downloads") val downloads: List<Download>? = null,
+        /**
+         *
+         */
+        @SerialName("occupancy") val occupancy: String? = null,
+        /**
+         *
+         */
+        @SerialName("platform") val platform: String? = null,
     )
 
     @Serializable
