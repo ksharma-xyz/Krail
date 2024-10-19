@@ -1,24 +1,108 @@
 package xyz.ksharma.krail.trip_planner.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.BasicJourneyCard
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
+import xyz.ksharma.krail.design.system.toAdaptiveSize
+import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
+
+@Composable
+fun JourneyDetailCard(
+    timeToDeparture: String,
+    platformNumber: Char,
+    totalTravelTime: String,
+    legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+    ) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = "In $timeToDeparture")
+            Text(text = "Platform $platformNumber")
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.CenterVertically),
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_alert),
+                    contentDescription = "Wheelchair accessible",
+                    colorFilter = ColorFilter.tint(KrailTheme.colors.onPrimaryContainer),
+                    modifier = Modifier.size(14.dp.toAdaptiveDecorativeIconSize()),
+                )
+                Text(text = "In $timeToDeparture", modifier = Modifier.padding(start = 8.dp))
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.CenterVertically),
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_clock),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .size(14.dp.toAdaptiveSize()),
+                )
+                Text(
+                    text = totalTravelTime, style = KrailTheme.typography.bodyMedium,
+                )
+            }
+        }
+
+        legList.forEach {
+            JourneyLeg()
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewJourneyDetailCard() {
+    KrailTheme {
+        JourneyDetailCard(
+            timeToDeparture = "5 mins",
+            platformNumber = '1',
+            totalTravelTime = "1h 30mins",
+            legList = persistentListOf(),
+        )
+    }
+}
+
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -77,7 +161,7 @@ fun JourneyDetailCard(
 
 // region Previews
 
-@ComponentPreviews
+//@ComponentPreviews
 @Composable
 private fun JourneyDetailCardPreview(modifier: Modifier = Modifier) {
     KrailTheme {
