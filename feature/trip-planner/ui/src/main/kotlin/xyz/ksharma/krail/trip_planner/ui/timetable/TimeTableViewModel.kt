@@ -17,6 +17,7 @@ import timber.log.Timber
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.sandook.Sandook
+import xyz.ksharma.krail.sandook.di.SandookFactory
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
@@ -29,8 +30,10 @@ import kotlin.time.Duration.Companion.seconds
 @HiltViewModel
 class TimeTableViewModel @Inject constructor(
     private val tripRepository: TripPlanningRepository,
-    private val sandook: Sandook,
+    sandookFactory: SandookFactory,
 ) : ViewModel() {
+
+    private val sandook: Sandook = sandookFactory.create(SandookFactory.SandookKey.SAVED_TRIP)
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
     val uiState: StateFlow<TimeTableState> = _uiState
