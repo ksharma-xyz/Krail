@@ -2,6 +2,7 @@ package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,9 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
@@ -51,7 +55,20 @@ fun JourneyDetailCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
             .background(KrailTheme.colors.surface)
+            .border(
+                width = 2.dp,
+                brush = Brush.verticalGradient(
+                    colors = if (legList.size >= 2) {
+                        legList.map { it.transportModeLine.transportMode.colorCode.hexToComposeColor() }
+                    } else {
+                        val color =
+                            legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
+                        listOf(color, color)
+                    }),
+                shape = RoundedCornerShape(12.dp)
+            )
             .padding(vertical = 12.dp)
             .clickable(role = Role.Button) { onClick() }
     ) {
