@@ -14,10 +14,10 @@ data class TransportModeLine(
      */
     val lineName: String,
 
-    val lineColorCode: String? = calculateLineColorCode(
+    val lineColorCode: String = calculateLineColorCode(
         lineName = lineName,
         isTrain = transportMode == TransportMode.Train()
-    ),
+    ) ?: transportMode.colorCode,
 ) {
     enum class TransportLine(val key: String, val hexColor: String) {
         NORTH_SHORE_WESTERN("T1", "#f99d1c"),
