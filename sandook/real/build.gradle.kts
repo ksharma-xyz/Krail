@@ -1,14 +1,10 @@
 plugins {
-    alias(libs.plugins.krail.jvm.library)
-    alias(libs.plugins.cash.sqldelight)
+    alias(libs.plugins.krail.android.library)
+    alias(libs.plugins.krail.android.hilt)
 }
 
-sqldelight {
-    databases {
-        create("Sandook") {
-            packageName.set("xyz.ksharma.sandook.real")
-        }
-    }
+android {
+    namespace = "xyz.ksharma.krail.sandook.real"
 }
 
 dependencies {
