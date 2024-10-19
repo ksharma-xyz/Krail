@@ -70,8 +70,10 @@ fun TimeTableScreen(
                     exit = fadeOut() + shrinkOut(),
                 ) {
                     JourneyDetailCard(
-                        header = journey.timeText + journey.platformText.let { " on ${journey.platformText}" } + " (${journey.travelTime})",
-                        journeyLegList = journey.legs,
+                        timeToDeparture = journey.timeText,
+                        platformNumber = journey.platformText ?: ' ',
+                        totalTravelTime = journey.travelTime,
+                        legList = journey.legs.toImmutableList(),
                         onClick = {
                             onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
                         },

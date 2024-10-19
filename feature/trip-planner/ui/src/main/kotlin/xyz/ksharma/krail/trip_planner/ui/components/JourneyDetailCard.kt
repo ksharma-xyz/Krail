@@ -1,6 +1,7 @@
 package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,7 @@ fun JourneyDetailCard(
     platformNumber: Char,
     totalTravelTime: String,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
@@ -49,13 +51,16 @@ fun JourneyDetailCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .background(KrailTheme.colors.surface)
             .padding(vertical = 12.dp)
+            .clickable(role = Role.Button) { onClick() }
     ) {
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
                 text = "In $timeToDeparture",
@@ -74,6 +79,7 @@ fun JourneyDetailCard(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -192,6 +198,7 @@ private fun PreviewJourneyDetailCard() {
                     ).toImmutableList()
                 ),
             ).toImmutableList(),
+            onClick = {},
         )
     }
 }
@@ -228,6 +235,7 @@ private fun PreviewJourneyDetailCardWalkBefore() {
                     ).toImmutableList()
                 ),
             ).toImmutableList(),
+            onClick = {},
         )
     }
 }
@@ -264,6 +272,7 @@ private fun PreviewJourneyDetailCardWalkAfter() {
                     ).toImmutableList()
                 ),
             ).toImmutableList(),
+            onClick = {},
         )
     }
 }
@@ -319,11 +328,12 @@ private fun PreviewMultiLegJourneyDetailCard() {
                     ).toImmutableList()
                 )
             ).toImmutableList(),
+            onClick = {},
         )
     }
 }
 
-
+/*
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyDetailCard(
@@ -377,56 +387,4 @@ fun JourneyDetailCard(
             }
         }
     }
-}
-
-// region Previews
-
-//@ComponentPreviews
-@Composable
-private fun JourneyDetailCardPreview(modifier: Modifier = Modifier) {
-    KrailTheme {
-        JourneyDetailCard(
-            header = "in 5 mins on Platform 1 (10 min)",
-            journeyLegList = listOf(
-                TimeTableState.JourneyCardInfo.Leg(
-                    transportModeLine = TransportModeLine(
-                        transportMode = TransportMode.Bus(),
-                        lineName = "600",
-                    ),
-                    displayText = "Dessert via Rainy Road",
-                    stopsInfo = "4 stops (12 min)",
-                    stops = listOf(
-                        TimeTableState.JourneyCardInfo.Stop(
-                            name = "TownHall Station",
-                            time = "8:25am",
-                        ),
-                        TimeTableState.JourneyCardInfo.Stop(
-                            name = "Central Station",
-                            time = "8:25am"
-                        ),
-                    ).toImmutableList()
-                ),
-                TimeTableState.JourneyCardInfo.Leg(
-                    transportModeLine = TransportModeLine(
-                        transportMode = TransportMode.Train(),
-                        lineName = "T4",
-                    ),
-                    displayText = "Dessert via Rainy Road",
-                    stopsInfo = "4 stops (12 min)",
-                    stops = listOf(
-                        TimeTableState.JourneyCardInfo.Stop(
-                            name = "TownHall Station",
-                            time = "8:25am",
-                        ),
-                        TimeTableState.JourneyCardInfo.Stop(
-                            name = "Central Station",
-                            time = "8:25am"
-                        ),
-                    ).toImmutableList()
-                ),
-            )
-        )
-    }
-}
-
-// endregion
+}*/
