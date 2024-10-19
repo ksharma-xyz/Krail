@@ -46,7 +46,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
  * @param totalTravelTime The total time the journey takes.
  * @param platformNumber The platform or stand number, the journey departs from.
  * @param isWheelchairAccessible Whether the journey is wheelchair accessible.
- * @param transportModeIconRow A row of icons representing the transport modes used in the journey.
+ * @param transportModeList The list of transport modes used in the journey.
  * @param onClick The action to perform when the card is clicked.
  * @param modifier The modifier to apply to the card.
  */
@@ -174,94 +174,6 @@ fun JourneyCard(
         }
     }
 }
-
-/*
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-fun JourneyCard(
-    departureTimeText: String,
-    departureLocationText: String? = null,
-    originAndDestinationTimeText: String,
-    durationText: String,
-    backgroundColor: Color = KrailTheme.colors.surface,
-    transportModeIconRow: @Composable RowScope.() -> Unit,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    BasicJourneyCard(
-        modifier = modifier.clickable(role = Role.Button, onClick = onClick),
-        backgroundColor = backgroundColor,
-        content = {
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                maxItemsInEachRow = 1,
-            ) {
-                CompositionLocalProvider(
-                    LocalTextStyle provides KrailTheme.typography.titleSmall,
-                    LocalTextColor provides KrailTheme.colors.secondary,
-                ) {
-                    Text(
-                        text = departureTimeText,
-                        color = LocalTextColor.current,
-                        modifier = Modifier
-                            .alignByBaseline()
-                            .padding(end = 8.dp),
-                    )
-                }
-                if (departureLocationText != null) {
-                    CompositionLocalProvider(
-                        LocalTextStyle provides KrailTheme.typography.labelLarge,
-                        LocalTextColor provides KrailTheme.colors.onBackground,
-                    ) {
-                        Text(
-                            text = departureLocationText,
-                            color = LocalTextColor.current,
-                            modifier = Modifier.alignByBaseline(),
-                        )
-                    }
-                }
-            }
-            FlowRow(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                CompositionLocalProvider(
-                    LocalTextStyle provides KrailTheme.typography.labelLarge,
-                    LocalTextColor provides KrailTheme.colors.onBackground,
-                ) {
-                    Text(
-                        text = originAndDestinationTimeText,
-                        color = LocalTextColor.current,
-                        modifier = Modifier
-                            .alignByBaseline()
-                            .padding(end = 8.dp),
-                    )
-                }
-                CompositionLocalProvider(
-                    LocalTextStyle provides KrailTheme.typography.bodyMedium,
-                    LocalTextColor provides KrailTheme.colors.secondary,
-                ) {
-                    Text(
-                        text = durationText,
-                        color = LocalTextColor.current,
-                        modifier = Modifier.alignByBaseline(),
-                    )
-                }
-            }
-            FlowRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                transportModeIconRow()
-            }
-        },
-    )
-}*/
-
 
 // region Previews
 
