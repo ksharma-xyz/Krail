@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -90,7 +92,7 @@ fun JourneyCard(
             .padding(vertical = 8.dp, horizontal = 12.dp),
     ) {
         FlowRow(
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -100,7 +102,7 @@ fun JourneyCard(
                 modifier = Modifier.padding(end = 8.dp).align(Alignment.CenterVertically)
             )
             Row(
-                modifier = Modifier.align(Alignment.CenterVertically).padding(horizontal = 16.dp),
+                modifier = Modifier.align(Alignment.CenterVertically).weight(1f),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 transportModeList.forEachIndexed { index, mode ->
@@ -113,7 +115,6 @@ fun JourneyCard(
                     }
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
             Box(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
