@@ -3,7 +3,7 @@ package xyz.ksharma.krail.sandook
 import android.content.SharedPreferences
 import javax.inject.Inject
 
-class RealSandook @Inject constructor(private val sharedPreferences: SharedPreferences) : Sandook {
+internal class RealSandook @Inject constructor(private val sharedPreferences: SharedPreferences) : Sandook {
 
     override fun putString(key: String, value: String) {
         sharedPreferences.edit().putString(key, value).apply()
