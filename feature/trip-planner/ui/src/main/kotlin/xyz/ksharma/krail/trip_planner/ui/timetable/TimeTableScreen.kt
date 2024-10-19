@@ -7,7 +7,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -50,6 +52,16 @@ fun TimeTableScreen(
                 Text("Loading...", modifier = Modifier.padding(horizontal = 16.dp))
             }
         } else if (timeTableState.journeyList.isNotEmpty()) {
+            item {
+                Text(
+                    text = if (timeTableState.isTripSaved) "Trip Saved" else "Save Trip Button",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 16.dp)
+                        .clickable(enabled = !timeTableState.isTripSaved) { onEvent(TimeTableUiEvent.SaveTripButtonClicked) }
+                )
+            }
+
             items(timeTableState.journeyList) { journey ->
 
                 AnimatedVisibility(

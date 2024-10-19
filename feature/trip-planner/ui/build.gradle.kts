@@ -13,6 +13,7 @@ dependencies {
     implementation(projects.core.designSystem)
     implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.state)
+    implementation(projects.sandook.api)
 
     implementation(libs.compose.foundation)
     implementation(libs.compose.navigation)

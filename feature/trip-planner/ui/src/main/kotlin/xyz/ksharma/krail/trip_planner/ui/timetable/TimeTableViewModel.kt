@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.date_time.DateTimeHelper.toGenericFormattedTimeString
+import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip_planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableUiEvent
@@ -28,6 +29,7 @@ import kotlin.time.Duration.Companion.seconds
 @HiltViewModel
 class TimeTableViewModel @Inject constructor(
     private val tripRepository: TripPlanningRepository,
+    private val sandook: Sandook,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
@@ -52,7 +54,7 @@ class TimeTableViewModel @Inject constructor(
     private val _expandedJourneyId: MutableStateFlow<String?> = MutableStateFlow(null)
     val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
 
-    var trip: Trip? = null
+    private var tripInfo: Trip? = null
 
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
@@ -64,11 +66,13 @@ class TimeTableViewModel @Inject constructor(
 
     private fun onSaveTripButtonClicked() {
         Timber.d("Save Trip Button Clicked")
-        // TODO: Implement Save Trip Functionality
-        trip?.let {
-            Timber.d("Save Trip: $it")
-            // TODO save trip to cache
-            // TODO update ui with confirmation / error
+        tripInfo?.let { trip ->
+            Timber.d("Save Trip: $trip")
+            sandook.putString(key = trip.fromStopId + trip.toStopId, trip.toJsonString())
+            sandook.getString(key = trip.fromStopId + trip.toStopId)?.let { savedTrip ->
+                Timber.d("Saved Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
+            }
+            updateUiState { copy(isTripSaved = true) }
         }
     }
 
@@ -79,7 +83,7 @@ class TimeTableViewModel @Inject constructor(
 
     private fun onLoadTimeTable(tripInfo: Trip) = with(tripInfo) {
         Timber.d("loadTimeTable API Call- fromStopItem: ${fromStopId}, toStopItem: ${toStopId}")
-        trip = this
+        this@TimeTableViewModel.tripInfo = this
         updateUiState { copy(isLoading = true) }
 
         viewModelScope.launch {
