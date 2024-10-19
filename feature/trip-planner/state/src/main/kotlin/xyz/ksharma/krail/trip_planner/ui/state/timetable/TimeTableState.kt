@@ -6,6 +6,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 
 data class TimeTableState(
     val isLoading: Boolean = false,
+    val isTripSaved: Boolean = false,
     val journeyList: ImmutableList<JourneyCardInfo> = persistentListOf(),
 ) {
     data class JourneyCardInfo(
