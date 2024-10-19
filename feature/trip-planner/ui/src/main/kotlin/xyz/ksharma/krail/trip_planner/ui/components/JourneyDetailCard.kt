@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -15,17 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.BasicJourneyCard
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
-import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
@@ -40,6 +42,10 @@ fun JourneyDetailCard(
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     modifier: Modifier = Modifier,
 ) {
+    val density = LocalDensity.current
+    // todo can be reusable logic for consistent icon size
+    val iconSize = with(density) { 14.sp.toDp() }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -78,10 +84,13 @@ fun JourneyDetailCard(
                     contentDescription = "Wheelchair accessible",
                     colorFilter = ColorFilter.tint(Color(0xFFF4B400)),
                     modifier = Modifier
-                        .size(14.dp.toAdaptiveDecorativeIconSize())
-                        .padding(end = 4.dp),
+                        .size(iconSize),
                 )
-                Text(text = "Info", style = KrailTheme.typography.bodyLarge)
+                Text(
+                    text = "Info",
+                    style = KrailTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp)
+                )
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -96,7 +105,7 @@ fun JourneyDetailCard(
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .align(Alignment.CenterVertically)
-                        .size(14.dp.toAdaptiveSize()),
+                        .size(iconSize),
                 )
                 Text(
                     text = totalTravelTime, style = KrailTheme.typography.bodyLarge,
@@ -104,16 +113,53 @@ fun JourneyDetailCard(
             }
         }
 
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp)
+        )
+
         legList.forEach { leg ->
+            if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.BEFORE) {
+                leg.walkInterchange?.duration?.let { duration ->
+                    WalkingLeg(
+                        duration = duration,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                    )
+                }
+            }
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
+
             JourneyLeg(
                 transportModeLine = leg.transportModeLine,
-                stopsNumber = leg.stops.size,
-                duration = leg.stopsInfo,
+                stopsInfo = leg.stopsInfo,
                 departureTime = leg.stops.first().time,
                 stopName = leg.stops.first().name,
                 isWheelchairAccessible = false,
-                modifier = Modifier.padding(top = 16.dp, start = 8.dp, end = 8.dp),
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
             )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(8.dp)
+            )
+
+            if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.AFTER) {
+                leg.walkInterchange?.duration?.let { duration ->
+                    WalkingLeg(
+                        duration = duration,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                    )
+                }
+            }
         }
     }
 }
@@ -145,6 +191,133 @@ private fun PreviewJourneyDetailCard() {
                         ),
                     ).toImmutableList()
                 ),
+            ).toImmutableList(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewJourneyDetailCardWalkBefore() {
+    KrailTheme {
+        JourneyDetailCard(
+            timeToDeparture = "5 mins",
+            platformNumber = '1',
+            totalTravelTime = "1h 30mins",
+            legList = listOf(
+                TimeTableState.JourneyCardInfo.Leg(
+                    walkInterchange = TimeTableState.JourneyCardInfo.WalkInterchange(
+                        duration = "5 mins",
+                        position = TimeTableState.JourneyCardInfo.WalkPosition.BEFORE,
+                    ),
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "600",
+                    ),
+                    displayText = "Dessert via Rainy Road",
+                    stopsInfo = "4 stops (12 min)",
+                    stops = listOf(
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "TownHall Station",
+                            time = "8:25am",
+                        ),
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Central Station",
+                            time = "8:30am"
+                        ),
+                    ).toImmutableList()
+                ),
+            ).toImmutableList(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PreviewJourneyDetailCardWalkAfter() {
+    KrailTheme {
+        JourneyDetailCard(
+            timeToDeparture = "5 mins",
+            platformNumber = '1',
+            totalTravelTime = "1h 30mins",
+            legList = listOf(
+                TimeTableState.JourneyCardInfo.Leg(
+                    walkInterchange = TimeTableState.JourneyCardInfo.WalkInterchange(
+                        duration = "5 mins",
+                        position = TimeTableState.JourneyCardInfo.WalkPosition.AFTER,
+                    ),
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "600",
+                    ),
+                    displayText = "Dessert via Rainy Road",
+                    stopsInfo = "4 stops (12 min)",
+                    stops = listOf(
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "TownHall Station",
+                            time = "8:25am",
+                        ),
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Central Station",
+                            time = "8:30am"
+                        ),
+                    ).toImmutableList()
+                ),
+            ).toImmutableList(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(showBackground = true, fontScale = 2f)
+@Composable
+private fun PreviewMultiLegJourneyDetailCard() {
+    KrailTheme {
+        JourneyDetailCard(
+            timeToDeparture = "5 mins",
+            platformNumber = '1',
+            totalTravelTime = "1h 30mins",
+            legList = listOf(
+                TimeTableState.JourneyCardInfo.Leg(
+                    walkInterchange = TimeTableState.JourneyCardInfo.WalkInterchange(
+                        duration = "5 mins",
+                        position = TimeTableState.JourneyCardInfo.WalkPosition.AFTER,
+                    ),
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "600",
+                    ),
+                    displayText = "Dessert via Rainy Road",
+                    stopsInfo = "4 stops (12 min)",
+                    stops = listOf(
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "TownHall Station",
+                            time = "8:25am",
+                        ),
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Central Station",
+                            time = "8:30am"
+                        ),
+                    ).toImmutableList()
+                ),
+                TimeTableState.JourneyCardInfo.Leg(
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Train(),
+                        lineName = "T5",
+                    ),
+                    displayText = "EmuPlains via Forest Hills",
+                    stopsInfo = "2 stops (30 min)",
+                    stops = listOf(
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Central Station",
+                            time = "8:32am",
+                        ),
+                        TimeTableState.JourneyCardInfo.Stop(
+                            name = "Forest Hills Station",
+                            time = "9:00am"
+                        ),
+                    ).toImmutableList()
+                )
             ).toImmutableList(),
         )
     }
