@@ -93,7 +93,7 @@ private fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modi
 
         val splashComplete by rememberUpdatedState(onSplashComplete)
         LaunchedEffect(key1 = Unit) {
-            delay(2000)
+            delay(1100)
             splashComplete()
         }
     }
@@ -132,12 +132,12 @@ fun AnimatedLetter(letter: String, animationStarted: Boolean) {
         targetValue = 1.2f,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
-                durationMillis = 1200
+                durationMillis = 1100
                 0.0f at 0 using LinearEasing // Hold initial scale
                 0.7f at 200 using FastOutSlowInEasing // Anticipation (quick shrink)
                 1.2f at 500 using FastOutSlowInEasing // Squash/stretch (overshoot)
-                1.0f at 1200 using FastOutSlowInEasing // Settle back to normal scale
-                0.0f at 1500 using LinearEasing // Settle back to 0 scale
+                1.0f at 1000 using FastOutSlowInEasing // Settle back to normal scale
+                1.0f at 1100 using LinearEasing // Keep at normal scale
             },
             repeatMode = RepeatMode.Reverse
         ), label = "animeAnimation"
