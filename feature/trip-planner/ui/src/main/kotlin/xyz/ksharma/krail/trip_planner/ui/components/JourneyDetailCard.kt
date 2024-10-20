@@ -80,7 +80,7 @@ fun JourneyDetailCard(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
-                text = "In $timeToDeparture",
+                text = timeToDeparture,
                 style = KrailTheme.typography.titleLarge,
                 color = legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
             )
