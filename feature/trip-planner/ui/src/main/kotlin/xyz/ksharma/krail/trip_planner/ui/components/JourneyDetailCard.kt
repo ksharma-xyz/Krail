@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.design.system.components.BasicJourneyCard
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.R
@@ -415,3 +414,22 @@ fun JourneyDetailCard(
         }
     }
 }*/
+
+enum class JourneyCardState {
+    /**
+     * Default state of the card. as displayed in the list.
+     */
+    DEFAULT,
+
+    /**
+     * Card displaying information about different legs of the journey.
+     * The number of stops and duration of each leg.
+     */
+    COLLAPSED,
+
+    /**
+     * Card displaying the full journey details of a certain leg.
+     * It will display all the stops in the leg, with platform and timing information.
+     */
+    EXPANDED
+}
