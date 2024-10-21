@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,6 +23,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
@@ -56,13 +58,18 @@ fun SearchStopScreen(
         keyboard?.show()
     }
 
-    LaunchedEffect(textFieldText) {
-        snapshotFlow { textFieldText }
+    val trimmedText by remember(textFieldText) { derivedStateOf { textFieldText.trim() } }
+
+    LaunchedEffect(trimmedText) {
+        snapshotFlow { trimmedText }
             .distinctUntilChanged()
-            .debounce(600)
+            .debounce(250)
             .filter { it.isNotBlank() }
-            .mapLatest { text -> onEvent(SearchStopUiEvent.SearchTextChanged(text)) }
-            .collect()
+            .mapLatest { text ->
+                Timber.d("Query - $text")
+                onEvent(SearchStopUiEvent.SearchTextChanged(text))
+            }
+            .collectLatest{}
     }
 
     LazyColumn(
