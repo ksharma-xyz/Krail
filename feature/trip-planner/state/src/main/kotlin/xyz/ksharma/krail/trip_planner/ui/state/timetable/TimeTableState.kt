@@ -12,7 +12,7 @@ data class TimeTableState(
     data class JourneyCardInfo(
         val timeText: String, // "in x mins"
 
-        val platformText: Char?=null, // "on Platform X" or Stand A etc.
+        val platformText: Char? = null, // "on Platform X" or Stand A etc.
 
         // If first leg is not walking then,
         //      leg.first.origin.departureTimeEstimated ?: leg.first.origin.departureTimePlanned
@@ -36,7 +36,8 @@ data class TimeTableState(
         val legs: ImmutableList<Leg>,
     ) {
         val journeyId: String
-            get() = (originUtcDateTime + destinationTime).filter { it.isLetterOrDigit() }
+            get() = (originUtcDateTime + destinationTime + transportModeLines
+                .joinToString { it.lineName }).filter { it.isLetterOrDigit() }
 
         data class Leg(
             // modeType - legs.transportation.product.class
