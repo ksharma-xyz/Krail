@@ -48,7 +48,7 @@ fun JourneyLeg(
             .background(
                 color = transportModeLine.transportMode.colorCode
                     .hexToComposeColor()
-                    .copy(alpha = if (isSystemInDarkTheme()) 0.7f else 0.2f)
+                    .copy(alpha = if (isSystemInDarkTheme()) 0.7f else 0.15f)
             )
             .padding(vertical = 8.dp, horizontal = 8.dp),
     ) {
@@ -96,7 +96,7 @@ fun JourneyLeg(
                 Text(
                     text = departureTime,
                     style = KrailTheme.typography.bodyMedium,
-                    color = KrailTheme.colors.onSurface,
+                    color = if (isSystemInDarkTheme()) KrailTheme.colors.surface else KrailTheme.colors.onSurface,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(start = 8.dp),
@@ -110,7 +110,7 @@ fun JourneyLeg(
                 Text(
                     text = stopName,
                     style = KrailTheme.typography.titleSmall,
-                    color = KrailTheme.colors.onSurface,
+                    color = if (isSystemInDarkTheme()) KrailTheme.colors.surface else KrailTheme.colors.onSurface,
                     modifier = Modifier.align(Alignment.CenterVertically),
                 )
                 if (isWheelchairAccessible) {

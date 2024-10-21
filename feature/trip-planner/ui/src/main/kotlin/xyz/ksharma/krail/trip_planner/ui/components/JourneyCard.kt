@@ -17,10 +17,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -30,6 +34,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import timber.log.Timber
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -37,6 +42,7 @@ import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
+import kotlin.text.repeat
 
 /**
  * A card that displays information about a journey.
@@ -57,7 +63,7 @@ fun JourneyCard(
     originTime: String,
     destinationTime: String,
     totalTravelTime: String,
-    platformNumber: Char?=null,
+    platformNumber: Char? = null,
     isWheelchairAccessible: Boolean,
     transportModeList: ImmutableList<TransportMode>,
     onClick: () -> Unit,
@@ -70,14 +76,8 @@ fun JourneyCard(
             .background(color = KrailTheme.colors.surface)
             .border(
                 width = 2.dp,
-                brush = Brush.linearGradient(
-                    colors = if (transportModeList.size >= 2) {
-                        transportModeList.map { it.colorCode.hexToComposeColor() }
-                    } else {
-                        val color = transportModeList.first().colorCode.hexToComposeColor()
-                        listOf(color, color)
-                    }),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
+                brush = Brush.linearGradient(colors = transportModeList.toColors()),
             )
             .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
@@ -90,10 +90,14 @@ fun JourneyCard(
             Text(
                 text = timeToDeparture, style = KrailTheme.typography.titleMedium,
                 color = transportModeList.first().colorCode.hexToComposeColor(),
-                modifier = Modifier.padding(end = 8.dp).align(Alignment.CenterVertically)
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterVertically)
             )
             Row(
-                modifier = Modifier.align(Alignment.CenterVertically).weight(1f),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .weight(1f),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
                 transportModeList.forEachIndexed { index, mode ->
@@ -172,6 +176,16 @@ fun JourneyCard(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun List<TransportMode>.toColors(): List<Color> = when {
+    isEmpty() -> listOf(KrailTheme.colors.onSurface, KrailTheme.colors.onSurface)
+    size >= 2 -> map { it.colorCode.hexToComposeColor() }
+    else -> {
+        val color = first().colorCode.hexToComposeColor()
+        listOf(color, color)
     }
 }
 
