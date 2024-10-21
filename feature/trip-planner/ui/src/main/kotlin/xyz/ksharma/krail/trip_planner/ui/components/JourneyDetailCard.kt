@@ -80,7 +80,7 @@ fun JourneyDetailCard(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
-                text = "In $timeToDeparture",
+                text = timeToDeparture,
                 style = KrailTheme.typography.titleLarge,
                 color = legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
             )
@@ -142,7 +142,7 @@ fun JourneyDetailCard(
                 .height(8.dp)
         )
 
-        legList.forEach { leg ->
+        legList.forEachIndexed { index, leg ->
             if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.BEFORE) {
                 leg.walkInterchange?.duration?.let { duration ->
                     WalkingLeg(
@@ -171,8 +171,8 @@ fun JourneyDetailCard(
                 JourneyLeg(
                     transportModeLine = leg.transportModeLine,
                     stopsInfo = leg.stopsInfo,
-                    departureTime = leg.stops.first().time,
-                    stopName = leg.stops.first().name,
+                    departureTime = if (index == legList.lastIndex) leg.stops.last().time else leg.stops.first().time,
+                    stopName = if (index == legList.lastIndex) leg.stops.last().name else leg.stops.first().name,
                     isWheelchairAccessible = false,
                     modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                 )
