@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,7 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
@@ -34,8 +34,7 @@ import xyz.ksharma.krail.trip_planner.ui.state.TransportModeLine
 @Composable
 fun JourneyLeg(
     transportModeLine: TransportModeLine,
-    stopsNumber: Int,
-    duration: String,
+    stopsInfo: String,
     departureTime: String,
     stopName: String,
     isWheelchairAccessible: Boolean = false,
@@ -50,10 +49,10 @@ fun JourneyLeg(
                     .hexToComposeColor()
                     .copy(alpha = 0.1f)
             )
-            .padding(vertical = 8.dp, horizontal = 12.dp),
+            .padding(vertical = 8.dp, horizontal = 8.dp),
     ) {
         FlowRow(
-            horizontalArrangement = Arrangement.Start,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             TransportModeInfo(
                 letter = transportModeLine.transportMode.name.first(),
@@ -63,10 +62,8 @@ fun JourneyLeg(
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
             Text(
-                text = "$stopsNumber stops - $duration",
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .align(Alignment.CenterVertically),
+                text = stopsInfo,
+                modifier = Modifier.align(Alignment.CenterVertically),
                 style = KrailTheme.typography.title,
                 color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
             )
@@ -75,31 +72,52 @@ fun JourneyLeg(
             modifier = Modifier.padding(top = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val density = LocalDensity.current
-            val size = with(density) { 18.sp.toDp() }
-            Image(
-                painter = painterResource(id = R.drawable.ic_location),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(size)
-                    .align(Alignment.CenterVertically),
-                colorFilter = ColorFilter.tint(color = Color(0xFF1A1A1A))
-            )
-            Text(
-                text = "$departureTime $stopName",
-                style = KrailTheme.typography.title,
-                color = Color(0xFF1A1A1A),
+            Row(
                 modifier = Modifier.align(Alignment.CenterVertically),
-            )
-            if (isWheelchairAccessible) {
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val density = LocalDensity.current
+                val size = with(density) { 18.sp.toDp() }
                 Image(
-                    painter = painterResource(R.drawable.ic_a11y),
+                    painter = painterResource(id = R.drawable.ic_location),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = Color(0xFF1A1A1A)),
                     modifier = Modifier
-                        .size(14.dp.toAdaptiveSize())
+                        .size(size)
                         .align(Alignment.CenterVertically),
+                    colorFilter = ColorFilter.tint(
+                        color = transportModeLine.transportMode.colorCode.hexToComposeColor()
+                            .copy(alpha = 0.9f)
+                    ),
                 )
+                Text(
+                    text = departureTime,
+                    style = KrailTheme.typography.bodyMedium,
+                    color = Color(0xFF1A1A1A),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(start = 8.dp),
+                )
+            }
+            Row(
+                modifier = Modifier.align(Alignment.CenterVertically),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stopName,
+                    style = KrailTheme.typography.titleSmall,
+                    color = Color(0xFF1A1A1A),
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                )
+                if (isWheelchairAccessible) {
+                    Image(
+                        painter = painterResource(R.drawable.ic_a11y),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(color = Color(0xFF1A1A1A)),
+                        modifier = Modifier
+                            .size(14.dp.toAdaptiveSize())
+                            .align(Alignment.CenterVertically),
+                    )
+                }
             }
         }
     }
@@ -107,7 +125,7 @@ fun JourneyLeg(
 
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-//@Preview(showBackground = true, fontScale = 2f)
+@Preview(showBackground = true, fontScale = 2f)
 @Composable
 private fun PreviewJourneyLeg() {
     KrailTheme {
@@ -116,8 +134,7 @@ private fun PreviewJourneyLeg() {
                 transportMode = TransportMode.Bus(),
                 lineName = "700",
             ),
-            stopsNumber = 2,
-            duration = "10 mins",
+            stopsInfo = "2 stops (1h 10mins)",
             departureTime = "8:25am",
             stopName = "Central Station",
             isWheelchairAccessible = true,
