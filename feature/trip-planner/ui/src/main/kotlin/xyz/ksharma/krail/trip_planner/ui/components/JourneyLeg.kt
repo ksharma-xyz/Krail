@@ -2,6 +2,7 @@ package xyz.ksharma.krail.trip_planner.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -47,7 +48,7 @@ fun JourneyLeg(
             .background(
                 color = transportModeLine.transportMode.colorCode
                     .hexToComposeColor()
-                    .copy(alpha = 0.15f)
+                    .copy(alpha = if (isSystemInDarkTheme()) 0.7f else 0.2f)
             )
             .padding(vertical = 8.dp, horizontal = 8.dp),
     ) {
@@ -60,13 +61,14 @@ fun JourneyLeg(
                 backgroundColor = transportModeLine.transportMode.colorCode.hexToComposeColor(),
                 badgeText = transportModeLine.lineName,
                 badgeColor = transportModeLine.lineColorCode.hexToComposeColor(),
+                borderEnabled = isSystemInDarkTheme(),
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
             Text(
                 text = stopsInfo,
                 modifier = Modifier.align(Alignment.CenterVertically),
                 style = KrailTheme.typography.title,
-                color = KrailTheme.colors.onSurface,//transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                color = if (isSystemInDarkTheme()) KrailTheme.colors.onSurface else transportModeLine.transportMode.colorCode.hexToComposeColor(),
             )
         }
         FlowRow(
@@ -87,8 +89,8 @@ fun JourneyLeg(
                         .size(size)
                         .align(Alignment.CenterVertically),
                     colorFilter = ColorFilter.tint(
-                        color = transportModeLine.transportMode.colorCode.hexToComposeColor()
-                            .copy(alpha = 0.9f)
+                        color = if (isSystemInDarkTheme()) KrailTheme.colors.onSurface else transportModeLine.transportMode.colorCode.hexToComposeColor()
+                            .copy(alpha = 0.9f),
                     ),
                 )
                 Text(
