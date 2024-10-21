@@ -46,7 +46,7 @@ fun JourneyLeg(
             .background(
                 color = transportModeLine.transportMode.colorCode
                     .hexToComposeColor()
-                    .copy(alpha = 0.1f)
+                    .copy(alpha = 0.2f)
             )
             .padding(vertical = 8.dp, horizontal = 8.dp),
     ) {

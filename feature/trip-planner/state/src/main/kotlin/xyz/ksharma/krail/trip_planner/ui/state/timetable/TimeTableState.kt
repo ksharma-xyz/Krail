@@ -62,16 +62,16 @@ data class TimeTableState(
             val position: WalkPosition,
         )
 
-        enum class WalkPosition {
+        enum class WalkPosition(val position: String) {
             /**
              * Need to walk before the Leg starts.
              */
-            BEFORE,
+            BEFORE("BEFORE"),
 
             /**
              * After displaying the Leg info, we need to walk.
              */
-            AFTER,
+            AFTER("AFTER"),
 
             /**
              * This indicates that the walking portion of the leg is the entire leg itself.
@@ -79,7 +79,7 @@ data class TimeTableState(
              * For example, if you're planning a trip from one location to another that involves walking
              * the entire distance, the "position" would be "IDEST".
              */
-            IDEST,
+            IDEST("IDEST"),
         }
 
         data class Stop(

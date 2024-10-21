@@ -159,14 +159,24 @@ fun JourneyDetailCard(
                     .height(8.dp)
             )
 
-            JourneyLeg(
-                transportModeLine = leg.transportModeLine,
-                stopsInfo = leg.stopsInfo,
-                departureTime = leg.stops.first().time,
-                stopName = leg.stops.first().name,
-                isWheelchairAccessible = false,
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-            )
+            if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.IDEST) {
+                leg.walkInterchange?.duration?.let { duration ->
+                    WalkingLeg(
+                        duration = duration,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                    )
+                }
+            } else {
+                JourneyLeg(
+                    transportModeLine = leg.transportModeLine,
+                    stopsInfo = leg.stopsInfo,
+                    departureTime = leg.stops.first().time,
+                    stopName = leg.stops.first().name,
+                    isWheelchairAccessible = false,
+                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                )
+            }
 
             Spacer(
                 modifier = Modifier
