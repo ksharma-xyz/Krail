@@ -1,6 +1,5 @@
 package xyz.ksharma.krail.trip_planner.ui.components
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,11 +15,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.design.system.components.Text
@@ -53,6 +52,7 @@ fun JourneyLeg(
     ) {
         FlowRow(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             TransportModeInfo(
                 letter = transportModeLine.transportMode.name.first(),
@@ -70,7 +70,8 @@ fun JourneyLeg(
         }
         FlowRow(
             modifier = Modifier.padding(top = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Row(
                 modifier = Modifier.align(Alignment.CenterVertically),
@@ -92,7 +93,7 @@ fun JourneyLeg(
                 Text(
                     text = departureTime,
                     style = KrailTheme.typography.bodyMedium,
-                    color = Color(0xFF1A1A1A),
+                    color = KrailTheme.colors.onSurface,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
                         .padding(start = 8.dp),
@@ -100,19 +101,22 @@ fun JourneyLeg(
             }
             Row(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
             ) {
                 Text(
                     text = stopName,
                     style = KrailTheme.typography.titleSmall,
-                    color = Color(0xFF1A1A1A),
+                    color = KrailTheme.colors.onSurface,
                     modifier = Modifier.align(Alignment.CenterVertically),
                 )
                 if (isWheelchairAccessible) {
                     Image(
                         painter = painterResource(R.drawable.ic_a11y),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(color = Color(0xFF1A1A1A)),
+                        colorFilter = ColorFilter.tint(
+                            color = KrailTheme.colors.onSurface,
+                        ),
                         modifier = Modifier
                             .size(14.dp.toAdaptiveSize())
                             .align(Alignment.CenterVertically),
@@ -123,9 +127,8 @@ fun JourneyLeg(
     }
 }
 
-@Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Preview(showBackground = true, fontScale = 2f)
+@PreviewLightDark
+@Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyLeg() {
     KrailTheme {
