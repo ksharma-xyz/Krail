@@ -60,10 +60,16 @@ fun JourneyDetailCard(
                 width = 2.dp,
                 brush = Brush.verticalGradient(
                     colors = if (legList.size >= 2) {
-                        legList.map { it.transportModeLine.transportMode.colorCode.hexToComposeColor() }
+                        legList
+                            .filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+                            .map {
+                                it.transportModeLine.transportMode.colorCode.hexToComposeColor()
+                            }
                     } else {
                         val color =
-                            legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
+                            legList
+                                .filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+                                .first().transportModeLine.transportMode.colorCode.hexToComposeColor()
                         listOf(color, color)
                     }),
                 shape = RoundedCornerShape(12.dp)
@@ -81,12 +87,14 @@ fun JourneyDetailCard(
             Text(
                 text = timeToDeparture,
                 style = KrailTheme.typography.titleLarge,
-                color = legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
+                color = legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+                    .first().transportModeLine.transportMode.colorCode.hexToComposeColor()
             )
             Text(
                 text = "Platform $platformNumber",
                 style = KrailTheme.typography.titleLarge,
-                color = legList.first().transportModeLine.transportMode.colorCode.hexToComposeColor()
+                color = legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+                    .first().transportModeLine.transportMode.colorCode.hexToComposeColor()
             )
         }
 
@@ -142,54 +150,66 @@ fun JourneyDetailCard(
         )
 
         legList.forEachIndexed { index, leg ->
-            if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.BEFORE) {
-                leg.walkInterchange?.duration?.let { duration ->
+            when (leg) {
+                is TimeTableState.JourneyCardInfo.Leg.WalkingLeg -> {
                     WalkingLeg(
-                        duration = duration,
+                        duration = leg.duration,
                         modifier = Modifier
                             .padding(horizontal = 16.dp),
                     )
                 }
-            }
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-            )
+                is TimeTableState.JourneyCardInfo.Leg.TransportLeg -> {
+                    if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.BEFORE) {
+                        leg.walkInterchange?.duration?.let { duration ->
+                            WalkingLeg(
+                                duration = duration,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp),
+                            )
+                        }
+                    }
 
-            if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.IDEST) {
-                leg.walkInterchange?.duration?.let { duration ->
-                    WalkingLeg(
-                        duration = duration,
+                    Spacer(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp),
+                            .fillMaxWidth()
+                            .height(8.dp)
                     )
-                }
-            } else {
-                JourneyLeg(
-                    transportModeLine = leg.transportModeLine,
-                    stopsInfo = leg.stopsInfo,
-                    departureTime = if (index == legList.lastIndex) leg.stops.last().time else leg.stops.first().time,
-                    stopName = if (index == legList.lastIndex) leg.stops.last().name else leg.stops.first().name,
-                    isWheelchairAccessible = false,
-                    modifier = Modifier.padding(start = 8.dp, end = 8.dp),
-                )
-            }
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(8.dp)
-            )
+                    if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.IDEST) {
+                        leg.walkInterchange?.duration?.let { duration ->
+                            WalkingLeg(
+                                duration = duration,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp),
+                            )
+                        }
+                    } else {
+                        JourneyLeg(
+                            transportModeLine = leg.transportModeLine,
+                            stopsInfo = leg.stopsInfo,
+                            departureTime = if (index == legList.lastIndex) leg.stops.last().time else leg.stops.first().time,
+                            stopName = if (index == legList.lastIndex) leg.stops.last().name else leg.stops.first().name,
+                            isWheelchairAccessible = false,
+                            modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                        )
+                    }
 
-            if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.AFTER) {
-                leg.walkInterchange?.duration?.let { duration ->
-                    WalkingLeg(
-                        duration = duration,
+                    Spacer(
                         modifier = Modifier
-                            .padding(horizontal = 16.dp),
+                            .fillMaxWidth()
+                            .height(8.dp)
                     )
+
+                    if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.AFTER) {
+                        leg.walkInterchange?.duration?.let { duration ->
+                            WalkingLeg(
+                                duration = duration,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp),
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -205,7 +225,7 @@ private fun PreviewJourneyDetailCard() {
             platformNumber = '1',
             totalTravelTime = "1h 30mins",
             legList = listOf(
-                TimeTableState.JourneyCardInfo.Leg(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     transportModeLine = TransportModeLine(
                         transportMode = TransportMode.Bus(),
                         lineName = "600",
@@ -238,7 +258,7 @@ private fun PreviewJourneyDetailCardWalkBefore() {
             platformNumber = '1',
             totalTravelTime = "1h 30mins",
             legList = listOf(
-                TimeTableState.JourneyCardInfo.Leg(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     walkInterchange = TimeTableState.JourneyCardInfo.WalkInterchange(
                         duration = "5 mins",
                         position = TimeTableState.JourneyCardInfo.WalkPosition.BEFORE,
@@ -275,7 +295,7 @@ private fun PreviewJourneyDetailCardWalkAfter() {
             platformNumber = '1',
             totalTravelTime = "1h 30mins",
             legList = listOf(
-                TimeTableState.JourneyCardInfo.Leg(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     walkInterchange = TimeTableState.JourneyCardInfo.WalkInterchange(
                         duration = "5 mins",
                         position = TimeTableState.JourneyCardInfo.WalkPosition.AFTER,
@@ -313,7 +333,7 @@ private fun PreviewMultiLegJourneyDetailCard() {
             platformNumber = '1',
             totalTravelTime = "1h 30mins",
             legList = listOf(
-                TimeTableState.JourneyCardInfo.Leg(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     walkInterchange = TimeTableState.JourneyCardInfo.WalkInterchange(
                         duration = "5 mins",
                         position = TimeTableState.JourneyCardInfo.WalkPosition.AFTER,
@@ -335,7 +355,7 @@ private fun PreviewMultiLegJourneyDetailCard() {
                         ),
                     ).toImmutableList()
                 ),
-                TimeTableState.JourneyCardInfo.Leg(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     transportModeLine = TransportModeLine(
                         transportMode = TransportMode.Train(),
                         lineName = "T5",
