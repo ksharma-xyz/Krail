@@ -130,12 +130,47 @@ fun JourneyLeg(
 @PreviewLightDark
 @Preview(fontScale = 2f)
 @Composable
-private fun PreviewJourneyLeg() {
+private fun PreviewJourneyLegBus() {
     KrailTheme {
         JourneyLeg(
             transportModeLine = TransportModeLine(
                 transportMode = TransportMode.Bus(),
                 lineName = "700",
+            ),
+            stopsInfo = "2 stops (1h 10mins)",
+            departureTime = "8:25am",
+            stopName = "Central Station",
+            isWheelchairAccessible = true,
+        )
+    }
+}
+
+
+@PreviewLightDark
+@Composable
+private fun PreviewJourneyLegTrain() {
+    KrailTheme {
+        JourneyLeg(
+            transportModeLine = TransportModeLine(
+                transportMode = TransportMode.Train(),
+                lineName = "T2",
+            ),
+            stopsInfo = "2 stops (1h 10mins)",
+            departureTime = "8:25am",
+            stopName = "Central Station",
+            isWheelchairAccessible = true,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewJourneyLegMetro() {
+    KrailTheme {
+        JourneyLeg(
+            transportModeLine = TransportModeLine(
+                transportMode = TransportMode.Metro(),
+                lineName = "M1",
             ),
             stopsInfo = "2 stops (1h 10mins)",
             departureTime = "8:25am",
