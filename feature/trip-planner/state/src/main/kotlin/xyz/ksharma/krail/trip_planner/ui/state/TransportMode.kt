@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
  * NSW Transport Key to icons and line codes
  * Color code resources - https://opendata.transport.nsw.gov.au/resources
  * Line Codes - https://transportnsw.info/plan/help/key-to-icons-line-codes
+ *
+ * Icons - https://opendata.transport.nsw.gov.au/dataset/transport-mode-symbols-and-pictograms
  */
 @Serializable
 sealed class TransportMode {

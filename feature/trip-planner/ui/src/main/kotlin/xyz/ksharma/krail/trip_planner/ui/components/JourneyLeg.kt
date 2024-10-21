@@ -43,10 +43,11 @@ fun JourneyLeg(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
+            .background(KrailTheme.colors.surface) // for better color contrast
             .background(
                 color = transportModeLine.transportMode.colorCode
                     .hexToComposeColor()
-                    .copy(alpha = 0.2f)
+                    .copy(alpha = 0.15f)
             )
             .padding(vertical = 8.dp, horizontal = 8.dp),
     ) {
@@ -65,7 +66,7 @@ fun JourneyLeg(
                 text = stopsInfo,
                 modifier = Modifier.align(Alignment.CenterVertically),
                 style = KrailTheme.typography.title,
-                color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                color = KrailTheme.colors.onSurface,//transportModeLine.transportMode.colorCode.hexToComposeColor(),
             )
         }
         FlowRow(

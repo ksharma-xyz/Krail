@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
@@ -303,7 +304,7 @@ private fun PreviewJourneyDetailCardWalkAfter() {
     }
 }
 
-@Preview(showBackground = true)
+@PreviewLightDark
 @Preview(showBackground = true, fontScale = 2f)
 @Composable
 private fun PreviewMultiLegJourneyDetailCard() {
