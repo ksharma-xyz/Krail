@@ -15,6 +15,10 @@ sealed class TransportMode {
     abstract val name: String
     abstract val colorCode: String
     abstract val productClass: Int
+
+    /**
+     * Priority to sort the transport modes in Search Results
+     */
     abstract val priority: Int
 
     @Serializable
