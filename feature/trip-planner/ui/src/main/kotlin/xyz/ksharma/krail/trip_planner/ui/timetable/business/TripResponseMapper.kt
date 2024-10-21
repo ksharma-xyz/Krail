@@ -39,7 +39,15 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 ?.let {
                     it.takeIf { it != '0' && it.isLetterOrDigit() }?.uppercaseChar()
                 }
-        Timber.d("PlatformText: $platformText -- ${firstPublicTransportLeg?.stopSequence?.firstOrNull()?.properties?.platform}")
+
+        legs?.forEachIndexed { index, it ->
+            Timber.d(
+                "TransportMode #$index: ${it.transportation?.product?.productClass}, " +
+                        "name: ${it.transportation?.product?.name}, " +
+                        "stops: ${it.stopSequence?.size}, " +
+                        "duration: ${it.duration}"
+            )
+        }
 
         if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0) {
             TimeTableState.JourneyCardInfo(
@@ -83,21 +91,28 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
     val displayDuration = duration.toDisplayString()
     val stops = stopSequence?.mapNotNull { it.toUiModel() }?.toImmutableList()
 
-    return if (transportMode != null && lineName != null && displayText != null && numberOfStops != null && stops != null) {
-        TimeTableState.JourneyCardInfo.Leg(
-            transportModeLine = TransportModeLine(
-                transportMode = transportMode,
-                lineName = lineName,
-            ),
-            displayText = displayText,
-            stopsInfo = "$numberOfStops stops ($displayDuration)",
-            stops = stops,
-            walkInterchange = footPathInfo?.firstOrNull()?.let { foot ->
-                foot.toWalkInterchange(foot.duration.toDisplayString())
-            },
-        )
-    } else {
-        null
+    return when {
+        // Walking Leg - Always check before public transport leg
+        isWalkingLeg() -> {
+            TimeTableState.JourneyCardInfo.Leg.WalkingLeg(duration = displayDuration)
+        }
+
+        else -> { // Public Transport Leg
+            if (transportMode != null && lineName != null && displayText != null && numberOfStops != null && stops != null) {
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    transportModeLine = TransportModeLine(
+                        transportMode = transportMode,
+                        lineName = lineName,
+                    ),
+                    displayText = displayText,
+                    stopsInfo = "$numberOfStops stops ($displayDuration)",
+                    stops = stops,
+                    walkInterchange = footPathInfo?.firstOrNull()?.let { foot ->
+                        foot.toWalkInterchange(foot.duration.toDisplayString())
+                    },
+                )
+            } else null
+        }
     }
 }
 
@@ -191,3 +206,6 @@ private fun String.fromUTCToDisplayTimeString() = this.utcToAEST().aestToHHMM()
 private fun Long?.toDisplayString(): String {
     return "${this?.div(60)} mins"
 }
+
+private fun TripResponse.Leg.isWalkingLeg(): Boolean =
+    transportation?.product?.productClass == 99L || transportation?.product?.productClass == 100L
