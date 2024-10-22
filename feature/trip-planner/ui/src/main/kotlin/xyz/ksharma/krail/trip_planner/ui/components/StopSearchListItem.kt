@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
@@ -61,7 +61,7 @@ fun StopSearchListItem(
 
 // region Preview
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun StopSearchListItemPreview() {
     KrailTheme {

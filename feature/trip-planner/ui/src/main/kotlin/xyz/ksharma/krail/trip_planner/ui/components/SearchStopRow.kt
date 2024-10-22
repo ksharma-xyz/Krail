@@ -22,7 +22,7 @@ import xyz.ksharma.krail.design.system.LocalOnContentColor
 import xyz.ksharma.krail.design.system.components.RoundIconButton
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextFieldButton
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip_planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip_planner.ui.R as TripPlannerUiR
@@ -106,7 +106,7 @@ fun SearchStopRow(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun SearchStopColumnPreview() {
     KrailTheme {

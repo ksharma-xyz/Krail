@@ -23,7 +23,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.R as DSR
 
@@ -84,7 +84,7 @@ fun SavedTripCard(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun SavedTripCardPreview() {
     KrailTheme {

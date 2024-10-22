@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -48,7 +48,7 @@ fun TransportModeBadge(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TransportModeBadgeBusPreview() {
     KrailTheme {
@@ -59,7 +59,7 @@ private fun TransportModeBadgeBusPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TransportModeBadgeTrainPreview() {
     KrailTheme {
@@ -70,7 +70,7 @@ private fun TransportModeBadgeTrainPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TransportModeBadgeFerryPreview() {
     KrailTheme {

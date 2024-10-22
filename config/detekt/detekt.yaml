@@ -128,7 +128,7 @@ complexity:
     excludeStringsWithLessThan5Characters: true
     ignoreStringsRegex: '$^'
   ComplexInterface:
-    active: true
+    active: false
     threshold: 10
     includeStaticDeclarations: false
     includePrivateDeclarations: false
@@ -141,7 +141,15 @@ complexity:
   MethodOverloading:
     active: true
   TooManyFunctions:
+    ignoreAnnotatedFunctions: ['Composable']
     excludes: ['**/test/**', '**/functionalTest/**']
+  LongMethod:
+    active: true
+    threshold: 60
+    ignoreAnnotated: ['Composable']
+  LongParameterList:
+    active: true
+    ignoreAnnotated: ['Composable', 'Test', 'GET', 'POST']
 
 coroutines:
   active: true

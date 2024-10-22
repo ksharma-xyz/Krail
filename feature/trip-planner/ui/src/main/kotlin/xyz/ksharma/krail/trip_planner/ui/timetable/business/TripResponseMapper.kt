@@ -17,74 +17,87 @@ import xyz.ksharma.krail.trip_planner.ui.state.timetable.TimeTableState
 
 internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.JourneyCardInfo>? =
     journeys?.mapNotNull { journey ->
-        val firstPublicTransportLeg = journey.legs?.firstOrNull { leg ->
-            leg.transportation?.product?.productClass != 99L &&
-                    leg.transportation?.product?.productClass != 100L
-        }
-        val lastPublicTransportLeg = journey.legs?.lastOrNull { leg ->
-            leg.transportation?.product?.productClass != 99L &&
-                    leg.transportation?.product?.productClass != 100L
-        }
-        val originTimeUTC = firstPublicTransportLeg?.origin?.departureTimeEstimated
-            ?: firstPublicTransportLeg?.origin?.departureTimePlanned
-        val arrivalTimeUTC = lastPublicTransportLeg?.destination?.arrivalTimeEstimated
-            ?: lastPublicTransportLeg?.destination?.arrivalTimePlanned
-        val legs = journey.legs?.filter {
-            it.transportation != null && it.stopSequence != null
-        }
-        // Sometimes there are no legs, so we need to handle that case, can happen when, the train is Now.
-        val totalStops = legs?.sumOf { leg -> leg.stopSequence?.size ?: 0 } ?: 0
-        val platformText =
-            firstPublicTransportLeg?.stopSequence?.firstOrNull()?.properties?.platform?.last()
-                ?.let {
-                    it.takeIf { it != '0' && it.isLetterOrDigit() }?.uppercaseChar()
-                }
+        val firstPublicTransportLeg = journey.getFirstPublicTransportLeg()
+        val lastPublicTransportLeg = journey.getLastPublicTransportLeg()
+        val originTimeUTC = firstPublicTransportLeg?.getDepartureTime()
+        val arrivalTimeUTC = lastPublicTransportLeg?.getArrivalTime()
+        val legs = journey.getFilteredValidLegs()
+        val totalStops = legs?.getTotalStops() ?: 0
+        val platformText = firstPublicTransportLeg?.getPlatformText()
 
-        legs?.forEachIndexed { index, it ->
-            Timber.d(
-                "TransportMode #$index: ${it.transportation?.product?.productClass}, " +
-                        "name: ${it.transportation?.product?.name}, " +
-                        "stops: ${it.stopSequence?.size}, " +
-                        "duration: ${it.duration}"
-            )
-        }
+        legs?.logTransportModes()
 
-        val transportModeLines: ImmutableList<TransportModeLine>? = legs?.mapNotNull { leg ->
-            leg.transportation?.product?.productClass?.toInt()?.let { productClass ->
-                val mode = TransportMode.toTransportModeType(productClass)
-                val lineName = leg.transportation?.disassembledName
-                if (mode != null && lineName != null) {
-                    TransportModeLine(transportMode = mode, lineName = lineName)
-                } else null
-            }
-        }?.toImmutableList()
+        val transportModeLines = legs?.getTransportModeLines()
+        val legsList = legs?.getLegsList()
 
-        val legsList = legs?.mapNotNull { it.toUiModel() }?.toImmutableList()
-
-        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0 && legsList != null) {
+        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && totalStops > 0 && legsList != null) {
             TimeTableState.JourneyCardInfo(
-                timeText = originTimeUTC.let {
-                    Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
-                    calculateTimeDifferenceFromNow(utcDateString = it).toGenericFormattedTimeString()
-                },
+                timeText = originTimeUTC.getTimeText(),
                 platformText = platformText,
                 originTime = originTimeUTC.fromUTCToDisplayTimeString(),
                 originUtcDateTime = originTimeUTC,
                 destinationTime = arrivalTimeUTC.fromUTCToDisplayTimeString(),
                 travelTime = calculateTimeDifference(
                     originTimeUTC,
-                    arrivalTimeUTC,
+                    arrivalTimeUTC
                 ).toFormattedDurationTimeString(),
-
                 transportModeLines = transportModeLines,
-
                 legs = legsList,
             ).also {
                 Timber.d("\tJourneyId: ${it.journeyId}")
             }
-
         } else null
     }?.toImmutableList()
+
+private fun TripResponse.Journey.getFirstPublicTransportLeg() = legs?.firstOrNull { leg ->
+    !leg.isWalkingLeg()
+}
+
+private fun TripResponse.Journey.getLastPublicTransportLeg() = legs?.lastOrNull { leg ->
+    !leg.isWalkingLeg()
+}
+
+private fun TripResponse.Leg?.getDepartureTime() =
+    this?.origin?.departureTimeEstimated ?: this?.origin?.departureTimePlanned
+
+private fun TripResponse.Leg?.getArrivalTime() =
+    this?.destination?.arrivalTimeEstimated ?: this?.destination?.arrivalTimePlanned
+
+private fun TripResponse.Journey.getFilteredValidLegs() = legs?.filter {
+    it.transportation != null && it.stopSequence != null
+}
+
+private fun List<TripResponse.Leg>.getTotalStops() = sumOf { leg -> leg.stopSequence?.size ?: 0 }
+
+private fun TripResponse.Leg?.getPlatformText() =
+    this?.stopSequence?.firstOrNull()?.properties?.platform?.lastOrNull()
+        ?.takeIf { it != '0' && it.isLetterOrDigit() }?.uppercaseChar()
+
+private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index, it ->
+    Timber.d(
+        "TransportMode #$index: ${it.transportation?.product?.productClass}, " +
+                "name: ${it.transportation?.product?.name}, " +
+                "stops: ${it.stopSequence?.size}, " +
+                "duration: ${it.duration}"
+    )
+}
+
+private fun List<TripResponse.Leg>.getTransportModeLines() = mapNotNull { leg ->
+    leg.transportation?.product?.productClass?.toInt()?.let { productClass ->
+        val mode = TransportMode.toTransportModeType(productClass)
+        val lineName = leg.transportation?.disassembledName
+        if (mode != null && lineName != null) {
+            TransportModeLine(transportMode = mode, lineName = lineName)
+        } else null
+    }
+}.toImmutableList()
+
+private fun List<TripResponse.Leg>.getLegsList() = mapNotNull { it.toUiModel() }.toImmutableList()
+
+private fun String.getTimeText() = let {
+    Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
+    calculateTimeDifferenceFromNow(utcDateString = it).toGenericFormattedTimeString()
+}
 
 private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
     val transportMode =

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -36,7 +36,7 @@ fun TitleBar(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TitleBarPreview() {
     KrailTheme {

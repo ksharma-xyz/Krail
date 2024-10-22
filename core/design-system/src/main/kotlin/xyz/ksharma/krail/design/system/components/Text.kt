@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -49,7 +49,7 @@ fun Text(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TextPreview() {
     KrailTheme {
@@ -62,7 +62,7 @@ private fun TextPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TextWithColorPreview() {
     KrailTheme {

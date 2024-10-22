@@ -12,7 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -33,7 +33,7 @@ fun BasicJourneyCard(
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun BasicJourneyCardPreview() {
     KrailTheme {
