@@ -49,7 +49,19 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
             )
         }
 
-        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0) {
+        val transportModeLines: ImmutableList<TransportModeLine>? = legs?.mapNotNull { leg ->
+            leg.transportation?.product?.productClass?.toInt()?.let { productClass ->
+                val mode = TransportMode.toTransportModeType(productClass)
+                val lineName = leg.transportation?.disassembledName
+                if (mode != null && lineName != null) {
+                    TransportModeLine(transportMode = mode, lineName = lineName)
+                } else null
+            }
+        }?.toImmutableList()
+
+        val legsList = legs?.mapNotNull { it.toUiModel() }?.toImmutableList()
+
+        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && firstPublicTransportLeg != null && totalStops > 0 && legsList != null) {
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.let {
                     Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
@@ -63,16 +75,10 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                     originTimeUTC,
                     arrivalTimeUTC,
                 ).toFormattedDurationTimeString(),
-                transportModeLines = legs.mapNotNull { leg ->
-                    leg.transportation?.product?.productClass?.toInt()?.let { productClass ->
-                        val mode = TransportMode.toTransportModeType(productClass)
-                        val lineName = leg.transportation?.disassembledName
-                        if (mode != null && lineName != null) {
-                            TransportModeLine(transportMode = mode, lineName = lineName)
-                        } else null
-                    }
-                }.toImmutableList(),
-                legs = legs.mapNotNull { it.toUiModel() }.toImmutableList(),
+
+                transportModeLines = transportModeLines,
+
+                legs = legsList,
             ).also {
                 Timber.d("\tJourneyId: ${it.journeyId}")
             }

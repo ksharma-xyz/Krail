@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +47,7 @@ fun JourneyDetailCard(
     timeToDeparture: String,
     platformNumber: Char,
     totalTravelTime: String,
+    transportModeList: ImmutableList<TransportMode>? = null, // TODO cannot be null. Need to handle this
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -54,7 +57,7 @@ fun JourneyDetailCard(
     val iconSize = with(density) { 14.sp.toDp() }
 
     val firstTransportLeg = remember(legList) {
-        legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().first()
+        legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
     }
 
     val transportLegColors = remember(legList) {
@@ -62,10 +65,13 @@ fun JourneyDetailCard(
             .map { it.transportModeLine.transportMode.colorCode.hexToComposeColor() }
     }
 
-    val borderColors = if (transportLegColors.size >= 2) {
-        transportLegColors
-    } else {
-        listOf(transportLegColors.first(), transportLegColors.first())
+    val onSurface = KrailTheme.colors.onSurface
+    val borderColors = remember(transportLegColors) { transportModeList.toColors(onSurface) }
+    val themeColor by remember {
+        mutableStateOf(
+            firstTransportLeg?.transportModeLine?.transportMode?.colorCode?.hexToComposeColor()
+                ?: onSurface
+        )
     }
 
     Column(
@@ -91,15 +97,15 @@ fun JourneyDetailCard(
             Text(
                 text = timeToDeparture,
                 style = KrailTheme.typography.titleLarge,
-                color = firstTransportLeg.transportModeLine.transportMode.colorCode.hexToComposeColor()
+                color = themeColor
             )
 
-            firstTransportLeg.transportModeLine.transportMode.buildPlatformText(platformNumber)
+            firstTransportLeg?.transportModeLine?.transportMode?.buildPlatformText(platformNumber)
                 ?.let { platformText ->
                     Text(
                         text = platformText,
                         style = KrailTheme.typography.titleLarge,
-                        color = firstTransportLeg.transportModeLine.transportMode.colorCode.hexToComposeColor()
+                        color = themeColor
                     )
                 }
         }

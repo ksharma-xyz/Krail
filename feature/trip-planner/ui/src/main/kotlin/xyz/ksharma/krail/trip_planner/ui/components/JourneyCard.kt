@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +32,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import timber.log.Timber
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -42,7 +39,6 @@ import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip_planner.ui.R
 import xyz.ksharma.krail.trip_planner.ui.state.TransportMode
-import kotlin.text.repeat
 
 /**
  * A card that displays information about a journey.
@@ -65,10 +61,15 @@ fun JourneyCard(
     totalTravelTime: String,
     platformNumber: Char? = null,
     isWheelchairAccessible: Boolean,
-    transportModeList: ImmutableList<TransportMode>,
+    transportModeList: ImmutableList<TransportMode>? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val onSurface: Color = KrailTheme.colors.onSurface
+    val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }
+    val themeColor = transportModeList?.firstOrNull()?.colorCode?.hexToComposeColor()
+        ?: KrailTheme.colors.onSurface
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -77,7 +78,7 @@ fun JourneyCard(
             .border(
                 width = 2.dp,
                 shape = RoundedCornerShape(12.dp),
-                brush = Brush.linearGradient(colors = transportModeList.toColors()),
+                brush = Brush.linearGradient(colors = borderColors),
             )
             .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
@@ -89,7 +90,7 @@ fun JourneyCard(
         ) {
             Text(
                 text = timeToDeparture, style = KrailTheme.typography.titleMedium,
-                color = transportModeList.first().colorCode.hexToComposeColor(),
+                color = themeColor,
                 modifier = Modifier
                     .padding(end = 8.dp)
                     .align(Alignment.CenterVertically)
@@ -100,7 +101,7 @@ fun JourneyCard(
                     .weight(1f),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                transportModeList.forEachIndexed { index, mode ->
+                transportModeList?.forEachIndexed { index, mode ->
                     TransportModeIcon(
                         letter = mode.name.first(),
                         backgroundColor = mode.colorCode.hexToComposeColor(),
@@ -116,7 +117,7 @@ fun JourneyCard(
                     .size(28.dp.toAdaptiveDecorativeIconSize())
                     .border(
                         width = 3.dp,
-                        color = transportModeList.first().colorCode.hexToComposeColor(),
+                        color = themeColor,
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center,
@@ -179,9 +180,9 @@ fun JourneyCard(
     }
 }
 
-@Composable
-private fun List<TransportMode>.toColors(): List<Color> = when {
-    isEmpty() -> listOf(KrailTheme.colors.onSurface, KrailTheme.colors.onSurface)
+// toColors() now accepts onSurface color as a parameter
+internal fun List<TransportMode>?.toColors(onSurface: Color): List<Color> = when {
+    this.isNullOrEmpty() -> listOf(onSurface, onSurface)
     size >= 2 -> map { it.colorCode.hexToComposeColor() }
     else -> {
         val color = first().colorCode.hexToComposeColor()

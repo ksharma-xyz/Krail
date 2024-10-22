@@ -31,13 +31,13 @@ data class TimeTableState(
          * transportation.disassembledName -> lineName
          * transportation.product.class -> TransportModeType
          */
-        val transportModeLines: ImmutableList<TransportModeLine>,
+        val transportModeLines: ImmutableList<TransportModeLine>? = null,
 
         val legs: ImmutableList<Leg>,
     ) {
         val journeyId: String
             get() = (originUtcDateTime + destinationTime + transportModeLines
-                .joinToString { it.lineName }).filter { it.isLetterOrDigit() }
+                ?.joinToString { it.lineName }).filter { it.isLetterOrDigit() }
 
         sealed class Leg {
             data class WalkingLeg(
