@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +53,21 @@ fun JourneyDetailCard(
     // todo can be reusable logic for consistent icon size
     val iconSize = with(density) { 14.sp.toDp() }
 
+    val firstTransportLeg = remember(legList) {
+        legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().first()
+    }
+
+    val transportLegColors = remember(legList) {
+        legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+            .map { it.transportModeLine.transportMode.colorCode.hexToComposeColor() }
+    }
+
+    val borderColors = if (transportLegColors.size >= 2) {
+        transportLegColors
+    } else {
+        listOf(transportLegColors.first(), transportLegColors.first())
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -59,20 +75,7 @@ fun JourneyDetailCard(
             .background(KrailTheme.colors.surface)
             .border(
                 width = 2.dp,
-                brush = Brush.verticalGradient(
-                    colors = if (legList.size >= 2) {
-                        legList
-                            .filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-                            .map {
-                                it.transportModeLine.transportMode.colorCode.hexToComposeColor()
-                            }
-                    } else {
-                        val color =
-                            legList
-                                .filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-                                .first().transportModeLine.transportMode.colorCode.hexToComposeColor()
-                        listOf(color, color)
-                    }),
+                brush = Brush.verticalGradient(colors = borderColors),
                 shape = RoundedCornerShape(12.dp)
             )
             .padding(vertical = 12.dp)
@@ -88,15 +91,17 @@ fun JourneyDetailCard(
             Text(
                 text = timeToDeparture,
                 style = KrailTheme.typography.titleLarge,
-                color = legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-                    .first().transportModeLine.transportMode.colorCode.hexToComposeColor()
+                color = firstTransportLeg.transportModeLine.transportMode.colorCode.hexToComposeColor()
             )
-            Text(
-                text = "Platform $platformNumber",
-                style = KrailTheme.typography.titleLarge,
-                color = legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-                    .first().transportModeLine.transportMode.colorCode.hexToComposeColor()
-            )
+
+            firstTransportLeg.transportModeLine.transportMode.buildPlatformText(platformNumber)
+                ?.let { platformText ->
+                    Text(
+                        text = platformText,
+                        style = KrailTheme.typography.titleLarge,
+                        color = firstTransportLeg.transportModeLine.transportMode.colorCode.hexToComposeColor()
+                    )
+                }
         }
 
         FlowRow(
@@ -214,6 +219,15 @@ fun JourneyDetailCard(
                 }
             }
         }
+    }
+}
+
+private fun TransportMode.buildPlatformText(platformNumber: Char): String? {
+    return when (this) {
+        is TransportMode.Train, is TransportMode.Metro -> "Platform $platformNumber"
+        is TransportMode.Bus -> "Stand $platformNumber"
+        is TransportMode.Ferry -> "Wharf $platformNumber"
+        else -> null
     }
 }
 
