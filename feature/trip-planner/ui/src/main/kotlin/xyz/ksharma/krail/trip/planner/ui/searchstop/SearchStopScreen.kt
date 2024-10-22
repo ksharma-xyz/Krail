@@ -45,7 +45,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 fun SearchStopScreen(
     searchStopState: SearchStopState,
     modifier: Modifier = Modifier,
-    onStopSelected: (StopItem) -> Unit = {},
+    onStopSelect: (StopItem) -> Unit = {},
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
     var textFieldText: String by remember { mutableStateOf("") }
@@ -114,7 +114,7 @@ fun SearchStopScreen(
                         transportModeSet = stop.transportModeType.toImmutableSet(),
                         onClick = { stopItem ->
                             keyboard?.hide()
-                            onStopSelected(stopItem)
+                            onStopSelect(stopItem)
                         },
                     )
 

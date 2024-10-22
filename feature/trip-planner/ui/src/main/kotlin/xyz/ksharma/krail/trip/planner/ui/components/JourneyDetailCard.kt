@@ -201,8 +201,16 @@ fun JourneyDetailCard(
                         JourneyLeg(
                             transportModeLine = leg.transportModeLine,
                             stopsInfo = leg.stopsInfo,
-                            departureTime = if (index == legList.lastIndex) leg.stops.last().time else leg.stops.first().time,
-                            stopName = if (index == legList.lastIndex) leg.stops.last().name else leg.stops.first().name,
+                            departureTime = if (index == legList.lastIndex) {
+                                leg.stops.last().time
+                            } else {
+                                leg.stops.first().time
+                            },
+                            stopName = if (index == legList.lastIndex) {
+                                leg.stops.last().name
+                            } else {
+                                leg.stops.first().name
+                            },
                             isWheelchairAccessible = false,
                             modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                         )

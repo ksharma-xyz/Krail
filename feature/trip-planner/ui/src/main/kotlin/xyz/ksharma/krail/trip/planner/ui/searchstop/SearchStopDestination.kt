@@ -18,7 +18,7 @@ fun NavGraphBuilder.searchStopDestination(navController: NavHostController) {
 
         SearchStopScreen(
             searchStopState = searchStopState,
-            onStopSelected = { stopItem ->
+            onStopSelect = { stopItem ->
                 Timber.d("onStopSelected: fieldTypeKey=${route.fieldType.key} and stopItem: $stopItem")
 
                 navController.previousBackStackEntry?.savedStateHandle?.set(

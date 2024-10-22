@@ -56,13 +56,13 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
  *   from Slack, but that would also mean refactoring to use MVP instead of MVVM.
  */
 @Composable
-fun KrailNavHost() {
+fun KrailNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
         startDestination = SplashScreen,
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
     ) {
         tripPlannerDestinations(navController = navController)
 
@@ -122,7 +122,7 @@ fun AnimatedKrailLogo(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AnimatedLetter(letter: String, animationStarted: Boolean) {
+fun AnimatedLetter(letter: String, animationStarted: Boolean, modifier: Modifier = Modifier) {
     val infiniteTransition = rememberInfiniteTransition(label = "animeAnimation")
 
     // Scale animation with anticipation and squash/stretch
@@ -156,7 +156,7 @@ fun AnimatedLetter(letter: String, animationStarted: Boolean) {
                 width = 8f, // Adjust stroke width for desired thickness
             ),
         ),
-        modifier = Modifier
+        modifier = modifier
             .graphicsLayer {
                 scaleX = letterScale
                 scaleY = letterScale

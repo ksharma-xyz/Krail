@@ -13,7 +13,8 @@ import xyz.ksharma.krail.trip.planner.ui.timetable.timeTableDestination
  * It contains all the screens in the feature Trip Planner.
  */
 fun NavGraphBuilder.tripPlannerDestinations(
-    navController: NavHostController, // TODO -  do not wanna add NavController here, but moving all callbacks to app module is not scaleable.
+    // TODO -  do not wanna add NavController here, but moving all callbacks to app module is not scaleable.
+    navController: NavHostController,
 ) {
     navigation<TripPlannerNavRoute>(startDestination = SavedTripsRoute) {
         savedTripsDestination(navController)

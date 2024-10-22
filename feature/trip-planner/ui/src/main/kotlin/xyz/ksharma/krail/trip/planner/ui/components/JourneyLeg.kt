@@ -68,7 +68,11 @@ fun JourneyLeg(
                 text = stopsInfo,
                 modifier = Modifier.align(Alignment.CenterVertically),
                 style = KrailTheme.typography.title,
-                color = if (isSystemInDarkTheme()) KrailTheme.colors.onSurface else transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                color = if (isSystemInDarkTheme()) {
+                    KrailTheme.colors.onSurface
+                } else {
+                    transportModeLine.transportMode.colorCode.hexToComposeColor()
+                },
             )
         }
         FlowRow(

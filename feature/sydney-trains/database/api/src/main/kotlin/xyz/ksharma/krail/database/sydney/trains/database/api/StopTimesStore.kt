@@ -35,11 +35,6 @@ interface StopTimesStore {
     )
 
     /**
-     * Removes all stop times from the database.
-     */
-    suspend fun clearStopTimes()
-
-    /**
      * Adds a batch of stop times to the database.
      *
      * @param stopTimesList A list of StopTimes objects.
