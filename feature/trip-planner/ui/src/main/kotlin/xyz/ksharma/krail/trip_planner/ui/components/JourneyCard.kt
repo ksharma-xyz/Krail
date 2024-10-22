@@ -89,11 +89,12 @@ fun JourneyCard(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
-                text = timeToDeparture, style = KrailTheme.typography.titleMedium,
+                text = timeToDeparture,
+                style = KrailTheme.typography.titleMedium,
                 color = themeColor,
                 modifier = Modifier
                     .padding(end = 8.dp)
-                    .align(Alignment.CenterVertically)
+                    .align(Alignment.CenterVertically),
             )
             Row(
                 modifier = Modifier
@@ -118,7 +119,7 @@ fun JourneyCard(
                     .border(
                         width = 3.dp,
                         color = themeColor,
-                        shape = CircleShape
+                        shape = CircleShape,
                     ),
                 contentAlignment = Alignment.Center,
             ) {
@@ -133,7 +134,7 @@ fun JourneyCard(
         Text(
             text = originTime,
             style = KrailTheme.typography.titleMedium,
-            color = KrailTheme.colors.onSurface
+            color = KrailTheme.colors.onSurface,
         )
 
         FlowRow(
@@ -162,7 +163,8 @@ fun JourneyCard(
                         .size(14.dp.toAdaptiveSize()),
                 )
                 Text(
-                    text = totalTravelTime, style = KrailTheme.typography.bodyMedium,
+                    text = totalTravelTime,
+                    style = KrailTheme.typography.bodyMedium,
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -206,7 +208,7 @@ private fun PreviewJourneyCard() {
             isWheelchairAccessible = true,
             transportModeList = listOf(
                 TransportMode.Train(),
-                TransportMode.Bus()
+                TransportMode.Bus(),
             ).toImmutableList(),
             onClick = {},
         )

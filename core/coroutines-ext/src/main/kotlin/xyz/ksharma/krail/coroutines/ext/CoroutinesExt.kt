@@ -21,7 +21,7 @@ import kotlin.coroutines.cancellation.CancellationException
 @Suppress("TooGenericExceptionCaught")
 suspend fun <T, R> T.safeResult(
     dispatcher: CoroutineDispatcher,
-    block: T.() -> R
+    block: T.() -> R,
 ): Result<R> = withContext(dispatcher) {
     try {
         Result.success(block())
@@ -47,7 +47,7 @@ suspend fun <T, R> T.safeResult(
 @Suppress("TooGenericExceptionCaught")
 suspend fun <T, R> T.suspendSafeResult(
     dispatcher: CoroutineDispatcher,
-    block: suspend T.() -> Result<R>
+    block: suspend T.() -> Result<R>,
 ): Result<R> = withContext(dispatcher) {
     try {
         block()

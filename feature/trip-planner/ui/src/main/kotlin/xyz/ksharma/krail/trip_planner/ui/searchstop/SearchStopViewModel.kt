@@ -48,7 +48,7 @@ class SearchStopViewModel @Inject constructor(
     private fun SearchStopState.displayData(stopsResult: List<SearchStopState.StopResult>) = copy(
         stops = stopsResult.toImmutableList(),
         isLoading = false,
-        isError = false
+        isError = false,
     )
 
     private fun SearchStopState.displayLoading() =
@@ -57,7 +57,7 @@ class SearchStopViewModel @Inject constructor(
     private fun SearchStopState.displayError() = copy(
         isLoading = false,
         stops = persistentListOf(),
-        isError = true
+        isError = true,
     )
 
     private fun updateUiState(block: SearchStopState.() -> SearchStopState) {

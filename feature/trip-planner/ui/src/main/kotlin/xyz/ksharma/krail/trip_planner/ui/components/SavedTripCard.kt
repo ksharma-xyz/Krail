@@ -42,7 +42,7 @@ fun SavedTripCard(
             .clickable(
                 role = Role.Button,
                 onClickLabel = "Open Trip Details",
-                onClick = onCardClick
+                onClick = onCardClick,
             )
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -55,7 +55,7 @@ fun SavedTripCard(
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .weight(1f)
+                .weight(1f),
         ) {
             Text(text = origin, style = KrailTheme.typography.bodyMedium)
             Text(text = destination, style = KrailTheme.typography.bodyMedium)

@@ -70,7 +70,7 @@ fun JourneyDetailCard(
     val themeColor by remember {
         mutableStateOf(
             firstTransportLeg?.transportModeLine?.transportMode?.colorCode?.hexToComposeColor()
-                ?: onSurface
+                ?: onSurface,
         )
     }
 
@@ -82,10 +82,10 @@ fun JourneyDetailCard(
             .border(
                 width = 2.dp,
                 brush = Brush.verticalGradient(colors = borderColors),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(12.dp),
             )
             .padding(vertical = 12.dp)
-            .clickable(role = Role.Button) { onClick() }
+            .clickable(role = Role.Button) { onClick() },
     ) {
         FlowRow(
             modifier = Modifier
@@ -97,7 +97,7 @@ fun JourneyDetailCard(
             Text(
                 text = timeToDeparture,
                 style = KrailTheme.typography.titleLarge,
-                color = themeColor
+                color = themeColor,
             )
 
             firstTransportLeg?.transportModeLine?.transportMode?.buildPlatformText(platformNumber)
@@ -105,7 +105,7 @@ fun JourneyDetailCard(
                     Text(
                         text = platformText,
                         style = KrailTheme.typography.titleLarge,
-                        color = themeColor
+                        color = themeColor,
                     )
                 }
         }
@@ -131,7 +131,7 @@ fun JourneyDetailCard(
                 Text(
                     text = "Info",
                     style = KrailTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(start = 4.dp)
+                    modifier = Modifier.padding(start = 4.dp),
                 )
             }
             Row(
@@ -150,7 +150,8 @@ fun JourneyDetailCard(
                         .size(iconSize),
                 )
                 Text(
-                    text = totalTravelTime, style = KrailTheme.typography.bodyLarge,
+                    text = totalTravelTime,
+                    style = KrailTheme.typography.bodyLarge,
                 )
             }
         }
@@ -158,7 +159,7 @@ fun JourneyDetailCard(
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(8.dp)
+                .height(8.dp),
         )
 
         legList.forEachIndexed { index, leg ->
@@ -185,7 +186,7 @@ fun JourneyDetailCard(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(8.dp)
+                            .height(8.dp),
                     )
 
                     if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.IDEST) {
@@ -210,7 +211,7 @@ fun JourneyDetailCard(
                     Spacer(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(8.dp)
+                            .height(8.dp),
                     )
 
                     if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.AFTER) {
@@ -260,9 +261,9 @@ private fun PreviewJourneyDetailCard() {
                         ),
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "Central Station",
-                            time = "8:30am"
+                            time = "8:30am",
                         ),
-                    ).toImmutableList()
+                    ).toImmutableList(),
                 ),
             ).toImmutableList(),
             onClick = {},
@@ -297,9 +298,9 @@ private fun PreviewJourneyDetailCardWalkBefore() {
                         ),
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "Central Station",
-                            time = "8:30am"
+                            time = "8:30am",
                         ),
-                    ).toImmutableList()
+                    ).toImmutableList(),
                 ),
             ).toImmutableList(),
             onClick = {},
@@ -334,9 +335,9 @@ private fun PreviewJourneyDetailCardWalkAfter() {
                         ),
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "Central Station",
-                            time = "8:30am"
+                            time = "8:30am",
                         ),
-                    ).toImmutableList()
+                    ).toImmutableList(),
                 ),
             ).toImmutableList(),
             onClick = {},
@@ -372,9 +373,9 @@ private fun PreviewMultiLegJourneyDetailCard() {
                         ),
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "Central Station",
-                            time = "8:30am"
+                            time = "8:30am",
                         ),
-                    ).toImmutableList()
+                    ).toImmutableList(),
                 ),
                 TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     transportModeLine = TransportModeLine(
@@ -390,10 +391,10 @@ private fun PreviewMultiLegJourneyDetailCard() {
                         ),
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "Forest Hills Station",
-                            time = "9:00am"
+                            time = "9:00am",
                         ),
-                    ).toImmutableList()
-                )
+                    ).toImmutableList(),
+                ),
             ).toImmutableList(),
             onClick = {},
         )
@@ -472,5 +473,5 @@ enum class JourneyCardState {
      * Card displaying the full journey details of a certain leg.
      * It will display all the stops in the leg, with platform and timing information.
      */
-    EXPANDED
+    EXPANDED,
 }

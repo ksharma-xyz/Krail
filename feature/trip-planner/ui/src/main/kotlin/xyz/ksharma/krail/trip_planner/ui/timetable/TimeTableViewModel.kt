@@ -85,7 +85,7 @@ class TimeTableViewModel @Inject constructor(
     }
 
     private fun onLoadTimeTable(tripInfo: Trip) = with(tripInfo) {
-        Timber.d("loadTimeTable API Call- fromStopItem: ${fromStopId}, toStopItem: ${toStopId}")
+        Timber.d("loadTimeTable API Call- fromStopItem: $fromStopId, toStopItem: $toStopId")
         this@TimeTableViewModel.tripInfo = this
         updateUiState { copy(isLoading = true) }
 
@@ -96,7 +96,7 @@ class TimeTableViewModel @Inject constructor(
                     updateUiState {
                         copy(
                             isLoading = false,
-                            journeyList = response.buildJourneyList() ?: persistentListOf()
+                            journeyList = response.buildJourneyList() ?: persistentListOf(),
                         )
                     }
                     response.logForUnderstandingData()
@@ -115,9 +115,11 @@ class TimeTableViewModel @Inject constructor(
             copy(
                 journeyList = journeyList.map { journeyCardInfo ->
                     journeyCardInfo.copy(
-                        timeText = calculateTimeDifferenceFromNow(utcDateString = journeyCardInfo.originUtcDateTime).toGenericFormattedTimeString()
+                        timeText = calculateTimeDifferenceFromNow(
+                            utcDateString = journeyCardInfo.originUtcDateTime,
+                        ).toGenericFormattedTimeString(),
                     )
-                }.toImmutableList()
+                }.toImmutableList(),
             )
         }
         Timber.d("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")

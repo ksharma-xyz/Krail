@@ -42,21 +42,23 @@ fun SearchStopRow(
             .fillMaxWidth()
             .background(
                 color = KrailTheme.colors.secondary,
-                shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp)
+                shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
             )
             .padding(vertical = 24.dp, horizontal = 16.dp)
-            .padding(bottom = with(LocalDensity.current) {
-                WindowInsets.navigationBars
-                    .getBottom(
-                        this
-                    )
-                    .toDp()
-            }),
+            .padding(
+                bottom = with(LocalDensity.current) {
+                    WindowInsets.navigationBars
+                        .getBottom(
+                            this,
+                        )
+                        .toDp()
+                },
+            ),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
             modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             TextFieldButton(onClick = fromButtonClick) {
                 Text(
@@ -77,7 +79,7 @@ fun SearchStopRow(
         Column(
             modifier = Modifier
                 .padding(start = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp) // TODO - token "SearchFieldSpacing"
+            verticalArrangement = Arrangement.spacedBy(20.dp), // TODO - token "SearchFieldSpacing"
         ) {
             RoundIconButton(
                 content = {

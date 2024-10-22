@@ -30,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,7 +62,7 @@ fun KrailNavHost() {
     NavHost(
         navController = navController,
         startDestination = SplashScreen,
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         tripPlannerDestinations(navController = navController)
 
@@ -74,7 +73,7 @@ fun KrailNavHost() {
                     navOptions = NavOptions.Builder()
                         .setLaunchSingleTop(true)
                         .setPopUpTo<SplashScreen>(inclusive = true)
-                        .build()
+                        .build(),
                 )
             })
         }
@@ -112,7 +111,7 @@ fun AnimatedKrailLogo(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .wrapContentSize(),
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         AnimatedLetter("K", animationStarted)
         AnimatedLetter("R", animationStarted)
@@ -139,8 +138,9 @@ fun AnimatedLetter(letter: String, animationStarted: Boolean) {
                 1.0f at 1000 using FastOutSlowInEasing // Settle back to normal scale
                 1.0f at 1100 using LinearEasing // Keep at normal scale
             },
-            repeatMode = RepeatMode.Reverse
-        ), label = "animeAnimation"
+            repeatMode = RepeatMode.Reverse,
+        ),
+        label = "animeAnimation",
     )
 
     val letterScale = if (animationStarted) scale else 1f
@@ -154,20 +154,19 @@ fun AnimatedLetter(letter: String, animationStarted: Boolean) {
             fontWeight = FontWeight.ExtraBold,
             drawStyle = Stroke(
                 width = 8f, // Adjust stroke width for desired thickness
-            )
+            ),
         ),
         modifier = Modifier
             .graphicsLayer {
                 scaleX = letterScale
                 scaleY = letterScale
             }
-            .padding(4.dp)
+            .padding(4.dp),
     )
 }
 
 @Serializable
 data object SplashScreen
-
 
 @PreviewLightDark
 @Composable

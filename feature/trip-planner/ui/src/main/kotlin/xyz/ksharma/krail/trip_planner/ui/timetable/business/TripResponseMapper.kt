@@ -39,14 +39,16 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 destinationTime = arrivalTimeUTC.fromUTCToDisplayTimeString(),
                 travelTime = calculateTimeDifference(
                     originTimeUTC,
-                    arrivalTimeUTC
+                    arrivalTimeUTC,
                 ).toFormattedDurationTimeString(),
                 transportModeLines = transportModeLines,
                 legs = legsList,
             ).also {
                 Timber.d("\tJourneyId: ${it.journeyId}")
             }
-        } else null
+        } else {
+            null
+        }
     }?.toImmutableList()
 
 private fun TripResponse.Journey.getFirstPublicTransportLeg() = legs?.firstOrNull { leg ->
@@ -76,9 +78,9 @@ private fun TripResponse.Leg?.getPlatformText() =
 private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index, it ->
     Timber.d(
         "TransportMode #$index: ${it.transportation?.product?.productClass}, " +
-                "name: ${it.transportation?.product?.name}, " +
-                "stops: ${it.stopSequence?.size}, " +
-                "duration: ${it.duration}"
+            "name: ${it.transportation?.product?.name}, " +
+            "stops: ${it.stopSequence?.size}, " +
+            "duration: ${it.duration}",
     )
 }
 
@@ -88,7 +90,9 @@ private fun List<TripResponse.Leg>.getTransportModeLines() = mapNotNull { leg ->
         val lineName = leg.transportation?.disassembledName
         if (mode != null && lineName != null) {
             TransportModeLine(transportMode = mode, lineName = lineName)
-        } else null
+        } else {
+            null
+        }
     }
 }.toImmutableList()
 
@@ -130,7 +134,9 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
                         foot.toWalkInterchange(foot.duration.toDisplayString())
                     },
                 )
-            } else null
+            } else {
+                null
+            }
         }
     }
 }
@@ -164,13 +170,15 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
     // For first leg there is no arrival time, so using departure time.
     val time =
         departureTimeEstimated ?: departureTimePlanned ?: arrivalTimeEstimated
-        ?: arrivalTimePlanned
+            ?: arrivalTimePlanned
     return if (stopName != null && time != null) {
         TimeTableState.JourneyCardInfo.Stop(
             name = stopName,
             time = time.fromUTCToDisplayTimeString(),
         )
-    } else null
+    } else {
+        null
+    }
 }
 
 internal fun TripResponse.logForUnderstandingData() {
@@ -183,23 +191,23 @@ internal fun TripResponse.logForUnderstandingData() {
                 leg.transportation?.product?.productClass
 
             Timber.d(
-                " LEG#${index + 1} -- Duration: ${leg.duration} -- productClass:${transportationProductClass?.toInt()}"
+                " LEG#${index + 1} -- Duration: ${leg.duration} -- productClass:${transportationProductClass?.toInt()}",
             )
             Timber.d(
                 "\t\t ORG: ${
                     leg.origin?.departureTimeEstimated?.utcToAEST()
                         ?.formatTo12HourTime()
                 }," +
-                        " DEST: ${
-                            leg.destination?.arrivalTimeEstimated?.utcToAEST()
-                                ?.formatTo12HourTime()
-                        }, " +
-                        //     "Duration: ${leg.duration}, " +
-                        // "transportation: ${leg.transportation?.name}",
-                        "interchange: ${leg.interchange?.run { "[desc:$desc, type:$type] " }}" +
-                        // "leg properties: ${leg.properties}" +
-                        // "leg origin properties: ${leg.origin?.properties}"
-                        "\n\t\t\t leg stopSequence: ${leg.stopSequence?.interchangeStopsList()}"
+                    " DEST: ${
+                        leg.destination?.arrivalTimeEstimated?.utcToAEST()
+                            ?.formatTo12HourTime()
+                    }, " +
+                    //     "Duration: ${leg.duration}, " +
+                    // "transportation: ${leg.transportation?.name}",
+                    "interchange: ${leg.interchange?.run { "[desc:$desc, type:$type] " }}" +
+                    // "leg properties: ${leg.properties}" +
+                    // "leg origin properties: ${leg.origin?.properties}"
+                    "\n\t\t\t leg stopSequence: ${leg.stopSequence?.interchangeStopsList()}",
             )
         }
     }
@@ -218,7 +226,6 @@ private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNot
 
     if (timeArr == null && depTime == null) null else "\n\t\t\t\t Stop: ${it.name}, depTime: ${timeArr ?: depTime}"
 }
-
 
 private fun String.fromUTCToDisplayTimeString() = this.utcToAEST().aestToHHMM()
 

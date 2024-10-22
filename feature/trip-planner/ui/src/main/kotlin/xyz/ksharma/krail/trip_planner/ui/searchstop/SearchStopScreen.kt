@@ -22,7 +22,6 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableSet
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -69,14 +68,14 @@ fun SearchStopScreen(
                 Timber.d("Query - $text")
                 onEvent(SearchStopUiEvent.SearchTextChanged(text))
             }
-            .collectLatest{}
+            .collectLatest {}
     }
 
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(color = KrailTheme.colors.background),
-        contentPadding = PaddingValues(vertical = 16.dp)
+        contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         stickyHeader {
             TextField(

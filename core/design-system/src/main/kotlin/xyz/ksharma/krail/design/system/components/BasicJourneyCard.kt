@@ -27,7 +27,7 @@ fun BasicJourneyCard(
             .clip(RoundedCornerShape(12.dp))
             .background(backgroundColor)
             .semantics(mergeDescendants = true) {}
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         content()
     }

@@ -33,7 +33,7 @@ interface TripsStore {
         directionId: Long?,
         blockId: String?,
         shapeId: String?,
-        wheelchairAccessible: Long?
+        wheelchairAccessible: Long?,
     )
 
     /**

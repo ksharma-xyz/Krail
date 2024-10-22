@@ -34,7 +34,7 @@ private fun SeparatorIconPreview() {
         Box(
             modifier = Modifier
                 .background(KrailTheme.colors.surface)
-                .padding(10.dp)
+                .padding(10.dp),
         ) {
             SeparatorIcon()
         }

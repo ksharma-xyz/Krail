@@ -115,7 +115,7 @@ private fun TrainWithBackgroundPreview() {
         TransportModeIcon(
             backgroundColor = "#F6891F".hexToComposeColor(),
             letter = 'T',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
@@ -127,7 +127,7 @@ private fun BusWithBackgroundPreview() {
         TransportModeIcon(
             backgroundColor = "#00B5EF".hexToComposeColor(),
             letter = 'B',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
@@ -139,7 +139,7 @@ private fun MetroWithBackgroundPreview() {
         TransportModeIcon(
             backgroundColor = "#009B77".hexToComposeColor(),
             letter = 'M',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
@@ -151,7 +151,7 @@ private fun LightRailWithBackgroundPreview() {
         TransportModeIcon(
             backgroundColor = "#EE343F".hexToComposeColor(),
             letter = 'L',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
@@ -163,7 +163,7 @@ private fun FerryWithBackgroundPreview() {
         TransportModeIcon(
             backgroundColor = "#5AB031".hexToComposeColor(),
             letter = 'F',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }

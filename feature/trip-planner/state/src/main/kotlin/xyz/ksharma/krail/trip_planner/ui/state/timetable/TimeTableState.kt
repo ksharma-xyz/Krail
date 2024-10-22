@@ -36,8 +36,10 @@ data class TimeTableState(
         val legs: ImmutableList<Leg>,
     ) {
         val journeyId: String
-            get() = (originUtcDateTime + destinationTime + transportModeLines
-                ?.joinToString { it.lineName }).filter { it.isLetterOrDigit() }
+            get() = (
+                originUtcDateTime + destinationTime + transportModeLines
+                    ?.joinToString { it.lineName }
+                ).filter { it.isLetterOrDigit() }
 
         sealed class Leg {
             data class WalkingLeg(

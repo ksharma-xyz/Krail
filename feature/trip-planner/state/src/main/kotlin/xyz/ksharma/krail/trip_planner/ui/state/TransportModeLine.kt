@@ -48,7 +48,7 @@ data class TransportModeLine(
         L1_DULWICH_HILL_LINE("L1", "#BE1622"),
         L2_RANDWICK_LINE("L2", "#DD1E25"),
         L3_KINGSFORD_LINE("L3", "#781140"),
-        NLR_NEWCASTLE_LIGHT_RAIL("NLR", "#EE343F");
+        NLR_NEWCASTLE_LIGHT_RAIL("NLR", "#EE343F"),
     }
 }
 

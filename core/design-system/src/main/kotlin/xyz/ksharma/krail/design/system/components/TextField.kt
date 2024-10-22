@@ -62,7 +62,7 @@ fun TextField(
     val textFieldState = rememberTextFieldState(initialText.orEmpty())
     val textSelectionColors = TextSelectionColors(
         handleColor = KrailTheme.colors.tertiary,
-        backgroundColor = KrailTheme.colors.tertiary.copy(alpha = TextSelectionBackgroundOpacity)
+        backgroundColor = KrailTheme.colors.tertiary.copy(alpha = TextSelectionBackgroundOpacity),
     )
 
     LaunchedEffect(textFieldState.text) {
@@ -84,7 +84,7 @@ fun TextField(
             // This will change the colors of the innerTextField() composable.
             textStyle = textStyle
                 ?: LocalTextStyle.current.copy(
-                    color = LocalTextColor.current.copy(alpha = contentAlpha)
+                    color = LocalTextColor.current.copy(alpha = contentAlpha),
                 ),
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.None,
@@ -102,7 +102,7 @@ fun TextField(
                     modifier = Modifier
                         .background(
                             shape = RoundedCornerShape(TextFieldHeight.div(2)),
-                            color = KrailTheme.colors.secondaryContainer
+                            color = KrailTheme.colors.secondaryContainer,
                         )
                         .padding(horizontal = 16.dp, vertical = 4.dp),
                     horizontalArrangement = Arrangement.Start,
@@ -124,7 +124,7 @@ fun TextField(
                         // add trailing icon here / Clear - todo
                     }
                 }
-            }
+            },
         )
     }
 }

@@ -36,11 +36,11 @@ fun StopSearchListItem(
                     StopItem(
                         stopId = stopId,
                         stopName = stopName,
-                    )
+                    ),
                 )
             }
             .padding(vertical = 8.dp, horizontal = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Text(
             text = stopName,

@@ -77,7 +77,7 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                             fromStopName = fromStopItem?.stopName!!,
                             toStopId = toStopItem?.stopId!!,
                             toStopName = toStopItem?.stopName!!,
-                        )
+                        ),
                     )
                 } else {
                     // TODO - show message - to select both stops

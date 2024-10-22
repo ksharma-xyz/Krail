@@ -74,9 +74,9 @@ object DateTimeHelper {
         val formattedDifference = when {
             totalMinutes < 0 -> "${totalMinutes.absoluteValue} mins ago"
             totalMinutes == 0L -> "Now"
-            hours == 1L  -> "in ${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
+            hours == 1L -> "in ${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
             hours >= 2 -> "in ${hours.absoluteValue} hrs"
-            else -> "in ${totalMinutes.absoluteValue} ${if(totalMinutes.absoluteValue == 1L) "min" else "mins"}"
+            else -> "in ${totalMinutes.absoluteValue} ${if (totalMinutes.absoluteValue == 1L) "min" else "mins"}"
         }
         Timber.d("\t minutes: $partialMinutes, hours: $hours, formattedDifference: $formattedDifference -> originTime")
         return formattedDifference
@@ -89,7 +89,7 @@ object DateTimeHelper {
 
         val formattedDifference = when {
             hours >= 1 -> "${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
-            else -> "${totalMinutes.absoluteValue} ${if(totalMinutes.absoluteValue == 1L) "min" else "mins"}"
+            else -> "${totalMinutes.absoluteValue} ${if (totalMinutes.absoluteValue == 1L) "min" else "mins"}"
         }
         return formattedDifference
     }

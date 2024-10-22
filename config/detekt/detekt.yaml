@@ -196,6 +196,13 @@ formatting:
     active: true
   TypeParameterListSpacing:
     active: true
+  Indentation:
+    active: true
+    indentSize: 4
+  TrailingCommaOnCallSite:
+    active: true
+  TrailingCommaOnDeclarationSite:
+    active: true
 
 naming:
   ClassNaming:

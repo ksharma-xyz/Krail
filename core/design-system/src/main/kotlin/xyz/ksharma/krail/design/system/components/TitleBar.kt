@@ -23,7 +23,7 @@ fun TitleBar(
         modifier = modifier
             .statusBarsPadding()
             .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .padding(vertical = 16.dp, horizontal = 16.dp),
     ) {
         CompositionLocalProvider(
             LocalTextColor provides KrailTheme.colors.onBackground,
@@ -44,7 +44,7 @@ private fun TitleBarPreview() {
             title = {
                 Text(text = "Title")
             },
-            modifier = Modifier.background(color = KrailTheme.colors.background)
+            modifier = Modifier.background(color = KrailTheme.colors.background),
         )
     }
 }

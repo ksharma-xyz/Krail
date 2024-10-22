@@ -38,7 +38,7 @@ interface StopsStore {
         locationType: Long?,
         parentStation: String?,
         stopTimezone: String?,
-        wheelchairBoarding: Long?
+        wheelchairBoarding: Long?,
     )
 
     /**

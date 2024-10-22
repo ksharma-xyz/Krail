@@ -26,7 +26,7 @@ fun Text(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = if (maxLines == Int.MAX_VALUE) TextOverflow.Clip else TextOverflow.Ellipsis,
-    fontFamily: FontFamily?= null,
+    fontFamily: FontFamily? = null,
 ) {
     val contentAlpha = LocalContentAlpha.current
     CompositionLocalProvider(

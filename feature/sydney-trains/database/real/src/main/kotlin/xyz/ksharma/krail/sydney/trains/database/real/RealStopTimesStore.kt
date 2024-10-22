@@ -28,8 +28,8 @@ class RealStopTimesStore @Inject constructor(
                 AndroidSqliteDriver(
                     KrailDB.Schema,
                     applicationContext,
-                    "sydney_trains_static.db"
-                )
+                    "sydney_trains_static.db",
+                ),
             )
         }
     }
