@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "xyz.ksharma.krail.core.dateTime"
+    namespace = "xyz.ksharma.krail.core.datetime"
 }
 dependencies {
     testImplementation(libs.test.kotlin)

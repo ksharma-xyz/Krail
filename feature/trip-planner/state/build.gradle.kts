@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "xyz.ksharma.krail.trip_planner.state"
+    namespace = "xyz.ksharma.krail.trip.planner.state"
 }
 
 dependencies {
