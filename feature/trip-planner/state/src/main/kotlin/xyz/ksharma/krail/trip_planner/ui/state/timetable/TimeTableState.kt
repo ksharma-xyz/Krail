@@ -39,21 +39,27 @@ data class TimeTableState(
             get() = (originUtcDateTime + destinationTime + transportModeLines
                 .joinToString { it.lineName }).filter { it.isLetterOrDigit() }
 
-        data class Leg(
-            // modeType - legs.transportation.product.class
-            // lineName - legs.transportation.disassembledName
-            val transportModeLine: TransportModeLine,
+        sealed class Leg {
+            data class WalkingLeg(
+                val duration: String, // "10mins"
+            ) : Leg()
 
-            // transportation.description -> "Burwood to Liverpool",
-            val displayText: String, // "towards X via X"
+            data class TransportLeg(
+                // modeType - legs.transportation.product.class
+                // lineName - legs.transportation.disassembledName
+                val transportModeLine: TransportModeLine,
 
-            // leg.stopSequence.size  (leg.duration seconds)
-            val stopsInfo: String, // "4 stops (12 min)"
+                // transportation.description -> "Burwood to Liverpool",
+                val displayText: String, // "towards X via X"
 
-            val stops: ImmutableList<Stop>,
+                // leg.stopSequence.size  (leg.duration seconds)
+                val stopsInfo: String, // "4 stops (12 min)"
 
-            val walkInterchange: WalkInterchange? = null,
-        )
+                val stops: ImmutableList<Stop>,
+
+                val walkInterchange: WalkInterchange? = null,
+            ) : Leg()
+        }
 
         data class WalkInterchange(
             // leg.footPathInfo.duration seconds
