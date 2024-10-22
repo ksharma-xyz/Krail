@@ -93,8 +93,5 @@ data class TimeTableState(
             val name: String, // "xx Station, Platform 1" - stopSequence.disassembledName ?: stopSequence.name
             val time: String, // "12:00pm" - stopSequence.departureTimeEstimated ?: stopSequence.departureTimePlanned
         )
-
-        companion object
     }
-
 }
