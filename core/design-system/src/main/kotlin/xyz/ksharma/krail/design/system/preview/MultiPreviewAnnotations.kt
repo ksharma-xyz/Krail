@@ -11,4 +11,4 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 @Target(AnnotationTarget.ANNOTATION_CLASS, AnnotationTarget.FUNCTION)
 @PreviewLightDark
 @Preview(name = "Large Font", fontScale = 2f)
-annotation class ComponentPreviews
+annotation class PreviewComponent

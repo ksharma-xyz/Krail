@@ -39,7 +39,7 @@ fun TimeTableScreen(
     LazyColumn(
         modifier = modifier
             .background(color = KrailTheme.colors.background),
-        contentPadding = PaddingValues(vertical = 16.dp)
+        contentPadding = PaddingValues(vertical = 16.dp),
     ) {
         item {
             TitleBar(title = {
@@ -58,7 +58,9 @@ fun TimeTableScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 16.dp)
-                        .clickable(enabled = !timeTableState.isTripSaved) { onEvent(TimeTableUiEvent.SaveTripButtonClicked) }
+                        .clickable(
+                            enabled = !timeTableState.isTripSaved,
+                        ) { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
                 )
             }
 

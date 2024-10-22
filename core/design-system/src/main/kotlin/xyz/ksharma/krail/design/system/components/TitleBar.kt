@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -23,7 +23,7 @@ fun TitleBar(
         modifier = modifier
             .statusBarsPadding()
             .fillMaxWidth()
-            .padding(vertical = 16.dp, horizontal = 16.dp)
+            .padding(vertical = 16.dp, horizontal = 16.dp),
     ) {
         CompositionLocalProvider(
             LocalTextColor provides KrailTheme.colors.onBackground,
@@ -36,7 +36,7 @@ fun TitleBar(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TitleBarPreview() {
     KrailTheme {
@@ -44,7 +44,7 @@ private fun TitleBarPreview() {
             title = {
                 Text(text = "Title")
             },
-            modifier = Modifier.background(color = KrailTheme.colors.background)
+            modifier = Modifier.background(color = KrailTheme.colors.background),
         )
     }
 }

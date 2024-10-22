@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -48,35 +48,35 @@ fun TransportModeBadge(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TransportModeBadgeBusPreview() {
     KrailTheme {
         TransportModeBadge(
             badgeText = "700",
-            backgroundColor = "00B5EF".hexToComposeColor()
+            backgroundColor = "00B5EF".hexToComposeColor(),
         )
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TransportModeBadgeTrainPreview() {
     KrailTheme {
         TransportModeBadge(
             badgeText = "T1",
-            backgroundColor = "#F6891F".hexToComposeColor()
+            backgroundColor = "#F6891F".hexToComposeColor(),
         )
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TransportModeBadgeFerryPreview() {
     KrailTheme {
         TransportModeBadge(
             badgeText = "F1",
-            backgroundColor = "#5AB031".hexToComposeColor()
+            backgroundColor = "#5AB031".hexToComposeColor(),
         )
     }
 }

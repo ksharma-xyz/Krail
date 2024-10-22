@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.LocalTextColor
 import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.tokens.TextFieldTokens
 import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextFieldHeight
@@ -62,7 +62,7 @@ fun TextFieldButton(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TextFieldButtonPreview() {
     KrailTheme {

@@ -23,7 +23,7 @@ class RealTripPlanningRepository @Inject constructor(
     ): Result<StopFinderResponse> = suspendSafeResult(ioDispatcher) {
         tripPlanningService.stopFinder(
             typeSf = stopType.type,
-            nameSf = stopSearchQuery
+            nameSf = stopSearchQuery,
         ).toSafeResult()
     }
 

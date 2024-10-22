@@ -37,16 +37,16 @@ fun Divider(
                             Modifier
                                 .fillMaxHeight()
                                 .width(1.dp)
-                    }
+                    },
                 )
-                .background(color = color ?: LocalContentColor.current)
+                .background(color = color ?: LocalContentColor.current),
         )
     }
 }
 
 enum class DividerType {
     HORIZONTAL,
-    VERTICAL
+    VERTICAL,
 }
 
 @PreviewLightDark

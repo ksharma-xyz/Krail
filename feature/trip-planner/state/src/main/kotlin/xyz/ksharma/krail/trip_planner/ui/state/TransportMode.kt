@@ -84,7 +84,7 @@ sealed class TransportMode {
             Ferry(),
             Bus(),
             LightRail(),
-            Coach()
+            Coach(),
         ).associateBy { it.productClass }
 
         fun toTransportModeType(productClass: Int): TransportMode? = productClassMap[productClass]

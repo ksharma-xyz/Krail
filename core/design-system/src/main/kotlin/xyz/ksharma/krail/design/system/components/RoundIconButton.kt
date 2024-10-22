@@ -19,7 +19,7 @@ import androidx.compose.ui.semantics.Role
 import xyz.ksharma.krail.design.system.LocalContentColor
 import xyz.ksharma.krail.design.system.LocalOnContentColor
 import xyz.ksharma.krail.design.system.R
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.tokens.ButtonTokens.RoundButtonSize
 
@@ -62,7 +62,7 @@ fun RoundIconButton(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun RoundIconButtonPreview() {
     KrailTheme {

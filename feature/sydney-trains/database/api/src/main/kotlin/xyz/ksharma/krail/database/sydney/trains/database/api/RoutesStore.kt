@@ -32,7 +32,7 @@ interface RoutesStore {
         routeType: Long,
         routeUrl: String?,
         routeColor: String?,
-        routeTextColor: String?
+        routeTextColor: String?,
     )
 
     /**

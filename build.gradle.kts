@@ -51,6 +51,7 @@ tasks {
         config.setFrom(files("$rootDir/config/detekt/detekt.yaml"))
         baseline.set(file("$rootDir/config/detekt/detekt-baseline.xml"))
 
+        autoCorrect = true
         buildUponDefaultConfig = true
         parallel = true
         debug = true
@@ -78,6 +79,7 @@ tasks {
     project.detekt {
         basePath = rootProject.projectDir.absolutePath
         toolVersion = libs.versions.detekt.get()
+        autoCorrect = true
     }
 }
 

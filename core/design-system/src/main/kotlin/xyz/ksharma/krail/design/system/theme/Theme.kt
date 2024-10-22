@@ -17,7 +17,7 @@ fun KrailTheme(
     CompositionLocalProvider(
         LocalKrailColors provides krailColors,
         LocalKrailTypography provides krailTypography,
-        content = content
+        content = content,
     )
 }
 

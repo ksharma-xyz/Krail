@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -56,7 +56,7 @@ private fun Modifier.borderIfEnabled(enabled: Boolean): Modifier =
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TrainPreview() {
     KrailTheme {
@@ -64,7 +64,7 @@ private fun TrainPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun BusPreview() {
     KrailTheme {
@@ -75,7 +75,7 @@ private fun BusPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun MetroPreview() {
     KrailTheme {
@@ -86,7 +86,7 @@ private fun MetroPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun LightRailPreview() {
     KrailTheme {
@@ -97,7 +97,7 @@ private fun LightRailPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun FerryPreview() {
     KrailTheme {
@@ -108,62 +108,62 @@ private fun FerryPreview() {
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun TrainWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             backgroundColor = "#F6891F".hexToComposeColor(),
             letter = 'T',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun BusWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             backgroundColor = "#00B5EF".hexToComposeColor(),
             letter = 'B',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun MetroWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             backgroundColor = "#009B77".hexToComposeColor(),
             letter = 'M',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun LightRailWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             backgroundColor = "#EE343F".hexToComposeColor(),
             letter = 'L',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun FerryWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             backgroundColor = "#5AB031".hexToComposeColor(),
             letter = 'F',
-            borderEnabled = true
+            borderEnabled = true,
         )
     }
 }

@@ -32,7 +32,7 @@ object StopResultMapper {
             SearchStopState.StopResult(
                 stopName = stopName,
                 stopId = stopId,
-                transportModeType = modes
+                transportModeType = modes,
             )
         }.sortedBy { stopResult ->
             stopResult.transportModeType.minOfOrNull { mode ->

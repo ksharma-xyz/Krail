@@ -48,7 +48,7 @@ fun JourneyLeg(
             .background(
                 color = transportModeLine.transportMode.colorCode
                     .hexToComposeColor()
-                    .copy(alpha = if (isSystemInDarkTheme()) 0.7f else 0.15f)
+                    .copy(alpha = if (isSystemInDarkTheme()) 0.7f else 0.15f),
             )
             .padding(vertical = 8.dp, horizontal = 8.dp),
     ) {
@@ -78,7 +78,7 @@ fun JourneyLeg(
         ) {
             Row(
                 modifier = Modifier.align(Alignment.CenterVertically),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
             ) {
                 val density = LocalDensity.current
                 val size = with(density) { 18.sp.toDp() }
@@ -89,8 +89,12 @@ fun JourneyLeg(
                         .size(size)
                         .align(Alignment.CenterVertically),
                     colorFilter = ColorFilter.tint(
-                        color = if (isSystemInDarkTheme()) KrailTheme.colors.onSurface else transportModeLine.transportMode.colorCode.hexToComposeColor()
-                            .copy(alpha = 0.9f),
+                        color = if (isSystemInDarkTheme()) {
+                            KrailTheme.colors.onSurface
+                        } else {
+                            transportModeLine.transportMode.colorCode.hexToComposeColor()
+                                .copy(alpha = 0.9f)
+                        },
                     ),
                 )
                 Text(
@@ -147,7 +151,6 @@ private fun PreviewJourneyLegBus() {
         )
     }
 }
-
 
 @PreviewLightDark
 @Composable

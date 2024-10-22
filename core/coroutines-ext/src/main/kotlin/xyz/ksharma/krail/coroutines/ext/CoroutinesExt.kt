@@ -18,9 +18,10 @@ import kotlin.coroutines.cancellation.CancellationException
  * @param block The block of code to execute.
  * @return A [Result] object containing the result of the block execution or the exception that was thrown.
  */
+@Suppress("TooGenericExceptionCaught")
 suspend fun <T, R> T.safeResult(
     dispatcher: CoroutineDispatcher,
-    block: T.() -> R
+    block: T.() -> R,
 ): Result<R> = withContext(dispatcher) {
     try {
         Result.success(block())
@@ -43,9 +44,10 @@ suspend fun <T, R> T.safeResult(
  * @return A [Result] object containing the success or failure of the block execution.
  *
  */
+@Suppress("TooGenericExceptionCaught")
 suspend fun <T, R> T.suspendSafeResult(
     dispatcher: CoroutineDispatcher,
-    block: suspend T.() -> Result<R>
+    block: suspend T.() -> Result<R>,
 ): Result<R> = withContext(dispatcher) {
     try {
         block()

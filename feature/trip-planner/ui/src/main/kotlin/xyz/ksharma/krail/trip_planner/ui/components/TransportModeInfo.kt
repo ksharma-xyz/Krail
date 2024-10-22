@@ -39,7 +39,7 @@ private fun TransportModeInfoPreview() {
             badgeText = "T4",
             backgroundColor = "#F6891F".hexToComposeColor(),
             badgeColor = "#005aa3".hexToComposeColor(),
-            letter = 'T'
+            letter = 'T',
         )
     }
 }

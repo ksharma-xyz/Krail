@@ -23,7 +23,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.R as DSR
 
@@ -42,7 +42,7 @@ fun SavedTripCard(
             .clickable(
                 role = Role.Button,
                 onClickLabel = "Open Trip Details",
-                onClick = onCardClick
+                onClick = onCardClick,
             )
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -55,7 +55,7 @@ fun SavedTripCard(
         Column(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
-                .weight(1f)
+                .weight(1f),
         ) {
             Text(text = origin, style = KrailTheme.typography.bodyMedium)
             Text(text = destination, style = KrailTheme.typography.bodyMedium)
@@ -84,7 +84,7 @@ fun SavedTripCard(
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun SavedTripCardPreview() {
     KrailTheme {

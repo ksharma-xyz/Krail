@@ -26,7 +26,7 @@ fun NavGraphBuilder.searchStopDestination(navController: NavHostController) {
                     stopItem.toJsonString(),
                 )
                 navController.popBackStack()
-            }
+            },
         ) { event -> viewModel.onEvent(event) }
     }
 }

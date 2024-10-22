@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.preview.ComponentPreviews
+import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 
@@ -27,14 +27,14 @@ fun SeparatorIcon(modifier: Modifier = Modifier, color: Color = KrailTheme.color
 
 // region Previews
 
-@ComponentPreviews
+@PreviewComponent
 @Composable
 private fun SeparatorIconPreview() {
     KrailTheme {
         Box(
             modifier = Modifier
                 .background(KrailTheme.colors.surface)
-                .padding(10.dp)
+                .padding(10.dp),
         ) {
             SeparatorIcon()
         }

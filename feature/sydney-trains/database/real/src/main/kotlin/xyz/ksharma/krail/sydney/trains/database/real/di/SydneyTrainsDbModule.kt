@@ -57,8 +57,8 @@ abstract class SydneyTrainsDbModule {
                     driver = AndroidSqliteDriver(
                         schema = KrailDB.Schema,
                         context = context,
-                        name = "sydney_trains_static.db"
-                    )
+                        name = "sydney_trains_static.db",
+                    ),
                 )
             }
             return sydneyTrainsStaticDb

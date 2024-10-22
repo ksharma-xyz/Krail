@@ -25,7 +25,7 @@ object NetworkModule {
 
         if (BuildConfig.DEBUG) {
             okhttpBuilder.addInterceptor(
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY),
             )
         }
         okhttpBuilder.addInterceptor(AuthInterceptor())
@@ -49,8 +49,8 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(
                 json.asConverterFactory(
-                    "application/json; charset=UTF8".toMediaType()
-                )
+                    "application/json; charset=UTF8".toMediaType(),
+                ),
             )
             .build()
         return retrofit

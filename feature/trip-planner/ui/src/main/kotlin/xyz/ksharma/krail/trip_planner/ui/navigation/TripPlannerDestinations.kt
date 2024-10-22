@@ -26,7 +26,7 @@ fun NavGraphBuilder.tripPlannerDestinations(
 
 internal enum class SearchStopFieldType(val key: String) {
     FROM(key = "FromSearchStopResult"),
-    TO(key = "ToSearchStopResult")
+    TO(key = "ToSearchStopResult"),
 }
 
 @Serializable

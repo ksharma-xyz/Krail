@@ -15,7 +15,7 @@ class AuthInterceptor : Interceptor {
                 .header("Authorization", "apikey $API_KEY")
                 .header("accept", "application/x-google-protobuf")
                 .url(chain.request().url)
-                .build()
+                .build(),
         )
     }
 
