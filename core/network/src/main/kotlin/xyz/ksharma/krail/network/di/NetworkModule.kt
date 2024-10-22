@@ -19,6 +19,8 @@ import java.util.concurrent.TimeUnit
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    const val BASE_URL = "https://api.transport.nsw.gov.au"
+
     @Provides
     fun provideOkHttpClient(): OkHttpClient {
         val okhttpBuilder = OkHttpClient.Builder()
@@ -55,6 +57,4 @@ object NetworkModule {
             .build()
         return retrofit
     }
-
-    const val BASE_URL = "https://api.transport.nsw.gov.au"
 }

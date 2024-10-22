@@ -18,7 +18,10 @@ data class StopItem(
 ) : Serializable {
     fun toJsonString() = Json.encodeToString(serializer(), this)
 
+    @Suppress("ConstPropertyName")
     companion object {
+        private const val serialVersionUID: Long = 1L
+
         fun fromJsonString(json: String) =
             kotlin.runCatching { Json.decodeFromString(serializer(), json) }.getOrNull()
     }

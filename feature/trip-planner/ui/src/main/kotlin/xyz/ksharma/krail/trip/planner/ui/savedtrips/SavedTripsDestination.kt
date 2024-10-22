@@ -5,8 +5,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -20,8 +18,8 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Compani
 
 internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostController) {
     composable<SavedTripsRoute> { backStackEntry ->
-        val viewModel = hiltViewModel<SavedTripsViewModel>()
-        val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
+        // val viewModel = hiltViewModel<SavedTripsViewModel>()
+        // val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
         val fromArg: String? =
             backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.FROM.key)
@@ -47,7 +45,6 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
         }
 
         SavedTripsScreen(
-            savedTripsState = savedTripState,
             fromStopItem = fromStopItem,
             toStopItem = toStopItem,
             fromButtonClick = {
@@ -84,8 +81,6 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                     Timber.e("Select both stops")
                 }
             },
-        ) { event ->
-            viewModel.onEvent(event)
-        }
+        )
     }
 }

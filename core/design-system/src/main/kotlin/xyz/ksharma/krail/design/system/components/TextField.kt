@@ -53,7 +53,7 @@ fun TextField(
     textStyle: TextStyle? = null,
     readOnly: Boolean = false,
     imeAction: ImeAction = ImeAction.Default,
-    onTextChanged: (CharSequence) -> Unit = {},
+    onTextChange: (CharSequence) -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -66,7 +66,7 @@ fun TextField(
     )
 
     LaunchedEffect(textFieldState.text) {
-        onTextChanged(textFieldState.text)
+        onTextChange(textFieldState.text)
     }
 
     CompositionLocalProvider(

@@ -123,9 +123,9 @@ fun JourneyCardItem(
     originTime: String,
     durationText: String,
     destinationTime: String,
-    transportModeLineList: ImmutableList<TransportModeLine>? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    transportModeLineList: ImmutableList<TransportModeLine>? = null,
 ) {
     JourneyCard(
         timeToDeparture = timeToDeparture,

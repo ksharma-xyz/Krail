@@ -59,11 +59,11 @@ fun JourneyCard(
     originTime: String,
     destinationTime: String,
     totalTravelTime: String,
-    platformNumber: Char? = null,
     isWheelchairAccessible: Boolean,
-    transportModeList: ImmutableList<TransportMode>? = null,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    platformNumber: Char? = null,
+    transportModeList: ImmutableList<TransportMode>? = null,
 ) {
     val onSurface: Color = KrailTheme.colors.onSurface
     val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }

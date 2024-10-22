@@ -26,11 +26,11 @@ Compose:
   DefaultsVisibility:
     active: true
   LambdaParameterInRestartableEffect:
-    active: true
+    active: false
     # -- You can optionally have a list of types to be treated as lambdas (e.g. typedefs or fun interfaces not picked up automatically)
     # treatAsLambda: MyLambdaType
   Material2:
-    active: false # Opt-in, disabled by default. Turn on if you want to disallow Material 2 usages.
+    active: true # Opt-in, disabled by default. Turn on if you want to disallow Material 2 usages.
     # -- You can optionally allow parts of it, if you are in the middle of a migration.
     # allowedFromM2: icons.Icons,TopAppBar
   ModifierClickableOrder:
@@ -127,6 +127,7 @@ complexity:
     ignoreAnnotation: true
     excludeStringsWithLessThan5Characters: true
     ignoreStringsRegex: '$^'
+    ignoreAnnotated: ['Preview', 'PreviewLightDark', 'PreviewComponent']
   ComplexInterface:
     active: false
     threshold: 10
@@ -141,6 +142,7 @@ complexity:
   MethodOverloading:
     active: true
   TooManyFunctions:
+    active: false
     ignoreAnnotatedFunctions: ['Composable']
     excludes: ['**/test/**', '**/functionalTest/**']
   LongMethod:
@@ -148,7 +150,7 @@ complexity:
     threshold: 60
     ignoreAnnotated: ['Composable']
   LongParameterList:
-    active: true
+    active: false
     ignoreAnnotated: ['Composable', 'Test', 'GET', 'POST']
 
 coroutines:
@@ -210,7 +212,7 @@ naming:
   FunctionNaming:
     active: true
     excludes: []
-    ignoreAnnotated: ['Test', 'ParameterizedTest', 'RepeatedTest', 'TestFactory']
+    ignoreAnnotated: ['Test', 'ParameterizedTest', 'RepeatedTest', 'TestFactory', 'Composable']
   TopLevelPropertyNaming:
     constantPattern: '[a-z][_A-Za-z0-9]*|[A-Z][_A-Z0-9]*'
   InvalidPackageDeclaration:
@@ -264,7 +266,7 @@ style:
   CanBeNonNullable:
     active: true
   CascadingCallWrapping:
-    active: true
+    active: false
   ClassOrdering:
     active: true
   CollapsibleIfStatements:

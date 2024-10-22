@@ -37,8 +37,8 @@ fun JourneyLeg(
     stopsInfo: String,
     departureTime: String,
     stopName: String,
-    isWheelchairAccessible: Boolean = false,
     modifier: Modifier = Modifier,
+    isWheelchairAccessible: Boolean = false,
 ) {
     Column(
         modifier = modifier
@@ -68,7 +68,11 @@ fun JourneyLeg(
                 text = stopsInfo,
                 modifier = Modifier.align(Alignment.CenterVertically),
                 style = KrailTheme.typography.title,
-                color = if (isSystemInDarkTheme()) KrailTheme.colors.onSurface else transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                color = if (isSystemInDarkTheme()) {
+                    KrailTheme.colors.onSurface
+                } else {
+                    transportModeLine.transportMode.colorCode.hexToComposeColor()
+                },
             )
         }
         FlowRow(

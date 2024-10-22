@@ -15,6 +15,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 
+@Suppress("ComplexCondition")
 internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.JourneyCardInfo>? =
     journeys?.mapNotNull { journey ->
         val firstPublicTransportLeg = journey.getFirstPublicTransportLeg()
@@ -30,7 +31,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         val transportModeLines = legs?.getTransportModeLines()
         val legsList = legs?.getLegsList()
 
-        if (legs != null && originTimeUTC != null && arrivalTimeUTC != null && totalStops > 0 && legsList != null) {
+        if (originTimeUTC != null && arrivalTimeUTC != null && totalStops > 0 && legsList != null) {
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.getTimeText(),
                 platformText = platformText,
@@ -75,12 +76,12 @@ private fun TripResponse.Leg?.getPlatformText() =
     this?.stopSequence?.firstOrNull()?.properties?.platform?.lastOrNull()
         ?.takeIf { it != '0' && it.isLetterOrDigit() }?.uppercaseChar()
 
-private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index, it ->
+private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index, leg ->
     Timber.d(
-        "TransportMode #$index: ${it.transportation?.product?.productClass}, " +
-            "name: ${it.transportation?.product?.name}, " +
-            "stops: ${it.stopSequence?.size}, " +
-            "duration: ${it.duration}",
+        "TransportMode #$index: ${leg.transportation?.product?.productClass}, " +
+            "name: ${leg.transportation?.product?.name}, " +
+            "stops: ${leg.stopSequence?.size}, " +
+            "duration: ${leg.duration}",
     )
 }
 
@@ -103,6 +104,7 @@ private fun String.getTimeText() = let {
     calculateTimeDifferenceFromNow(utcDateString = it).toGenericFormattedTimeString()
 }
 
+@Suppress("ComplexCondition")
 private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
     val transportMode =
         transportation?.product?.productClass?.toInt()
@@ -121,7 +123,9 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
         }
 
         else -> { // Public Transport Leg
-            if (transportMode != null && lineName != null && displayText != null && numberOfStops != null && stops != null) {
+            if (transportMode != null && lineName != null && displayText != null &&
+                numberOfStops != null && stops != null
+            ) {
                 TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     transportModeLine = TransportModeLine(
                         transportMode = transportMode,
@@ -141,23 +145,31 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
     }
 }
 
-internal fun TripResponse.FootPathInfo.toWalkInterchange(displayDuration: String): TimeTableState.JourneyCardInfo.WalkInterchange? {
+internal fun TripResponse.FootPathInfo.toWalkInterchange(
+    displayDuration: String,
+): TimeTableState.JourneyCardInfo.WalkInterchange? {
     return position?.let { position ->
         when (position) {
-            TimeTableState.JourneyCardInfo.WalkPosition.BEFORE.position -> TimeTableState.JourneyCardInfo.WalkInterchange(
-                duration = displayDuration,
-                position = TimeTableState.JourneyCardInfo.WalkPosition.BEFORE,
-            )
+            TimeTableState.JourneyCardInfo.WalkPosition.BEFORE.position -> {
+                TimeTableState.JourneyCardInfo.WalkInterchange(
+                    duration = displayDuration,
+                    position = TimeTableState.JourneyCardInfo.WalkPosition.BEFORE,
+                )
+            }
 
-            TimeTableState.JourneyCardInfo.WalkPosition.AFTER.position -> TimeTableState.JourneyCardInfo.WalkInterchange(
-                duration = displayDuration,
-                position = TimeTableState.JourneyCardInfo.WalkPosition.AFTER,
-            )
+            TimeTableState.JourneyCardInfo.WalkPosition.AFTER.position -> {
+                TimeTableState.JourneyCardInfo.WalkInterchange(
+                    duration = displayDuration,
+                    position = TimeTableState.JourneyCardInfo.WalkPosition.AFTER,
+                )
+            }
 
-            TimeTableState.JourneyCardInfo.WalkPosition.IDEST.position -> TimeTableState.JourneyCardInfo.WalkInterchange(
-                duration = displayDuration,
-                position = TimeTableState.JourneyCardInfo.WalkPosition.IDEST,
-            )
+            TimeTableState.JourneyCardInfo.WalkPosition.IDEST.position -> {
+                TimeTableState.JourneyCardInfo.WalkInterchange(
+                    duration = displayDuration,
+                    position = TimeTableState.JourneyCardInfo.WalkPosition.IDEST,
+                )
+            }
 
             else -> null
         }
@@ -191,7 +203,8 @@ internal fun TripResponse.logForUnderstandingData() {
                 leg.transportation?.product?.productClass
 
             Timber.d(
-                " LEG#${index + 1} -- Duration: ${leg.duration} -- productClass:${transportationProductClass?.toInt()}",
+                " LEG#${index + 1} -- Duration: ${leg.duration} -- " +
+                    "productClass:${transportationProductClass?.toInt()}",
             )
             Timber.d(
                 "\t\t ORG: ${
@@ -224,7 +237,12 @@ private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNot
     val depTime = it.departureTimeEstimated?.utcToAEST()
         ?.formatTo12HourTime() ?: it.departureTimePlanned?.utcToAEST()?.formatTo12HourTime()
 
-    if (timeArr == null && depTime == null) null else "\n\t\t\t\t Stop: ${it.name}, depTime: ${timeArr ?: depTime}"
+    if (timeArr == null && depTime == null) {
+        null
+    } else {
+        "\n\t\t\t\t Stop: ${it.name}," +
+            " depTime: ${timeArr ?: depTime}"
+    }
 }
 
 private fun String.fromUTCToDisplayTimeString() = this.utcToAEST().aestToHHMM()
