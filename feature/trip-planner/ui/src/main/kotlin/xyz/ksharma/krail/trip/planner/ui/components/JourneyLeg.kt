@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -139,7 +138,7 @@ fun JourneyLeg(
 }
 
 @PreviewLightDark
-@Preview(fontScale = 2f)
+// @Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyLegBus() {
     KrailTheme {
@@ -156,7 +155,7 @@ private fun PreviewJourneyLegBus() {
     }
 }
 
-@PreviewLightDark
+// @PreviewLightDark
 @Composable
 private fun PreviewJourneyLegTrain() {
     KrailTheme {
@@ -173,7 +172,7 @@ private fun PreviewJourneyLegTrain() {
     }
 }
 
-@PreviewLightDark
+// @PreviewLightDark
 @Composable
 private fun PreviewJourneyLegMetro() {
     KrailTheme {
