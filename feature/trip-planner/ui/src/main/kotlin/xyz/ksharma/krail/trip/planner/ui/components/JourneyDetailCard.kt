@@ -47,10 +47,10 @@ fun JourneyDetailCard(
     timeToDeparture: String,
     platformNumber: Char,
     totalTravelTime: String,
-    transportModeList: ImmutableList<TransportMode>? = null, // TODO cannot be null. Need to handle this
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    transportModeList: ImmutableList<TransportMode>? = null, // TODO cannot be null. Need to handle this
 ) {
     val density = LocalDensity.current
     // todo can be reusable logic for consistent icon size

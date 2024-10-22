@@ -37,8 +37,8 @@ fun JourneyLeg(
     stopsInfo: String,
     departureTime: String,
     stopName: String,
-    isWheelchairAccessible: Boolean = false,
     modifier: Modifier = Modifier,
+    isWheelchairAccessible: Boolean = false,
 ) {
     Column(
         modifier = modifier
