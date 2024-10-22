@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "xyz.ksharma.krail.trip_planner.ui"
+    namespace = "xyz.ksharma.krail.trip.planner.ui"
 }
 
 dependencies {

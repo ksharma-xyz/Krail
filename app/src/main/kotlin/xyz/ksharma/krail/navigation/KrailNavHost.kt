@@ -41,8 +41,8 @@ import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.trip_planner.ui.navigation.SavedTripsRoute
-import xyz.ksharma.krail.trip_planner.ui.navigation.tripPlannerDestinations
+import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
+import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
 
 /**
  * TODO - I don't like [NavHost] defined in app module, I would love to refactor it to :core:navigation module
