@@ -81,6 +81,5 @@ class RealStopTimesStore @Inject constructor(
     override suspend fun stopTimesSize(): Long = getSydneyTrainsDb().stoptimesQueries.sizeOfStopTimes().executeAsOne()
 
     override suspend fun clearStopTimes() {
-        TODO("Not yet implemented")
     }
 }

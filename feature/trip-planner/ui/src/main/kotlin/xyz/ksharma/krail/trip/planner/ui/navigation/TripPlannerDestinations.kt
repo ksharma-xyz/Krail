@@ -20,7 +20,7 @@ fun NavGraphBuilder.tripPlannerDestinations(
 
         searchStopDestination(navController)
 
-        timeTableDestination(navController)
+        timeTableDestination()
     }
 }
 

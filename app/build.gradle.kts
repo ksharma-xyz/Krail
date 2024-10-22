@@ -61,7 +61,6 @@ dependencies {
 
     // Projects
     implementation(projects.core.designSystem)
-    implementation(projects.core.domain)
     implementation(projects.core.network)
     implementation(projects.core.utils)
     implementation(projects.feature.sydneyTrains.database.api)

@@ -2,20 +2,14 @@ package xyz.ksharma.krail.trip.planner.ui.savedtrips
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
-import timber.log.Timber
-import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
-import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
-import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import javax.inject.Inject
 
 @HiltViewModel
 class SavedTripsViewModel @Inject constructor() : ViewModel() {
 
-    private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
-    val uiState: StateFlow<SavedTripsState> = _uiState
+    // private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
+    // val uiState: StateFlow<SavedTripsState> = _uiState
+/*
 
     fun onEvent(event: SavedTripUiEvent) {
         when (event) {
@@ -45,7 +39,9 @@ class SavedTripsViewModel @Inject constructor() : ViewModel() {
         Timber.d("onDeleteSavedTrip")
     }
 
+
     private fun updateUiState(block: SavedTripsState.() -> SavedTripsState) {
         _uiState.update(block)
     }
+ */
 }
