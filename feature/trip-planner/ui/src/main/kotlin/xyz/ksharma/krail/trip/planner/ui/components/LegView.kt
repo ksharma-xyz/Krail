@@ -1,28 +1,40 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
@@ -36,13 +48,19 @@ fun LegView(
     stops: ImmutableList<TimeTableState.JourneyCardInfo.Stop>,
     modifier: Modifier = Modifier,
 ) {
+    val circleRadius = 8.dp
+    val strokeWidth = 4.dp
+    val density = LocalDensity.current
+    // todo can be reusable logic for consistent icon size
+    val iconSize = with(density) { 14.sp.toDp() }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
                 color = transportModeLine.transportMode.colorCode
                     .hexToComposeColor()
-                    .copy(alpha = 0.15f),
+                    .copy(alpha = 0.1f),
                 shape = RoundedCornerShape(12.dp),
             )
             .padding(vertical = 12.dp, horizontal = 12.dp),
@@ -54,47 +72,127 @@ fun LegView(
             Text(
                 text = routeText,
                 style = KrailTheme.typography.bodySmall,
-                modifier = Modifier.align(Alignment.CenterVertically),
+
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .align(Alignment.CenterVertically),
             )
-            Text(
-                text = duration,
-                style = KrailTheme.typography.titleMedium,
-                modifier = Modifier.align(Alignment.CenterVertically),
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            ProminentStopInfo(time = stops.first().time, name = stops.first().name)
-            if (stops.size > 2) {
-                StopsRow(
-                    stops = "${stops.size - 2} stops",
-                    line = transportModeLine,
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically),
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_clock),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .size(iconSize),
                 )
-            } else {
-                TransportModeInfo(
-                    letter = transportModeLine.transportMode.name.first(),
-                    backgroundColor = transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                    badgeText = transportModeLine.lineName,
-                    badgeColor = transportModeLine.lineColorCode.hexToComposeColor(),
+                Text(
+                    text = duration,
+                    style = KrailTheme.typography.bodySmall,
                 )
             }
-            ProminentStopInfo(time = stops.last().time, name = stops.last().name)
         }
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+        Column(modifier = Modifier.fillMaxWidth()) {
+            ProminentStopInfo(
+                time = stops.first().time,
+                name = stops.first().name,
+                modifier = Modifier
+                    .drawBehind {
+                        drawCircle(
+                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                            radius = circleRadius.toPx(),
+                            center = Offset(0f, 38.sp.toPx() / 2),
+                        )
+                        drawLine(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                ),
+                            ),
+                            start = Offset(
+                                x = 0f,
+                                y = 38.sp.toPx() / 2,
+                            ),
+                            end = Offset(x = 0f, y = this.size.height),
+                            strokeWidth = strokeWidth.toPx(),
+                            cap = StrokeCap.Round,
+                        )
+                    }
+                    .padding(start = 16.dp),
+            ) {
+                if (stops.size > 2) {
+                    StopsRow(
+                        stops = "${stops.size - 2} stops",
+                        line = transportModeLine,
+                        modifier = Modifier.padding(vertical = 8.dp),
+                    )
+                } else {
+                    TransportModeInfo(
+                        letter = transportModeLine.transportMode.name.first(),
+                        backgroundColor = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                        badgeText = transportModeLine.lineName,
+                        badgeColor = transportModeLine.lineColorCode.hexToComposeColor(),
+                        modifier = Modifier.padding(vertical = 8.dp),
+                    )
+                }
+            }
+
+            ProminentStopInfo(
+                time = stops.last().time,
+                name = stops.last().name,
+                modifier = Modifier
+                    .drawBehind {
+                        drawLine(
+                            brush = Brush.linearGradient(
+                                colors = listOf(
+                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                ),
+                            ),
+                            start = Offset(x = 0f, y = 0f),
+                            end = Offset(x = 0f, y = this.size.height - 38.dp.toPx() / 2),
+                            strokeWidth = strokeWidth.toPx(),
+                            cap = StrokeCap.Round,
+                        )
+                        drawCircle(
+                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                            radius = circleRadius.toPx(),
+                            center = Offset(0f, this.size.height - 38.sp.toPx() / 2),
+                        )
+                    }
+                    .padding(start = 16.dp),
+            )
+        }
     }
 }
 
 @Composable
-fun ProminentStopInfo(time: String, name: String, modifier: Modifier = Modifier) {
+fun ProminentStopInfo(
+    time: String,
+    name: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit = {},
+) {
     Column(modifier = modifier) {
         Text(
             text = time,
-            style = KrailTheme.typography.titleMedium,
+            style = KrailTheme.typography.bodyMedium,
+            color = KrailTheme.colors.onSurface,
         )
         Text(
             text = name,
-            style = KrailTheme.typography.titleMedium,
+            style = KrailTheme.typography.titleSmall,
+            color = KrailTheme.colors.onSurface,
         )
+        content()
     }
 }
 
@@ -132,12 +230,13 @@ fun StopsRow(stops: String, line: TransportModeLine, modifier: Modifier = Modifi
 }
 
 @PreviewLightDark
+@Preview(fontScale = 2f)
 @Composable
 private fun PreviewLegView() {
     KrailTheme {
         LegView(
             duration = "1h 30m",
-            routeText = "towards AVC via XYZ",
+            routeText = "towards AVC via XYZ Rd",
             transportModeLine = TransportModeLine(
                 transportMode = TransportMode.Bus(),
                 lineName = "700",
@@ -152,7 +251,7 @@ private fun PreviewLegView() {
                     name = "ABC Station, Platform 2",
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
-                    time = "13:00 am",
+                    time = "01:00 am",
                     name = "DEF Station, Platform 3",
                 ),
             ).toImmutableList(),
@@ -162,6 +261,7 @@ private fun PreviewLegView() {
 }
 
 @Preview
+@Preview(fontScale = 2f)
 @Composable
 private fun PreviewLegViewTwoStops() {
     KrailTheme {
@@ -178,7 +278,7 @@ private fun PreviewLegViewTwoStops() {
                     name = "XYZ Station, Platform 1",
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
-                    time = "13:00 am",
+                    time = "01:00 am",
                     name = "DEF Station, Platform 3",
                 ),
             ).toImmutableList(),
