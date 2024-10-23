@@ -200,7 +200,7 @@ fun JourneyDetailCard(
                     } else {
                         JourneyLeg(
                             transportModeLine = leg.transportModeLine,
-                            stopsInfo = leg.stopsInfo,
+                            stopsInfo = leg.totalDuration,
                             departureTime = if (index == legList.lastIndex) {
                                 leg.stops.last().time
                             } else {
@@ -261,7 +261,7 @@ private fun PreviewJourneyDetailCard() {
                         lineName = "600",
                     ),
                     displayText = "Dessert via Rainy Road",
-                    stopsInfo = "4 stops (12 min)",
+                    totalDuration = "4 stops (12 min)",
                     stops = listOf(
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "TownHall Station",
@@ -298,7 +298,7 @@ private fun PreviewJourneyDetailCardWalkBefore() {
                         lineName = "600",
                     ),
                     displayText = "Dessert via Rainy Road",
-                    stopsInfo = "4 stops (12 min)",
+                    totalDuration = "4 stops (12 min)",
                     stops = listOf(
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "TownHall Station",
@@ -335,7 +335,7 @@ private fun PreviewJourneyDetailCardWalkAfter() {
                         lineName = "600",
                     ),
                     displayText = "Dessert via Rainy Road",
-                    stopsInfo = "4 stops (12 min)",
+                    totalDuration = "4 stops (12 min)",
                     stops = listOf(
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "TownHall Station",
@@ -373,7 +373,7 @@ private fun PreviewMultiLegJourneyDetailCard() {
                         lineName = "600",
                     ),
                     displayText = "Dessert via Rainy Road",
-                    stopsInfo = "4 stops (12 min)",
+                    totalDuration = "4 stops (12 min)",
                     stops = listOf(
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "TownHall Station",
@@ -391,7 +391,7 @@ private fun PreviewMultiLegJourneyDetailCard() {
                         lineName = "T5",
                     ),
                     displayText = "EmuPlains via Forest Hills",
-                    stopsInfo = "2 stops (30 min)",
+                    totalDuration = "2 stops (30 min)",
                     stops = listOf(
                         TimeTableState.JourneyCardInfo.Stop(
                             name = "Central Station",

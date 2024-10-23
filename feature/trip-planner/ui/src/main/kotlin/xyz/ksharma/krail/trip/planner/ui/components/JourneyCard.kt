@@ -45,6 +45,7 @@ import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 
 enum class JourneyCardState {
@@ -158,8 +159,7 @@ fun ColumnScope.JourneyCardContent(
 
     FlowRow(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
@@ -183,8 +183,7 @@ fun ColumnScope.JourneyCardContent(
 
     FlowRow(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
@@ -271,7 +270,7 @@ fun ColumnScope.JourneyCardContent(
                 } else {
 
                     LegView(
-                        duration = leg.stopsInfo, // todo  - duration split model
+                        duration = leg.totalDuration,
                         routeText = leg.displayText,
                         transportModeLine = leg.transportModeLine,
                         stops = leg.stops,
@@ -448,6 +447,114 @@ private fun PreviewJourneyCard() {
         )
     }
 }
+
+@PreviewLightDark
+@Preview(fontScale = 2f)
+@Composable
+private fun PreviewJourneyCardCollapsed() {
+    KrailTheme {
+        JourneyCard(
+            timeToDeparture = "in 5 mins",
+            originTime = "8:25am",
+            destinationTime = "8:40am",
+            totalTravelTime = "15 mins",
+            platformNumber = '1',
+            isWheelchairAccessible = true,
+            transportModeList = listOf(
+                TransportMode.Train(),
+                TransportMode.Bus(),
+            ).toImmutableList(),
+            legList = persistentListOf(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS,
+                    displayText = "towards Abc via Rainy Rd",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Train(),
+                        lineName = "T1",
+                    ),
+                    totalDuration = "20 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.WalkingLeg(
+                    duration = "15 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS.take(2).toImmutableList(),
+                    displayText = "towards Xyz via Awesome Rd",
+                    totalDuration = "10 mins",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "700",
+                    ),
+                ),
+
+            ),
+            cardState = JourneyCardState.COLLAPSED,
+            onClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Preview(fontScale = 2f)
+@Composable
+private fun PreviewJourneyCardExpanded() {
+    KrailTheme {
+        JourneyCard(
+            timeToDeparture = "in 5 mins",
+            originTime = "8:25am",
+            destinationTime = "8:40am",
+            totalTravelTime = "15 mins",
+            platformNumber = '1',
+            isWheelchairAccessible = true,
+            transportModeList = listOf(
+                TransportMode.Train(),
+                TransportMode.Bus(),
+            ).toImmutableList(),
+            legList = persistentListOf(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS,
+                    displayText = "towards Abc via Rainy Rd",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Train(),
+                        lineName = "T1",
+                    ),
+                    totalDuration = "20 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.WalkingLeg(
+                    duration = "15 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS.take(2).toImmutableList(),
+                    displayText = "towards Xyz via Awesome Rd",
+                    totalDuration = "10 mins",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "700",
+                    ),
+                ),
+
+                ),
+            cardState = JourneyCardState.EXPANDED,
+            onClick = {},
+        )
+    }
+}
+
+
+private val PREVIEW_STOPS = persistentListOf(
+    TimeTableState.JourneyCardInfo.Stop(
+        name = "Stop 1",
+        time = "8:30am",
+    ),
+    TimeTableState.JourneyCardInfo.Stop(
+        name = "Stop 2",
+        time = "8:35am",
+    ),
+    TimeTableState.JourneyCardInfo.Stop(
+        name = "Stop 3",
+        time = "8:40am",
+    ),
+)
 
 @Preview
 @Preview(fontScale = 2f)
