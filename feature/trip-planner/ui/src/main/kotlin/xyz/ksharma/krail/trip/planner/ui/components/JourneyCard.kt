@@ -142,7 +142,6 @@ fun JourneyCard(
             )
 
             else -> JourneyCardContent(
-                isExpanded = cardState == JourneyCardState.EXPANDED,
                 timeToDeparture = timeToDeparture,
                 themeColor = themeColor,
                 platformNumber = platformNumber,
@@ -157,7 +156,6 @@ fun JourneyCard(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ColumnScope.JourneyCardContent(
-    isExpanded: Boolean,
     timeToDeparture: String,
     themeColor: Color,
     platformNumber: Char?,
@@ -285,7 +283,6 @@ fun ColumnScope.JourneyCardContent(
                         routeText = leg.displayText,
                         transportModeLine = leg.transportModeLine,
                         stops = leg.stops,
-                        isExpanded = isExpanded,
                         modifier = Modifier,
                     )
                 }
