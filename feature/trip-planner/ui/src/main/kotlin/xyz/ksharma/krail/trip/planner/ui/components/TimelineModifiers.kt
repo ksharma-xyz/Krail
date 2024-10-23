@@ -53,6 +53,23 @@ internal fun Modifier.timeLineCenter(color: Color, strokeWidth: Dp): Modifier {
     }
 }
 
+internal fun Modifier.timeLineCenterWithStop(color: Color, strokeWidth: Dp, circleRadius: Dp): Modifier {
+    return this.drawBehind {
+        drawLine(
+            color = color,
+            start = Offset(x = 0f, y = 0f),
+            end = Offset(x = 0f, y = this.size.height),
+            strokeWidth = strokeWidth.toPx(),
+            cap = StrokeCap.Round,
+        )
+        drawCircle(
+            color = color,
+            radius = circleRadius.toPx(),
+            center = Offset(0f, this.size.height / 2),
+        )
+    }
+}
+
 /**
  * Draws a vertical line and a circle at the bottom start of the composable,
  * representing the bottom end of a timeline element.
