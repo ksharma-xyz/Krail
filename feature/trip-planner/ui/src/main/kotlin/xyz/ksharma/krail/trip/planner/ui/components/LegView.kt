@@ -42,6 +42,7 @@ fun LegView(
     routeText: String, // AVC via XYZ
     transportModeLine: TransportModeLine,
     stops: ImmutableList<TimeTableState.JourneyCardInfo.Stop>,
+    isExpanded: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     val circleRadius = 8.dp
@@ -132,24 +133,27 @@ fun LegView(
                 }
             }
 
-            stops.drop(1).dropLast(1).forEach { stop ->
-                StopInfo(
-                    time = stop.time,
-                    name = stop.name,
-                    isProminent = false,
-                    modifier = Modifier
-                        .timeLineCenterWithStop(
-                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                            strokeWidth = strokeWidth,
-                            circleRadius = circleRadius,
-                        )
-                        .timeLineTop(
-                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                            strokeWidth = strokeWidth,
-                            circleRadius = circleRadius,
-                        )
-                        .padding(start = 16.dp, top = 12.dp),
-                )
+            if (isExpanded) {
+
+                stops.drop(1).dropLast(1).forEach { stop ->
+                    StopInfo(
+                        time = stop.time,
+                        name = stop.name,
+                        isProminent = false,
+                        modifier = Modifier
+                            .timeLineCenterWithStop(
+                                color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                strokeWidth = strokeWidth,
+                                circleRadius = circleRadius,
+                            )
+                            .timeLineTop(
+                                color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                strokeWidth = strokeWidth,
+                                circleRadius = circleRadius,
+                            )
+                            .padding(start = 16.dp, top = 12.dp),
+                    )
+                }
             }
 
             StopInfo(
