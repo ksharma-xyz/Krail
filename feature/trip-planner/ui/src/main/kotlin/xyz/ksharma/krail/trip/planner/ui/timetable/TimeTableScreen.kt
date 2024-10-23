@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -72,12 +73,17 @@ fun TimeTableScreen(
                         )
                     }.toImmutableList(),
                     legList = journey.legs.toImmutableList(),
-                    cardState = if (expandedJourneyId == journey.journeyId) JourneyCardState.COLLAPSED else JourneyCardState.DEFAULT,
+                    cardState = if (expandedJourneyId == journey.journeyId) {
+                        JourneyCardState.EXPANDED
+                    } else {
+                        JourneyCardState.DEFAULT
+                    },
                     onClick = {
                         onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
                     },
                     modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .animateContentSize(),
                 )
             }
         } else {
@@ -97,8 +103,8 @@ fun JourneyCardItem(
     destinationTime: String,
     onClick: () -> Unit,
     cardState: JourneyCardState,
-    modifier: Modifier = Modifier,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    modifier: Modifier = Modifier,
     transportModeLineList: ImmutableList<TransportModeLine>? = null,
 ) {
     if (!transportModeLineList.isNullOrEmpty() && legList.isNotEmpty()) {

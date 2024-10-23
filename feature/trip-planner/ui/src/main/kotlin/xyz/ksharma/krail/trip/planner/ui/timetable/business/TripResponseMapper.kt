@@ -134,7 +134,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
                         lineName = lineName,
                     ),
                     displayText = displayText,
-                    stopsInfo = "$numberOfStops stops ($displayDuration)",
+                    totalDuration = displayDuration,
                     stops = stops,
                     walkInterchange = footPathInfo?.firstOrNull()?.let { foot ->
                         foot.toWalkInterchange(foot.duration.toDisplayString())

@@ -42,8 +42,8 @@ fun LegView(
     routeText: String, // AVC via XYZ
     transportModeLine: TransportModeLine,
     stops: ImmutableList<TimeTableState.JourneyCardInfo.Stop>,
-    isExpanded: Boolean = false,
     modifier: Modifier = Modifier,
+    isExpanded: Boolean = false,
 ) {
     val circleRadius = 8.dp
     val strokeWidth = 4.dp
@@ -134,7 +134,6 @@ fun LegView(
             }
 
             if (isExpanded) {
-
                 stops.drop(1).dropLast(1).forEach { stop ->
                     StopInfo(
                         time = stop.time,
