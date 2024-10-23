@@ -60,14 +60,14 @@ fun JourneyCard(
     destinationTime: String,
     totalTravelTime: String,
     isWheelchairAccessible: Boolean,
+    transportModeList: ImmutableList<TransportMode>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     platformNumber: Char? = null,
-    transportModeList: ImmutableList<TransportMode>? = null,
 ) {
     val onSurface: Color = KrailTheme.colors.onSurface
     val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }
-    val themeColor = transportModeList?.firstOrNull()?.colorCode?.hexToComposeColor()
+    val themeColor = transportModeList.firstOrNull()?.colorCode?.hexToComposeColor()
         ?: KrailTheme.colors.onSurface
 
     Column(
@@ -102,7 +102,7 @@ fun JourneyCard(
                     .weight(1f),
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                transportModeList?.forEachIndexed { index, mode ->
+                transportModeList.forEachIndexed { index, mode ->
                     TransportModeIcon(
                         letter = mode.name.first(),
                         backgroundColor = mode.colorCode.hexToComposeColor(),

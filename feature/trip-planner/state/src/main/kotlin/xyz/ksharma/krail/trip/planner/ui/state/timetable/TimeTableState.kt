@@ -31,15 +31,19 @@ data class TimeTableState(
          * transportation.disassembledName -> lineName
          * transportation.product.class -> TransportModeType
          */
-        val transportModeLines: ImmutableList<TransportModeLine>? = null,
+        val transportModeLines: ImmutableList<TransportModeLine>,
 
         val legs: ImmutableList<Leg>,
     ) {
         val journeyId: String
-            get() = (
-                originUtcDateTime + destinationTime + transportModeLines
-                    ?.joinToString { it.lineName }
-                ).filter { it.isLetterOrDigit() }
+            get() = buildString {
+                append(originUtcDateTime)
+                append(destinationTime)
+                append(
+                    transportModeLines.joinToString { it.lineName }
+                        .filter { it.isLetterOrDigit() },
+                )
+            }
 
         sealed class Leg {
             data class WalkingLeg(

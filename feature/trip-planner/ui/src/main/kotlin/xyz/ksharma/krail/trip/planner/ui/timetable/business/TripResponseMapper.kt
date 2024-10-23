@@ -31,7 +31,9 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         val transportModeLines = legs?.getTransportModeLines()
         val legsList = legs?.getLegsList()
 
-        if (originTimeUTC != null && arrivalTimeUTC != null && totalStops > 0 && legsList != null) {
+        if (originTimeUTC != null && arrivalTimeUTC != null && totalStops > 0 && legsList != null &&
+            transportModeLines != null
+        ) {
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.getTimeText(),
                 platformText = platformText,
