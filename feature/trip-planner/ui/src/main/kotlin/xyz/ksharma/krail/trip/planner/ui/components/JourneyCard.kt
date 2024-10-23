@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -88,13 +89,27 @@ fun JourneyCard(
             .fillMaxWidth()
             .clip(RoundedCornerShape(12.dp))
             .background(color = KrailTheme.colors.surface)
-            .border(
-                width = 2.dp,
-                shape = RoundedCornerShape(12.dp),
-                brush = Brush.linearGradient(colors = borderColors),
+            .then(
+                if (cardState == JourneyCardState.DEFAULT) {
+                    Modifier.border(
+                        width = 2.dp,
+                        shape = RoundedCornerShape(12.dp),
+                        brush = Brush.linearGradient(colors = borderColors),
+                    )
+                } else {
+                    Modifier
+                },
             )
-            .clickable(role = Role.Button, onClick = onClick)
-            .padding(vertical = 8.dp, horizontal = 12.dp),
+            .clickable(
+                role = Role.Button,
+                onClick = onClick,
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+            )
+            .padding(
+                vertical = 8.dp,
+                horizontal = if (cardState == JourneyCardState.DEFAULT) 12.dp else 0.dp,
+            ),
     ) {
         when (cardState) {
             JourneyCardState.DEFAULT -> DefaultJourneyCardContent(

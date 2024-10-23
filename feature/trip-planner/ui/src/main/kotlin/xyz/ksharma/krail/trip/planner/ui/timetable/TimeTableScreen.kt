@@ -74,7 +74,7 @@ fun TimeTableScreen(
                     }.toImmutableList(),
                     legList = journey.legs.toImmutableList(),
                     cardState = if (expandedJourneyId == journey.journeyId) {
-                        JourneyCardState.EXPANDED
+                        JourneyCardState.COLLAPSED
                     } else {
                         JourneyCardState.DEFAULT
                     },
