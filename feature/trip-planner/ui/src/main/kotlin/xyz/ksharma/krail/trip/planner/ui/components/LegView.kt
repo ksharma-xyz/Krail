@@ -17,12 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -104,28 +100,20 @@ fun LegView(
                 time = stops.first().time,
                 name = stops.first().name,
                 modifier = Modifier
-                    .drawBehind {
-                        drawCircle(
-                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                            radius = circleRadius.toPx(),
-                            center = Offset(0f, 38.sp.toPx() / 2),
-                        )
-                        drawLine(
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                                ),
-                            ),
-                            start = Offset(
-                                x = 0f,
-                                y = 38.sp.toPx() / 2,
-                            ),
-                            end = Offset(x = 0f, y = this.size.height),
-                            strokeWidth = strokeWidth.toPx(),
-                            cap = StrokeCap.Round,
-                        )
-                    }
+                    .timeLineTop(
+                        color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                        strokeWidth = strokeWidth,
+                        circleRadius = circleRadius,
+                    )
+                    .padding(start = 16.dp),
+            )
+
+            Column(
+                modifier = Modifier
+                    .timeLineCenter(
+                        color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                        strokeWidth = strokeWidth,
+                    )
                     .padding(start = 16.dp),
             ) {
                 if (stops.size > 2) {
@@ -149,25 +137,11 @@ fun LegView(
                 time = stops.last().time,
                 name = stops.last().name,
                 modifier = Modifier
-                    .drawBehind {
-                        drawLine(
-                            brush = Brush.linearGradient(
-                                colors = listOf(
-                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                                    transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                                ),
-                            ),
-                            start = Offset(x = 0f, y = 0f),
-                            end = Offset(x = 0f, y = this.size.height - 38.dp.toPx() / 2),
-                            strokeWidth = strokeWidth.toPx(),
-                            cap = StrokeCap.Round,
-                        )
-                        drawCircle(
-                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                            radius = circleRadius.toPx(),
-                            center = Offset(0f, this.size.height - 38.sp.toPx() / 2),
-                        )
-                    }
+                    .timeLineBottom(
+                        color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                        strokeWidth = strokeWidth,
+                        circleRadius = circleRadius,
+                    )
                     .padding(start = 16.dp),
             )
         }
@@ -179,7 +153,6 @@ fun ProminentStopInfo(
     time: String,
     name: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit = {},
 ) {
     Column(modifier = modifier) {
         Text(
@@ -192,7 +165,6 @@ fun ProminentStopInfo(
             style = KrailTheme.typography.titleSmall,
             color = KrailTheme.colors.onSurface,
         )
-        content()
     }
 }
 
@@ -228,6 +200,8 @@ fun StopsRow(stops: String, line: TransportModeLine, modifier: Modifier = Modifi
         )
     }
 }
+
+// region Previews
 
 @PreviewLightDark
 @Preview(fontScale = 2f)
@@ -312,3 +286,5 @@ private fun PreviewProminentStopInfo() {
         )
     }
 }
+
+// endregion
