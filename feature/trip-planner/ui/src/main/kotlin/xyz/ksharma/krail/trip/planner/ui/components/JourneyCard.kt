@@ -7,11 +7,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,13 +26,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
@@ -39,6 +45,27 @@ import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
+
+enum class JourneyCardState {
+    /**
+     * Default state of the card. as displayed in the list.
+     */
+    DEFAULT,
+
+    /**
+     * Card displaying information about different legs of the journey.
+     * The number of stops and duration of each leg.
+     */
+    COLLAPSED,
+
+    /**
+     * Card displaying the full journey details of a certain leg.
+     * It will display all the stops in the leg, with platform and timing information.
+     */
+    EXPANDED,
+}
+
 
 /**
  * A card that displays information about a journey.
@@ -52,7 +79,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
  * @param onClick The action to perform when the card is clicked.
  * @param modifier The modifier to apply to the card.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyCard(
     timeToDeparture: String,
@@ -60,8 +86,10 @@ fun JourneyCard(
     destinationTime: String,
     totalTravelTime: String,
     isWheelchairAccessible: Boolean,
+    legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     transportModeList: ImmutableList<TransportMode>,
     onClick: () -> Unit,
+    cardState: JourneyCardState,
     modifier: Modifier = Modifier,
     platformNumber: Char? = null,
 ) {
@@ -69,6 +97,10 @@ fun JourneyCard(
     val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }
     val themeColor = transportModeList.firstOrNull()?.colorCode?.hexToComposeColor()
         ?: KrailTheme.colors.onSurface
+
+    val density = LocalDensity.current
+    // todo can be reusable logic for consistent icon size
+    val iconSize = with(density) { 14.sp.toDp() }
 
     Column(
         modifier = modifier
@@ -83,35 +115,235 @@ fun JourneyCard(
             .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
     ) {
-        FlowRow(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(
-                text = timeToDeparture,
-                style = KrailTheme.typography.titleMedium,
-                color = themeColor,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .align(Alignment.CenterVertically),
+
+        when (cardState) {
+            JourneyCardState.DEFAULT -> DefaultJourneyCardContent(
+                timeToDeparture = timeToDeparture,
+                originTime = originTime,
+                destinationTime = destinationTime,
+                totalTravelTime = totalTravelTime,
+                isWheelchairAccessible = isWheelchairAccessible,
+                themeColor = themeColor,
+                transportModeList = transportModeList,
+                platformNumber = platformNumber,
             )
-            Row(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                transportModeList.forEachIndexed { index, mode ->
-                    TransportModeIcon(
-                        letter = mode.name.first(),
-                        backgroundColor = mode.colorCode.hexToComposeColor(),
+
+            else -> JourneyCardContent(
+                isExpanded = cardState == JourneyCardState.EXPANDED,
+                timeToDeparture = timeToDeparture,
+                themeColor = themeColor,
+                platformNumber = platformNumber,
+                iconSize = iconSize,
+                totalTravelTime = totalTravelTime,
+                legList = legList,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ColumnScope.JourneyCardContent(
+    isExpanded: Boolean,
+    timeToDeparture: String,
+    themeColor: Color,
+    platformNumber: Char?,
+    iconSize: Dp,
+    totalTravelTime: String,
+    legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+) {
+    val firstTransportLeg = remember(legList) {
+        legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
+    }
+
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = timeToDeparture,
+            style = KrailTheme.typography.titleLarge,
+            color = themeColor,
+        )
+
+        platformNumber?.let { platform ->
+            firstTransportLeg?.transportModeLine?.transportMode?.buildPlatformText(platform)
+                ?.let { platformText ->
+                    Text(
+                        text = platformText,
+                        style = KrailTheme.typography.titleLarge,
+                        color = themeColor,
                     )
-                    if (index != transportModeList.lastIndex) {
-                        SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                }
+        }
+    }
+
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.align(Alignment.CenterVertically),
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_alert),
+                contentDescription = "Wheelchair accessible",
+                colorFilter = ColorFilter.tint(Color(0xFFF4B400)),
+                modifier = Modifier
+                    .size(iconSize),
+            )
+            Text(
+                text = "Info",
+                style = KrailTheme.typography.bodyLarge,
+                modifier = Modifier.padding(start = 4.dp),
+            )
+        }
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .padding(top = 8.dp),
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_clock),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .align(Alignment.CenterVertically)
+                    .size(iconSize),
+            )
+            Text(
+                text = totalTravelTime,
+                style = KrailTheme.typography.bodyLarge,
+            )
+        }
+    }
+
+    Spacer(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(8.dp),
+    )
+
+    legList.forEachIndexed { _, leg ->
+        when (leg) {
+            is TimeTableState.JourneyCardInfo.Leg.WalkingLeg -> {
+                WalkingLeg(
+                    duration = leg.duration,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp),
+                )
+            }
+
+            is TimeTableState.JourneyCardInfo.Leg.TransportLeg -> {
+                if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.BEFORE) {
+                    leg.walkInterchange?.duration?.let { duration ->
+                        WalkingLeg(
+                            duration = duration,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                        )
+                    }
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(8.dp),
+                )
+
+                if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.IDEST) {
+                    leg.walkInterchange?.duration?.let { duration ->
+                        WalkingLeg(
+                            duration = duration,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                        )
+                    }
+                } else {
+
+                    LegView(
+                        duration = leg.stopsInfo, // todo  - duration split model
+                        routeText = leg.displayText,
+                        transportModeLine = leg.transportModeLine,
+                        stops = leg.stops,
+                        isExpanded = isExpanded,
+                        modifier = Modifier,
+                    )
+                }
+
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(8.dp),
+                )
+
+                if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.AFTER) {
+                    leg.walkInterchange?.duration?.let { duration ->
+                        WalkingLeg(
+                            duration = duration,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp),
+                        )
                     }
                 }
             }
+        }
+    }
+
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ColumnScope.DefaultJourneyCardContent(
+    timeToDeparture: String,
+    originTime: String,
+    destinationTime: String,
+    totalTravelTime: String,
+    isWheelchairAccessible: Boolean,
+    themeColor: Color,
+    transportModeList: ImmutableList<TransportMode>,
+    platformNumber: Char?,
+) {
+    FlowRow(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Text(
+            text = timeToDeparture,
+            style = KrailTheme.typography.titleMedium,
+            color = themeColor,
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .align(Alignment.CenterVertically),
+        )
+        Row(
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .weight(1f),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            transportModeList.forEachIndexed { index, mode ->
+                TransportModeIcon(
+                    letter = mode.name.first(),
+                    backgroundColor = mode.colorCode.hexToComposeColor(),
+                )
+                if (index != transportModeList.lastIndex) {
+                    SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                }
+            }
+        }
+
+        platformNumber?.let { platform -> // todo - extract
             Box(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -124,60 +356,60 @@ fun JourneyCard(
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = platformNumber.toString(),
+                    text = platform.toString(),
                     textAlign = TextAlign.Center,
                     style = KrailTheme.typography.labelLarge,
                 )
             }
         }
+    }
 
+    Text(
+        text = originTime,
+        style = KrailTheme.typography.titleMedium,
+        color = KrailTheme.colors.onSurface,
+    )
+
+    FlowRow(
+        horizontalArrangement = Arrangement.Start,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .align(Alignment.CenterHorizontally),
+    ) {
         Text(
-            text = originTime,
+            text = destinationTime,
             style = KrailTheme.typography.titleMedium,
             color = KrailTheme.colors.onSurface,
         )
-
-        FlowRow(
-            horizontalArrangement = Arrangement.Start,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.CenterHorizontally),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.align(Alignment.CenterVertically),
         ) {
-            Text(
-                text = destinationTime,
-                style = KrailTheme.typography.titleMedium,
-                color = KrailTheme.colors.onSurface,
+            Image(
+                painter = painterResource(R.drawable.ic_clock),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                modifier = Modifier
+                    .padding(horizontal = 4.dp)
+                    .align(Alignment.CenterVertically)
+                    .size(14.dp.toAdaptiveSize()),
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.align(Alignment.CenterVertically),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_clock),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-                    modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .align(Alignment.CenterVertically)
-                        .size(14.dp.toAdaptiveSize()),
-                )
-                Text(
-                    text = totalTravelTime,
-                    style = KrailTheme.typography.bodyMedium,
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            if (isWheelchairAccessible) {
-                Image(
-                    painter = painterResource(R.drawable.ic_a11y),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-                    modifier = Modifier
-                        .size(14.dp.toAdaptiveSize())
-                        .align(Alignment.CenterVertically),
-                )
-            }
+            Text(
+                text = totalTravelTime,
+                style = KrailTheme.typography.bodyMedium,
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        if (isWheelchairAccessible) {
+            Image(
+                painter = painterResource(R.drawable.ic_a11y),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                modifier = Modifier
+                    .size(14.dp.toAdaptiveSize())
+                    .align(Alignment.CenterVertically),
+            )
         }
     }
 }
@@ -210,6 +442,8 @@ private fun PreviewJourneyCard() {
                 TransportMode.Train(),
                 TransportMode.Bus(),
             ).toImmutableList(),
+            legList = persistentListOf(),
+            cardState = JourneyCardState.DEFAULT,
             onClick = {},
         )
     }
@@ -234,6 +468,8 @@ private fun PreviewJourneyCardLongData() {
                 TransportMode.Coach(),
                 TransportMode.Metro(),
             ).toImmutableList(),
+            legList = persistentListOf(),
+            cardState = JourneyCardState.DEFAULT,
             onClick = {},
         )
     }

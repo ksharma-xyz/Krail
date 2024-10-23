@@ -1,11 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.shrinkOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,7 +18,7 @@ import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
-import xyz.ksharma.krail.trip.planner.ui.components.JourneyDetailCard
+import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -65,48 +59,26 @@ fun TimeTableScreen(
             }
 
             items(timeTableState.journeyList) { journey ->
-
-                AnimatedVisibility(
-                    visible = expandedJourneyId == journey.journeyId,
-                    enter = scaleIn(initialScale = 0.3f) + fadeIn(),
-                    exit = fadeOut() + shrinkOut(),
-                ) {
-                    JourneyDetailCard(
-                        timeToDeparture = journey.timeText,
-                        platformNumber = journey.platformText ?: ' ',
-                        totalTravelTime = journey.travelTime,
-                        legList = journey.legs.toImmutableList(),
-                        onClick = {
-                            onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
-                        },
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .animateContentSize(),
-                    )
-                }
-                AnimatedVisibility(
-                    visible = expandedJourneyId != journey.journeyId,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                ) {
-                    JourneyCardItem(
-                        timeToDeparture = journey.timeText,
-                        departureLocationNumber = journey.platformText,
-                        originTime = journey.originTime,
-                        destinationTime = journey.destinationTime,
-                        durationText = journey.travelTime,
-                        transportModeLineList = journey.transportModeLines.map {
-                            TransportModeLine(
-                                transportMode = it.transportMode,
-                                lineName = it.lineName,
-                            )
-                        }.toImmutableList(),
-                        onClick = {
-                            onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
-                        },
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    )
-                }
+                JourneyCardItem(
+                    timeToDeparture = journey.timeText,
+                    departureLocationNumber = journey.platformText,
+                    originTime = journey.originTime,
+                    destinationTime = journey.destinationTime,
+                    durationText = journey.travelTime,
+                    transportModeLineList = journey.transportModeLines.map {
+                        TransportModeLine(
+                            transportMode = it.transportMode,
+                            lineName = it.lineName,
+                        )
+                    }.toImmutableList(),
+                    legList = journey.legs.toImmutableList(),
+                    cardState = if (expandedJourneyId == journey.journeyId) JourneyCardState.COLLAPSED else JourneyCardState.DEFAULT,
+                    onClick = {
+                        onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                )
             }
         } else {
             item {
@@ -124,10 +96,12 @@ fun JourneyCardItem(
     durationText: String,
     destinationTime: String,
     onClick: () -> Unit,
+    cardState: JourneyCardState,
     modifier: Modifier = Modifier,
+    legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     transportModeLineList: ImmutableList<TransportModeLine>? = null,
 ) {
-    if (!transportModeLineList.isNullOrEmpty()) {
+    if (!transportModeLineList.isNullOrEmpty() && legList.isNotEmpty()) {
         JourneyCard(
             timeToDeparture = timeToDeparture,
             originTime = originTime,
@@ -135,7 +109,9 @@ fun JourneyCardItem(
             totalTravelTime = durationText,
             platformNumber = departureLocationNumber,
             isWheelchairAccessible = false,
+            cardState = cardState,
             transportModeList = transportModeLineList.map { it.transportMode }.toImmutableList(),
+            legList = legList,
             onClick = onClick,
             modifier = modifier,
         )
