@@ -41,7 +41,7 @@ fun SearchStopRow(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = KrailTheme.colors.secondary,
+                color = KrailTheme.colors.onSecondaryContainer,
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
             )
             .padding(vertical = 24.dp, horizontal = 16.dp)

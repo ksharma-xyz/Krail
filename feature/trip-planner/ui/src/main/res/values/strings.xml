@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="saved_trips_screen_title">Saved Trips</string>
-    <string name="from_text_field_placeholder">From</string>
-    <string name="to_text_field_placeholder">To</string>
+    <string name="from_text_field_placeholder">Starting from</string>
+    <string name="to_text_field_placeholder">To Destination</string>
     <string name="time_table_screen_title">Time Table</string>
 </resources>

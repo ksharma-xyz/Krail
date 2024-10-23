@@ -79,7 +79,7 @@ fun SearchStopScreen(
     ) {
         stickyHeader {
             TextField(
-                placeholder = "Search",
+                placeholder = "Search for stop",
                 modifier = Modifier
                     .focusRequester(focusRequester)
                     .padding(horizontal = 16.dp)
