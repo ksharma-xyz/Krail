@@ -7,11 +7,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -24,13 +26,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
@@ -39,6 +45,8 @@ import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
+import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 
 /**
  * A card that displays information about a journey.
@@ -52,7 +60,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
  * @param onClick The action to perform when the card is clicked.
  * @param modifier The modifier to apply to the card.
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun JourneyCard(
     timeToDeparture: String,
@@ -60,8 +67,10 @@ fun JourneyCard(
     destinationTime: String,
     totalTravelTime: String,
     isWheelchairAccessible: Boolean,
+    legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     transportModeList: ImmutableList<TransportMode>,
     onClick: () -> Unit,
+    cardState: JourneyCardState,
     modifier: Modifier = Modifier,
     platformNumber: Char? = null,
 ) {
@@ -69,6 +78,10 @@ fun JourneyCard(
     val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }
     val themeColor = transportModeList.firstOrNull()?.colorCode?.hexToComposeColor()
         ?: KrailTheme.colors.onSurface
+
+    val density = LocalDensity.current
+    // todo can be reusable logic for consistent icon size
+    val iconSize = with(density) { 14.sp.toDp() }
 
     Column(
         modifier = modifier
@@ -83,6 +96,206 @@ fun JourneyCard(
             .clickable(role = Role.Button, onClick = onClick)
             .padding(vertical = 8.dp, horizontal = 12.dp),
     ) {
+        when (cardState) {
+            JourneyCardState.DEFAULT -> DefaultJourneyCardContent(
+                timeToDeparture = timeToDeparture,
+                originTime = originTime,
+                destinationTime = destinationTime,
+                totalTravelTime = totalTravelTime,
+                isWheelchairAccessible = isWheelchairAccessible,
+                themeColor = themeColor,
+                transportModeList = transportModeList,
+                platformNumber = platformNumber,
+                modifier = Modifier,
+            )
+
+            else -> JourneyCardContent(
+                isExpanded = cardState == JourneyCardState.EXPANDED,
+                timeToDeparture = timeToDeparture,
+                themeColor = themeColor,
+                platformNumber = platformNumber,
+                iconSize = iconSize,
+                totalTravelTime = totalTravelTime,
+                legList = legList,
+                modifier = Modifier,
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun JourneyCardContent(
+    isExpanded: Boolean,
+    timeToDeparture: String,
+    themeColor: Color,
+    platformNumber: Char?,
+    iconSize: Dp,
+    totalTravelTime: String,
+    legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    modifier: Modifier = Modifier,
+) {
+    val firstTransportLeg = remember(legList) {
+        legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
+    }
+
+    Column(modifier = modifier) {
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Text(
+                text = timeToDeparture,
+                style = KrailTheme.typography.titleLarge,
+                color = themeColor,
+            )
+
+            platformNumber?.let { platform ->
+                firstTransportLeg?.transportModeLine?.transportMode?.buildPlatformText(platform)
+                    ?.let { platformText ->
+                        Text(
+                            text = platformText,
+                            style = KrailTheme.typography.titleLarge,
+                            color = themeColor,
+                        )
+                    }
+            }
+        }
+
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.CenterVertically),
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_alert),
+                    contentDescription = "Wheelchair accessible",
+                    colorFilter = ColorFilter.tint(Color(0xFFF4B400)),
+                    modifier = Modifier
+                        .size(iconSize),
+                )
+                Text(
+                    text = "Info",
+                    style = KrailTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp),
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(top = 8.dp),
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_clock),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .size(iconSize),
+                )
+                Text(
+                    text = totalTravelTime,
+                    style = KrailTheme.typography.bodyLarge,
+                )
+            }
+        }
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp),
+        )
+
+        legList.forEachIndexed { _, leg ->
+            when (leg) {
+                is TimeTableState.JourneyCardInfo.Leg.WalkingLeg -> {
+                    WalkingLeg(
+                        duration = leg.duration,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp),
+                    )
+                }
+
+                is TimeTableState.JourneyCardInfo.Leg.TransportLeg -> {
+                    if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.BEFORE) {
+                        leg.walkInterchange?.duration?.let { duration ->
+                            WalkingLeg(
+                                duration = duration,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp),
+                            )
+                        }
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp),
+                    )
+
+                    if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.IDEST) {
+                        leg.walkInterchange?.duration?.let { duration ->
+                            WalkingLeg(
+                                duration = duration,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp),
+                            )
+                        }
+                    } else {
+                        LegView(
+                            duration = leg.totalDuration,
+                            routeText = leg.displayText,
+                            transportModeLine = leg.transportModeLine,
+                            stops = leg.stops,
+                            isExpanded = isExpanded,
+                            modifier = Modifier,
+                        )
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(8.dp),
+                    )
+
+                    if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.AFTER) {
+                        leg.walkInterchange?.duration?.let { duration ->
+                            WalkingLeg(
+                                duration = duration,
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ColumnScope.DefaultJourneyCardContent(
+    timeToDeparture: String,
+    originTime: String,
+    destinationTime: String,
+    totalTravelTime: String,
+    isWheelchairAccessible: Boolean,
+    themeColor: Color,
+    transportModeList: ImmutableList<TransportMode>,
+    platformNumber: Char?,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
         FlowRow(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalArrangement = Arrangement.Center,
@@ -112,22 +325,25 @@ fun JourneyCard(
                     }
                 }
             }
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .size(28.dp.toAdaptiveDecorativeIconSize())
-                    .border(
-                        width = 3.dp,
-                        color = themeColor,
-                        shape = CircleShape,
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = platformNumber.toString(),
-                    textAlign = TextAlign.Center,
-                    style = KrailTheme.typography.labelLarge,
-                )
+
+            platformNumber?.let { platform -> // todo - extract
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .size(28.dp.toAdaptiveDecorativeIconSize())
+                        .border(
+                            width = 3.dp,
+                            color = themeColor,
+                            shape = CircleShape,
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = platform.toString(),
+                        textAlign = TextAlign.Center,
+                        style = KrailTheme.typography.labelLarge,
+                    )
+                }
             }
         }
 
@@ -210,10 +426,119 @@ private fun PreviewJourneyCard() {
                 TransportMode.Train(),
                 TransportMode.Bus(),
             ).toImmutableList(),
+            legList = persistentListOf(),
+            cardState = JourneyCardState.DEFAULT,
             onClick = {},
         )
     }
 }
+
+@PreviewLightDark
+@Preview(fontScale = 2f)
+@Composable
+private fun PreviewJourneyCardCollapsed() {
+    KrailTheme {
+        JourneyCard(
+            timeToDeparture = "in 5 mins",
+            originTime = "8:25am",
+            destinationTime = "8:40am",
+            totalTravelTime = "15 mins",
+            platformNumber = '1',
+            isWheelchairAccessible = true,
+            transportModeList = listOf(
+                TransportMode.Train(),
+                TransportMode.Bus(),
+            ).toImmutableList(),
+            legList = persistentListOf(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS,
+                    displayText = "towards Abc via Rainy Rd",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Train(),
+                        lineName = "T1",
+                    ),
+                    totalDuration = "20 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.WalkingLeg(
+                    duration = "15 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS.take(2).toImmutableList(),
+                    displayText = "towards Xyz via Awesome Rd",
+                    totalDuration = "10 mins",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "700",
+                    ),
+                ),
+
+            ),
+            cardState = JourneyCardState.COLLAPSED,
+            onClick = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Preview(fontScale = 2f)
+@Composable
+private fun PreviewJourneyCardExpanded() {
+    KrailTheme {
+        JourneyCard(
+            timeToDeparture = "in 5 mins",
+            originTime = "8:25am",
+            destinationTime = "8:40am",
+            totalTravelTime = "15 mins",
+            platformNumber = '1',
+            isWheelchairAccessible = true,
+            transportModeList = listOf(
+                TransportMode.Train(),
+                TransportMode.Bus(),
+            ).toImmutableList(),
+            legList = persistentListOf(
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS,
+                    displayText = "towards Abc via Rainy Rd",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Train(),
+                        lineName = "T1",
+                    ),
+                    totalDuration = "20 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.WalkingLeg(
+                    duration = "15 mins",
+                ),
+                TimeTableState.JourneyCardInfo.Leg.TransportLeg(
+                    stops = PREVIEW_STOPS.take(2).toImmutableList(),
+                    displayText = "towards Xyz via Awesome Rd",
+                    totalDuration = "10 mins",
+                    transportModeLine = TransportModeLine(
+                        transportMode = TransportMode.Bus(),
+                        lineName = "700",
+                    ),
+                ),
+
+            ),
+            cardState = JourneyCardState.EXPANDED,
+            onClick = {},
+        )
+    }
+}
+
+private val PREVIEW_STOPS = persistentListOf(
+    TimeTableState.JourneyCardInfo.Stop(
+        name = "Stop 1",
+        time = "8:30am",
+    ),
+    TimeTableState.JourneyCardInfo.Stop(
+        name = "Stop 2",
+        time = "8:35am",
+    ),
+    TimeTableState.JourneyCardInfo.Stop(
+        name = "Stop 3",
+        time = "8:40am",
+    ),
+)
 
 @Preview
 @Preview(fontScale = 2f)
@@ -234,6 +559,8 @@ private fun PreviewJourneyCardLongData() {
                 TransportMode.Coach(),
                 TransportMode.Metro(),
             ).toImmutableList(),
+            legList = persistentListOf(),
+            cardState = JourneyCardState.DEFAULT,
             onClick = {},
         )
     }
