@@ -268,7 +268,6 @@ fun ColumnScope.JourneyCardContent(
                         )
                     }
                 } else {
-
                     LegView(
                         duration = leg.totalDuration,
                         routeText = leg.displayText,
