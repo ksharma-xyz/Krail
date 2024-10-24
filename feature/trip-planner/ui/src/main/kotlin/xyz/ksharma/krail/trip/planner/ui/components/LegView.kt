@@ -96,9 +96,10 @@ fun LegView(
         }
         Spacer(modifier = Modifier.height(12.dp))
         Column(modifier = Modifier.fillMaxWidth()) {
-            ProminentStopInfo(
+            StopInfo(
                 time = stops.first().time,
                 name = stops.first().name,
+                isProminent = true,
                 modifier = Modifier
                     .timeLineTop(
                         color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
@@ -114,13 +115,12 @@ fun LegView(
                         color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
                         strokeWidth = strokeWidth,
                     )
-                    .padding(start = 16.dp),
+                    .padding(start = 16.dp, top = 12.dp),
             ) {
                 if (stops.size > 2) {
                     StopsRow(
                         stops = "${stops.size - 2} stops",
                         line = transportModeLine,
-                        modifier = Modifier.padding(vertical = 8.dp),
                     )
                 } else {
                     TransportModeInfo(
@@ -128,41 +128,62 @@ fun LegView(
                         backgroundColor = transportModeLine.transportMode.colorCode.hexToComposeColor(),
                         badgeText = transportModeLine.lineName,
                         badgeColor = transportModeLine.lineColorCode.hexToComposeColor(),
-                        modifier = Modifier.padding(vertical = 8.dp),
                     )
                 }
             }
 
-            ProminentStopInfo(
+            stops.drop(1).dropLast(1).forEach { stop ->
+                StopInfo(
+                    time = stop.time,
+                    name = stop.name,
+                    isProminent = false,
+                    modifier = Modifier
+                        .timeLineCenterWithStop(
+                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                            strokeWidth = strokeWidth,
+                            circleRadius = circleRadius,
+                        )
+                        .timeLineTop(
+                            color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                            strokeWidth = strokeWidth,
+                            circleRadius = circleRadius,
+                        )
+                        .padding(start = 16.dp, top = 12.dp),
+                )
+            }
+
+            StopInfo(
                 time = stops.last().time,
                 name = stops.last().name,
+                isProminent = true,
                 modifier = Modifier
                     .timeLineBottom(
                         color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
                         strokeWidth = strokeWidth,
                         circleRadius = circleRadius,
                     )
-                    .padding(start = 16.dp),
+                    .padding(start = 16.dp, top = 12.dp),
             )
         }
     }
 }
 
 @Composable
-fun ProminentStopInfo(
+fun StopInfo(
     time: String,
     name: String,
+    isProminent: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Text(
             text = time,
-            style = KrailTheme.typography.bodyMedium,
+            style = if (isProminent) KrailTheme.typography.bodyMedium else KrailTheme.typography.bodySmall,
             color = KrailTheme.colors.onSurface,
         )
         Text(
             text = name,
-            style = KrailTheme.typography.titleSmall,
+            style = if (isProminent) KrailTheme.typography.titleSmall else KrailTheme.typography.bodySmall,
             color = KrailTheme.colors.onSurface,
         )
     }
@@ -279,9 +300,10 @@ private fun PreviewStopsRow() {
 @Composable
 private fun PreviewProminentStopInfo() {
     KrailTheme {
-        ProminentStopInfo(
+        StopInfo(
             time = "12:00",
             name = "XYZ Station, Platform 1",
+            isProminent = true,
             modifier = Modifier.background(KrailTheme.colors.background),
         )
     }
