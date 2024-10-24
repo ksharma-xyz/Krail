@@ -72,6 +72,12 @@ fun LegView(
                     .copy(alpha = 0.1f),
                 shape = RoundedCornerShape(12.dp),
             )
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = { displayNonProminentStops = !displayNonProminentStops },
+                role = Role.Button,
+            )
             .padding(vertical = 12.dp, horizontal = 12.dp),
     ) {
         FlowRow(
@@ -128,27 +134,17 @@ fun LegView(
                         color = timelineColor,
                         strokeWidth = strokeWidth,
                     )
-                    .clickable(
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                        onClick = { displayNonProminentStops = !displayNonProminentStops },
-                        role = Role.Button,
-                    )
                     .padding(start = 16.dp, top = 12.dp),
             ) {
                 if (stops.size > 2) {
                     val context = LocalContext.current
                     StopsRow(
                         // Need to pass count twice - https://developer.android.com/guide/topics/resources/string-resource#Plurals
-                        stops = if (displayNonProminentStops) {
-                            "Hide stops"
-                        } else {
-                            context.resources.getQuantityString(
-                                R.plurals.stops,
-                                stops.size - 2,
-                                stops.size - 2,
-                            )
-                        },
+                        stops = context.resources.getQuantityString(
+                            R.plurals.stops,
+                            stops.size - 2,
+                            stops.size - 2,
+                        ),
                         line = transportModeLine,
                     )
                 } else {
