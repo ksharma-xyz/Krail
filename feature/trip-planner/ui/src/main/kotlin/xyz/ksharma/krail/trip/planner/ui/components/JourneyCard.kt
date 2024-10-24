@@ -117,12 +117,6 @@ fun JourneyCard(
                 )
                 else Modifier
             )
-            .clickable(
-                role = Role.Button,
-                onClick = onClick,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-            )
             .padding(
                 vertical = 8.dp,
                 horizontal = if (cardState == JourneyCardState.DEFAULT) 12.dp else 0.dp
@@ -139,6 +133,12 @@ fun JourneyCard(
                 themeColor = themeColor,
                 transportModeList = transportModeList,
                 platformNumber = platformNumber,
+                modifier = Modifier.clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                )
             )
 
             else -> JourneyCardContent(
@@ -148,6 +148,12 @@ fun JourneyCard(
                 iconSize = iconSize,
                 totalTravelTime = totalTravelTime,
                 legList = legList,
+                modifier = Modifier.clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                )
             )
         }
     }
@@ -162,86 +168,87 @@ fun ColumnScope.JourneyCardContent(
     iconSize: Dp,
     totalTravelTime: String,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    modifier: Modifier = Modifier,
 ) {
     val firstTransportLeg = remember(legList) {
         legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
     }
-
-    FlowRow(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Text(
-            text = timeToDeparture,
-            style = KrailTheme.typography.titleLarge,
-            color = themeColor,
-        )
-
-        platformNumber?.let { platform ->
-            firstTransportLeg?.transportModeLine?.transportMode?.buildPlatformText(platform)
-                ?.let { platformText ->
-                    Text(
-                        text = platformText,
-                        style = KrailTheme.typography.titleLarge,
-                        color = themeColor,
-                    )
-                }
-        }
-    }
-
-    FlowRow(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.align(Alignment.CenterVertically),
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_alert),
-                contentDescription = "Wheelchair accessible",
-                colorFilter = ColorFilter.tint(Color(0xFFF4B400)),
-                modifier = Modifier
-                    .size(iconSize),
-            )
-            Text(
-                text = "Info",
-                style = KrailTheme.typography.bodyLarge,
-                modifier = Modifier.padding(start = 4.dp),
-            )
-        }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+    Column(modifier = modifier) {
+        FlowRow(
             modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(top = 8.dp),
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Image(
-                painter = painterResource(R.drawable.ic_clock),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-                modifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .align(Alignment.CenterVertically)
-                    .size(iconSize),
-            )
             Text(
-                text = totalTravelTime,
-                style = KrailTheme.typography.bodyLarge,
+                text = timeToDeparture,
+                style = KrailTheme.typography.titleLarge,
+                color = themeColor,
             )
+
+            platformNumber?.let { platform ->
+                firstTransportLeg?.transportModeLine?.transportMode?.buildPlatformText(platform)
+                    ?.let { platformText ->
+                        Text(
+                            text = platformText,
+                            style = KrailTheme.typography.titleLarge,
+                            color = themeColor,
+                        )
+                    }
+            }
         }
+
+        FlowRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.CenterVertically),
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_alert),
+                    contentDescription = "Wheelchair accessible",
+                    colorFilter = ColorFilter.tint(Color(0xFFF4B400)),
+                    modifier = Modifier
+                        .size(iconSize),
+                )
+                Text(
+                    text = "Info",
+                    style = KrailTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 4.dp),
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(top = 8.dp),
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_clock),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .size(iconSize),
+                )
+                Text(
+                    text = totalTravelTime,
+                    style = KrailTheme.typography.bodyLarge,
+                )
+            }
+        }
+
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(8.dp),
+        )
     }
-
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(8.dp),
-    )
-
     legList.forEachIndexed { _, leg ->
         when (leg) {
             is TimeTableState.JourneyCardInfo.Leg.WalkingLeg -> {
@@ -319,104 +326,108 @@ fun ColumnScope.DefaultJourneyCardContent(
     themeColor: Color,
     transportModeList: ImmutableList<TransportMode>,
     platformNumber: Char?,
+    modifier: Modifier,
 ) {
-    FlowRow(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Text(
-            text = timeToDeparture,
-            style = KrailTheme.typography.titleMedium,
-            color = themeColor,
-            modifier = Modifier
-                .padding(end = 8.dp)
-                .align(Alignment.CenterVertically),
-        )
-        Row(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+    Column(modifier = modifier) {
+
+        FlowRow(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth(),
         ) {
-            transportModeList.forEachIndexed { index, mode ->
-                TransportModeIcon(
-                    letter = mode.name.first(),
-                    backgroundColor = mode.colorCode.hexToComposeColor(),
-                )
-                if (index != transportModeList.lastIndex) {
-                    SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+            Text(
+                text = timeToDeparture,
+                style = KrailTheme.typography.titleMedium,
+                color = themeColor,
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .align(Alignment.CenterVertically),
+            )
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .weight(1f),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            ) {
+                transportModeList.forEachIndexed { index, mode ->
+                    TransportModeIcon(
+                        letter = mode.name.first(),
+                        backgroundColor = mode.colorCode.hexToComposeColor(),
+                    )
+                    if (index != transportModeList.lastIndex) {
+                        SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                    }
+                }
+            }
+
+            platformNumber?.let { platform -> // todo - extract
+                Box(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .size(28.dp.toAdaptiveDecorativeIconSize())
+                        .border(
+                            width = 3.dp,
+                            color = themeColor,
+                            shape = CircleShape,
+                        ),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = platform.toString(),
+                        textAlign = TextAlign.Center,
+                        style = KrailTheme.typography.labelLarge,
+                    )
                 }
             }
         }
 
-        platformNumber?.let { platform -> // todo - extract
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .size(28.dp.toAdaptiveDecorativeIconSize())
-                    .border(
-                        width = 3.dp,
-                        color = themeColor,
-                        shape = CircleShape,
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = platform.toString(),
-                    textAlign = TextAlign.Center,
-                    style = KrailTheme.typography.labelLarge,
-                )
-            }
-        }
-    }
-
-    Text(
-        text = originTime,
-        style = KrailTheme.typography.titleMedium,
-        color = KrailTheme.colors.onSurface,
-    )
-
-    FlowRow(
-        horizontalArrangement = Arrangement.Start,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .align(Alignment.CenterHorizontally),
-    ) {
         Text(
-            text = destinationTime,
+            text = originTime,
             style = KrailTheme.typography.titleMedium,
             color = KrailTheme.colors.onSurface,
         )
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.align(Alignment.CenterVertically),
+
+        FlowRow(
+            horizontalArrangement = Arrangement.Start,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.CenterHorizontally),
         ) {
-            Image(
-                painter = painterResource(R.drawable.ic_clock),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-                modifier = Modifier
-                    .padding(horizontal = 4.dp)
-                    .align(Alignment.CenterVertically)
-                    .size(14.dp.toAdaptiveSize()),
-            )
             Text(
-                text = totalTravelTime,
-                style = KrailTheme.typography.bodyMedium,
+                text = destinationTime,
+                style = KrailTheme.typography.titleMedium,
+                color = KrailTheme.colors.onSurface,
             )
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        if (isWheelchairAccessible) {
-            Image(
-                painter = painterResource(R.drawable.ic_a11y),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-                modifier = Modifier
-                    .size(14.dp.toAdaptiveSize())
-                    .align(Alignment.CenterVertically),
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.CenterVertically),
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_clock),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    modifier = Modifier
+                        .padding(horizontal = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .size(14.dp.toAdaptiveSize()),
+                )
+                Text(
+                    text = totalTravelTime,
+                    style = KrailTheme.typography.bodyMedium,
+                )
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            if (isWheelchairAccessible) {
+                Image(
+                    painter = painterResource(R.drawable.ic_a11y),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    modifier = Modifier
+                        .size(14.dp.toAdaptiveSize())
+                        .align(Alignment.CenterVertically),
+                )
+            }
         }
     }
 }
