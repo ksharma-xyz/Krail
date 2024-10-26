@@ -68,9 +68,7 @@ private fun TripResponse.Leg?.getDepartureTime() =
 private fun TripResponse.Leg?.getArrivalTime() =
     this?.destination?.arrivalTimeEstimated ?: this?.destination?.arrivalTimePlanned
 
-private fun TripResponse.Journey.getFilteredValidLegs() = legs?.filter {
-    it.transportation != null && it.stopSequence != null
-}
+private fun TripResponse.Journey.getFilteredValidLegs() = legs?.filter { it.transportation != null }
 
 private fun List<TripResponse.Leg>.getTotalStops() = sumOf { leg -> leg.stopSequence?.size ?: 0 }
 
@@ -108,6 +106,13 @@ private fun String.getTimeText() = let {
 
 @Suppress("ComplexCondition")
 private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
+    Timber.d(
+        "\tFFF Leg: ${this.duration}, " +
+            "leg: ${this.origin?.name} TO ${this.destination?.name}" +
+            " - isWalk:${this.isWalkingLeg()}, " +
+            "PClass-${this.transportation?.product?.productClass}",
+    )
+
     val transportMode =
         transportation?.product?.productClass?.toInt()
             ?.let { TransportMode.toTransportModeType(productClass = it) }
@@ -125,6 +130,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
         }
 
         else -> { // Public Transport Leg
+//            Timber.d("FFF PTLeg: $displayDuration, leg: ${this.destination?.name} ")
             if (transportMode != null && lineName != null && displayText != null &&
                 numberOfStops != null && stops != null
             ) {
