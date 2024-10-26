@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,6 +51,7 @@ fun LegView(
     val density = LocalDensity.current
     // todo can be reusable logic for consistent icon size
     val iconSize = with(density) { 14.sp.toDp() }
+    val timelineColor = remember(transportModeLine) { transportModeLine.lineColorCode.hexToComposeColor() }
 
     Column(
         modifier = modifier
@@ -103,7 +105,7 @@ fun LegView(
                 isProminent = true,
                 modifier = Modifier
                     .timeLineTop(
-                        color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                        color = timelineColor,
                         strokeWidth = strokeWidth,
                         circleRadius = circleRadius,
                     )
@@ -113,7 +115,7 @@ fun LegView(
             Column(
                 modifier = Modifier
                     .timeLineCenter(
-                        color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                        color = timelineColor,
                         strokeWidth = strokeWidth,
                     )
                     .padding(start = 16.dp, top = 12.dp),
@@ -141,12 +143,12 @@ fun LegView(
                         isProminent = false,
                         modifier = Modifier
                             .timeLineCenterWithStop(
-                                color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                color = timelineColor,
                                 strokeWidth = strokeWidth,
                                 circleRadius = circleRadius,
                             )
                             .timeLineTop(
-                                color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                                color = timelineColor,
                                 strokeWidth = strokeWidth,
                                 circleRadius = circleRadius,
                             )
@@ -161,7 +163,7 @@ fun LegView(
                 isProminent = true,
                 modifier = Modifier
                     .timeLineBottom(
-                        color = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                        color = timelineColor,
                         strokeWidth = strokeWidth,
                         circleRadius = circleRadius,
                     )
