@@ -73,8 +73,17 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                 fromStopItem = toStopItem
                 toStopItem = bufferStop
             },
-            onSearchButtonClick = {
-                if (fromStopItem != null && toStopItem != null) {
+            onSearchButtonClick = { fromStop, toStop ->
+                if (fromStop != null && toStop != null) {
+                    navController.navigate(
+                        TimeTableRoute(
+                            fromStopId = fromStop.stopId,
+                            fromStopName = fromStop.stopName,
+                            toStopId = toStop.stopId,
+                            toStopName = toStop.stopName,
+                        ),
+                    )
+                } else if (fromStopItem != null && toStopItem != null) {
                     navController.navigate(
                         TimeTableRoute(
                             fromStopId = fromStopItem?.stopId!!,
@@ -88,6 +97,7 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                     Timber.e("Select both stops")
                 }
             },
+            onEvent = { event -> viewModel.onEvent(event) },
         )
     }
 }

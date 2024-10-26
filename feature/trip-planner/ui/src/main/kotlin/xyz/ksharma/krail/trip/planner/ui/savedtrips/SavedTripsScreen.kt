@@ -21,6 +21,7 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.SavedTripCard
 import xyz.ksharma.krail.trip.planner.ui.components.SearchStopRow
+import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 
@@ -33,8 +34,8 @@ fun SavedTripsScreen(
     fromButtonClick: () -> Unit = {},
     toButtonClick: () -> Unit = {},
     onReverseButtonClick: () -> Unit = {},
-    onSearchButtonClick: () -> Unit = {},
-//    onEvent: (SavedTripUiEvent) -> Unit = {},
+    onSearchButtonClick: (StopItem?, StopItem?) -> Unit = { _, _ -> },
+    onEvent: (SavedTripUiEvent) -> Unit = {},
 ) {
     Box(
         modifier = modifier
@@ -57,10 +58,20 @@ fun SavedTripsScreen(
                 key = { it.fromStopId + it.toStopId },
             ) { trip ->
                 SavedTripCard(
-                    origin = trip.fromStopName,
-                    destination = trip.toStopName,
-                    onStarClick = {},
-                    onCardClick = {},
+                    trip = trip,
+                    onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
+                    onCardClick = {
+                        onSearchButtonClick(
+                            StopItem(
+                                stopId = trip.fromStopId,
+                                stopName = trip.fromStopName,
+                            ),
+                            StopItem(
+                                stopId = trip.toStopId,
+                                stopName = trip.toStopName,
+                            ),
+                        )
+                    },
                     modifier = Modifier.padding(horizontal = 16.dp),
                 )
                 Spacer(modifier = Modifier.height(12.dp))
@@ -74,7 +85,7 @@ fun SavedTripsScreen(
             fromButtonClick = fromButtonClick,
             toButtonClick = toButtonClick,
             onReverseButtonClick = onReverseButtonClick,
-            onSearchButtonClick = onSearchButtonClick,
+            onSearchButtonClick = { onSearchButtonClick(null, null) },
         )
     }
 }

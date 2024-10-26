@@ -10,6 +10,9 @@ data class Trip(
     val toStopId: String,
     val toStopName: String,
 ) {
+    val tripId: String
+        get() = "$fromStopId$toStopId"
+
     fun toJsonString() = Json.encodeToString(serializer(), this)
 
     companion object {

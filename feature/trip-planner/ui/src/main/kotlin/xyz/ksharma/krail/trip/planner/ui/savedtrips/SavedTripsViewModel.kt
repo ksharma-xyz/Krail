@@ -12,10 +12,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.di.SandookFactory
+import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import javax.inject.Inject
@@ -55,37 +57,25 @@ class SavedTripsViewModel @Inject constructor(
         }
     }
 
-    /*
-
-        fun onEvent(event: SavedTripUiEvent) {
-            when (event) {
-                is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.savedTrip)
-                SavedTripUiEvent.LoadSavedTrips -> onLoadSavedTrips()
-                is SavedTripUiEvent.SavedTripClicked -> onSavedTripClicked(event.savedTrip)
-                is SavedTripUiEvent.OnSearchButtonClicked -> onSearchButtonClicked(event.fromStopItem, event.toStopItem)
-            }
+    fun onEvent(event: SavedTripUiEvent) {
+        when (event) {
+            is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.trip)
+            is SavedTripUiEvent.SavedTripClicked -> onSavedTripClicked(event.trip)
         }
+    }
 
-        private fun onSearchButtonClicked(fromStopItem: StopItem, toStopItem: StopItem) {
-            Timber.d("onSearchButtonClicked")
+    private fun onDeleteSavedTrip(savedTrip: Trip) {
+        Timber.d("onDeleteSavedTrip: $savedTrip")
+        viewModelScope.launch(context = ioDispatcher) {
+            sandook.remove(key = savedTrip.tripId)
+            loadSavedTrips()
         }
+    }
 
-        private fun onSavedTripClicked(savedTrip: String) {
-            Timber.d("onSavedTripClicked")
-        }
+    private fun onSavedTripClicked(savedTrip: Trip) {
+        Timber.d("onSavedTripClicked: $savedTrip")
+    }
 
-        private fun onLoadSavedTrips() {
-            Timber.d("onLoadSavedTrips")
-            updateUiState {
-                copy(trip = "Central to Town Hall")
-            }
-        }
-
-        private fun onDeleteSavedTrip(savedTrip: String) {
-            Timber.d("onDeleteSavedTrip")
-        }
-
-*/
     private fun updateUiState(block: SavedTripsState.() -> SavedTripsState) {
         _uiState.update(block)
     }
