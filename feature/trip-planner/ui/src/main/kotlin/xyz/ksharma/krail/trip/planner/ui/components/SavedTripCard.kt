@@ -28,12 +28,12 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.design.system.R as DSR
 
 @Composable
 fun SavedTripCard(
-    origin: String,
-    destination: String,
+    trip: Trip,
     onStarClick: () -> Unit,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -67,9 +67,10 @@ fun SavedTripCard(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            Text(text = origin, style = KrailTheme.typography.bodyMedium)
-            Text(text = destination, style = KrailTheme.typography.bodyMedium)
+            Text(text = trip.fromStopName, style = KrailTheme.typography.bodyMedium)
+            Text(text = trip.toStopName, style = KrailTheme.typography.bodyMedium)
         }
 
         Box(
@@ -105,8 +106,12 @@ fun SavedTripCard(
 private fun SavedTripCardPreview() {
     KrailTheme {
         SavedTripCard(
-            origin = "Edmondson Park Station",
-            destination = "Harris Park Station",
+            trip = Trip(
+                fromStopId = "1",
+                fromStopName = "Edmondson Park Station",
+                toStopId = "2",
+                toStopName = "Harris Park Station",
+            ),
             primaryTransportMode = TransportMode.Train(),
             onCardClick = {},
             onStarClick = {},
@@ -126,32 +131,48 @@ private fun SavedTripCardListPreview() {
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             SavedTripCard(
-                origin = "Edmondson Park Station",
-                destination = "Harris Park Station",
+                trip = Trip(
+                    fromStopId = "1",
+                    fromStopName = "Edmondson Park Station",
+                    toStopId = "2",
+                    toStopName = "Harris Park Station",
+                ),
                 primaryTransportMode = TransportMode.Train(),
                 onCardClick = {},
                 onStarClick = {},
             )
 
             SavedTripCard(
-                origin = "Harrington Street, Stand D",
-                destination = "Albert Rd, Stand A",
+                trip = Trip(
+                    fromStopId = "1",
+                    fromStopName = "Harrington Street, Stand D",
+                    toStopId = "2",
+                    toStopName = "Albert Rd, Stand A",
+                ),
                 primaryTransportMode = TransportMode.Bus(),
                 onCardClick = {},
                 onStarClick = {},
             )
 
             SavedTripCard(
-                origin = "Manly Wharf",
-                destination = "Circular Quay Wharf",
+                trip = Trip(
+                    fromStopId = "1",
+                    fromStopName = "Manly Wharf",
+                    toStopId = "2",
+                    toStopName = "Circular Quay Wharf",
+                ),
                 primaryTransportMode = TransportMode.Ferry(),
                 onCardClick = {},
                 onStarClick = {},
             )
 
             SavedTripCard(
-                origin = "Manly Wharf",
-                destination = "Circular Quay Wharf",
+                trip = Trip(
+                    fromStopId = "1",
+                    fromStopName = "Manly Wharf",
+                    toStopId = "2",
+                    toStopName = "Circular Quay Wharf",
+                ),
                 primaryTransportMode = null,
                 onCardClick = {},
                 onStarClick = {},
