@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,20 +27,26 @@ import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.design.system.R as DSR
 
 @Composable
 fun SavedTripCard(
     origin: String,
     destination: String,
+    primaryTransportMode: TransportMode,
+    onStarClick: () -> Unit,
+    onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onStarClick: () -> Unit = {},
-    onCardClick: () -> Unit = {},
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(color = KrailTheme.colors.secondaryContainer)
+            .background(
+                color = primaryTransportMode.colorCode
+                    .hexToComposeColor()
+                    .copy(alpha = 0.15f), // TODO -  needs to be common logic for background color
+            )
             .clickable(
                 role = Role.Button,
                 onClickLabel = "Open Trip Details",
@@ -48,8 +56,8 @@ fun SavedTripCard(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TransportModeIcon(
-            letter = 'T',
-            backgroundColor = "#00B5EF".hexToComposeColor(),
+            letter = primaryTransportMode.name.first().uppercaseChar(),
+            backgroundColor = primaryTransportMode.colorCode.hexToComposeColor(),
         )
 
         Column(
@@ -63,11 +71,13 @@ fun SavedTripCard(
 
         Box(
             modifier = Modifier
-                .size(32.dp)
+                .size(44.dp)
                 .clip(CircleShape)
                 .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
                     onClickLabel = "Remove Saved Trip",
-                    role = Role.RadioButton,
+                    role = Role.Button,
                     onClick = onStarClick,
                 )
                 .semantics(mergeDescendants = true) {},
@@ -76,7 +86,10 @@ fun SavedTripCard(
             Image(
                 imageVector = ImageVector.vectorResource(DSR.drawable.star),
                 contentDescription = "Save Trip",
-                colorFilter = ColorFilter.tint(KrailTheme.colors.secondary),
+                colorFilter = ColorFilter.tint(
+                    primaryTransportMode.colorCode
+                        .hexToComposeColor(),
+                ),
             )
         }
     }
@@ -91,6 +104,10 @@ private fun SavedTripCardPreview() {
         SavedTripCard(
             origin = "Edmondson Park Station",
             destination = "Harris Park Station",
+            primaryTransportMode = TransportMode.Train(),
+            onCardClick = {},
+            onStarClick = {},
+            modifier = Modifier.background(color = KrailTheme.colors.background),
         )
     }
 }
@@ -108,16 +125,25 @@ private fun SavedTripCardListPreview() {
             SavedTripCard(
                 origin = "Edmondson Park Station",
                 destination = "Harris Park Station",
+                primaryTransportMode = TransportMode.Train(),
+                onCardClick = {},
+                onStarClick = {},
             )
 
             SavedTripCard(
                 origin = "Harrington Street, Stand D",
                 destination = "Albert Rd, Stand A",
+                primaryTransportMode = TransportMode.Bus(),
+                onCardClick = {},
+                onStarClick = {},
             )
 
             SavedTripCard(
                 origin = "Manly Wharf",
                 destination = "Circular Quay Wharf",
+                primaryTransportMode = TransportMode.Ferry(),
+                onCardClick = {},
+                onStarClick = {},
             )
         }
     }
