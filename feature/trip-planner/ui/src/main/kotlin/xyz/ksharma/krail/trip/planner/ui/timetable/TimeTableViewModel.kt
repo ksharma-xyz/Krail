@@ -71,7 +71,7 @@ class TimeTableViewModel @Inject constructor(
         Timber.d("Save Trip Button Clicked")
         tripInfo?.let { trip ->
             Timber.d("Save Trip: $trip")
-            sandook.putString(key = trip.fromStopId + trip.toStopId, trip.toJsonString())
+            sandook.putString(key = trip.fromStopId + trip.toStopId, value = trip.toJsonString())
             sandook.getString(key = trip.fromStopId + trip.toStopId)?.let { savedTrip ->
                 Timber.d("Saved Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
             }

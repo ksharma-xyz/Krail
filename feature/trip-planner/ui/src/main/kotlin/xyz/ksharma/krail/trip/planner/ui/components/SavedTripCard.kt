@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.PreviewComponent
@@ -34,18 +34,19 @@ import xyz.ksharma.krail.design.system.R as DSR
 fun SavedTripCard(
     origin: String,
     destination: String,
-    primaryTransportMode: TransportMode,
     onStarClick: () -> Unit,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
+    primaryTransportMode: TransportMode? = null,
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(
-                color = primaryTransportMode.colorCode
-                    .hexToComposeColor()
-                    .copy(alpha = 0.15f), // TODO -  needs to be common logic for background color
+                color = primaryTransportMode?.colorCode
+                    ?.hexToComposeColor()
+                    ?.copy(alpha = 0.15f) ?: KrailTheme.colors.secondaryContainer,
+                // TODO -  needs to be common logic for background color
             )
             .clickable(
                 role = Role.Button,
@@ -55,10 +56,12 @@ fun SavedTripCard(
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        TransportModeIcon(
-            letter = primaryTransportMode.name.first().uppercaseChar(),
-            backgroundColor = primaryTransportMode.colorCode.hexToComposeColor(),
-        )
+        primaryTransportMode?.let {
+            TransportModeIcon(
+                letter = primaryTransportMode.name.first().uppercaseChar(),
+                backgroundColor = primaryTransportMode.colorCode.hexToComposeColor(),
+            )
+        }
 
         Column(
             modifier = Modifier
@@ -87,8 +90,8 @@ fun SavedTripCard(
                 imageVector = ImageVector.vectorResource(DSR.drawable.star),
                 contentDescription = "Save Trip",
                 colorFilter = ColorFilter.tint(
-                    primaryTransportMode.colorCode
-                        .hexToComposeColor(),
+                    primaryTransportMode?.colorCode
+                        ?.hexToComposeColor() ?: KrailTheme.colors.onSecondaryContainer,
                 ),
             )
         }
@@ -112,7 +115,7 @@ private fun SavedTripCardPreview() {
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun SavedTripCardListPreview() {
     KrailTheme {
@@ -142,6 +145,14 @@ private fun SavedTripCardListPreview() {
                 origin = "Manly Wharf",
                 destination = "Circular Quay Wharf",
                 primaryTransportMode = TransportMode.Ferry(),
+                onCardClick = {},
+                onStarClick = {},
+            )
+
+            SavedTripCard(
+                origin = "Manly Wharf",
+                destination = "Circular Quay Wharf",
+                primaryTransportMode = null,
                 onCardClick = {},
                 onStarClick = {},
             )

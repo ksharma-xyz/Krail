@@ -5,6 +5,8 @@ import javax.inject.Inject
 
 internal class RealSandook @Inject constructor(private val sharedPreferences: SharedPreferences) : Sandook {
 
+    override fun keys(): Set<String> = sharedPreferences.all.keys
+
     override fun putString(key: String, value: String) {
         sharedPreferences.edit().putString(key, value).apply()
     }
