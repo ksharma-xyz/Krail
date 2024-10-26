@@ -8,7 +8,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -100,12 +99,6 @@ fun JourneyCard(
                     Modifier
                 },
             )
-            .clickable(
-                role = Role.Button,
-                onClick = onClick,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-            )
             .padding(
                 vertical = 8.dp,
                 horizontal = if (cardState == JourneyCardState.DEFAULT) 12.dp else 0.dp,
@@ -121,7 +114,12 @@ fun JourneyCard(
                 themeColor = themeColor,
                 transportModeList = transportModeList,
                 platformNumber = platformNumber,
-                modifier = Modifier,
+                modifier = Modifier.clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                ),
             )
 
             else -> JourneyCardContent(
@@ -132,7 +130,12 @@ fun JourneyCard(
                 iconSize = iconSize,
                 totalTravelTime = totalTravelTime,
                 legList = legList,
-                modifier = Modifier,
+                modifier = Modifier.clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                ),
             )
         }
     }
@@ -298,7 +301,7 @@ fun JourneyCardContent(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ColumnScope.DefaultJourneyCardContent(
+fun DefaultJourneyCardContent(
     timeToDeparture: String,
     originTime: String,
     destinationTime: String,
