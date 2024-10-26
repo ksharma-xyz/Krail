@@ -15,6 +15,7 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopFieldType
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
+import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Companion.fromJsonString
 
@@ -29,8 +30,9 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
         val toArg: String? =
             backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.TO.key)
 
-        // Subscribe to the isActive state flow to Load Trips only once at the start.
-        val isActive by viewModel.isActive.collectAsStateWithLifecycle()
+        LaunchedEffect(Unit) {
+            viewModel.onEvent(SavedTripUiEvent.LoadSavedTrips)
+        }
 
         // Cannot use 'rememberSaveable' here because StopItem is not Parcelable.
         // But it's saved in backStackEntry.savedStateHandle as json, so it's able to

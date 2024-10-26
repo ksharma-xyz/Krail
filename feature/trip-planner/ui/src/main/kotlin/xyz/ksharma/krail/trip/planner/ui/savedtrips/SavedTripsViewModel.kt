@@ -6,10 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -21,7 +18,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class SavedTripsViewModel @Inject constructor(
@@ -33,15 +29,6 @@ class SavedTripsViewModel @Inject constructor(
 
     private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
     val uiState: StateFlow<SavedTripsState> = _uiState
-
-    private val _isActive: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isActive: StateFlow<Boolean> = _isActive.onStart {
-        loadSavedTrips()
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(ANR_TIMEOUT.inWholeMilliseconds),
-        initialValue = true,
-    )
 
     private fun loadSavedTrips() {
         viewModelScope.launch(context = ioDispatcher) {
@@ -61,6 +48,7 @@ class SavedTripsViewModel @Inject constructor(
         when (event) {
             is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.trip)
             is SavedTripUiEvent.SavedTripClicked -> onSavedTripClicked(event.trip)
+            SavedTripUiEvent.LoadSavedTrips -> loadSavedTrips()
         }
     }
 
@@ -78,9 +66,5 @@ class SavedTripsViewModel @Inject constructor(
 
     private fun updateUiState(block: SavedTripsState.() -> SavedTripsState) {
         _uiState.update(block)
-    }
-
-    companion object {
-        private val ANR_TIMEOUT = 5.seconds
     }
 }
