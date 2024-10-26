@@ -125,7 +125,7 @@ fun JourneyCard(
             )
 
             else -> JourneyCardContent(
-                isExpanded = cardState == JourneyCardState.EXPANDED,
+                isExpanded = false,
                 timeToDeparture = timeToDeparture,
                 themeColor = themeColor,
                 platformNumber = platformNumber,
@@ -178,7 +178,6 @@ fun JourneyCardContent(
                     }
             }
         }
-
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth(),

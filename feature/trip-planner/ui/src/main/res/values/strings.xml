@@ -4,4 +4,8 @@
     <string name="from_text_field_placeholder">Starting from</string>
     <string name="to_text_field_placeholder">To Destination</string>
     <string name="time_table_screen_title">Time Table</string>
+    <plurals name="stops">
+        <item quantity="one">Show %d stop</item>
+        <item quantity="other">Show %d stops</item>
+    </plurals>
 </resources>

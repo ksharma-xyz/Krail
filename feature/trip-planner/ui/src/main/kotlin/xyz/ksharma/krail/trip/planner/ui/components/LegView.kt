@@ -2,6 +2,8 @@ package xyz.ksharma.krail.trip.planner.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,13 +17,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -51,7 +59,9 @@ fun LegView(
     val density = LocalDensity.current
     // todo can be reusable logic for consistent icon size
     val iconSize = with(density) { 14.sp.toDp() }
-    val timelineColor = remember(transportModeLine) { transportModeLine.lineColorCode.hexToComposeColor() }
+    val timelineColor =
+        remember(transportModeLine) { transportModeLine.lineColorCode.hexToComposeColor() }
+    var displayNonProminentStops by rememberSaveable { mutableStateOf(isExpanded) }
 
     Column(
         modifier = modifier
@@ -118,11 +128,27 @@ fun LegView(
                         color = timelineColor,
                         strokeWidth = strokeWidth,
                     )
+                    .clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                        onClick = { displayNonProminentStops = !displayNonProminentStops },
+                        role = Role.Button,
+                    )
                     .padding(start = 16.dp, top = 12.dp),
             ) {
                 if (stops.size > 2) {
+                    val context = LocalContext.current
                     StopsRow(
-                        stops = "${stops.size - 2} stops",
+                        // Need to pass count twice - https://developer.android.com/guide/topics/resources/string-resource#Plurals
+                        stops = if (displayNonProminentStops) {
+                            "Hide stops"
+                        } else {
+                            context.resources.getQuantityString(
+                                R.plurals.stops,
+                                stops.size - 2,
+                                stops.size - 2,
+                            )
+                        },
                         line = transportModeLine,
                     )
                 } else {
@@ -135,7 +161,7 @@ fun LegView(
                 }
             }
 
-            if (isExpanded) {
+            if (displayNonProminentStops) {
                 stops.drop(1).dropLast(1).forEach { stop ->
                     StopInfo(
                         time = stop.time,
