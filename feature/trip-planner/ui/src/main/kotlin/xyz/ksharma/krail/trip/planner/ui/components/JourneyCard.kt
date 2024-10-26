@@ -408,6 +408,15 @@ internal fun List<TransportMode>?.toColors(onSurface: Color): List<Color> = when
     }
 }
 
+internal fun TransportMode.buildPlatformText(platformNumber: Char): String? {
+    return when (this) {
+        is TransportMode.Train, is TransportMode.Metro -> "Platform $platformNumber"
+        is TransportMode.Bus -> "Stand $platformNumber"
+        is TransportMode.Ferry -> "Wharf $platformNumber"
+        else -> null
+    }
+}
+
 // region Previews
 
 @PreviewLightDark
