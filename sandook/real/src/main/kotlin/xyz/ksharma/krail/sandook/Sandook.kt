@@ -14,4 +14,9 @@ interface Sandook {
     fun putInt(key: String, value: Int)
     fun getString(key: String, defaultValue: String? = null): String?
     fun putString(key: String, value: String)
+
+    /**
+     * Returns a set of all keys in the Sandook.
+     */
+    fun keys(): Set<String>
 }

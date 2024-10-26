@@ -5,6 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -16,15 +18,19 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Companion.fromJsonString
 
+@Suppress("LongMethod")
 internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostController) {
     composable<SavedTripsRoute> { backStackEntry ->
-        // val viewModel = hiltViewModel<SavedTripsViewModel>()
-        // val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
+        val viewModel = hiltViewModel<SavedTripsViewModel>()
+        val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
         val fromArg: String? =
             backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.FROM.key)
         val toArg: String? =
             backStackEntry.savedStateHandle.get<String>(SearchStopFieldType.TO.key)
+
+        // Subscribe to the isActive state flow to Load Trips only once at the start.
+        val isActive by viewModel.isActive.collectAsStateWithLifecycle()
 
         // Cannot use 'rememberSaveable' here because StopItem is not Parcelable.
         // But it's saved in backStackEntry.savedStateHandle as json, so it's able to
@@ -45,6 +51,7 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
         }
 
         SavedTripsScreen(
+            savedTripsState = savedTripState,
             fromStopItem = fromStopItem,
             toStopItem = toStopItem,
             fromButtonClick = {
