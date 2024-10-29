@@ -3,11 +3,14 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -34,73 +37,74 @@ fun TimeTableScreen(
     onEvent: (TimeTableUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
+    Column(
         modifier = modifier
-            .background(color = KrailTheme.colors.background),
-        contentPadding = PaddingValues(vertical = 16.dp),
+            .fillMaxSize()
+            .background(color = KrailTheme.colors.background)
+            .statusBarsPadding(),
     ) {
-        item {
-            TitleBar(title = {
-                Text(text = stringResource(R.string.time_table_screen_title))
-            })
-        }
+        TitleBar(title = {
+            Text(text = stringResource(R.string.time_table_screen_title))
+        })
 
-        if (timeTableState.isLoading) {
-            item {
-                Text("Loading...", modifier = Modifier.padding(horizontal = 16.dp))
+        LazyColumn(contentPadding = PaddingValues(vertical = 16.dp)) {
+            if (timeTableState.isLoading) {
+                item {
+                    Text("Loading...", modifier = Modifier.padding(horizontal = 16.dp))
+                }
+            } else if (timeTableState.journeyList.isNotEmpty()) {
+                item {
+                    Text(
+                        text = if (timeTableState.isTripSaved) "Trip Saved" else "Save Trip Button",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 16.dp)
+                            .clickable(
+                                enabled = !timeTableState.isTripSaved,
+                            ) { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
+                    )
+                }
+
+                items(timeTableState.journeyList) { journey ->
+                    JourneyCardItem(
+                        timeToDeparture = journey.timeText,
+                        departureLocationNumber = journey.platformText,
+                        originTime = journey.originTime,
+                        destinationTime = journey.destinationTime,
+                        durationText = journey.travelTime,
+                        transportModeLineList = journey.transportModeLines.map {
+                            TransportModeLine(
+                                transportMode = it.transportMode,
+                                lineName = it.lineName,
+                            )
+                        }.toImmutableList(),
+                        legList = journey.legs.toImmutableList(),
+                        cardState = if (expandedJourneyId == journey.journeyId) {
+                            JourneyCardState.COLLAPSED
+                        } else {
+                            JourneyCardState.DEFAULT
+                        },
+                        onClick = {
+                            onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
+                        },
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .animateContentSize(),
+                    )
+                }
+            } else {
+                item {
+                    Text("No data found")
+                }
             }
-        } else if (timeTableState.journeyList.isNotEmpty()) {
+
             item {
-                Text(
-                    text = if (timeTableState.isTripSaved) "Trip Saved" else "Save Trip Button",
+                Spacer(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 16.dp)
-                        .clickable(
-                            enabled = !timeTableState.isTripSaved,
-                        ) { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
+                        .height(96.dp)
+                        .systemBarsPadding(),
                 )
             }
-
-            items(timeTableState.journeyList) { journey ->
-                JourneyCardItem(
-                    timeToDeparture = journey.timeText,
-                    departureLocationNumber = journey.platformText,
-                    originTime = journey.originTime,
-                    destinationTime = journey.destinationTime,
-                    durationText = journey.travelTime,
-                    transportModeLineList = journey.transportModeLines.map {
-                        TransportModeLine(
-                            transportMode = it.transportMode,
-                            lineName = it.lineName,
-                        )
-                    }.toImmutableList(),
-                    legList = journey.legs.toImmutableList(),
-                    cardState = if (expandedJourneyId == journey.journeyId) {
-                        JourneyCardState.COLLAPSED
-                    } else {
-                        JourneyCardState.DEFAULT
-                    },
-                    onClick = {
-                        onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
-                    },
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                        .animateContentSize(),
-                )
-            }
-        } else {
-            item {
-                Text("No data found")
-            }
-        }
-
-        item {
-            Spacer(
-                modifier = Modifier
-                    .height(96.dp)
-                    .systemBarsPadding(),
-            )
         }
     }
 }
