@@ -2,11 +2,13 @@ package xyz.ksharma.krail.trip.planner.ui.savedtrips
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -40,41 +42,42 @@ fun SavedTripsScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.background),
+            .background(color = KrailTheme.colors.background)
+            .statusBarsPadding(),
     ) {
-        LazyColumn(modifier = Modifier, contentPadding = PaddingValues(bottom = 300.dp)) {
-            item {
-                TitleBar(title = {
-                    Text(text = stringResource(R.string.saved_trips_screen_title))
-                })
-            }
+        Column {
+            TitleBar(title = {
+                Text(text = stringResource(R.string.saved_trips_screen_title))
+            })
 
-            item {
-                Spacer(modifier = Modifier.height(12.dp))
-            }
+            LazyColumn(contentPadding = PaddingValues(bottom = 300.dp)) {
+                item {
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
 
-            items(
-                items = savedTripsState.savedTrips,
-                key = { it.fromStopId + it.toStopId },
-            ) { trip ->
-                SavedTripCard(
-                    trip = trip,
-                    onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
-                    onCardClick = {
-                        onSearchButtonClick(
-                            StopItem(
-                                stopId = trip.fromStopId,
-                                stopName = trip.fromStopName,
-                            ),
-                            StopItem(
-                                stopId = trip.toStopId,
-                                stopName = trip.toStopName,
-                            ),
-                        )
-                    },
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+                items(
+                    items = savedTripsState.savedTrips,
+                    key = { it.fromStopId + it.toStopId },
+                ) { trip ->
+                    SavedTripCard(
+                        trip = trip,
+                        onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
+                        onCardClick = {
+                            onSearchButtonClick(
+                                StopItem(
+                                    stopId = trip.fromStopId,
+                                    stopName = trip.fromStopName,
+                                ),
+                                StopItem(
+                                    stopId = trip.toStopId,
+                                    stopName = trip.toStopName,
+                                ),
+                            )
+                        },
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
             }
         }
 
