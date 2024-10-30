@@ -41,8 +41,8 @@ fun RoundIconButton(
     content: @Composable () -> Unit = {},
 ) {
     CompositionLocalProvider(
-        LocalContentColor provides KrailTheme.colors.secondaryContainer,
-        LocalOnContentColor provides KrailTheme.colors.onSecondaryContainer,
+        LocalContentColor provides KrailTheme.colors.surface,
+        LocalOnContentColor provides KrailTheme.colors.onSurface,
     ) {
         Box(
             modifier = modifier

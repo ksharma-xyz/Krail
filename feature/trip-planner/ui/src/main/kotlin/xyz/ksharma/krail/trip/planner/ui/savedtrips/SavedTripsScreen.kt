@@ -24,6 +24,8 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.SavedTripCard
 import xyz.ksharma.krail.trip.planner.ui.components.SearchStopRow
+import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
@@ -96,6 +98,7 @@ fun SavedTripsScreen(
             toButtonClick = toButtonClick,
             onReverseButtonClick = onReverseButtonClick,
             onSearchButtonClick = { onSearchButtonClick(null, null) },
+            themeColor = TransportMode.Train().colorCode.hexToComposeColor(), // TODO - theme color
         )
     }
 }

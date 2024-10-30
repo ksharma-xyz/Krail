@@ -41,7 +41,7 @@ fun TextFieldButton(
     val contentAlpha = if (enabled) 1f else TextFieldTokens.DisabledLabelOpacity
 
     CompositionLocalProvider(
-        LocalTextColor provides KrailTheme.colors.onSecondaryContainer,
+        LocalTextColor provides KrailTheme.colors.onSurface,
         LocalTextStyle provides KrailTheme.typography.bodyLarge,
         LocalContentAlpha provides contentAlpha,
     ) {
@@ -50,7 +50,7 @@ fun TextFieldButton(
                 .fillMaxWidth()
                 .height(TextFieldHeight)
                 .clip(RoundedCornerShape(TextFieldHeight.div(2)))
-                .background(color = KrailTheme.colors.secondaryContainer)
+                .background(color = KrailTheme.colors.surface)
                 .clickable(role = Role.Button, onClick = onClick)
                 .padding(horizontal = 16.dp, vertical = 4.dp),
             contentAlignment = Alignment.CenterStart,

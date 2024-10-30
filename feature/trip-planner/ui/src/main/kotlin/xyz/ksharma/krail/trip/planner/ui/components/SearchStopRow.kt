@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
@@ -24,11 +25,13 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextFieldButton
 import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip.planner.ui.R as TripPlannerUiR
 
 @Composable
 fun SearchStopRow(
+    themeColor: Color,
     fromButtonClick: () -> Unit,
     toButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -41,7 +44,7 @@ fun SearchStopRow(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = KrailTheme.colors.onSecondaryContainer,
+                color = themeColor,
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
             )
             .padding(vertical = 24.dp, horizontal = 16.dp)
@@ -112,7 +115,11 @@ fun SearchStopRow(
 @Composable
 private fun SearchStopColumnPreview() {
     KrailTheme {
-        SearchStopRow(fromButtonClick = {}, toButtonClick = {})
+        SearchStopRow(
+            fromButtonClick = {},
+            toButtonClick = {},
+            themeColor = TransportMode.Train().colorCode.hexToComposeColor(),
+        )
     }
 }
 

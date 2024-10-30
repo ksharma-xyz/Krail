@@ -37,15 +37,15 @@ fun SavedTripCard(
     onStarClick: () -> Unit,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
-    primaryTransportMode: TransportMode? = null,
+    primaryTransportMode: TransportMode? = TransportMode.Train(), // TODO - theme color
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(
-                color = primaryTransportMode?.colorCode
-                    ?.hexToComposeColor()
-                    ?.copy(alpha = 0.15f) ?: KrailTheme.colors.secondaryContainer,
+                color = primaryTransportMode?.let {
+                    transportModeBackgroundColor(primaryTransportMode)
+                } ?: KrailTheme.colors.surfaceVariant,
                 // TODO -  needs to be common logic for background color
             )
             .clickable(
