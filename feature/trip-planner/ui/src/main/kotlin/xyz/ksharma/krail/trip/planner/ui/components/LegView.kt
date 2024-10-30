@@ -67,9 +67,7 @@ fun LegView(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = transportModeLine.transportMode.colorCode
-                    .hexToComposeColor()
-                    .copy(alpha = 0.1f),
+                color = transportModeBackgroundColor(transportMode = transportModeLine.transportMode),
                 shape = RoundedCornerShape(12.dp),
             )
             .clickable(
@@ -282,7 +280,7 @@ private fun PreviewLegView() {
     }
 }
 
-@Preview
+@PreviewLightDark
 @Preview(fontScale = 2f)
 @Composable
 private fun PreviewLegViewTwoStops() {
@@ -291,8 +289,86 @@ private fun PreviewLegViewTwoStops() {
             duration = "1h 30m",
             routeText = "towards AVC via XYZ",
             transportModeLine = TransportModeLine(
-                transportMode = TransportMode.Bus(),
+                transportMode = TransportMode.Train(),
                 lineName = "700",
+            ),
+            stops = listOf(
+                TimeTableState.JourneyCardInfo.Stop(
+                    time = "12:00 am",
+                    name = "XYZ Station, Platform 1",
+                ),
+                TimeTableState.JourneyCardInfo.Stop(
+                    time = "01:00 am",
+                    name = "DEF Station, Platform 3",
+                ),
+            ).toImmutableList(),
+            modifier = Modifier.background(KrailTheme.colors.background),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewLegViewMetro() {
+    KrailTheme {
+        LegView(
+            duration = "1h 30m",
+            routeText = "towards AVC via XYZ",
+            transportModeLine = TransportModeLine(
+                transportMode = TransportMode.Metro(),
+                lineName = "M1",
+            ),
+            stops = listOf(
+                TimeTableState.JourneyCardInfo.Stop(
+                    time = "12:00 am",
+                    name = "XYZ Station, Platform 1",
+                ),
+                TimeTableState.JourneyCardInfo.Stop(
+                    time = "01:00 am",
+                    name = "DEF Station, Platform 3",
+                ),
+            ).toImmutableList(),
+            modifier = Modifier.background(KrailTheme.colors.background),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewLegViewFerry() {
+    KrailTheme {
+        LegView(
+            duration = "1h 30m",
+            routeText = "towards AVC via XYZ",
+            transportModeLine = TransportModeLine(
+                transportMode = TransportMode.Ferry(),
+                lineName = "F2",
+            ),
+            stops = listOf(
+                TimeTableState.JourneyCardInfo.Stop(
+                    time = "12:00 am",
+                    name = "XYZ Station, Platform 1",
+                ),
+                TimeTableState.JourneyCardInfo.Stop(
+                    time = "01:00 am",
+                    name = "DEF Station, Platform 3",
+                ),
+            ).toImmutableList(),
+            modifier = Modifier.background(KrailTheme.colors.background),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewLegViewLightRail() {
+    KrailTheme {
+        LegView(
+            duration = "1h 30m",
+            routeText = "towards AVC via XYZ",
+            transportModeLine = TransportModeLine(
+                transportMode = TransportMode.LightRail(),
+                lineName = "L1",
             ),
             stops = listOf(
                 TimeTableState.JourneyCardInfo.Stop(
