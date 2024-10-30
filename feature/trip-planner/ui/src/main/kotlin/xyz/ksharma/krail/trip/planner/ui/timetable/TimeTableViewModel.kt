@@ -87,7 +87,7 @@ class TimeTableViewModel @Inject constructor(
     private fun onLoadTimeTable(tripInfo: Trip) = with(tripInfo) {
         Timber.d("loadTimeTable API Call- fromStopItem: $fromStopId, toStopItem: $toStopId")
         this@TimeTableViewModel.tripInfo = this
-        updateUiState { copy(isLoading = true) }
+        updateUiState { copy(isLoading = true, trip = tripInfo) }
 
         viewModelScope.launch {
             require(!(fromStopId.isEmpty() || toStopId.isEmpty())) { "Invalid Stop Ids" }
