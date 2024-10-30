@@ -68,7 +68,7 @@ private fun RoundIconButtonPreview() {
     KrailTheme {
         RoundIconButton(onClick = {}) {
             Image(
-                imageVector = ImageVector.vectorResource(R.drawable.star),
+                imageVector = ImageVector.vectorResource(R.drawable.star_outline),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(LocalOnContentColor.current),
             )
