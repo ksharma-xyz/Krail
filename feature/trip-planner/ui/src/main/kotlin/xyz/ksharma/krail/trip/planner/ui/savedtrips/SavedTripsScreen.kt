@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.savedtrips
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,7 +51,9 @@ fun SavedTripsScreen(
                 Text(text = stringResource(R.string.saved_trips_screen_title))
             })
 
-            LazyColumn(contentPadding = PaddingValues(bottom = 300.dp)) {
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 300.dp),
+            ) {
                 item {
                     Spacer(modifier = Modifier.height(12.dp))
                 }
@@ -59,6 +62,7 @@ fun SavedTripsScreen(
                     items = savedTripsState.savedTrips,
                     key = { it.fromStopId + it.toStopId },
                 ) { trip ->
+
                     SavedTripCard(
                         trip = trip,
                         onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
@@ -74,8 +78,11 @@ fun SavedTripsScreen(
                                 ),
                             )
                         },
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .animateItem(fadeOutSpec = tween(durationMillis = 500)),
                     )
+
                     Spacer(modifier = Modifier.height(12.dp))
                 }
             }
