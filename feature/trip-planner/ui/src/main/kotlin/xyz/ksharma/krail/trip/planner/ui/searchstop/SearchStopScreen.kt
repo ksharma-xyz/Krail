@@ -1,9 +1,10 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -40,7 +41,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 /**
  * TODO - implement scroll to top, when too many search results are displayed.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun SearchStopScreen(
     searchStopState: SearchStopState,
@@ -71,62 +71,63 @@ fun SearchStopScreen(
             .collectLatest {}
     }
 
-    LazyColumn(
+    Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.background),
-        contentPadding = PaddingValues(vertical = 16.dp),
+            .background(color = KrailTheme.colors.background)
+            .statusBarsPadding()
+            .imePadding(),
     ) {
-        stickyHeader {
-            TextField(
-                placeholder = "Search for stop",
-                modifier = Modifier
-                    .focusRequester(focusRequester)
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 12.dp)
-                    .statusBarsPadding(),
-            ) { value ->
-                Timber.d("value: $value")
-                textFieldText = value.toString()
-            }
+        TextField(
+            placeholder = "Search station / stop",
+            modifier = Modifier
+                .focusRequester(focusRequester)
+                .padding(horizontal = 16.dp),
+        ) { value ->
+            Timber.d("value: $value")
+            textFieldText = value.toString()
         }
 
-        if (searchStopState.isLoading) {
-            item {
-                Text(
-                    text = "Loading...",
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            }
-        } else if (searchStopState.isError) {
-            item {
-                Text(
-                    text = "Error",
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
-            }
-        } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
-            searchStopState.stops.forEach { stop ->
+        LazyColumn(
+            contentPadding = PaddingValues(top = 16.dp, bottom = 48.dp),
+        ) {
+            if (searchStopState.isLoading) {
                 item {
-                    StopSearchListItem(
-                        stopId = stop.stopId,
-                        stopName = stop.stopName,
-                        transportModeSet = stop.transportModeType.toImmutableSet(),
-                        onClick = { stopItem ->
-                            keyboard?.hide()
-                            onStopSelect(stopItem)
-                        },
+                    Text(
+                        text = "Loading...",
+                        modifier = Modifier.padding(horizontal = 16.dp),
                     )
-
-                    Divider()
                 }
-            }
-        } else {
-            item {
-                Text(
-                    text = "Display Recent Search",
-                    modifier = Modifier.padding(horizontal = 16.dp),
-                )
+            } else if (searchStopState.isError) {
+                item {
+                    Text(
+                        text = "Error",
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                }
+            } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
+                searchStopState.stops.forEach { stop ->
+                    item {
+                        StopSearchListItem(
+                            stopId = stop.stopId,
+                            stopName = stop.stopName,
+                            transportModeSet = stop.transportModeType.toImmutableSet(),
+                            onClick = { stopItem ->
+                                keyboard?.hide()
+                                onStopSelect(stopItem)
+                            },
+                        )
+
+                        Divider()
+                    }
+                }
+            } else {
+                item {
+                    Text(
+                        text = "Display Recent Search",
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                    )
+                }
             }
         }
     }
