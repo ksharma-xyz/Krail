@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -83,6 +86,11 @@ fun JourneyCard(
     // todo can be reusable logic for consistent icon size
     val iconSize = with(density) { 14.sp.toDp() }
 
+    val horizontalCardPadding by animateDpAsState(
+        if (cardState == JourneyCardState.DEFAULT) { 12.dp } else { 0.dp },
+        label = "cardPadding",
+    )
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -101,8 +109,9 @@ fun JourneyCard(
             )
             .padding(
                 vertical = 8.dp,
-                horizontal = if (cardState == JourneyCardState.DEFAULT) 12.dp else 0.dp,
-            ),
+                horizontal = horizontalCardPadding,
+            )
+            .animateContentSize(),
     ) {
         when (cardState) {
             JourneyCardState.DEFAULT -> DefaultJourneyCardContent(

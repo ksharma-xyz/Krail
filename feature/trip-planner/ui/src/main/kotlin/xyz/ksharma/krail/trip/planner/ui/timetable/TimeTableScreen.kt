@@ -1,6 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -88,8 +87,7 @@ fun TimeTableScreen(
                             onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
                         },
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .animateContentSize(),
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
                     )
                 }
             } else {
