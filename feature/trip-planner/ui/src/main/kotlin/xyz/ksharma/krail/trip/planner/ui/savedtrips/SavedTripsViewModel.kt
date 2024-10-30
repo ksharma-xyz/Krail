@@ -38,16 +38,18 @@ class SavedTripsViewModel @Inject constructor(
                     Trip.fromJsonString(tripJsonString)
                 }
             }.toImmutableList()
-            if (!trips.isEmpty()) {
-                updateUiState { copy(savedTrips = trips) }
+
+            trips.forEachIndexed { index, trip ->
+                Timber.d("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
             }
+
+            updateUiState { copy(savedTrips = trips) }
         }
     }
 
     fun onEvent(event: SavedTripUiEvent) {
         when (event) {
             is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.trip)
-            is SavedTripUiEvent.SavedTripClicked -> onSavedTripClicked(event.trip)
             SavedTripUiEvent.LoadSavedTrips -> loadSavedTrips()
         }
     }
@@ -58,10 +60,6 @@ class SavedTripsViewModel @Inject constructor(
             sandook.remove(key = savedTrip.tripId)
             loadSavedTrips()
         }
-    }
-
-    private fun onSavedTripClicked(savedTrip: Trip) {
-        Timber.d("onSavedTripClicked: $savedTrip")
     }
 
     private fun updateUiState(block: SavedTripsState.() -> SavedTripsState) {
