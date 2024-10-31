@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +28,7 @@ fun Text(
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = if (maxLines == Int.MAX_VALUE) TextOverflow.Clip else TextOverflow.Ellipsis,
     fontFamily: FontFamily? = null,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     val contentAlpha = LocalContentAlpha.current
     CompositionLocalProvider(
@@ -43,6 +45,7 @@ fun Text(
             maxLines = maxLines,
             overflow = overflow,
             modifier = modifier,
+            onTextLayout = onTextLayout,
         )
     }
 }
