@@ -8,6 +8,7 @@ data class TimeTableState(
     val isLoading: Boolean = false,
     val isTripSaved: Boolean = false,
     val journeyList: ImmutableList<JourneyCardInfo> = persistentListOf(),
+    val trip: Trip? = null,
 ) {
     data class JourneyCardInfo(
         val timeText: String, // "in x mins"
