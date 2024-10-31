@@ -73,7 +73,7 @@ private fun PreviewFab() {
             onClick = {},
         ) {
             Image(
-                painter = painterResource(R.drawable.star),
+                painter = painterResource(R.drawable.star_outline),
                 contentDescription = null,
                 colorFilter = ColorFilter.tint(color = LocalContentColor.current),
                 modifier = Modifier.size(32.dp),

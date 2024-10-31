@@ -88,7 +88,7 @@ fun SavedTripCard(
             contentAlignment = Alignment.Center,
         ) {
             Image(
-                imageVector = ImageVector.vectorResource(DSR.drawable.star),
+                imageVector = ImageVector.vectorResource(DSR.drawable.star_filled),
                 contentDescription = "Save Trip",
                 colorFilter = ColorFilter.tint(
                     primaryTransportMode?.colorCode

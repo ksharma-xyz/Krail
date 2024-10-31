@@ -1,24 +1,30 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import xyz.ksharma.krail.design.system.LocalOnContentColor
+import xyz.ksharma.krail.design.system.components.RoundIconButton
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -28,6 +34,7 @@ import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
+import xyz.ksharma.krail.design.system.R as DesignSystemR
 
 @Composable
 fun TimeTableScreen(
@@ -41,13 +48,38 @@ fun TimeTableScreen(
             .fillMaxSize()
             .background(color = KrailTheme.colors.background),
     ) {
-        TitleBar(title = {
-            Text(text = stringResource(R.string.time_table_screen_title))
-        })
+        TitleBar(
+            title = {
+                Text(text = stringResource(R.string.time_table_screen_title))
+            },
+            actions = {
+                RoundIconButton(
+                    onClick = { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
+                ) {
+                    Image(
+                        imageVector = ImageVector.vectorResource(
+                            if (timeTableState.isTripSaved) {
+                                DesignSystemR.drawable.star_filled
+                            } else {
+                                DesignSystemR.drawable.star_outline
+                            },
+                        ),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(LocalOnContentColor.current),
+                    )
+                }
+            },
+        )
 
         timeTableState.trip?.let { trip ->
-
-            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 20.dp)
+                    .clip(
+                        RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
+                    ),
+            ) {
                 Text(
                     text = trip.fromStopName,
                     style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
@@ -66,18 +98,6 @@ fun TimeTableScreen(
                     Text("Loading...", modifier = Modifier.padding(horizontal = 16.dp))
                 }
             } else if (timeTableState.journeyList.isNotEmpty()) {
-                item {
-                    Text(
-                        text = if (timeTableState.isTripSaved) "Trip Saved" else "Save Trip Button",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 16.dp)
-                            .clickable(
-                                enabled = !timeTableState.isTripSaved,
-                            ) { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
-                    )
-                }
-
                 items(timeTableState.journeyList) { journey ->
                     JourneyCardItem(
                         timeToDeparture = journey.timeText,
@@ -143,7 +163,8 @@ fun JourneyCardItem(
             platformNumber = departureLocationNumber,
             isWheelchairAccessible = false,
             cardState = cardState,
-            transportModeList = transportModeLineList.map { it.transportMode }.toImmutableList(),
+            transportModeList = transportModeLineList.map { it.transportMode }
+                .toImmutableList(),
             legList = legList,
             onClick = onClick,
             modifier = modifier,

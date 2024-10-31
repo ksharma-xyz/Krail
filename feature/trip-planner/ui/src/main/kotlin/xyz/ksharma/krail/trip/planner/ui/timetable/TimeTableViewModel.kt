@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,6 +17,8 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
+import xyz.ksharma.krail.di.AppDispatchers
+import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.di.SandookFactory
 import xyz.ksharma.krail.trip.planner.network.api.repository.TripPlanningRepository
@@ -31,6 +34,7 @@ import kotlin.time.Duration.Companion.seconds
 class TimeTableViewModel @Inject constructor(
     private val tripRepository: TripPlanningRepository,
     sandookFactory: SandookFactory,
+    @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val sandook: Sandook = sandookFactory.create(SandookFactory.SandookKey.SAVED_TRIP)
@@ -69,13 +73,22 @@ class TimeTableViewModel @Inject constructor(
 
     private fun onSaveTripButtonClicked() {
         Timber.d("Save Trip Button Clicked")
-        tripInfo?.let { trip ->
-            Timber.d("Save Trip: $trip")
-            sandook.putString(key = trip.tripId, value = trip.toJsonString())
-            sandook.getString(key = trip.tripId)?.let { savedTrip ->
-                Timber.d("Saved Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
+        viewModelScope.launch(ioDispatcher) {
+            tripInfo?.let { trip ->
+                Timber.d("Toggle Save Trip: $trip")
+                val savedTrip = sandook.getString(key = trip.tripId)
+                if (savedTrip != null) {
+                    // Trip is already saved, so delete it
+                    sandook.remove(key = trip.tripId)
+                    Timber.d("Deleted Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
+                    updateUiState { copy(isTripSaved = false) }
+                } else {
+                    // Trip is not saved, so save it
+                    sandook.putString(key = trip.tripId, value = trip.toJsonString())
+                    Timber.d("Saved Trip (Pref): $trip")
+                    updateUiState { copy(isTripSaved = true) }
+                }
             }
-            updateUiState { copy(isTripSaved = true) }
         }
     }
 
@@ -87,7 +100,8 @@ class TimeTableViewModel @Inject constructor(
     private fun onLoadTimeTable(tripInfo: Trip) = with(tripInfo) {
         Timber.d("loadTimeTable API Call- fromStopItem: $fromStopId, toStopItem: $toStopId")
         this@TimeTableViewModel.tripInfo = this
-        updateUiState { copy(isLoading = true, trip = tripInfo) }
+        val savedTrip = sandook.getString(key = tripInfo.tripId)
+        updateUiState { copy(isLoading = true, trip = tripInfo, isTripSaved = savedTrip != null) }
 
         viewModelScope.launch {
             require(!(fromStopId.isEmpty() || toStopId.isEmpty())) { "Invalid Stop Ids" }
