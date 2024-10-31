@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,10 +27,12 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
@@ -104,12 +105,13 @@ fun TimeTableScreen(
                         trip,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(
-                                shape = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp),
-                            )
                             .background(color = themeColor),
                     )
                 }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
             if (timeTableState.isLoading) {
@@ -156,7 +158,7 @@ fun TimeTableScreen(
                             onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
                         },
                         modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                            .padding(horizontal = 12.dp, vertical = 8.dp),
                     )
                 }
             } else {
@@ -185,7 +187,7 @@ private fun OriginDestination(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .padding(bottom = 12.dp),
+            .padding(bottom = 16.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -193,14 +195,14 @@ private fun OriginDestination(
             modifier = Modifier
                 .timeLineTop(
                     color = KrailTheme.colors.onSurface,
-                    strokeWidth = 2.dp,
-                    circleRadius = 4.dp,
+                    strokeWidth = 3.dp,
+                    circleRadius = 5.dp,
                 )
-                .padding(start = 12.dp, bottom = 4.dp),
+                .padding(start = 12.dp, bottom = 8.dp),
         ) {
             Text(
                 text = trip.fromStopName,
-                style = KrailTheme.typography.bodyLarge,
+                style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
             )
         }
 
@@ -210,14 +212,14 @@ private fun OriginDestination(
             modifier = Modifier
                 .timeLineBottom(
                     color = KrailTheme.colors.onSurface,
-                    strokeWidth = 2.dp,
-                    circleRadius = 4.dp,
+                    strokeWidth = 3.dp,
+                    circleRadius = 5.dp,
                 )
-                .padding(start = 12.dp, top = 4.dp),
+                .padding(start = 12.dp, top = 8.dp),
         ) {
             Text(
                 text = trip.toStopName,
-                style = KrailTheme.typography.bodyLarge,
+                style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
             )
         }
     }
@@ -254,7 +256,7 @@ fun JourneyCardItem(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun PreviewOriginDestination() {
     KrailTheme {
@@ -266,6 +268,42 @@ private fun PreviewOriginDestination() {
                 fromStopId = "123",
                 toStopId = "456",
             ),
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewTimeTableScreen() {
+    KrailTheme {
+        TimeTableScreen(
+            timeTableState = TimeTableState(
+                trip = Trip(
+                    fromStopName = "From Stop",
+                    toStopName = "To Stop",
+                    fromStopId = "123",
+                    toStopId = "456",
+                ),
+                journeyList = listOf(
+                    TimeTableState.JourneyCardInfo(
+                        timeText = "12:00",
+                        platformText = 'A',
+                        originTime = "12:00",
+                        destinationTime = "12:30",
+                        travelTime = "30 mins",
+                        transportModeLines = persistentListOf(
+                            TransportModeLine(
+                                transportMode = TransportMode.Bus(),
+                                lineName = "123",
+                            ),
+                        ),
+                        legs = persistentListOf(),
+                        originUtcDateTime = "2024-11-01T12:00:00Z",
+                    ),
+                ).toImmutableList(),
+            ),
+            expandedJourneyId = null,
+            onEvent = {},
         )
     }
 }

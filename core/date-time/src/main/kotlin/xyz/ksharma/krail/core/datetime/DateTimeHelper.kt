@@ -75,7 +75,7 @@ object DateTimeHelper {
             totalMinutes < 0 -> "${totalMinutes.absoluteValue} mins ago"
             totalMinutes == 0L -> "Now"
             hours == 1L -> "In ${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
-            hours >= 2 -> "In ${hours.absoluteValue} h"
+            hours >= 2 -> "In ${hours.absoluteValue}h"
             else -> "In ${totalMinutes.absoluteValue} ${if (totalMinutes.absoluteValue == 1L) "min" else "mins"}"
         }
         Timber.d("\t minutes: $partialMinutes, hours: $hours, formattedDifference: $formattedDifference -> originTime")

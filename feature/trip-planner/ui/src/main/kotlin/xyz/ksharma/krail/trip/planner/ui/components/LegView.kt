@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -66,6 +67,7 @@ fun LegView(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .animateContentSize()
             .background(
                 color = transportModeBackgroundColor(transportMode = transportModeLine.transportMode),
                 shape = RoundedCornerShape(12.dp),

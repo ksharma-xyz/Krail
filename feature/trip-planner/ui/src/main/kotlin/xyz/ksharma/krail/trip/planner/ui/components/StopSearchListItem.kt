@@ -44,7 +44,7 @@ fun StopSearchListItem(
     ) {
         Text(
             text = stopName,
-            style = KrailTheme.typography.bodyLarge,
+            style = KrailTheme.typography.titleSmall,
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
