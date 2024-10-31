@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -19,6 +20,8 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -34,6 +37,8 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.StopSearchListItem
+import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
@@ -45,6 +50,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 fun SearchStopScreen(
     searchStopState: SearchStopState,
     modifier: Modifier = Modifier,
+    themeColor: Color = TransportMode.Train().colorCode.hexToComposeColor(), // TODO theming
     onStopSelect: (StopItem) -> Unit = {},
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
@@ -74,13 +80,19 @@ fun SearchStopScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.surface)
-            .statusBarsPadding()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(themeColor, KrailTheme.colors.surface),
+                ),
+            )
             .imePadding(),
     ) {
         TextField(
             placeholder = "Search station / stop",
             modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(vertical = 12.dp)
                 .focusRequester(focusRequester)
                 .padding(horizontal = 16.dp),
         ) { value ->
