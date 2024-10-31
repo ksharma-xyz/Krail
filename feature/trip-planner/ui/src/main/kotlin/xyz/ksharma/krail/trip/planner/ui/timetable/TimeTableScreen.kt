@@ -46,7 +46,7 @@ fun TimeTableScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.background),
+            .background(color = KrailTheme.colors.surface),
     ) {
         TitleBar(
             title = {
