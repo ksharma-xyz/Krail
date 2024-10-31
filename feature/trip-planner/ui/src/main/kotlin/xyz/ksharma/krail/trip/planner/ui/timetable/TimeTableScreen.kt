@@ -28,6 +28,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
@@ -38,6 +39,7 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
+import xyz.ksharma.krail.trip.planner.ui.components.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.timeLineBottom
 import xyz.ksharma.krail.trip.planner.ui.components.timeLineTop
@@ -112,7 +114,23 @@ fun TimeTableScreen(
 
             if (timeTableState.isLoading) {
                 item {
-                    Text("Loading...", modifier = Modifier.padding(horizontal = 16.dp))
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        LoadingEmojiAnim(
+                            modifier = Modifier
+                                .padding(vertical = 60.dp)
+                                .animateItem(),
+                        )
+
+                        Text(
+                            text = "Hop on mate!",
+                            style = KrailTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center,
+                            color = KrailTheme.colors.onSurface,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                        )
+                    }
                 }
             } else if (timeTableState.journeyList.isNotEmpty()) {
                 items(timeTableState.journeyList) { journey ->
