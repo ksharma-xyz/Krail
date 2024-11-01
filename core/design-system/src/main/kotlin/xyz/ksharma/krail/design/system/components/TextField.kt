@@ -61,8 +61,8 @@ fun TextField(
 
     val textFieldState = rememberTextFieldState(initialText.orEmpty())
     val textSelectionColors = TextSelectionColors(
-        handleColor = KrailTheme.colors.tertiary,
-        backgroundColor = KrailTheme.colors.tertiary.copy(alpha = TextSelectionBackgroundOpacity),
+        handleColor = KrailTheme.colors.onSurface,
+        backgroundColor = KrailTheme.colors.onSurface.copy(alpha = TextSelectionBackgroundOpacity),
     )
 
     LaunchedEffect(textFieldState.text) {
@@ -70,7 +70,7 @@ fun TextField(
     }
 
     CompositionLocalProvider(
-        LocalTextColor provides KrailTheme.colors.onSecondaryContainer,
+        LocalTextColor provides KrailTheme.colors.onSurface,
         LocalTextStyle provides KrailTheme.typography.titleLarge,
         LocalTextSelectionColors provides textSelectionColors,
         LocalContentAlpha provides contentAlpha,
@@ -96,13 +96,13 @@ fun TextField(
             lineLimits = TextFieldLineLimits.SingleLine,
             readOnly = readOnly,
             interactionSource = interactionSource,
-            cursorBrush = SolidColor(KrailTheme.colors.onSecondaryContainer),
+            cursorBrush = SolidColor(KrailTheme.colors.onSurface),
             decorator = { innerTextField ->
                 Row(
                     modifier = Modifier
                         .background(
                             shape = RoundedCornerShape(TextFieldHeight.div(2)),
-                            color = KrailTheme.colors.secondaryContainer,
+                            color = KrailTheme.colors.surface,
                         )
                         .padding(horizontal = 16.dp, vertical = 4.dp),
                     horizontalArrangement = Arrangement.Start,
