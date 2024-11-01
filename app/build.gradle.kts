@@ -81,6 +81,11 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.timber)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+
+    // Test
     androidTestImplementation(libs.test.androidxTestExtJunit)
     testImplementation(libs.test.composeUiTestJunit4)
     testImplementation(libs.test.paparazzi)

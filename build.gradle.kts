@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization) apply false
     alias(libs.plugins.detekt)
     alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.google.services) apply false
 }
 
 subprojects {
