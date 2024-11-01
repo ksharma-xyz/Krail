@@ -84,6 +84,7 @@ dependencies {
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
 
     // Test
     androidTestImplementation(libs.test.androidxTestExtJunit)
