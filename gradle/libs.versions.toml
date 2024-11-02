@@ -37,6 +37,7 @@ targetSdk = "34"
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
+firebase-perf = { module = "com.google.firebase:firebase-perf" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "android-lifecycle" }
@@ -110,6 +111,7 @@ wire = { id = "com.squareup.wire", version.ref = "wire" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
 firebase-crashlyticsPlugin = { id = "com.google.firebase.crashlytics", version = "3.0.2" }
+firebase-performancePlugin = { id = "com.google.firebase.firebase-perf", version = "1.4.2" }
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }

@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlyticsPlugin) apply false
+    alias(libs.plugins.firebase.performancePlugin) apply false
 }
 
 subprojects {
