@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.krail.android.library)
     alias(libs.plugins.krail.android.hilt)
@@ -5,8 +7,26 @@ plugins {
     alias(libs.plugins.wire)
 }
 
+// Get local.properties values
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
+}
+val nswTransportApiKey: String = localProperties.getProperty("NSW_TRANSPORT_API_KEY", "")
+
 android {
     namespace = "xyz.ksharma.krail.network"
+
+    buildTypes {
+        debug {
+            buildConfigField("String", "NSW_TRANSPORT_API_KEY", "\"$nswTransportApiKey\"")
+        }
+
+        release {
+            buildConfigField("String", "NSW_TRANSPORT_API_KEY", "\"$nswTransportApiKey\"")
+        }
+    }
 }
 
 wire {

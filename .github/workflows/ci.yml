@@ -12,6 +12,11 @@ jobs:
     environment: Firebase
     steps:
       - uses: actions/checkout@v4
+        name: Setup environment variables
+        env:
+          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
+          run: |
+            echo "::set-env name=NSW_TRANSPORT_API_KEY::${{ secrets.NSW_TRANSPORT_API_KEY }}"
 
       - name: set up JDK
         uses: actions/setup-java@v4
@@ -45,5 +50,8 @@ jobs:
       - name: Detekt Checks
         run: ./gradlew detekt
 
-      - name: Build with Gradle
+      - name: Build Debug
+        run: ./gradlew assembleDebug
+
+      - name: Build Release
         run: ./gradlew assembleRelease
