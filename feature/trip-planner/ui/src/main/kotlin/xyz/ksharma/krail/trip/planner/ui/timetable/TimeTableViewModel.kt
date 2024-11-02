@@ -68,7 +68,23 @@ class TimeTableViewModel @Inject constructor(
             is TimeTableUiEvent.LoadTimeTable -> onLoadTimeTable(event.trip)
             is TimeTableUiEvent.JourneyCardClicked -> onJourneyCardClicked(event.journeyId)
             TimeTableUiEvent.SaveTripButtonClicked -> onSaveTripButtonClicked()
+            TimeTableUiEvent.ReverseTripButtonClicked -> onReverseTripButtonClicked()
         }
+    }
+
+    private fun onReverseTripButtonClicked() {
+        Timber.d("Reverse Trip Button Clicked")
+        require(tripInfo != null) { "Trip Info is null" }
+        tripInfo?.let { trip ->
+            val reveredTrip = Trip(
+                fromStopId = trip.toStopId,
+                fromStopName = trip.toStopName,
+                toStopId = trip.fromStopId,
+                toStopName = trip.fromStopName,
+            )
+            updateUiState { copy(trip = reveredTrip) }
+            onLoadTimeTable(reveredTrip)
+        } ?: run { Timber.e("Trip Info is null") }
     }
 
     private fun onSaveTripButtonClicked() {

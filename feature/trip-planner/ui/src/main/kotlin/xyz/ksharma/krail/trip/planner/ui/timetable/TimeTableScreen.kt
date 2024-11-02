@@ -19,6 +19,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,6 +29,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -74,12 +79,26 @@ fun TimeTableScreen(
                     Text(text = stringResource(R.string.time_table_screen_title))
                 },
                 actions = {
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .clip(CircleShape)
-                            .clickable { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
-                        contentAlignment = Alignment.Center,
+                    ActionButton(
+                        onClick = {
+                            onEvent(TimeTableUiEvent.ReverseTripButtonClicked)
+                        },
+                        contentDescription = "Reverse Trip Search",
+                    ) {
+                        Image(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_reverse),
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
+                    ActionButton(
+                        onClick = { onEvent(TimeTableUiEvent.SaveTripButtonClicked) },
+                        contentDescription = if (timeTableState.isTripSaved) {
+                            "Remove Saved Trip"
+                        } else {
+                            "Save Trip"
+                        },
                     ) {
                         Image(
                             imageVector = ImageVector.vectorResource(
@@ -305,5 +324,26 @@ private fun PreviewTimeTableScreen() {
             expandedJourneyId = null,
             onEvent = {},
         )
+    }
+}
+
+@Composable
+fun ActionButton(
+    onClick: () -> Unit,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .clickable(role = Role.Button) { onClick() }
+            .semantics(mergeDescendants = true) {
+                this.contentDescription = contentDescription
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        content()
     }
 }
