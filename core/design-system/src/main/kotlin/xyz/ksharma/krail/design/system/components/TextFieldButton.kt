@@ -50,7 +50,7 @@ fun TextFieldButton(
                 .fillMaxWidth()
                 .height(TextFieldHeight)
                 .clip(RoundedCornerShape(TextFieldHeight.div(2)))
-                .background(color = KrailTheme.colors.surface)
+                .background(color = KrailTheme.colors.background)
                 .clickable(role = Role.Button, onClick = onClick)
                 .padding(horizontal = 16.dp, vertical = 4.dp),
             contentAlignment = Alignment.CenterStart,
