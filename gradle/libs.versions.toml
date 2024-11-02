@@ -59,6 +59,7 @@ compose-material3 = { group = "androidx.compose.material3", name = "material3", 
 #Firebase
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 
 #Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
@@ -108,6 +109,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 wire = { id = "com.squareup.wire", version.ref = "wire" }
 cash-sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
+firebase-crashlyticsPlugin = { id = "com.google.firebase.crashlytics", version = "3.0.2" }
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }
