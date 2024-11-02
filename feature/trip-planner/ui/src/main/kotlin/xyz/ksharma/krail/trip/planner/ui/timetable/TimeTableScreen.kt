@@ -40,8 +40,8 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
-import xyz.ksharma.krail.trip.planner.ui.components.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.components.timeLineBottom
 import xyz.ksharma.krail.trip.planner.ui.components.timeLineTop
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode

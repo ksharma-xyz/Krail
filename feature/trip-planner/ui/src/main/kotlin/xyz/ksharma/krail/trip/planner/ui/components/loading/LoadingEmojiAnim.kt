@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.trip.planner.ui.components
+package xyz.ksharma.krail.trip.planner.ui.components.loading
 
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -18,28 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import kotlinx.collections.immutable.persistentListOf
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-
-val emojiList = persistentListOf(
-    "🛴",
-    "🛹",
-    "⚡",
-    "🏈",
-    "👻",
-    "🚀",
-    "🧞‍♀️",
-    "🧞‍",
-    "🚢",
-    "🛶",
-    "\uD83C\uDFC2",
-    "\uD83C\uDF83", // Halloween
-    "🐦‍🔥",
-)
+import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiManager.getRandomEmoji
 
 @Composable
-fun LoadingEmojiAnim(modifier: Modifier = Modifier) {
+fun LoadingEmojiAnim(modifier: Modifier = Modifier, emoji: String? = null) {
     val infiniteTransition = rememberInfiniteTransition(label = "333")
 
     val rotation by infiniteTransition.animateFloat(
@@ -48,9 +32,9 @@ fun LoadingEmojiAnim(modifier: Modifier = Modifier) {
         animationSpec = infiniteRepeatable(
             animation = keyframes {
                 durationMillis = 2000 // Total animation duration
-                0f at 0 using LinearEasing // Start at 0 rotation
-                360f * 4 at 1000 using FastOutSlowInEasing // Fast rotation for 0.5 seconds (4 rotations)
-                360f * 4 at 2000 using FastOutLinearInEasing // Maintain rotation but slow down (cumulative 4 rotations)
+                0f at 0 using FastOutLinearInEasing // Start at 0 rotation
+                360f * 4 at 1000 using LinearEasing // Fast rotation for 0.5 seconds (4 rotations)
+                360f * 4 at 2000 using FastOutSlowInEasing // Maintain rotation but slow down (cumulative 4 rotations)
             },
             repeatMode = RepeatMode.Reverse,
         ),
@@ -63,9 +47,9 @@ fun LoadingEmojiAnim(modifier: Modifier = Modifier) {
         animationSpec = infiniteRepeatable(
             animation = keyframes {
                 durationMillis = 2000 // Total animation duration
-                1f at 0 using LinearEasing // Start at original size
-                2f at 200 using FastOutSlowInEasing // Quickly grow to max scale (0.2 seconds)
-                1f at 2000 using FastOutLinearInEasing // Shrink back to original size slowly (1.8 seconds)
+                1f at 0 using FastOutLinearInEasing // Start at original size
+                2f at 200 using LinearEasing // Quickly grow to max scale (0.2 seconds)
+                1f at 2000 using FastOutSlowInEasing // Shrink back to original size slowly (1.8 seconds)
             },
             repeatMode = RepeatMode.Reverse,
         ),
@@ -74,7 +58,7 @@ fun LoadingEmojiAnim(modifier: Modifier = Modifier) {
 
     Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Text(
-            text = emojiList.random(),
+            text = getRandomEmoji(overrideEmoji = emoji),
             style = KrailTheme.typography.headlineLarge.copy(fontSize = 64.sp),
             modifier = Modifier
                 .graphicsLayer {
