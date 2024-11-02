@@ -4,38 +4,16 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, debug-alpha ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     environment: Firebase
+    needs: setup-gradle # Add the setup-gradle job as a dependency
     steps:
       - uses: actions/checkout@v4
-        name: Setup environment variables
-        env:
-          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
-          run: |
-            echo "::set-env name=NSW_TRANSPORT_API_KEY::${{ secrets.NSW_TRANSPORT_API_KEY }}"
-
-      - name: set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: zulu
-          java-version: 21
-
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+      - uses: ./.github/workflows/setup_gradle.yml@main # Call reusable workflow
 
       - name: Firebase (Release) - Google Services.json file
         env:
@@ -55,3 +33,17 @@ jobs:
 
       - name: Build Release
         run: ./gradlew assembleRelease
+
+    outputs:
+      should_distribute: ${{ steps.build-release.outcome == 'success' }} # Output indicating build success
+
+  trigger_distribution:
+    needs: build # Depend on the build job
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Firebase App Distribution
+        uses: actions/workflow_dispatch@v3
+        with:
+          workflow: Firebase App Distribution
+          token: ${{ secrets.GITHUB_TOKEN }}
+          inputs: ${{ needs.build.outputs.should_distribute == 'true' && 'true' || 'false' }}

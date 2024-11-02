@@ -1,6 +1,12 @@
 name: Firebase App Distribution
 
 on:
+  workflow_dispatch:
+    inputs:
+      should_distribute:
+        description: 'Whether to distribute the app (true/false)'
+        required: true
+        type: boolean
   pull_request:
     branches:
       - debug-alpha
@@ -8,38 +14,16 @@ on:
 jobs:
   distribute:
     runs-on: ubuntu-latest
-
+    needs: setup-gradle # Add the setup-gradle job as a dependency
+    if: ${{ github.event.inputs.should_distribute }} # Run only if should_distribute is true
     steps:
       - uses: actions/checkout@v4
-        name: Setup environment variables
-        env:
-          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
-          run: |
-            echo "::set-env name=NSW_TRANSPORT_API_KEY::${{ secrets.NSW_TRANSPORT_API_KEY }}"
-
-      - name: set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: zulu
-          java-version: 21
-
-      - name: Cache Gradle and wrapper
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+      - uses: ./.github/workflows/setup_gradle.yml@main # Call reusable workflow
 
       - name: Firebase (Debug) - Google Services.json file
         env:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
         run: echo $DATA | base64 -di > app/src/debug/google-services.json
-
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
 
       - name: Build APK
         run: ./gradlew assembleDebug --no-daemon
