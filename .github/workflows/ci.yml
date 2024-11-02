@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: Firebase
     steps:
       - uses: actions/checkout@v4
 
@@ -31,8 +32,18 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
+      - name: Firebase (Release) - Google Services.json file
+        env:
+          DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_RELEASE }}
+        run: echo $DATA | base64 -di > app/google-services.json
+
+      - name: Firebase (Debug) - Google Services.json file
+        env:
+          DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
+        run: echo $DATA | base64 -di > app/src/debug/google-services.json
+
       - name: Detekt Checks
         run: ./gradlew detekt
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew assembleRelease
