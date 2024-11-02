@@ -14,6 +14,7 @@ import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
+import kotlin.time.Duration.Companion.seconds
 
 @Suppress("ComplexCondition")
 internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.JourneyCardInfo>? =
@@ -120,19 +121,21 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
 
     val displayText = transportation?.description
     val numberOfStops = stopSequence?.size
-    val displayDuration = duration.toDisplayString()
+    val displayDuration = duration?.seconds?.toFormattedDurationTimeString()
     val stops = stopSequence?.mapNotNull { it.toUiModel() }?.toImmutableList()
 
     return when {
         // Walking Leg - Always check before public transport leg
         isWalkingLeg() -> {
-            TimeTableState.JourneyCardInfo.Leg.WalkingLeg(duration = displayDuration)
+            displayDuration?.let {
+                TimeTableState.JourneyCardInfo.Leg.WalkingLeg(duration = displayDuration)
+            }
         }
 
         else -> { // Public Transport Leg
 //            Timber.d("FFF PTLeg: $displayDuration, leg: ${this.destination?.name} ")
             if (transportMode != null && lineName != null && displayText != null &&
-                numberOfStops != null && stops != null
+                numberOfStops != null && stops != null && displayDuration != null
             ) {
                 TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     transportModeLine = TransportModeLine(
@@ -142,8 +145,9 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
                     displayText = displayText,
                     totalDuration = displayDuration,
                     stops = stops,
-                    walkInterchange = footPathInfo?.firstOrNull()?.let { foot ->
-                        foot.toWalkInterchange(foot.duration.toDisplayString())
+                    walkInterchange = footPathInfo?.firstOrNull()?.run {
+                        duration?.seconds?.toFormattedDurationTimeString()
+                            ?.let { formattedDuration -> toWalkInterchange(formattedDuration) }
                     },
                 )
             } else {
@@ -254,10 +258,6 @@ private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNot
 }
 
 private fun String.fromUTCToDisplayTimeString() = this.utcToAEST().aestToHHMM()
-
-private fun Long?.toDisplayString(): String {
-    return "${this?.div(60)} mins"
-}
 
 private fun TripResponse.Leg.isWalkingLeg(): Boolean =
     transportation?.product?.productClass == 99L || transportation?.product?.productClass == 100L
