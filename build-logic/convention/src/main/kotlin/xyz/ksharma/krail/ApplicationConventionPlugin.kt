@@ -28,6 +28,7 @@ class ApplicationConventionPlugin : Plugin<Project> {
                 apply("org.jetbrains.kotlin.plugin.compose")
                 apply("com.google.gms.google-services")
                 apply("com.google.firebase.crashlytics")
+                apply("com.google.firebase.firebase-perf")
             }
             extensions.configure<ApplicationExtension> {
                 compileSdk = compileSdkVersion
