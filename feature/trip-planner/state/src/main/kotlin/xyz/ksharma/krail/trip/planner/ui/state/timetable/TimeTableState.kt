@@ -60,7 +60,7 @@ data class TimeTableState(
                 val displayText: String, // "towards X via X"
 
                 // leg.stopSequence.size  (leg.duration seconds)
-                val totalDuration: String, // "4 stops (12 min)"
+                val totalDuration: String, // 12 min"
 
                 val stops: ImmutableList<Stop>,
 
