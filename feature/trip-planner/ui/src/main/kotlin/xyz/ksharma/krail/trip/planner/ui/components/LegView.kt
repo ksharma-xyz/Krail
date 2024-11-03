@@ -32,8 +32,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
@@ -45,7 +47,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LegView(
     duration: String, // 1h 30m
@@ -80,39 +81,8 @@ fun LegView(
             )
             .padding(vertical = 12.dp, horizontal = 12.dp),
     ) {
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-        ) {
-            Text(
-                text = routeText,
-                style = KrailTheme.typography.bodySmall,
+        RouteSummary(routeText = routeText, iconSize = iconSize, duration = duration)
 
-                modifier = Modifier
-                    .padding(end = 12.dp)
-                    .align(Alignment.CenterVertically),
-            )
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_clock),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
-                    modifier = Modifier
-                        .padding(end = 4.dp)
-                        .align(Alignment.CenterVertically)
-                        .size(iconSize),
-                )
-                Text(
-                    text = duration,
-                    style = KrailTheme.typography.bodySmall,
-                )
-            }
-        }
         Spacer(modifier = Modifier.height(12.dp))
         Column(modifier = Modifier.fillMaxWidth()) {
             StopInfo(
@@ -190,6 +160,48 @@ fun LegView(
                         circleRadius = circleRadius,
                     )
                     .padding(start = 16.dp, top = 12.dp),
+            )
+        }
+    }
+}
+
+@Composable
+@OptIn(ExperimentalLayoutApi::class)
+private fun RouteSummary(
+    routeText: String,
+    iconSize: Dp,
+    duration: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        FlowRow(
+            modifier = Modifier.weight(1f),
+        ) {
+            Text(
+                text = routeText,
+                style = KrailTheme.typography.bodySmall,
+                modifier = Modifier
+                    .padding(end = 12.dp)
+                    .align(Alignment.CenterVertically),
+            )
+        }
+        Row(horizontalArrangement = Arrangement.End) {
+            Image(
+                painter = painterResource(R.drawable.ic_clock),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                modifier = Modifier
+                    .padding(end = 4.dp)
+                    .align(Alignment.CenterVertically)
+                    .size(iconSize),
+            )
+            Text(
+                text = duration,
+                style = KrailTheme.typography.bodySmall,
+                textAlign = TextAlign.End,
             )
         }
     }
@@ -409,6 +421,20 @@ private fun PreviewProminentStopInfo() {
             time = "12:00",
             name = "XYZ Station, Platform 1",
             isProminent = true,
+            modifier = Modifier.background(KrailTheme.colors.background),
+        )
+    }
+}
+
+@Preview
+@Preview(fontScale = 2f)
+@Composable
+private fun PreviewRouteSummary() {
+    KrailTheme {
+        RouteSummary(
+            routeText = "towards AVC via XYZ Rd",
+            iconSize = 14.dp,
+            duration = "1h 30m",
             modifier = Modifier.background(KrailTheme.colors.background),
         )
     }
