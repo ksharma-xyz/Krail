@@ -10,10 +10,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
@@ -21,6 +24,8 @@ import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.di.SandookFactory
+import xyz.ksharma.krail.trip.planner.network.api.RateLimiter
+import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -35,6 +40,7 @@ class TimeTableViewModel @Inject constructor(
     private val tripRepository: TripPlanningRepository,
     sandookFactory: SandookFactory,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    private val rateLimiter: RateLimiter,
 ) : ViewModel() {
 
     private val sandook: Sandook = sandookFactory.create(SandookFactory.SandookKey.SAVED_TRIP)
@@ -44,7 +50,15 @@ class TimeTableViewModel @Inject constructor(
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> =
-        _isLoading.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
+        _isLoading
+            // Will start fetching the trip as soon as the screen is visible, which means if app goes
+            // to background and come back up again, the API call will be made.
+            // Probably good to have data up to date.
+            .onStart {
+                Timber.d("onStart: Fetching Trip")
+                fetchTrip()
+            }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
     private val _isActive: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isActive: StateFlow<Boolean> = _isActive.onStart {
@@ -72,19 +86,47 @@ class TimeTableViewModel @Inject constructor(
         }
     }
 
-    private fun onReverseTripButtonClicked() {
-        Timber.d("Reverse Trip Button Clicked")
-        require(tripInfo != null) { "Trip Info is null" }
-        tripInfo?.let { trip ->
-            val reveredTrip = Trip(
-                fromStopId = trip.toStopId,
-                fromStopName = trip.toStopName,
-                toStopId = trip.fromStopId,
-                toStopName = trip.fromStopName,
-            )
-            updateUiState { copy(trip = reveredTrip) }
-            onLoadTimeTable(reveredTrip)
-        } ?: run { Timber.e("Trip Info is null") }
+    private fun fetchTrip() {
+        Timber.d("fetchTrip API Call")
+        viewModelScope.launch {
+            // TODO - silent refresh here, UI to display loading but silent one.
+            rateLimiter
+                .rateLimitFlow {
+                    Timber.d("rateLimitFlow block")
+                    loadTrip()
+                }
+                .catch { e ->
+                    Timber.e("Error while fetching trip: $e")
+                }
+                .collectLatest { result ->
+                    result.onSuccess { response ->
+                        Timber.d("Success API response")
+                        updateUiState {
+                            copy(
+                                isLoading = false,
+                                journeyList = response.buildJourneyList() ?: persistentListOf(),
+                            )
+                        }
+                        response.logForUnderstandingData()
+                    }.onFailure {
+                        Timber.e("Error while fetching trip: $it")
+                    }
+                }
+        }
+    }
+
+    private suspend fun loadTrip(): Result<TripResponse> = withContext(ioDispatcher) {
+        Timber.d("loadTrip API Call")
+        require(
+            tripInfo != null &&
+                tripInfo!!.fromStopId.isNotEmpty() &&
+                tripInfo!!.toStopId.isNotEmpty(),
+        ) { "Trip Info is null or empty" }
+
+        tripRepository.trip(
+            originStopId = tripInfo!!.fromStopId,
+            destinationStopId = tripInfo!!.toStopId,
+        )
     }
 
     private fun onSaveTripButtonClicked() {
@@ -113,27 +155,33 @@ class TimeTableViewModel @Inject constructor(
         _expandedJourneyId.update { if (it == journeyId) null else journeyId }
     }
 
-    private fun onLoadTimeTable(tripInfo: Trip) = with(tripInfo) {
-        Timber.d("loadTimeTable API Call- fromStopItem: $fromStopId, toStopItem: $toStopId")
-        this@TimeTableViewModel.tripInfo = this
-        val savedTrip = sandook.getString(key = tripInfo.tripId)
-        updateUiState { copy(isLoading = true, trip = tripInfo, isTripSaved = savedTrip != null) }
+    private fun onLoadTimeTable(trip: Trip) {
+        Timber.d("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
+        tripInfo = trip
+        val savedTrip = sandook.getString(key = trip.tripId)
+        updateUiState { copy(isLoading = true, trip = trip, isTripSaved = savedTrip != null) }
+        rateLimiter.triggerEvent()
+    }
 
-        viewModelScope.launch {
-            require(!(fromStopId.isEmpty() || toStopId.isEmpty())) { "Invalid Stop Ids" }
-            tripRepository.trip(originStopId = fromStopId, destinationStopId = toStopId)
-                .onSuccess { response ->
-                    updateUiState {
-                        copy(
-                            isLoading = false,
-                            journeyList = response.buildJourneyList() ?: persistentListOf(),
-                        )
-                    }
-                    response.logForUnderstandingData()
-                }.onFailure {
-                    Timber.e("Error while fetching trip: $it")
-                }
+    private fun onReverseTripButtonClicked() {
+        Timber.d("Reverse Trip Button Clicked -- Trigger")
+        require(tripInfo != null) { "Trip Info is null" }
+        val reverseTrip = Trip(
+            fromStopId = tripInfo!!.toStopId,
+            fromStopName = tripInfo!!.toStopName,
+            toStopId = tripInfo!!.fromStopId,
+            toStopName = tripInfo!!.fromStopName,
+        )
+        tripInfo = reverseTrip
+        val savedTrip = sandook.getString(key = reverseTrip.tripId)
+        updateUiState {
+            copy(
+                trip = reverseTrip,
+                isTripSaved = savedTrip != null,
+                isLoading = true,
+            )
         }
+        rateLimiter.triggerEvent()
     }
 
     /**
@@ -152,7 +200,7 @@ class TimeTableViewModel @Inject constructor(
                 }.toImmutableList(),
             )
         }
-        Timber.d("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
+        // Timber.d("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
     }
 
     private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {

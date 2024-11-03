@@ -14,4 +14,9 @@ dependencies {
     implementation(platform(libs.okhttp.bom))
     implementation(libs.okhttp)
     implementation(libs.retrofit)
+
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.turbine)
+    testImplementation(libs.test.kotlin)
+    testImplementation(libs.test.kotlinxCoroutineTest)
 }
