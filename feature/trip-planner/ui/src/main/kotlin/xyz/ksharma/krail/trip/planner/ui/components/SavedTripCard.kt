@@ -13,6 +13,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +27,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -34,19 +38,17 @@ import xyz.ksharma.krail.design.system.R as DSR
 @Composable
 fun SavedTripCard(
     trip: Trip,
+    primaryTransportMode: TransportMode?,
     onStarClick: () -> Unit,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
-    primaryTransportMode: TransportMode? = TransportMode.Train(), // TODO - theme color
 ) {
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(
-                color = primaryTransportMode?.let {
-                    transportModeBackgroundColor(primaryTransportMode)
-                } ?: KrailTheme.colors.surfaceVariant,
-                // TODO -  needs to be common logic for background color
+                color = primaryTransportMode?.let { transportModeBackgroundColor(it) }
+                    ?: themeBackgroundColor(),
             )
             .clickable(
                 role = Role.Button,
@@ -92,7 +94,7 @@ fun SavedTripCard(
                 contentDescription = "Save Trip",
                 colorFilter = ColorFilter.tint(
                     primaryTransportMode?.colorCode
-                        ?.hexToComposeColor() ?: KrailTheme.colors.onSecondaryContainer,
+                        ?.hexToComposeColor() ?: LocalThemeColor.current.value.hexToComposeColor(),
                 ),
             )
         }
@@ -105,18 +107,21 @@ fun SavedTripCard(
 @Composable
 private fun SavedTripCardPreview() {
     KrailTheme {
-        SavedTripCard(
-            trip = Trip(
-                fromStopId = "1",
-                fromStopName = "Edmondson Park Station",
-                toStopId = "2",
-                toStopName = "Harris Park Station",
-            ),
-            primaryTransportMode = TransportMode.Train(),
-            onCardClick = {},
-            onStarClick = {},
-            modifier = Modifier.background(color = KrailTheme.colors.background),
-        )
+        val themeColor = remember { mutableStateOf(TransportMode.Bus().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SavedTripCard(
+                trip = Trip(
+                    fromStopId = "1",
+                    fromStopName = "Edmondson Park Station",
+                    toStopId = "2",
+                    toStopName = "Harris Park Station",
+                ),
+                primaryTransportMode = TransportMode.Train(),
+                onCardClick = {},
+                onStarClick = {},
+                modifier = Modifier.background(color = KrailTheme.colors.background),
+            )
+        }
     }
 }
 

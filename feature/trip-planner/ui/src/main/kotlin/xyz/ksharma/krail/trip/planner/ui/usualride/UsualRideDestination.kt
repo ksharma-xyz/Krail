@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.collections.immutable.toImmutableSet
+import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -15,12 +16,19 @@ import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 internal fun NavGraphBuilder.usualRideDestination(navController: NavHostController) {
     composable<UsualRideRoute> {
         val viewModel = hiltViewModel<UsualRideViewModel>()
+        val themeColor = LocalThemeColor.current
 
         UsualRideScreen(
             transportModes = TransportMode.sortedValues(TransportModeSortOrder.PRODUCT_CLASS)
                 .toImmutableSet(),
             transportModeSelected = { productClass ->
+                val mode = TransportMode.toTransportModeType(productClass)
+                check(mode != null) {
+                    "Transport mode not found for product class $productClass"
+                }
+
                 viewModel.onEvent(UsualRideEvent.TransportModeSelected(productClass))
+                themeColor.value = mode.colorCode
                 navController.navigate(
                     route = SavedTripsRoute,
                     navOptions = NavOptions.Builder()
