@@ -1,6 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.usualride
 
-import android.window.SplashScreen
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -26,7 +25,7 @@ internal fun NavGraphBuilder.usualRideDestination(navController: NavHostControll
                     route = SavedTripsRoute,
                     navOptions = NavOptions.Builder()
                         .setLaunchSingleTop(true)
-                        .setPopUpTo<SplashScreen>(inclusive = true)
+                        .setPopUpTo<UsualRideRoute>(inclusive = true)
                         .build(),
                 )
             },
