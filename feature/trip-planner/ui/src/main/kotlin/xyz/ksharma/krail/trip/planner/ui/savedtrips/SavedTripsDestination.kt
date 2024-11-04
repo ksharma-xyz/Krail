@@ -9,6 +9,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import timber.log.Timber
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
@@ -62,7 +63,10 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
             },
             toButtonClick = {
                 Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
-                navController.navigate(SearchStopRoute(fieldType = SearchStopFieldType.TO))
+                navController.navigate(
+                    route = SearchStopRoute(fieldType = SearchStopFieldType.TO),
+                    navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
+                )
             },
             onReverseButtonClick = {
                 Timber.d("onReverseButtonClick:")
@@ -78,21 +82,23 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
             onSearchButtonClick = { fromStop, toStop ->
                 if (fromStop != null && toStop != null) {
                     navController.navigate(
-                        TimeTableRoute(
+                        route = TimeTableRoute(
                             fromStopId = fromStop.stopId,
                             fromStopName = fromStop.stopName,
                             toStopId = toStop.stopId,
                             toStopName = toStop.stopName,
                         ),
+                        navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                     )
                 } else if (fromStopItem != null && toStopItem != null) {
                     navController.navigate(
-                        TimeTableRoute(
+                        route = TimeTableRoute(
                             fromStopId = fromStopItem?.stopId!!,
                             fromStopName = fromStopItem?.stopName!!,
                             toStopId = toStopItem?.stopId!!,
                             toStopName = toStopItem?.stopName!!,
                         ),
+                        navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                     )
                 } else {
                     // TODO - show message - to select both stops

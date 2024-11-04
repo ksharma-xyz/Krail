@@ -24,7 +24,7 @@ fun NavGraphBuilder.tripPlannerDestinations(
 
         timeTableDestination()
 
-        usualRideDestination()
+        usualRideDestination(navController)
     }
 }
 
