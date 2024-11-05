@@ -13,7 +13,6 @@ object LoadingEmojiManager {
         "🛶",
         "\uD83C\uDFC2", // Snowboarder
         "☃\uFE0F", // Lollipop
-        "\uD83C\uDF7A", // Beer
         "\uD83C\uDF7A", // Shopping Cart
         "\uD83E\uDD21", // Clown
         "\uD83E\uDD21", // Dolphin

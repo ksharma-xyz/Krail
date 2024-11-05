@@ -18,5 +18,6 @@ class SandookFactory @Inject constructor(
 
     enum class SandookKey(val fileName: String) {
         SAVED_TRIP("saved_trip"),
+        THEME("theme"),
     }
 }

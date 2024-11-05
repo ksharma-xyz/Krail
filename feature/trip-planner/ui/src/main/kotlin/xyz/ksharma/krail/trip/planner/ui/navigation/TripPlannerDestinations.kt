@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import xyz.ksharma.krail.trip.planner.ui.savedtrips.savedTripsDestination
 import xyz.ksharma.krail.trip.planner.ui.searchstop.searchStopDestination
 import xyz.ksharma.krail.trip.planner.ui.timetable.timeTableDestination
+import xyz.ksharma.krail.trip.planner.ui.usualride.usualRideDestination
 
 /**
  * Nested navigation graph for the trip planner feature.
@@ -22,6 +23,8 @@ fun NavGraphBuilder.tripPlannerDestinations(
         searchStopDestination(navController)
 
         timeTableDestination()
+
+        usualRideDestination()
     }
 }
 
@@ -46,3 +49,6 @@ internal data class TimeTableRoute(
 
 @Serializable
 internal data class SearchStopRoute(val fieldType: SearchStopFieldType)
+
+@Serializable
+data object UsualRideRoute

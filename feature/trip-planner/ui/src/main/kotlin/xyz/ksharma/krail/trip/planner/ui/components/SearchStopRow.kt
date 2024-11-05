@@ -51,9 +51,7 @@ fun SearchStopRow(
             .padding(
                 bottom = with(LocalDensity.current) {
                     WindowInsets.navigationBars
-                        .getBottom(
-                            this,
-                        )
+                        .getBottom(this)
                         .toDp()
                 },
             ),

@@ -90,5 +90,18 @@ sealed class TransportMode {
         fun toTransportModeType(productClass: Int): TransportMode? = productClassMap[productClass]
 
         fun values(): Set<TransportMode> = productClassMap.values.toSet()
+
+        fun sortedValues(sortOrder: TransportModeSortOrder = TransportModeSortOrder.NAME): List<TransportMode> =
+            when (sortOrder) {
+                TransportModeSortOrder.NAME -> values().sortedBy { it.name }
+                TransportModeSortOrder.PRIORITY -> values().sortedBy { it.priority }
+                TransportModeSortOrder.PRODUCT_CLASS -> values().sortedBy { it.productClass }
+            }
     }
+}
+
+enum class TransportModeSortOrder {
+    NAME,
+    PRIORITY,
+    PRODUCT_CLASS,
 }

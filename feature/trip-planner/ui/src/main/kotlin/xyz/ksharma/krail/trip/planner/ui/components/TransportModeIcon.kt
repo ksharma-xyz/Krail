@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.design.system.components.Text
@@ -25,14 +26,16 @@ fun TransportModeIcon(
     backgroundColor: Color,
     modifier: Modifier = Modifier,
     borderEnabled: Boolean = false,
+    iconSize: TextUnit = 18.sp,
+    fontSize: TextUnit? = null,
 ) {
     val density = LocalDensity.current
-    val size = with(density) { 18.sp.toDp() }
+    val textStyle = KrailTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium)
 
     Box(
         modifier = modifier
             .clip(shape = CircleShape)
-            .requiredSize(size)
+            .requiredSize(with(density) { iconSize.toDp() })
             .aspectRatio(1f)
             .background(color = backgroundColor)
             .borderIfEnabled(enabled = borderEnabled),
@@ -42,7 +45,10 @@ fun TransportModeIcon(
             text = "$letter",
             color = Color.White,
             // todo - need concrete token for style, meanwhile keep same as TransportModeBadge,
-            style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
+            style = textStyle.copy(
+                fontWeight = FontWeight.Medium,
+                fontSize = fontSize ?: textStyle.fontSize,
+            ),
         )
     }
 }
