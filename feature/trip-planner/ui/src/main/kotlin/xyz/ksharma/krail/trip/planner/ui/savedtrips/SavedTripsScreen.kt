@@ -1,5 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.savedtrips
 
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,17 +16,24 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.LocalThemeContentColor
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.SavedTripCard
 import xyz.ksharma.krail.trip.planner.ui.components.SearchStopRow
+import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.trip.planner.ui.getActivityOrNull
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
@@ -40,6 +50,20 @@ fun SavedTripsScreen(
     onSearchButtonClick: (StopItem?, StopItem?) -> Unit = { _, _ -> },
     onEvent: (SavedTripUiEvent) -> Unit = {},
 ) {
+    val themeContentColor by LocalThemeContentColor.current
+    val context = LocalContext.current
+    DisposableEffect(themeContentColor) {
+        context.getActivityOrNull()?.let { activity ->
+            (activity as ComponentActivity).enableEdgeToEdge(
+                navigationBarStyle = SystemBarStyle.auto(
+                    lightScrim = themeContentColor.hexToComposeColor().toArgb(),
+                    darkScrim = themeContentColor.hexToComposeColor().toArgb(),
+                ),
+            )
+        }
+        onDispose {}
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
