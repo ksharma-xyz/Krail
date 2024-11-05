@@ -14,9 +14,9 @@ class SplashViewModel @Inject constructor(
 
     private val sandook: Sandook = sandookFactory.create(SandookFactory.SandookKey.THEME)
 
-    fun getThemeColor(): String? {
+    fun getThemeTransportMode(): TransportMode? {
         val productClass = sandook.getInt("selectedMode")
         val mode = TransportMode.toTransportModeType(productClass)
-        return mode?.colorCode
+        return mode
     }
 }

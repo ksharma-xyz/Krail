@@ -42,7 +42,7 @@ fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.background),
+            .background(color = KrailTheme.colors.surface),
         contentAlignment = Alignment.Center,
     ) {
         AnimatedKrailLogo()
@@ -126,7 +126,7 @@ private fun AnimatedLetter(letter: String, animationStarted: Boolean, modifier: 
 @Composable
 private fun PreviewSplashScreen() {
     KrailTheme {
-        Column(modifier = Modifier.background(color = KrailTheme.colors.background)) {
+        Column(modifier = Modifier.background(color = KrailTheme.colors.surface)) {
             AnimatedKrailLogo()
         }
     }

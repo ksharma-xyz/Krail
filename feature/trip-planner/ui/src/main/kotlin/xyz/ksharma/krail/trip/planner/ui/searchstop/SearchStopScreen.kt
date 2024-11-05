@@ -54,7 +54,7 @@ fun SearchStopScreen(
     onStopSelect: (StopItem) -> Unit = {},
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
-    val themeColor = LocalThemeColor.current
+    val themeColor by LocalThemeColor.current
     var textFieldText: String by remember { mutableStateOf("") }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
@@ -84,7 +84,7 @@ fun SearchStopScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        themeColor.value.hexToComposeColor(),
+                        themeColor.hexToComposeColor().copy(alpha = 0.9f),
                         KrailTheme.colors.surface,
                     ),
                 ),

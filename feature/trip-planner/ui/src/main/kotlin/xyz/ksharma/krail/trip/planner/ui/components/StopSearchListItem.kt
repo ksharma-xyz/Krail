@@ -72,7 +72,7 @@ private fun StopSearchListItemPreview() {
                 TransportMode.Bus(),
                 TransportMode.LightRail(),
             ),
-            modifier = Modifier.background(color = KrailTheme.colors.background),
+            modifier = Modifier.background(color = KrailTheme.colors.surface),
         )
     }
 }
@@ -88,7 +88,7 @@ private fun StopSearchListItemLongNamePreview() {
                 TransportMode.Train(),
                 TransportMode.Ferry(),
             ),
-            modifier = Modifier.background(color = KrailTheme.colors.background),
+            modifier = Modifier.background(color = KrailTheme.colors.surface),
         )
     }
 }

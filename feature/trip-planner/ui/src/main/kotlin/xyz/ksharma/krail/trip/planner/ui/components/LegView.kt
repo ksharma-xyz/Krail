@@ -192,7 +192,7 @@ private fun RouteSummary(
             Image(
                 painter = painterResource(R.drawable.ic_clock),
                 contentDescription = null,
-                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                 modifier = Modifier
                     .padding(end = 4.dp)
                     .align(Alignment.CenterVertically)
@@ -289,7 +289,7 @@ private fun PreviewLegView() {
                     name = "DEF Station, Platform 3",
                 ),
             ).toImmutableList(),
-            modifier = Modifier.background(KrailTheme.colors.background),
+            modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
 }
@@ -316,7 +316,7 @@ private fun PreviewLegViewTwoStops() {
                     name = "DEF Station, Platform 3",
                 ),
             ).toImmutableList(),
-            modifier = Modifier.background(KrailTheme.colors.background),
+            modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
 }
@@ -342,7 +342,7 @@ private fun PreviewLegViewMetro() {
                     name = "DEF Station, Platform 3",
                 ),
             ).toImmutableList(),
-            modifier = Modifier.background(KrailTheme.colors.background),
+            modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
 }
@@ -368,7 +368,7 @@ private fun PreviewLegViewFerry() {
                     name = "DEF Station, Platform 3",
                 ),
             ).toImmutableList(),
-            modifier = Modifier.background(KrailTheme.colors.background),
+            modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
 }
@@ -394,7 +394,7 @@ private fun PreviewLegViewLightRail() {
                     name = "DEF Station, Platform 3",
                 ),
             ).toImmutableList(),
-            modifier = Modifier.background(KrailTheme.colors.background),
+            modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
 }
@@ -421,7 +421,7 @@ private fun PreviewProminentStopInfo() {
             time = "12:00",
             name = "XYZ Station, Platform 1",
             isProminent = true,
-            modifier = Modifier.background(KrailTheme.colors.background),
+            modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
 }
@@ -435,7 +435,7 @@ private fun PreviewRouteSummary() {
             routeText = "towards AVC via XYZ Rd",
             iconSize = 14.dp,
             duration = "1h 30m",
-            modifier = Modifier.background(KrailTheme.colors.background),
+            modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
 }

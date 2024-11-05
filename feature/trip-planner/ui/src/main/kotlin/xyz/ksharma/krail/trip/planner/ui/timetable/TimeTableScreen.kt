@@ -20,11 +20,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -39,7 +42,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import timber.log.Timber
 import xyz.ksharma.krail.design.system.LocalThemeColor
+import xyz.ksharma.krail.design.system.LocalThemeContentColor
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -64,7 +69,13 @@ fun TimeTableScreen(
     onEvent: (TimeTableUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val themeColor = LocalThemeColor.current
+    val themeColorHex by LocalThemeColor.current
+    val themeContentColorHex by LocalThemeContentColor.current
+    val themeColor by remember { mutableStateOf(themeColorHex.hexToComposeColor()) }
+    val themeContentColor by remember { mutableStateOf(themeContentColorHex.hexToComposeColor()) }
+    LaunchedEffect(themeContentColorHex) {
+        Timber.d("themeContentColorHex: $themeContentColorHex")
+    }
 
     Column(
         modifier = modifier
@@ -74,11 +85,14 @@ fun TimeTableScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = themeColor.value.hexToComposeColor()),
+                .background(color = themeColor),
         ) {
             TitleBar(
                 title = {
-                    Text(text = stringResource(R.string.time_table_screen_title))
+                    Text(
+                        text = stringResource(R.string.time_table_screen_title),
+                        color = themeContentColor,
+                    )
                 },
                 actions = {
                     ActionButton(
@@ -90,7 +104,7 @@ fun TimeTableScreen(
                         Image(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_reverse),
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
+                            colorFilter = ColorFilter.tint(themeContentColor),
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -111,7 +125,7 @@ fun TimeTableScreen(
                                 },
                             ),
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
+                            colorFilter = ColorFilter.tint(themeContentColor),
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -123,10 +137,11 @@ fun TimeTableScreen(
             item {
                 timeTableState.trip?.let { trip ->
                     OriginDestination(
-                        trip,
+                        trip = trip,
+                        themeContentColor = themeContentColor,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color = themeColor.value.hexToComposeColor()),
+                            .background(color = themeColor),
                     )
                 }
             }
@@ -202,6 +217,7 @@ fun TimeTableScreen(
 @Composable
 private fun OriginDestination(
     trip: Trip,
+    themeContentColor: Color,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -215,7 +231,7 @@ private fun OriginDestination(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .timeLineTop(
-                    color = KrailTheme.colors.onSurface,
+                    color = themeContentColor,
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
@@ -223,6 +239,7 @@ private fun OriginDestination(
         ) {
             Text(
                 text = trip.fromStopName,
+                color = themeContentColor,
                 style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
             )
         }
@@ -232,7 +249,7 @@ private fun OriginDestination(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .timeLineBottom(
-                    color = KrailTheme.colors.onSurface,
+                    color = themeContentColor,
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
@@ -240,6 +257,7 @@ private fun OriginDestination(
         ) {
             Text(
                 text = trip.toStopName,
+                color = themeContentColor,
                 style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
             )
         }
@@ -282,7 +300,8 @@ fun JourneyCardItem(
 private fun PreviewOriginDestination() {
     KrailTheme {
         OriginDestination(
-            modifier = Modifier.background(color = KrailTheme.colors.background),
+            modifier = Modifier.background(color = KrailTheme.colors.surface),
+            themeContentColor = KrailTheme.colors.onSurface,
             trip = Trip(
                 fromStopName = "From Stop a really long stop name here, test multiline",
                 toStopName = "To Stop",

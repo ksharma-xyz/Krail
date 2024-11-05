@@ -68,8 +68,8 @@ fun Fab(
 private fun PreviewFab() {
     KrailTheme {
         Fab(
-            containerColor = KrailTheme.colors.secondaryContainer,
-            contentColor = KrailTheme.colors.secondary,
+            containerColor = KrailTheme.colors.surface,
+            contentColor = KrailTheme.colors.onSurface,
             onClick = {},
         ) {
             Image(
