@@ -15,6 +15,7 @@ dependencies {
     implementation(projects.feature.tripPlanner.state)
     implementation(projects.sandook.api)
 
+    implementation(libs.compose.ui)
     implementation(libs.compose.foundation)
     implementation(libs.compose.navigation)
     implementation(libs.hilt.navigation.compose)
@@ -22,5 +23,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.timber)
     implementation(libs.kotlinx.datetime)
-    implementation(project(":sandook:real"))
+    implementation(projects.sandook.real)
+
+    testImplementation(libs.test.composeUiTestJunit4)
+    testImplementation(libs.test.kotlin)
 }

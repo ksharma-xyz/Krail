@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -73,8 +74,10 @@ fun TimeTableScreen(
     val themeContentColorHex by LocalThemeContentColor.current
     val themeColor by remember { mutableStateOf(themeColorHex.hexToComposeColor()) }
     val themeContentColor by remember { mutableStateOf(themeContentColorHex.hexToComposeColor()) }
+
+    val dark = isSystemInDarkTheme()
     LaunchedEffect(themeContentColorHex) {
-        Timber.d("themeContentColorHex: $themeContentColorHex")
+        Timber.d("themeContentColorHex(dark: $dark): ${themeContentColorHex.drop(3)}")
     }
 
     Column(
