@@ -2,11 +2,9 @@ package xyz.ksharma.krail.navigation
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavOptions
@@ -14,6 +12,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
+import xyz.ksharma.krail.design.system.LocalThemeColor
+import xyz.ksharma.krail.design.system.unspecifiedColor
 import xyz.ksharma.krail.splash.SplashScreen
 import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
@@ -34,33 +34,36 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
 @Composable
 fun KrailNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
+    val themeColorHexCode = rememberSaveable { mutableStateOf(unspecifiedColor) }
 
-    NavHost(
-        navController = navController,
-        startDestination = SplashScreen,
-        modifier = modifier.fillMaxSize(),
-    ) {
-        tripPlannerDestinations(navController = navController)
+    CompositionLocalProvider(LocalThemeColor provides themeColorHexCode) {
+        NavHost(
+            navController = navController,
+            startDestination = SplashScreen,
+            modifier = modifier.fillMaxSize(),
+        ) {
+            tripPlannerDestinations(navController = navController)
 
-        composable<SplashScreen> {
-            val viewModel = hiltViewModel<SplashViewModel>()
-            var isThemeAvailable by remember { mutableStateOf(false) }
+            composable<SplashScreen> {
+                val viewModel = hiltViewModel<SplashViewModel>()
+                themeColorHexCode.value = viewModel.getThemeColor() ?: unspecifiedColor
 
-            LaunchedEffect(Unit) {
-                isThemeAvailable = viewModel.isThemeAvailable()
+                SplashScreen(
+                    onSplashComplete = {
+                        navController.navigate(
+                            route = if (themeColorHexCode.value != unspecifiedColor) {
+                                SavedTripsRoute
+                            } else {
+                                UsualRideRoute
+                            },
+                            navOptions = NavOptions.Builder()
+                                .setLaunchSingleTop(true)
+                                .setPopUpTo<SplashScreen>(inclusive = true)
+                                .build(),
+                        )
+                    },
+                )
             }
-
-            SplashScreen(
-                onSplashComplete = {
-                    navController.navigate(
-                        route = if (isThemeAvailable) SavedTripsRoute else UsualRideRoute,
-                        navOptions = NavOptions.Builder()
-                            .setLaunchSingleTop(true)
-                            .setPopUpTo<SplashScreen>(inclusive = true)
-                            .build(),
-                    )
-                },
-            )
         }
     }
 }

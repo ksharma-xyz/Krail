@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -21,7 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapLatest
 import timber.log.Timber
+import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.components.Divider
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
@@ -50,10 +51,10 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 fun SearchStopScreen(
     searchStopState: SearchStopState,
     modifier: Modifier = Modifier,
-    themeColor: Color = TransportMode.Train().colorCode.hexToComposeColor(), // TODO theming
     onStopSelect: (StopItem) -> Unit = {},
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
+    val themeColor = LocalThemeColor.current
     var textFieldText: String by remember { mutableStateOf("") }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
@@ -82,7 +83,10 @@ fun SearchStopScreen(
             .fillMaxSize()
             .background(
                 brush = Brush.verticalGradient(
-                    colors = listOf(themeColor, KrailTheme.colors.surface),
+                    colors = listOf(
+                        themeColor.value.hexToComposeColor(),
+                        KrailTheme.colors.surface,
+                    ),
                 ),
             )
             .imePadding(),
@@ -151,7 +155,10 @@ fun SearchStopScreen(
 @Composable
 private fun SearchStopScreenPreview() {
     KrailTheme {
-        SearchStopScreen(searchStopState = SearchStopState())
+        val themeColor = remember { mutableStateOf(TransportMode.Bus().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(searchStopState = SearchStopState())
+        }
     }
 }
 

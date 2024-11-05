@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
@@ -20,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.design.system.LocalOnContentColor
+import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.components.RoundIconButton
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextFieldButton
@@ -31,7 +34,6 @@ import xyz.ksharma.krail.trip.planner.ui.R as TripPlannerUiR
 
 @Composable
 fun SearchStopRow(
-    themeColor: Color,
     fromButtonClick: () -> Unit,
     toButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -40,11 +42,13 @@ fun SearchStopRow(
     onReverseButtonClick: () -> Unit = {},
     onSearchButtonClick: () -> Unit = {},
 ) {
+    val themeColor = LocalThemeColor.current
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = themeColor,
+                color = themeColor.value.hexToComposeColor(),
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
             )
             .padding(vertical = 24.dp, horizontal = 16.dp)
@@ -113,11 +117,13 @@ fun SearchStopRow(
 @Composable
 private fun SearchStopColumnPreview() {
     KrailTheme {
-        SearchStopRow(
-            fromButtonClick = {},
-            toButtonClick = {},
-            themeColor = TransportMode.Train().colorCode.hexToComposeColor(),
-        )
+        val themeColor = remember { mutableStateOf(TransportMode.Train().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopRow(
+                fromButtonClick = {},
+                toButtonClick = {},
+            )
+        }
     }
 }
 

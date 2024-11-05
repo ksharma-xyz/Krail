@@ -19,12 +19,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -62,8 +63,9 @@ fun TimeTableScreen(
     expandedJourneyId: String?,
     onEvent: (TimeTableUiEvent) -> Unit,
     modifier: Modifier = Modifier,
-    themeColor: Color = TransportMode.Train().colorCode.hexToComposeColor(), // TODO - theming
 ) {
+    val themeColor = LocalThemeColor.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -72,7 +74,7 @@ fun TimeTableScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(color = themeColor),
+                .background(color = themeColor.value.hexToComposeColor()),
         ) {
             TitleBar(
                 title = {
@@ -124,7 +126,7 @@ fun TimeTableScreen(
                         trip,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color = themeColor),
+                            .background(color = themeColor.value.hexToComposeColor()),
                     )
                 }
             }
@@ -295,35 +297,38 @@ private fun PreviewOriginDestination() {
 @Composable
 private fun PreviewTimeTableScreen() {
     KrailTheme {
-        TimeTableScreen(
-            timeTableState = TimeTableState(
-                trip = Trip(
-                    fromStopName = "From Stop",
-                    toStopName = "To Stop",
-                    fromStopId = "123",
-                    toStopId = "456",
-                ),
-                journeyList = listOf(
-                    TimeTableState.JourneyCardInfo(
-                        timeText = "12:00",
-                        platformText = 'A',
-                        originTime = "12:00",
-                        destinationTime = "12:30",
-                        travelTime = "30 mins",
-                        transportModeLines = persistentListOf(
-                            TransportModeLine(
-                                transportMode = TransportMode.Bus(),
-                                lineName = "123",
-                            ),
-                        ),
-                        legs = persistentListOf(),
-                        originUtcDateTime = "2024-11-01T12:00:00Z",
+        val themeColor = remember { mutableStateOf(TransportMode.Ferry().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            TimeTableScreen(
+                timeTableState = TimeTableState(
+                    trip = Trip(
+                        fromStopName = "From Stop",
+                        toStopName = "To Stop",
+                        fromStopId = "123",
+                        toStopId = "456",
                     ),
-                ).toImmutableList(),
-            ),
-            expandedJourneyId = null,
-            onEvent = {},
-        )
+                    journeyList = listOf(
+                        TimeTableState.JourneyCardInfo(
+                            timeText = "12:00",
+                            platformText = 'A',
+                            originTime = "12:00",
+                            destinationTime = "12:30",
+                            travelTime = "30 mins",
+                            transportModeLines = persistentListOf(
+                                TransportModeLine(
+                                    transportMode = TransportMode.Bus(),
+                                    lineName = "123",
+                                ),
+                            ),
+                            legs = persistentListOf(),
+                            originUtcDateTime = "2024-11-01T12:00:00Z",
+                        ),
+                    ).toImmutableList(),
+                ),
+                expandedJourneyId = null,
+                onEvent = {},
+            )
+        }
     }
 }
 

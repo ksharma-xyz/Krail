@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.components
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 /**
@@ -18,7 +19,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
  *
  * @return A Compose Color object representing the provided hex color code.
  */
-internal fun String.hexToComposeColor(): Color {
+fun String.hexToComposeColor(): Color {
     require(this.isValidHexColorCode()) { "Invalid hex color code: $this" }
     return Color(android.graphics.Color.parseColor(this))
 }
@@ -52,5 +53,15 @@ internal fun transportModeBackgroundColor(transportMode: TransportMode): Color {
         transportMode.colorCode.hexToComposeColor().copy(alpha = 0.45f)
     } else {
         transportMode.colorCode.hexToComposeColor().copy(alpha = 0.15f)
+    }
+}
+
+@Composable
+internal fun themeBackgroundColor(): Color {
+    val themeColor = LocalThemeColor.current
+    return if (isSystemInDarkTheme()) {
+        themeColor.value.hexToComposeColor().copy(alpha = 0.45f)
+    } else {
+        themeColor.value.hexToComposeColor().copy(alpha = 0.15f)
     }
 }
