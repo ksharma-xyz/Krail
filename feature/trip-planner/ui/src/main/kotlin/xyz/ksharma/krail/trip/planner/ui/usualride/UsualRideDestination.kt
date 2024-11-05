@@ -12,7 +12,8 @@ import androidx.navigation.compose.composable
 import kotlinx.collections.immutable.toImmutableSet
 import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.LocalThemeContentColor
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.theme.getForegroundColor
+import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
@@ -25,17 +26,9 @@ internal fun NavGraphBuilder.usualRideDestination(navController: NavHostControll
         val viewModel = hiltViewModel<UsualRideViewModel>()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
-
         var mode: TransportMode? by remember { mutableStateOf(null) }
-        themeContentColor = when (mode) {
-            is TransportMode.Bus -> KrailTheme.colors.onBusTheme
-            is TransportMode.Coach -> KrailTheme.colors.onCoachTheme
-            is TransportMode.Ferry -> KrailTheme.colors.onFerryTheme
-            is TransportMode.LightRail -> KrailTheme.colors.onLightRailTheme
-            is TransportMode.Metro -> KrailTheme.colors.onMetroTheme
-            is TransportMode.Train -> KrailTheme.colors.onTrainTheme
-            else -> KrailTheme.colors.onSurface
-        }.toHex()
+        themeContentColor =
+            getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
         UsualRideScreen(
             transportModes = TransportMode.sortedValues(TransportModeSortOrder.PRODUCT_CLASS)

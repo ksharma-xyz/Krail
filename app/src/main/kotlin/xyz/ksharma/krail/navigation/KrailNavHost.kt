@@ -16,15 +16,15 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
 import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.LocalThemeContentColor
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.theme.getForegroundColor
 import xyz.ksharma.krail.design.system.unspecifiedColor
 import xyz.ksharma.krail.splash.SplashScreen
 import xyz.ksharma.krail.splash.SplashViewModel
+import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 /**
  * TODO - I don't like [NavHost] defined in app module, I would love to refactor it to :core:navigation module
@@ -43,17 +43,10 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
     val themeColorHexCode = rememberSaveable { mutableStateOf(unspecifiedColor) }
     var productClass: Int? by rememberSaveable { mutableStateOf(null) }
     val themeContentColorHexCode = rememberSaveable { mutableStateOf(unspecifiedColor) }
-
     themeContentColorHexCode.value =
-        when (productClass?.let { TransportMode.toTransportModeType(it) }) {
-            is TransportMode.Bus -> KrailTheme.colors.onBusTheme
-            is TransportMode.Coach -> KrailTheme.colors.onCoachTheme
-            is TransportMode.Ferry -> KrailTheme.colors.onFerryTheme
-            is TransportMode.LightRail -> KrailTheme.colors.onLightRailTheme
-            is TransportMode.Metro -> KrailTheme.colors.onMetroTheme
-            is TransportMode.Train -> KrailTheme.colors.onTrainTheme
-            else -> KrailTheme.colors.onSurface
-        }.toHex()
+        getForegroundColor(
+            backgroundColor = themeColorHexCode.value.hexToComposeColor(),
+        ).toHex()
 
     CompositionLocalProvider(
         LocalThemeColor provides themeColorHexCode,
