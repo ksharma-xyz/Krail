@@ -44,7 +44,7 @@ fun TitleBar(
     ) {
         Row(modifier = Modifier.weight(1f)) {
             CompositionLocalProvider(
-                LocalTextColor provides KrailTheme.colors.onBackground,
+                LocalTextColor provides KrailTheme.colors.onSurface,
                 LocalTextStyle provides KrailTheme.typography.headlineMedium,
             ) {
                 title()
@@ -56,7 +56,7 @@ fun TitleBar(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 CompositionLocalProvider(
-                    LocalContentColor provides KrailTheme.colors.onBackground,
+                    LocalContentColor provides KrailTheme.colors.onSurface,
                 ) {
                     actions()
                 }
@@ -83,7 +83,7 @@ private fun TitleBarPreview() {
                     colorFilter = ColorFilter.tint(LocalContentColor.current),
                 )
             },
-            modifier = Modifier.background(color = KrailTheme.colors.background),
+            modifier = Modifier.background(color = KrailTheme.colors.surface),
         )
     }
 }
@@ -124,7 +124,7 @@ private fun TitleBarPreviewMultipleActions() {
                     )
                 }
             },
-            modifier = Modifier.background(color = KrailTheme.colors.background),
+            modifier = Modifier.background(color = KrailTheme.colors.surface),
         )
     }
 }
@@ -137,7 +137,7 @@ private fun TitleBarPreviewNoActions() {
             title = {
                 Text(text = "Saved Trips Screen Title")
             },
-            modifier = Modifier.background(color = KrailTheme.colors.background),
+            modifier = Modifier.background(color = KrailTheme.colors.surface),
         )
     }
 }

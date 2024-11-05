@@ -222,7 +222,7 @@ fun JourneyCardContent(
                 Image(
                     painter = painterResource(R.drawable.ic_clock),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .align(Alignment.CenterVertically)
@@ -398,7 +398,7 @@ fun DefaultJourneyCardContent(
                 Image(
                     painter = painterResource(R.drawable.ic_clock),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .align(Alignment.CenterVertically)
@@ -414,7 +414,7 @@ fun DefaultJourneyCardContent(
                 Image(
                     painter = painterResource(R.drawable.ic_a11y),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onBackground),
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                     modifier = Modifier
                         .size(14.dp.toAdaptiveSize())
                         .align(Alignment.CenterVertically),

@@ -11,6 +11,7 @@ val LocalTextStyle = compositionLocalOf { TextStyle.Default }
 val LocalTextColor = compositionLocalOf { Color.Unspecified }
 val LocalContentAlpha = compositionLocalOf { 1f }
 val LocalThemeColor = compositionLocalOf { mutableStateOf(unspecifiedColor) }
+val LocalThemeContentColor = compositionLocalOf { mutableStateOf(unspecifiedColor) }
 
 internal val LocalContentColor = compositionLocalOf { Color.Unspecified }
 val LocalOnContentColor = compositionLocalOf { Color.Unspecified }

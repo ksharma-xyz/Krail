@@ -32,7 +32,7 @@ fun Text(
 ) {
     val contentAlpha = LocalContentAlpha.current
     CompositionLocalProvider(
-        LocalTextColor provides KrailTheme.colors.onBackground, // default color for text
+        LocalTextColor provides KrailTheme.colors.onSurface, // default color for text
         LocalTextStyle provides KrailTheme.typography.body, // default style for text
     ) {
         BasicText(
@@ -56,7 +56,7 @@ fun Text(
 @Composable
 private fun TextPreview() {
     KrailTheme {
-        Column(modifier = Modifier.background(color = KrailTheme.colors.background)) {
+        Column(modifier = Modifier.background(color = KrailTheme.colors.surface)) {
             Text(text = "Typography")
             Text(text = "DisplayLarge", style = KrailTheme.typography.displayLarge)
             Text(text = "displayMedium", style = KrailTheme.typography.displayMedium)
@@ -69,7 +69,7 @@ private fun TextPreview() {
 @Composable
 private fun TextWithColorPreview() {
     KrailTheme {
-        Column(modifier = Modifier.background(color = KrailTheme.colors.background)) {
+        Column(modifier = Modifier.background(color = KrailTheme.colors.surface)) {
             Text(text = "Typography", color = KrailTheme.colors.error)
         }
     }

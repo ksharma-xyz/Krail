@@ -43,6 +43,8 @@ fun SavedTripCard(
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val themeColor by LocalThemeColor.current
+
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
@@ -94,7 +96,7 @@ fun SavedTripCard(
                 contentDescription = "Save Trip",
                 colorFilter = ColorFilter.tint(
                     primaryTransportMode?.colorCode
-                        ?.hexToComposeColor() ?: LocalThemeColor.current.value.hexToComposeColor(),
+                        ?.hexToComposeColor() ?: themeColor.hexToComposeColor(),
                 ),
             )
         }
@@ -119,7 +121,7 @@ private fun SavedTripCardPreview() {
                 primaryTransportMode = TransportMode.Train(),
                 onCardClick = {},
                 onStarClick = {},
-                modifier = Modifier.background(color = KrailTheme.colors.background),
+                modifier = Modifier.background(color = KrailTheme.colors.surface),
             )
         }
     }
@@ -131,7 +133,7 @@ private fun SavedTripCardListPreview() {
     KrailTheme {
         Column(
             modifier = Modifier
-                .background(color = KrailTheme.colors.background)
+                .background(color = KrailTheme.colors.surface)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {

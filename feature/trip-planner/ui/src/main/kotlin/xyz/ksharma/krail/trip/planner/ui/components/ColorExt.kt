@@ -2,6 +2,7 @@ package xyz.ksharma.krail.trip.planner.ui.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -58,10 +59,24 @@ internal fun transportModeBackgroundColor(transportMode: TransportMode): Color {
 
 @Composable
 internal fun themeBackgroundColor(): Color {
-    val themeColor = LocalThemeColor.current
+    val themeColor by LocalThemeColor.current
     return if (isSystemInDarkTheme()) {
-        themeColor.value.hexToComposeColor().copy(alpha = 0.45f)
+        themeColor.hexToComposeColor().copy(alpha = 0.45f)
     } else {
-        themeColor.value.hexToComposeColor().copy(alpha = 0.15f)
+        themeColor.hexToComposeColor().copy(alpha = 0.15f)
     }
+}
+
+/**
+ * Converts a Compose Color object to a hexadecimal color string.
+ *
+ * @return A string representing the hexadecimal color code (e.g., "#FF0000" for red).
+ */
+@Suppress("ImplicitDefaultLocale")
+fun Color.toHex(): String {
+    val red = (this.red * 255).toInt()
+    val green = (this.green * 255).toInt()
+    val blue = (this.blue * 255).toInt()
+    val alpha = (this.alpha * 255).toInt()
+    return String.format("#%02X%02X%02X%02X", alpha, red, green, blue)
 }

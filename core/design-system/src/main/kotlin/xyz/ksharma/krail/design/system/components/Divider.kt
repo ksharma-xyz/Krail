@@ -23,7 +23,7 @@ fun Divider(
     type: DividerType = DividerType.HORIZONTAL,
     color: Color? = null,
 ) {
-    CompositionLocalProvider(LocalContentColor provides KrailTheme.colors.onBackground.copy(alpha = 0.2f)) {
+    CompositionLocalProvider(LocalContentColor provides KrailTheme.colors.onSurface.copy(alpha = 0.2f)) {
         Box(
             modifier = modifier
                 .then(
@@ -57,7 +57,7 @@ private fun DividerPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(30.dp)
-                .background(KrailTheme.colors.background),
+                .background(KrailTheme.colors.surface),
             contentAlignment = Alignment.Center,
         ) {
             Divider()
@@ -72,7 +72,7 @@ private fun DividerVerticalPreview() {
         Box(
             modifier = Modifier
                 .size(30.dp)
-                .background(KrailTheme.colors.background),
+                .background(KrailTheme.colors.surface),
             contentAlignment = Alignment.Center,
         ) {
             Divider(type = DividerType.VERTICAL)

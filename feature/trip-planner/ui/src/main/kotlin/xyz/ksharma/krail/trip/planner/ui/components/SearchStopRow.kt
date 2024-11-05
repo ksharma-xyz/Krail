@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -42,13 +43,13 @@ fun SearchStopRow(
     onReverseButtonClick: () -> Unit = {},
     onSearchButtonClick: () -> Unit = {},
 ) {
-    val themeColor = LocalThemeColor.current
+    val themeColor by LocalThemeColor.current
 
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = themeColor.value.hexToComposeColor(),
+                color = themeColor.hexToComposeColor(),
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
             )
             .padding(vertical = 24.dp, horizontal = 16.dp)
