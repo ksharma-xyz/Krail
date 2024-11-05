@@ -26,3 +26,7 @@ fun getForegroundColor(backgroundColor: Color): Color {
         darkForegroundColor
     }
 }
+
+fun shouldUseDarkIcons(backgroundColor: Color): Boolean {
+    return getForegroundColor(backgroundColor) == md_theme_dark_onSurface
+}

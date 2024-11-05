@@ -1,9 +1,11 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
+import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,7 +23,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,7 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
@@ -43,12 +47,12 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import timber.log.Timber
 import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.LocalThemeContentColor
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.theme.shouldUseDarkIcons
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
@@ -56,6 +60,7 @@ import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.components.timeLineBottom
 import xyz.ksharma.krail.trip.planner.ui.components.timeLineTop
+import xyz.ksharma.krail.trip.planner.ui.getActivityOrNull
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
@@ -74,10 +79,22 @@ fun TimeTableScreen(
     val themeContentColorHex by LocalThemeContentColor.current
     val themeColor by remember { mutableStateOf(themeColorHex.hexToComposeColor()) }
     val themeContentColor by remember { mutableStateOf(themeContentColorHex.hexToComposeColor()) }
-
-    val dark = isSystemInDarkTheme()
-    LaunchedEffect(themeContentColorHex) {
-        Timber.d("themeContentColorHex(dark: $dark): ${themeContentColorHex.drop(3)}")
+    val context = LocalContext.current
+    val darkIcons = shouldUseDarkIcons(themeColor)
+    DisposableEffect(darkIcons) {
+        context.getActivityOrNull()?.let { activity ->
+            (activity as ComponentActivity).enableEdgeToEdge(
+                statusBarStyle = SystemBarStyle.auto(
+                    android.graphics.Color.TRANSPARENT,
+                    android.graphics.Color.TRANSPARENT,
+                ) { darkIcons },
+                navigationBarStyle = SystemBarStyle.auto(
+                    lightScrim = themeContentColor.toArgb(),
+                    darkScrim = themeContentColor.toArgb(),
+                ),
+            )
+        }
+        onDispose {}
     }
 
     Column(
