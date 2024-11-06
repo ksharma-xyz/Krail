@@ -12,6 +12,6 @@ data class SearchStopState(
     data class StopResult(
         val stopName: String,
         val stopId: String,
-        val transportModeType: List<TransportMode> = emptyList(),
+        val transportModeType: ImmutableList<TransportMode> = persistentListOf(),
     )
 }

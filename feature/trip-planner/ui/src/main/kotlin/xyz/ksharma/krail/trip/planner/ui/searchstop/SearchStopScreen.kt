@@ -1,6 +1,7 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +26,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
@@ -38,6 +40,8 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.StopSearchListItem
+import xyz.ksharma.krail.trip.planner.ui.components.brighten
+import xyz.ksharma.krail.trip.planner.ui.components.darken
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
@@ -51,11 +55,12 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 fun SearchStopScreen(
     searchStopState: SearchStopState,
     modifier: Modifier = Modifier,
+    searchQuery: String = "",
     onStopSelect: (StopItem) -> Unit = {},
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
     val themeColor by LocalThemeColor.current
-    var textFieldText: String by remember { mutableStateOf("") }
+    var textFieldText: String by remember { mutableStateOf(searchQuery) }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
 
@@ -67,15 +72,11 @@ fun SearchStopScreen(
     val trimmedText by remember(textFieldText) { derivedStateOf { textFieldText.trim() } }
 
     LaunchedEffect(trimmedText) {
-        snapshotFlow { trimmedText }
-            .distinctUntilChanged()
-            .debounce(250)
-            .filter { it.isNotBlank() }
+        snapshotFlow { trimmedText }.distinctUntilChanged().debounce(250).filter { it.isNotBlank() }
             .mapLatest { text ->
                 Timber.d("Query - $text")
                 onEvent(SearchStopUiEvent.SearchTextChanged(text))
-            }
-            .collectLatest {}
+            }.collectLatest {}
     }
 
     Column(
@@ -84,7 +85,15 @@ fun SearchStopScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        themeColor.hexToComposeColor().copy(alpha = 0.9f),
+                        if (isSystemInDarkTheme()) {
+                            themeColor
+                                .hexToComposeColor()
+                                .darken()
+                        } else {
+                            themeColor
+                                .hexToComposeColor()
+                                .brighten()
+                        },
                         KrailTheme.colors.surface,
                     ),
                 ),
@@ -128,6 +137,7 @@ fun SearchStopScreen(
                             stopId = stop.stopId,
                             stopName = stop.stopName,
                             transportModeSet = stop.transportModeType.toImmutableSet(),
+                            textColor = KrailTheme.colors.label,
                             onClick = { stopItem ->
                                 keyboard?.hide()
                                 onStopSelect(stopItem)
@@ -153,13 +163,110 @@ fun SearchStopScreen(
 
 @PreviewLightDark
 @Composable
-private fun SearchStopScreenPreview() {
+private fun PreviewSearchStopScreenTrain() {
     KrailTheme {
-        val themeColor = remember { mutableStateOf(TransportMode.Bus().colorCode) }
+        val themeColor = remember { mutableStateOf(TransportMode.Train().colorCode) }
         CompositionLocalProvider(LocalThemeColor provides themeColor) {
-            SearchStopScreen(searchStopState = SearchStopState())
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState,
+            )
         }
     }
 }
+
+@PreviewLightDark
+@Composable
+private fun PreviewSearchStopScreenCoach() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Coach().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState,
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewSearchStopScreenFerry() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Ferry().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState,
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewSearchStopScreenMetro() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Metro().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState,
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewSearchStopScreenLightRail() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.LightRail().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState,
+            )
+        }
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun PreviewSearchStopScreenBus() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Bus().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState,
+            )
+        }
+    }
+}
+
+private val searchStopState = SearchStopState(
+    isLoading = false,
+    stops = persistentListOf(
+        SearchStopState.StopResult(
+            stopId = "123",
+            stopName = "Stop Name",
+            transportModeType = persistentListOf(TransportMode.Bus()),
+        ),
+        SearchStopState.StopResult(
+            stopId = "235",
+            stopName = "Stop Name",
+            transportModeType = persistentListOf(TransportMode.Ferry()),
+        ),
+        SearchStopState.StopResult(
+            stopId = "235",
+            stopName = "Stop Name",
+            transportModeType = persistentListOf(
+                TransportMode.Train(),
+                TransportMode.Bus(),
+            ),
+        ),
+    ),
+)
 
 // endregion

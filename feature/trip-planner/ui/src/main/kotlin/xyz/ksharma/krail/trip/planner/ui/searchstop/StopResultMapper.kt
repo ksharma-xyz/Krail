@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
+import kotlinx.collections.immutable.toPersistentList
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
@@ -32,7 +33,7 @@ object StopResultMapper {
             SearchStopState.StopResult(
                 stopName = stopName,
                 stopId = stopId,
-                transportModeType = modes,
+                transportModeType = modes.toPersistentList(),
             )
         }.sortedBy { stopResult ->
             stopResult.transportModeType.minOfOrNull { mode ->
