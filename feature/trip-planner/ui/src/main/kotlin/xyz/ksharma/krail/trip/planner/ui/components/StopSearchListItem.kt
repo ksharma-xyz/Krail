@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ fun StopSearchListItem(
     stopName: String,
     stopId: String,
     transportModeSet: ImmutableSet<TransportMode>,
+    textColor: Color,
     modifier: Modifier = Modifier,
     onClick: (StopItem) -> Unit = {},
 ) {
@@ -44,6 +46,7 @@ fun StopSearchListItem(
     ) {
         Text(
             text = stopName,
+            color = textColor,
             style = KrailTheme.typography.titleSmall,
         )
         Row(
@@ -72,6 +75,7 @@ private fun StopSearchListItemPreview() {
                 TransportMode.Bus(),
                 TransportMode.LightRail(),
             ),
+            textColor = KrailTheme.colors.onSurface,
             modifier = Modifier.background(color = KrailTheme.colors.surface),
         )
     }
@@ -88,6 +92,7 @@ private fun StopSearchListItemLongNamePreview() {
                 TransportMode.Train(),
                 TransportMode.Ferry(),
             ),
+            textColor = KrailTheme.colors.onSurface,
             modifier = Modifier.background(color = KrailTheme.colors.surface),
         )
     }
