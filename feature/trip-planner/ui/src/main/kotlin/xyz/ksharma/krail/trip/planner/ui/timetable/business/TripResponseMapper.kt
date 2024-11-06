@@ -15,6 +15,8 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @Suppress("ComplexCondition")
 internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.JourneyCardInfo>? =
@@ -35,6 +37,22 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         if (originTimeUTC != null && arrivalTimeUTC != null && totalStops > 0 && legsList != null &&
             transportModeLines != null
         ) {
+            // A walking leg consists of walking leg + footpath info from public transport leg
+            val walkingDurationStr = legs.sumOf { leg ->
+                if (leg.isWalkingLeg()) leg.duration ?: 0L else 0L
+            }.let { totalDuration ->
+                val footPathDuration = legs.sumOf { leg ->
+                    leg.footPathInfo?.firstOrNull()?.duration ?: 0L
+                }
+                val combinedDuration = totalDuration + footPathDuration
+                if (combinedDuration == 0L) {
+                    null
+                } else {
+                    combinedDuration.toDuration(DurationUnit.SECONDS)
+                        .toFormattedDurationTimeString()
+                }
+            }
+
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.getTimeText(),
                 platformText = platformText,
@@ -45,6 +63,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                     originTimeUTC,
                     arrivalTimeUTC,
                 ).toFormattedDurationTimeString(),
+                totalWalkTime = walkingDurationStr,
                 transportModeLines = transportModeLines,
                 legs = legsList,
             ).also {

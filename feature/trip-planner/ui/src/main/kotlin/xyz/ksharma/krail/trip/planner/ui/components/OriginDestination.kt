@@ -33,7 +33,7 @@ internal fun OriginDestination(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp),
+            .padding(bottom = 16.dp, top = 4.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
