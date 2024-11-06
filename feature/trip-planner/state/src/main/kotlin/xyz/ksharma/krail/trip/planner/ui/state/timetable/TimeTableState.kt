@@ -29,6 +29,11 @@ data class TimeTableState(
         val travelTime: String, // "(10 min)"
 
         /**
+         * Total walking time in the journey.
+         */
+        val totalWalkTime: String? = null, // "10 mins"
+
+        /**
          * transportation.disassembledName -> lineName
          * transportation.product.class -> TransportModeType
          */

@@ -193,6 +193,7 @@ fun TimeTableScreen(
                         originTime = journey.originTime,
                         destinationTime = journey.destinationTime,
                         durationText = journey.travelTime,
+                        totalWalkTime = journey.totalWalkTime,
                         transportModeLineList = journey.transportModeLines.map {
                             TransportModeLine(
                                 transportMode = it.transportMode,
@@ -235,6 +236,7 @@ fun JourneyCardItem(
     departureLocationNumber: Char?,
     originTime: String,
     durationText: String,
+    totalWalkTime: String?,
     destinationTime: String,
     onClick: () -> Unit,
     cardState: JourneyCardState,
@@ -254,6 +256,7 @@ fun JourneyCardItem(
             transportModeList = transportModeLineList.map { it.transportMode }
                 .toImmutableList(),
             legList = legList,
+            totalWalkTime = totalWalkTime,
             onClick = onClick,
             modifier = modifier,
         )

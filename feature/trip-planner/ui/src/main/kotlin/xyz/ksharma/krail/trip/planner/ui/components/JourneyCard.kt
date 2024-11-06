@@ -74,6 +74,7 @@ fun JourneyCard(
     transportModeList: ImmutableList<TransportMode>,
     onClick: () -> Unit,
     cardState: JourneyCardState,
+    totalWalkTime: String?,
     modifier: Modifier = Modifier,
     platformNumber: Char? = null,
 ) {
@@ -127,6 +128,7 @@ fun JourneyCard(
                 themeColor = themeColor,
                 transportModeList = transportModeList,
                 platformNumber = platformNumber,
+                totalWalkTime = totalWalkTime,
                 modifier = Modifier.clickable(
                     role = Role.Button,
                     onClick = onClick,
@@ -320,6 +322,7 @@ fun DefaultJourneyCardContent(
     themeColor: Color,
     transportModeList: ImmutableList<TransportMode>,
     platformNumber: Char?,
+    totalWalkTime: String?,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -399,23 +402,22 @@ fun DefaultJourneyCardContent(
                 text = destinationTime,
                 style = KrailTheme.typography.titleMedium,
                 color = KrailTheme.colors.onSurface,
+                modifier = Modifier.padding(end = 10.dp),
             )
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.align(Alignment.CenterVertically),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_clock),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
+            TextWithIcon(
+                icon = R.drawable.ic_clock,
+                text = totalTravelTime,
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(end = 10.dp),
+            )
+            totalWalkTime?.let {
+                TextWithIcon(
+                    icon = R.drawable.ic_walk,
+                    text = totalWalkTime,
                     modifier = Modifier
-                        .padding(horizontal = 4.dp)
                         .align(Alignment.CenterVertically)
-                        .size(14.dp.toAdaptiveSize()),
-                )
-                Text(
-                    text = totalTravelTime,
-                    style = KrailTheme.typography.bodyMedium,
+                        .padding(end = 10.dp),
                 )
             }
             Spacer(modifier = Modifier.weight(1f))
@@ -430,6 +432,28 @@ fun DefaultJourneyCardContent(
                 )
             }
         }
+    }
+}
+
+@Composable
+private fun TextWithIcon(icon: Int, text: String, modifier: Modifier = Modifier) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier,
+    ) {
+        Image(
+            painter = painterResource(icon),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
+            modifier = Modifier
+                .padding(end = 4.dp)
+                .align(Alignment.CenterVertically)
+                .size(14.dp.toAdaptiveSize()),
+        )
+        Text(
+            text = text,
+            style = KrailTheme.typography.bodyMedium,
+        )
     }
 }
 
@@ -472,6 +496,7 @@ private fun PreviewJourneyCard() {
             ).toImmutableList(),
             legList = persistentListOf(),
             cardState = JourneyCardState.DEFAULT,
+            totalWalkTime = null,
             onClick = {},
         )
     }
@@ -518,6 +543,7 @@ private fun PreviewJourneyCardCollapsed() {
 
             ),
             cardState = JourneyCardState.COLLAPSED,
+            totalWalkTime = "10 mins",
             onClick = {},
         )
     }
@@ -564,6 +590,7 @@ private fun PreviewJourneyCardExpanded() {
 
             ),
             cardState = JourneyCardState.EXPANDED,
+            totalWalkTime = null,
             onClick = {},
         )
     }
@@ -605,6 +632,7 @@ private fun PreviewJourneyCardLongData() {
             ).toImmutableList(),
             legList = persistentListOf(),
             cardState = JourneyCardState.DEFAULT,
+            totalWalkTime = "15 mins",
             onClick = {},
         )
     }
