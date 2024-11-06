@@ -251,7 +251,7 @@ fun JourneyCardContent(
                     WalkingLeg(
                         duration = leg.duration,
                         modifier = Modifier
-                            .padding(horizontal = 16.dp),
+                            .padding(vertical = 2.dp),
                     )
                 }
 
@@ -260,8 +260,7 @@ fun JourneyCardContent(
                         leg.walkInterchange?.duration?.let { duration ->
                             WalkingLeg(
                                 duration = duration,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp),
+                                modifier = Modifier.padding(vertical = 2.dp),
                             )
                         }
                     }
@@ -276,8 +275,7 @@ fun JourneyCardContent(
                         leg.walkInterchange?.duration?.let { duration ->
                             WalkingLeg(
                                 duration = duration,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp),
+                                modifier = Modifier.padding(vertical = 2.dp),
                             )
                         }
                     } else {
@@ -301,8 +299,7 @@ fun JourneyCardContent(
                         leg.walkInterchange?.duration?.let { duration ->
                             WalkingLeg(
                                 duration = duration,
-                                modifier = Modifier
-                                    .padding(horizontal = 16.dp),
+                                modifier = Modifier.padding(vertical = 2.dp),
                             )
                         }
                     }
