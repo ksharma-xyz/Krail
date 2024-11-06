@@ -87,7 +87,11 @@ fun JourneyCard(
     val iconSize = with(density) { 14.sp.toDp() }
 
     val horizontalCardPadding by animateDpAsState(
-        if (cardState == JourneyCardState.DEFAULT) { 12.dp } else { 0.dp },
+        if (cardState == JourneyCardState.DEFAULT) {
+            12.dp
+        } else {
+            0.dp
+        },
         label = "cardPadding",
     )
 
@@ -322,32 +326,38 @@ fun DefaultJourneyCardContent(
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        FlowRow(
+        Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text(
-                text = timeToDeparture,
-                style = KrailTheme.typography.titleMedium,
-                color = themeColor,
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .align(Alignment.CenterVertically),
-            )
-            Row(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .weight(1f),
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+            FlowRow(
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                transportModeList.forEachIndexed { index, mode ->
-                    TransportModeIcon(
-                        letter = mode.name.first(),
-                        backgroundColor = mode.colorCode.hexToComposeColor(),
-                    )
-                    if (index != transportModeList.lastIndex) {
-                        SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                Text(
+                    text = timeToDeparture,
+                    style = KrailTheme.typography.titleMedium,
+                    color = themeColor,
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .align(Alignment.CenterVertically),
+                )
+                WithDensityCheck {
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    ) {
+                        transportModeList.forEachIndexed { index, mode ->
+                            TransportModeIcon(
+                                letter = mode.name.first(),
+                                backgroundColor = mode.colorCode.hexToComposeColor(),
+                            )
+                            if (index != transportModeList.lastIndex) {
+                                SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
+                            }
+                        }
                     }
                 }
             }
@@ -355,6 +365,7 @@ fun DefaultJourneyCardContent(
             platformNumber?.let { platform -> // todo - extract
                 Box(
                     modifier = Modifier
+                        .padding(start = 8.dp)
                         .align(Alignment.CenterVertically)
                         .size(28.dp.toAdaptiveDecorativeIconSize())
                         .border(
@@ -377,6 +388,7 @@ fun DefaultJourneyCardContent(
             text = originTime,
             style = KrailTheme.typography.titleMedium,
             color = KrailTheme.colors.onSurface,
+            modifier = Modifier.padding(top = 4.dp),
         )
 
         FlowRow(
