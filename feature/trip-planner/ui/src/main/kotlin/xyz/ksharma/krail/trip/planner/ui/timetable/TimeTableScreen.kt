@@ -6,11 +6,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,7 +28,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -40,7 +37,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -56,10 +52,9 @@ import xyz.ksharma.krail.design.system.theme.shouldUseDarkIcons
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
+import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
-import xyz.ksharma.krail.trip.planner.ui.components.timeLineBottom
-import xyz.ksharma.krail.trip.planner.ui.components.timeLineTop
 import xyz.ksharma.krail.trip.planner.ui.getActivityOrNull
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
@@ -235,56 +230,6 @@ fun TimeTableScreen(
 }
 
 @Composable
-private fun OriginDestination(
-    trip: Trip,
-    themeContentColor: Color,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp),
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .timeLineTop(
-                    color = themeContentColor,
-                    strokeWidth = 3.dp,
-                    circleRadius = 5.dp,
-                )
-                .padding(start = 12.dp, bottom = 8.dp),
-        ) {
-            Text(
-                text = trip.fromStopName,
-                color = themeContentColor,
-                style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
-            )
-        }
-
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .timeLineBottom(
-                    color = themeContentColor,
-                    strokeWidth = 3.dp,
-                    circleRadius = 5.dp,
-                )
-                .padding(start = 12.dp, top = 8.dp),
-        ) {
-            Text(
-                text = trip.toStopName,
-                color = themeContentColor,
-                style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
-            )
-        }
-    }
-}
-
-@Composable
 fun JourneyCardItem(
     timeToDeparture: String,
     departureLocationNumber: Char?,
@@ -311,23 +256,6 @@ fun JourneyCardItem(
             legList = legList,
             onClick = onClick,
             modifier = modifier,
-        )
-    }
-}
-
-@PreviewLightDark
-@Composable
-private fun PreviewOriginDestination() {
-    KrailTheme {
-        OriginDestination(
-            modifier = Modifier.background(color = KrailTheme.colors.surface),
-            themeContentColor = KrailTheme.colors.onSurface,
-            trip = Trip(
-                fromStopName = "From Stop a really long stop name here, test multiline",
-                toStopName = "To Stop",
-                fromStopId = "123",
-                toStopId = "456",
-            ),
         )
     }
 }
