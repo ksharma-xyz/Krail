@@ -71,7 +71,7 @@ fun UsualRideScreen(
     ) {
         var selectedProductClass: Int? by rememberSaveable { mutableStateOf(null) }
 
-        LazyColumn(contentPadding = PaddingValues(top = 24.dp, bottom = 102.dp)) {
+        LazyColumn(contentPadding = PaddingValues(top = 24.dp, bottom = 152.dp)) {
             item {
                 Text(
                     text = "What's your usual ride mate?",
