@@ -210,6 +210,7 @@ fun TimeTableScreen(
                         onClick = {
                             onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
                         },
+                        totalUniqueServiceAlerts = journey.totalUniqueServiceAlerts,
                         onAlertClick = {
                             onAlertClick(journey.journeyId)
                         },
@@ -235,7 +236,7 @@ fun TimeTableScreen(
 }
 
 @Composable
-fun JourneyCardItem(
+private fun JourneyCardItem(
     timeToDeparture: String,
     departureLocationNumber: Char?,
     originTime: String,
@@ -246,6 +247,7 @@ fun JourneyCardItem(
     cardState: JourneyCardState,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     onAlertClick: () -> Unit,
+    totalUniqueServiceAlerts: Int,
     modifier: Modifier = Modifier,
     transportModeLineList: ImmutableList<TransportModeLine>? = null,
 ) {
@@ -264,6 +266,7 @@ fun JourneyCardItem(
             totalWalkTime = totalWalkTime,
             onClick = onClick,
             onAlertClick = onAlertClick,
+            totalUniqueServiceAlerts = totalUniqueServiceAlerts,
             modifier = modifier,
         )
     }
@@ -297,6 +300,7 @@ private fun PreviewTimeTableScreen() {
                                 ),
                             ),
                             legs = persistentListOf(),
+                            totalUniqueServiceAlerts = 3,
                             originUtcDateTime = "2024-11-01T12:00:00Z",
                         ),
                     ).toImmutableList(),
@@ -310,7 +314,7 @@ private fun PreviewTimeTableScreen() {
 }
 
 @Composable
-fun ActionButton(
+private fun ActionButton(
     onClick: () -> Unit,
     contentDescription: String,
     modifier: Modifier = Modifier,

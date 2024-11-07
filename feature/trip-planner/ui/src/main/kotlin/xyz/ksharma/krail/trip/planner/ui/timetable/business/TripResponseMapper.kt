@@ -66,6 +66,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 totalWalkTime = walkingDurationStr,
                 transportModeLines = transportModeLines,
                 legs = legsList,
+                totalUniqueServiceAlerts = legs.flatMap { leg -> leg.infos.orEmpty() }.toSet().size,
             ).also {
                 Timber.d("\tJourneyId: ${it.journeyId}")
             }

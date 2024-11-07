@@ -53,6 +53,7 @@ fun LegView(
     routeText: String, // AVC via XYZ
     transportModeLine: TransportModeLine,
     stops: ImmutableList<TimeTableState.JourneyCardInfo.Stop>,
+    displayDuration: Boolean,
     modifier: Modifier = Modifier,
     displayAllStops: Boolean = false,
 ) {
@@ -81,7 +82,12 @@ fun LegView(
             )
             .padding(vertical = 12.dp, horizontal = 12.dp),
     ) {
-        RouteSummary(routeText = routeText, iconSize = iconSize, duration = duration)
+        RouteSummary(
+            routeText = routeText,
+            iconSize = iconSize,
+            duration = duration,
+            displayDuration = displayDuration,
+        )
 
         Spacer(modifier = Modifier.height(12.dp))
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -171,6 +177,7 @@ private fun RouteSummary(
     routeText: String,
     iconSize: Dp,
     duration: String,
+    displayDuration: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -188,21 +195,23 @@ private fun RouteSummary(
                     .align(Alignment.CenterVertically),
             )
         }
-        Row(horizontalArrangement = Arrangement.End) {
-            Image(
-                painter = painterResource(R.drawable.ic_clock),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
-                modifier = Modifier
-                    .padding(end = 4.dp)
-                    .align(Alignment.CenterVertically)
-                    .size(iconSize),
-            )
-            Text(
-                text = duration,
-                style = KrailTheme.typography.bodySmall,
-                textAlign = TextAlign.End,
-            )
+        if (displayDuration) {
+            Row(horizontalArrangement = Arrangement.End) {
+                Image(
+                    painter = painterResource(R.drawable.ic_clock),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
+                    modifier = Modifier
+                        .padding(end = 4.dp)
+                        .align(Alignment.CenterVertically)
+                        .size(iconSize),
+                )
+                Text(
+                    text = duration,
+                    style = KrailTheme.typography.bodySmall,
+                    textAlign = TextAlign.End,
+                )
+            }
         }
     }
 }
@@ -290,6 +299,7 @@ private fun PreviewLegView() {
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
+            displayDuration = true,
         )
     }
 }
@@ -317,6 +327,7 @@ private fun PreviewLegViewTwoStops() {
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
+            displayDuration = true,
         )
     }
 }
@@ -343,6 +354,7 @@ private fun PreviewLegViewMetro() {
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
+            displayDuration = true,
         )
     }
 }
@@ -369,6 +381,7 @@ private fun PreviewLegViewFerry() {
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
+            displayDuration = false,
         )
     }
 }
@@ -395,6 +408,7 @@ private fun PreviewLegViewLightRail() {
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
+            displayDuration = false,
         )
     }
 }
@@ -436,6 +450,7 @@ private fun PreviewRouteSummary() {
             iconSize = 14.dp,
             duration = "1h 30m",
             modifier = Modifier.background(KrailTheme.colors.surface),
+            displayDuration = true,
         )
     }
 }

@@ -48,7 +48,7 @@ fun ServiceAlertScreen(
 
         LazyColumn(
             modifier = Modifier,
-            contentPadding = PaddingValues(top = 32.dp, bottom = 104.dp),
+            contentPadding = PaddingValues(top = 20.dp, bottom = 104.dp),
         ) {
             itemsIndexed(
                 items = serviceAlerts.toImmutableList(),
