@@ -31,7 +31,7 @@ fun Text(
     fontFamily: FontFamily? = null,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
-   Text(
+    Text(
         text = AnnotatedString(text),
         modifier = modifier,
         style = style,

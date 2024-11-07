@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -28,7 +29,6 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
-import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
@@ -85,11 +85,20 @@ fun CollapsibleAlert(
         }
 
         if (collapsed.not()) {
-            Text(
-                text = serviceAlert.message.toAnnotatedString(urlColor = themeContentColor()),
-                style = KrailTheme.typography.body,
-                modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-            )
+            val isHtml by remember {
+                mutableStateOf(
+                    "<[a-z][\\s\\S]*>".toRegex().containsMatchIn(serviceAlert.message),
+                )
+            }
+            if (isHtml) {
+                HtmlText(serviceAlert.message, onClick = onClick)
+            } else {
+                Text(
+                    text = serviceAlert.message,
+                    style = KrailTheme.typography.body,
+                    modifier = Modifier.padding(vertical = 8.dp),
+                )
+            }
         }
     }
 }

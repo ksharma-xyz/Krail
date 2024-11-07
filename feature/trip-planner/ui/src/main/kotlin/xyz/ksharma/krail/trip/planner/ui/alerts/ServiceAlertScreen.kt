@@ -44,6 +44,8 @@ fun ServiceAlertScreen(
             TitleBar(title = { Text(text = "Service Alerts") })
         }
 
+        var expandedAlertId by rememberSaveable { mutableStateOf<Int?>(null) }
+
         LazyColumn(
             modifier = Modifier,
             contentPadding = PaddingValues(top = 32.dp, bottom = 104.dp),
@@ -52,15 +54,19 @@ fun ServiceAlertScreen(
                 items = serviceAlerts.toImmutableList(),
                 key = { _, alert -> alert.hashCode() },
             ) { index, alert ->
-                // Multiple alerts should be able to open at same time.
-                var alertCollapsed by rememberSaveable { mutableStateOf(true) }
 
                 CollapsibleAlert(
                     serviceAlert = alert,
                     index = index + 1,
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
-                    collapsed = alertCollapsed,
-                    onClick = { alertCollapsed = !alertCollapsed },
+                    collapsed = expandedAlertId != alert.hashCode(),
+                    onClick = {
+                        expandedAlertId = if (expandedAlertId == alert.hashCode()) {
+                            null
+                        } else {
+                            alert.hashCode()
+                        }
+                    },
                 )
             }
         }
