@@ -169,7 +169,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
                     displayText = displayText,
                     totalDuration = displayDuration,
                     stops = stops,
-                    alertList = alerts,
+                    serviceAlertList = alerts,
                     walkInterchange = footPathInfo?.firstOrNull()?.run {
                         duration?.seconds?.toFormattedDurationTimeString()
                             ?.let { formattedDuration -> toWalkInterchange(formattedDuration) }

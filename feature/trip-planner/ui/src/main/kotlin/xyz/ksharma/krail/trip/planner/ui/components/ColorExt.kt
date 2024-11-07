@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import xyz.ksharma.krail.design.system.LocalThemeColor
+import xyz.ksharma.krail.design.system.LocalThemeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 /**
@@ -66,6 +67,12 @@ internal fun themeBackgroundColor(): Color {
     } else {
         themeColor.hexToComposeColor().copy(alpha = 0.15f)
     }
+}
+
+@Composable
+internal fun themeContentColor(): Color {
+    val themeContentColor by LocalThemeContentColor.current
+    return themeContentColor.hexToComposeColor()
 }
 
 /**

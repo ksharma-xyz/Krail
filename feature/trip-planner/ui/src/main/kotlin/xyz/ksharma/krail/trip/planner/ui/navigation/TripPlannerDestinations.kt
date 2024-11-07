@@ -4,6 +4,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigation
 import kotlinx.serialization.Serializable
+import xyz.ksharma.krail.trip.planner.ui.alerts.alertsDestination
 import xyz.ksharma.krail.trip.planner.ui.savedtrips.savedTripsDestination
 import xyz.ksharma.krail.trip.planner.ui.searchstop.searchStopDestination
 import xyz.ksharma.krail.trip.planner.ui.timetable.timeTableDestination
@@ -22,9 +23,11 @@ fun NavGraphBuilder.tripPlannerDestinations(
 
         searchStopDestination(navController)
 
-        timeTableDestination()
+        timeTableDestination(navController)
 
         usualRideDestination(navController)
+
+        alertsDestination()
     }
 }
 
@@ -52,3 +55,8 @@ internal data class SearchStopRoute(val fieldType: SearchStopFieldType)
 
 @Serializable
 data object UsualRideRoute
+
+@Serializable
+internal data class ServiceAlertRoute(
+    val alertsJsonList: List<String>,
+)

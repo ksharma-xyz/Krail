@@ -3,7 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.state.timetable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
-import xyz.ksharma.krail.trip.planner.ui.state.alerts.Alert
+import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
 data class TimeTableState(
     val isLoading: Boolean = false,
@@ -73,7 +73,7 @@ data class TimeTableState(
                 val walkInterchange: WalkInterchange? = null,
 
                 // Service Alerts for the leg.
-                val alertList: ImmutableList<Alert>? = null,
+                val serviceAlertList: ImmutableList<ServiceAlert>? = null,
             ) : Leg()
         }
 

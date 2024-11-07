@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.firebase.crashlyticsPlugin) apply false
     alias(libs.plugins.firebase.performancePlugin) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
 }
 
 subprojects {
