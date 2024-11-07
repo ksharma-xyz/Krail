@@ -142,6 +142,11 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
     val numberOfStops = stopSequence?.size
     val displayDuration = duration?.seconds?.toFormattedDurationTimeString()
     val stops = stopSequence?.mapNotNull { it.toUiModel() }?.toImmutableList()
+    val alerts = infos?.mapNotNull { it.toAlert() }?.toImmutableList()
+    alerts?.forEach {
+        Timber.d("\t Alert: ${it.heading.take(5)}, ${it.message.take(5)}, ${it.priority}")
+    }
+    Timber.d("Alert---")
 
     return when {
         // Walking Leg - Always check before public transport leg
@@ -164,6 +169,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
                     displayText = displayText,
                     totalDuration = displayDuration,
                     stops = stops,
+                    alertList = alerts,
                     walkInterchange = footPathInfo?.firstOrNull()?.run {
                         duration?.seconds?.toFormattedDurationTimeString()
                             ?.let { formattedDuration -> toWalkInterchange(formattedDuration) }
