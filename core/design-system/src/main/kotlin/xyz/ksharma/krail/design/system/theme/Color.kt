@@ -11,6 +11,7 @@ val md_theme_light_onErrorContainer = Color(0xFF410002)
 val md_theme_light_surface = Color(0xFFFFFBFF)
 val md_theme_light_onSurface = Color(0xFF1F1B16)
 val md_theme_light_scrim = Color(0xFF000000)
+val md_theme_light_alert = Color(0xFFFFBA27)
 
 // Dark Color tokens
 val md_theme_dark_error = Color(0xFFFFB4AB)
@@ -20,6 +21,7 @@ val md_theme_dark_onErrorContainer = Color(0xFFFFDAD6)
 val md_theme_dark_surface = Color(0xFF1F1B16)
 val md_theme_dark_onSurface = Color(0xFFEAE1D9)
 val md_theme_dark_scrim = Color(0xFF000000)
+val md_theme_dark_alert = Color(0xFFF4B400)
 
 val bus_theme = Color(0xFF00B5EF)
 val train_theme = Color(0xFFF6891F)
@@ -52,6 +54,7 @@ data class KrailColors(
     val surface: Color,
     val onSurface: Color,
     val scrim: Color,
+    val alert: Color,
 )
 
 internal val KrailLightColors = KrailColors(
@@ -75,6 +78,7 @@ internal val KrailLightColors = KrailColors(
     surface = md_theme_light_surface,
     onSurface = md_theme_light_onSurface,
     scrim = md_theme_light_scrim,
+    alert = md_theme_light_alert,
 )
 
 internal val KrailDarkColors = KrailColors(
@@ -98,6 +102,7 @@ internal val KrailDarkColors = KrailColors(
     surface = md_theme_dark_surface,
     onSurface = md_theme_dark_onSurface,
     scrim = md_theme_dark_scrim,
+    alert = md_theme_dark_alert,
 )
 
 internal val LocalKrailColors = staticCompositionLocalOf {
@@ -122,5 +127,6 @@ internal val LocalKrailColors = staticCompositionLocalOf {
         surface = Color.Unspecified,
         onSurface = Color.Unspecified,
         scrim = Color.Unspecified,
+        alert = Color.Unspecified,
     )
 }
