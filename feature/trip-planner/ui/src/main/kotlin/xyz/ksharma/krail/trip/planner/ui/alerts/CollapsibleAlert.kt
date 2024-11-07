@@ -20,6 +20,7 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.Alert
+import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
 
 @Composable
 fun CollapsibleAlert(
@@ -75,6 +76,7 @@ private fun PreviewCollapsibleAlertCollapsed() {
             alert = Alert(
                 heading = "Sample Alert",
                 message = "This is a sample alert message.",
+                priority = ServiceAlertPriority.HIGH,
             ),
             modifier = Modifier.padding(16.dp),
         )
@@ -89,6 +91,7 @@ private fun PreviewCollapsibleAlertExpanded() {
             alert = Alert(
                 heading = "Sample Alert",
                 message = "This is a sample alert message.",
+                priority = ServiceAlertPriority.HIGH,
             ),
             collapsed = false,
             modifier = Modifier.padding(16.dp),
