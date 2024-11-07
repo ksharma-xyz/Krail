@@ -68,6 +68,7 @@ fun TimeTableScreen(
     timeTableState: TimeTableState,
     expandedJourneyId: String?,
     onEvent: (TimeTableUiEvent) -> Unit,
+    onAlertClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val themeColorHex by LocalThemeColor.current
@@ -209,6 +210,9 @@ fun TimeTableScreen(
                         onClick = {
                             onEvent(TimeTableUiEvent.JourneyCardClicked(journey.journeyId))
                         },
+                        onAlertClick = {
+                            onAlertClick(journey.journeyId)
+                        },
                         modifier = Modifier
                             .padding(horizontal = 12.dp, vertical = 8.dp),
                     )
@@ -241,6 +245,7 @@ fun JourneyCardItem(
     onClick: () -> Unit,
     cardState: JourneyCardState,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    onAlertClick: () -> Unit,
     modifier: Modifier = Modifier,
     transportModeLineList: ImmutableList<TransportModeLine>? = null,
 ) {
@@ -258,6 +263,7 @@ fun JourneyCardItem(
             legList = legList,
             totalWalkTime = totalWalkTime,
             onClick = onClick,
+            onAlertClick = onAlertClick,
             modifier = modifier,
         )
     }
@@ -297,6 +303,7 @@ private fun PreviewTimeTableScreen() {
                 ),
                 expandedJourneyId = null,
                 onEvent = {},
+                onAlertClick = {},
             )
         }
     }

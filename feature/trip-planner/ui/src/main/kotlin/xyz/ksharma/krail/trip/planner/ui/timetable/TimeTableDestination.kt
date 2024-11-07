@@ -4,13 +4,17 @@ import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import timber.log.Timber
+import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
-internal fun NavGraphBuilder.timeTableDestination() {
+internal fun NavGraphBuilder.timeTableDestination(navController: NavHostController) {
     composable<TimeTableRoute> { backStackEntry ->
         val viewModel = hiltViewModel<TimeTableViewModel>()
         val timeTableState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -27,6 +31,18 @@ internal fun NavGraphBuilder.timeTableDestination() {
             timeTableState = timeTableState,
             expandedJourneyId = expandedJourneyId,
             onEvent = { viewModel.onEvent(it) },
+            onAlertClick = { journeyId ->
+                Timber.d("journeyId: $journeyId")
+                viewModel.fetchAlertsForJourney(journeyId) { alerts ->
+                    if (alerts.isNotEmpty()) {
+                        navController.navigate(
+                            route = ServiceAlertRoute(alertsJsonList = alerts.map { it.toJsonString() }),
+                            navOptions = NavOptions.Builder().setLaunchSingleTop(singleTop = true)
+                                .build(),
+                        )
+                    }
+                }
+            },
         )
     }
 }

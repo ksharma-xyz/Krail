@@ -27,6 +27,7 @@ import xyz.ksharma.krail.sandook.di.SandookFactory
 import xyz.ksharma.krail.trip.planner.network.api.RateLimiter
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.repository.TripPlanningRepository
+import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
@@ -49,16 +50,14 @@ class TimeTableViewModel @Inject constructor(
     val uiState: StateFlow<TimeTableState> = _uiState
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> =
-        _isLoading
-            // Will start fetching the trip as soon as the screen is visible, which means if app goes
-            // to background and come back up again, the API call will be made.
-            // Probably good to have data up to date.
-            .onStart {
-                Timber.d("onStart: Fetching Trip")
-                fetchTrip()
-            }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
+    val isLoading: StateFlow<Boolean> = _isLoading
+        // Will start fetching the trip as soon as the screen is visible, which means if app goes
+        // to background and come back up again, the API call will be made.
+        // Probably good to have data up to date.
+        .onStart {
+            Timber.d("onStart: Fetching Trip")
+            fetchTrip()
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
     private val _isActive: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isActive: StateFlow<Boolean> = _isActive.onStart {
@@ -90,37 +89,32 @@ class TimeTableViewModel @Inject constructor(
         Timber.d("fetchTrip API Call")
         viewModelScope.launch {
             // TODO - silent refresh here, UI to display loading but silent one.
-            rateLimiter
-                .rateLimitFlow {
-                    Timber.d("rateLimitFlow block")
-                    loadTrip()
-                }
-                .catch { e ->
-                    Timber.e("Error while fetching trip: $e")
-                }
-                .collectLatest { result ->
-                    result.onSuccess { response ->
-                        Timber.d("Success API response")
-                        updateUiState {
-                            copy(
-                                isLoading = false,
-                                journeyList = response.buildJourneyList() ?: persistentListOf(),
-                            )
-                        }
-                        response.logForUnderstandingData()
-                    }.onFailure {
-                        Timber.e("Error while fetching trip: $it")
+            rateLimiter.rateLimitFlow {
+                Timber.d("rateLimitFlow block")
+                loadTrip()
+            }.catch { e ->
+                Timber.e("Error while fetching trip: $e")
+            }.collectLatest { result ->
+                result.onSuccess { response ->
+                    Timber.d("Success API response")
+                    updateUiState {
+                        copy(
+                            isLoading = false,
+                            journeyList = response.buildJourneyList() ?: persistentListOf(),
+                        )
                     }
+                    response.logForUnderstandingData()
+                }.onFailure {
+                    Timber.e("Error while fetching trip: $it")
                 }
+            }
         }
     }
 
     private suspend fun loadTrip(): Result<TripResponse> = withContext(ioDispatcher) {
         Timber.d("loadTrip API Call")
         require(
-            tripInfo != null &&
-                tripInfo!!.fromStopId.isNotEmpty() &&
-                tripInfo!!.toStopId.isNotEmpty(),
+            tripInfo != null && tripInfo!!.fromStopId.isNotEmpty() && tripInfo!!.toStopId.isNotEmpty(),
         ) { "Trip Info is null or empty" }
 
         tripRepository.trip(
@@ -205,6 +199,24 @@ class TimeTableViewModel @Inject constructor(
 
     private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {
         _uiState.update(block)
+    }
+
+    fun fetchAlertsForJourney(journeyId: String, onResult: (Set<ServiceAlert>) -> Unit) {
+        viewModelScope.launch {
+            val alerts = withContext(ioDispatcher) {
+                runCatching {
+                    _uiState.value.journeyList.find { it.journeyId == journeyId }?.let { journey ->
+                        getAlertsFromJourney(journey)
+                    }.orEmpty()
+                }.getOrElse { emptySet() }
+            }
+            onResult(alerts)
+        }
+    }
+
+    private fun getAlertsFromJourney(journey: TimeTableState.JourneyCardInfo): Set<ServiceAlert> {
+        return journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+            .flatMap { it.serviceAlertList.orEmpty() }.toSet()
     }
 
     companion object {

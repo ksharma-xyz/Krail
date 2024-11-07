@@ -1,16 +1,16 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable.business
 
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
-import xyz.ksharma.krail.trip.planner.ui.state.alerts.Alert
+import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
 
-fun TripResponse.Info.toAlert(): Alert? {
+fun TripResponse.Info.toAlert(): ServiceAlert? {
     val heading = subtitle
     val alertContent = content
     val alertPriority = priority.toServiceAlertPriority()
 
     return if (heading != null && alertContent != null && alertPriority != null) {
-        Alert(
+        ServiceAlert(
             heading = heading,
             message = alertContent,
             priority = alertPriority,

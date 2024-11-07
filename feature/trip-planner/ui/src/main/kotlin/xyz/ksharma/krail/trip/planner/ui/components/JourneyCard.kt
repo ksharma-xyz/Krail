@@ -76,6 +76,7 @@ fun JourneyCard(
     cardState: JourneyCardState,
     totalWalkTime: String?,
     modifier: Modifier = Modifier,
+    onAlertClick: () -> Unit = {},
     platformNumber: Char? = null,
 ) {
     val onSurface: Color = KrailTheme.colors.onSurface
@@ -145,6 +146,7 @@ fun JourneyCard(
                 iconSize = iconSize,
                 totalTravelTime = totalTravelTime,
                 legList = legList,
+                onAlertClick = onAlertClick,
                 modifier = Modifier.clickable(
                     role = Role.Button,
                     onClick = onClick,
@@ -166,6 +168,7 @@ fun ExpandedJourneyCardContent(
     iconSize: Dp,
     totalTravelTime: String,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    onAlertClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val firstTransportLeg = remember(legList) {
@@ -204,7 +207,14 @@ fun ExpandedJourneyCardContent(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.align(Alignment.CenterVertically),
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .clickable(
+                        role = Role.Button,
+                        indication = null,
+                        interactionSource = remember { MutableInteractionSource() },
+                        onClick = { onAlertClick() },
+                    ),
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_alert),
@@ -587,7 +597,6 @@ private fun PreviewJourneyCardExpanded() {
                         lineName = "700",
                     ),
                 ),
-
             ),
             cardState = JourneyCardState.EXPANDED,
             totalWalkTime = null,
