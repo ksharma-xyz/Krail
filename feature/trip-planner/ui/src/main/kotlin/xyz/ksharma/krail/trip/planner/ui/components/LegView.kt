@@ -54,7 +54,7 @@ fun LegView(
     transportModeLine: TransportModeLine,
     stops: ImmutableList<TimeTableState.JourneyCardInfo.Stop>,
     modifier: Modifier = Modifier,
-    isExpanded: Boolean = false,
+    displayAllStops: Boolean = false,
 ) {
     val circleRadius = 8.dp
     val strokeWidth = 4.dp
@@ -63,7 +63,7 @@ fun LegView(
     val iconSize = with(density) { 14.sp.toDp() }
     val timelineColor =
         remember(transportModeLine) { transportModeLine.lineColorCode.hexToComposeColor() }
-    var displayNonProminentStops by rememberSaveable { mutableStateOf(isExpanded) }
+    var showIntermediateStops by rememberSaveable { mutableStateOf(displayAllStops) }
 
     Column(
         modifier = modifier
@@ -76,7 +76,7 @@ fun LegView(
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
-                onClick = { displayNonProminentStops = !displayNonProminentStops },
+                onClick = { showIntermediateStops = !showIntermediateStops },
                 role = Role.Button,
             )
             .padding(vertical = 12.dp, horizontal = 12.dp),
@@ -127,7 +127,7 @@ fun LegView(
                 }
             }
 
-            if (displayNonProminentStops) {
+            if (showIntermediateStops) {
                 stops.drop(1).dropLast(1).forEach { stop ->
                     StopInfo(
                         time = stop.time,
@@ -208,7 +208,7 @@ private fun RouteSummary(
 }
 
 @Composable
-fun StopInfo(
+private fun StopInfo(
     time: String,
     name: String,
     isProminent: Boolean,
@@ -230,7 +230,7 @@ fun StopInfo(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun StopsRow(stops: String, line: TransportModeLine, modifier: Modifier = Modifier) {
+private fun StopsRow(stops: String, line: TransportModeLine, modifier: Modifier = Modifier) {
     FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),

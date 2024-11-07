@@ -137,8 +137,8 @@ fun JourneyCard(
                 ),
             )
 
-            else -> JourneyCardContent(
-                isExpanded = false,
+            JourneyCardState.EXPANDED -> ExpandedJourneyCardContent(
+                displayAllStops = false,
                 timeToDeparture = timeToDeparture,
                 themeColor = themeColor,
                 platformNumber = platformNumber,
@@ -158,8 +158,8 @@ fun JourneyCard(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun JourneyCardContent(
-    isExpanded: Boolean,
+fun ExpandedJourneyCardContent(
+    displayAllStops: Boolean,
     timeToDeparture: String,
     themeColor: Color,
     platformNumber: Char?,
@@ -208,8 +208,8 @@ fun JourneyCardContent(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.ic_alert),
-                    contentDescription = "Wheelchair accessible",
-                    colorFilter = ColorFilter.tint(Color(0xFFF4B400)),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(KrailTheme.colors.alert),
                     modifier = Modifier
                         .size(iconSize),
                 )
@@ -286,7 +286,7 @@ fun JourneyCardContent(
                             routeText = leg.displayText,
                             transportModeLine = leg.transportModeLine,
                             stops = leg.stops,
-                            isExpanded = isExpanded,
+                            displayAllStops = displayAllStops,
                             modifier = Modifier,
                         )
                     }
@@ -343,7 +343,7 @@ fun DefaultJourneyCardContent(
                         .padding(end = 8.dp)
                         .align(Alignment.CenterVertically),
                 )
-                WithDensityCheck {
+                DisplayWithDensityCheck {
                     Row(
                         modifier = Modifier
                             .align(Alignment.CenterVertically),
@@ -542,7 +542,7 @@ private fun PreviewJourneyCardCollapsed() {
                 ),
 
             ),
-            cardState = JourneyCardState.COLLAPSED,
+            cardState = JourneyCardState.EXPANDED,
             totalWalkTime = "10 mins",
             onClick = {},
         )
