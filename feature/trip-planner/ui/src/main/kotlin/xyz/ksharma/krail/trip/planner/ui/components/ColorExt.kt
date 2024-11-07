@@ -108,7 +108,7 @@ val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
  *
  * @return The brightened color in ARGB format
  */
-fun brightenColor(color: Int, factor: Float = 0.2f): Int {
+private fun brightenColor(color: Int, factor: Float = 0.2f): Int {
     // Convert the color to RGB components
     val red = android.graphics.Color.red(color) / 255f
     val green = android.graphics.Color.green(color) / 255f
@@ -116,7 +116,12 @@ fun brightenColor(color: Int, factor: Float = 0.2f): Int {
 
     // Convert RGB to HSL
     val hsl = FloatArray(3)
-    android.graphics.Color.RGBToHSV((red * 255).toInt(), (green * 255).toInt(), (blue * 255).toInt(), hsl)
+    android.graphics.Color.RGBToHSV(
+        (red * 255).toInt(),
+        (green * 255).toInt(),
+        (blue * 255).toInt(),
+        hsl,
+    )
 
     // Adjust lightness (value) within bounds
     hsl[2] = (hsl[2] + factor).coerceIn(0f, 1f)
@@ -135,13 +140,13 @@ fun brightenColor(color: Int, factor: Float = 0.2f): Int {
  *
  * @return The brightened Compose [Color].
  */
-fun Color.brighten(factor: Float = 0.2f): Color {
+private fun Color.brighten(factor: Float = 0.2f): Color {
     val argb = this.toArgb()
     val brightenedArgb = brightenColor(argb, factor)
     return Color(brightenedArgb)
 }
 
-fun darkenColor(color: Int, factor: Float = 0.2f): Int {
+private fun darkenColor(color: Int, factor: Float = 0.2f): Int {
     // Convert the color to RGB components
     val red = android.graphics.Color.red(color) / 255f
     val green = android.graphics.Color.green(color) / 255f
@@ -149,7 +154,12 @@ fun darkenColor(color: Int, factor: Float = 0.2f): Int {
 
     // Convert RGB to HSL
     val hsl = FloatArray(3)
-    android.graphics.Color.RGBToHSV((red * 255).toInt(), (green * 255).toInt(), (blue * 255).toInt(), hsl)
+    android.graphics.Color.RGBToHSV(
+        (red * 255).toInt(),
+        (green * 255).toInt(),
+        (blue * 255).toInt(),
+        hsl,
+    )
 
     // Adjust lightness (value) within bounds
     hsl[2] = (hsl[2] - factor).coerceIn(0f, 1f)
@@ -158,8 +168,17 @@ fun darkenColor(color: Int, factor: Float = 0.2f): Int {
     return android.graphics.Color.HSVToColor(hsl)
 }
 
-fun Color.darken(factor: Float = 0.2f): Color {
+private fun Color.darken(factor: Float = 0.2f): Color {
     val argb = this.toArgb()
     val darkArgb = darkenColor(argb, factor)
     return Color(darkArgb)
+}
+
+@Composable
+fun backgroundColorOf(color: Color): Color {
+    return if (isSystemInDarkTheme()) {
+        color.darken()
+    } else {
+        color.brighten()
+    }
 }

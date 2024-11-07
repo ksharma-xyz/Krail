@@ -1,7 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,8 +39,7 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.StopSearchListItem
-import xyz.ksharma.krail.trip.planner.ui.components.brighten
-import xyz.ksharma.krail.trip.planner.ui.components.darken
+import xyz.ksharma.krail.trip.planner.ui.components.backgroundColorOf
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
@@ -85,15 +83,7 @@ fun SearchStopScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        if (isSystemInDarkTheme()) {
-                            themeColor
-                                .hexToComposeColor()
-                                .darken()
-                        } else {
-                            themeColor
-                                .hexToComposeColor()
-                                .brighten()
-                        },
+                        backgroundColorOf(themeColor.hexToComposeColor()),
                         KrailTheme.colors.surface,
                     ),
                 ),
