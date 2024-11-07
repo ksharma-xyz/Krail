@@ -29,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
@@ -44,6 +45,7 @@ import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.theme.getForegroundColor
 import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.design.system.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.R
@@ -75,6 +77,7 @@ fun JourneyCard(
     onClick: () -> Unit,
     cardState: JourneyCardState,
     totalWalkTime: String?,
+    totalUniqueServiceAlerts: Int,
     modifier: Modifier = Modifier,
     onAlertClick: () -> Unit = {},
     platformNumber: Char? = null,
@@ -146,6 +149,7 @@ fun JourneyCard(
                 iconSize = iconSize,
                 totalTravelTime = totalTravelTime,
                 legList = legList,
+                totalUniqueServiceAlerts = totalUniqueServiceAlerts,
                 onAlertClick = onAlertClick,
                 modifier = Modifier.clickable(
                     role = Role.Button,
@@ -168,12 +172,14 @@ fun ExpandedJourneyCardContent(
     iconSize: Dp,
     totalTravelTime: String,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
+    totalUniqueServiceAlerts: Int,
     onAlertClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val firstTransportLeg = remember(legList) {
         legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
     }
+    val context = LocalContext.current
 
     Column(modifier = modifier) {
         FlowRow(
@@ -202,32 +208,48 @@ fun ExpandedJourneyCardContent(
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = if (totalUniqueServiceAlerts > 0) {
+                Arrangement.SpaceBetween
+            } else {
+                Arrangement.End
+            },
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .clickable(
-                        role = Role.Button,
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = { onAlertClick() },
-                    ),
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_alert),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(KrailTheme.colors.alert),
+            if (totalUniqueServiceAlerts > 0) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .size(iconSize),
-                )
-                Text(
-                    text = "Info",
-                    style = KrailTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(start = 4.dp),
-                )
+                        .align(Alignment.CenterVertically)
+                        .background(
+                            shape = RoundedCornerShape(50),
+                            color = KrailTheme.colors.alert,
+                        )
+                        .clickable(
+                            role = Role.Button,
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                            onClick = { onAlertClick() },
+                        )
+                        .padding(horizontal = 8.dp, vertical = 2.dp),
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_alert),
+                        contentDescription = null,
+                        colorFilter = ColorFilter.tint(getForegroundColor(KrailTheme.colors.alert)),
+                        modifier = Modifier
+                            .size(iconSize),
+                    )
+                    Text(
+                        text = context.resources.getQuantityString(
+                            R.plurals.alerts,
+                            totalUniqueServiceAlerts,
+                            totalUniqueServiceAlerts,
+                        ),
+                        style = KrailTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(start = 6.dp),
+                        color = getForegroundColor(KrailTheme.colors.alert),
+                    )
+                }
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -292,6 +314,9 @@ fun ExpandedJourneyCardContent(
                         }
                     } else {
                         LegView(
+                            displayDuration = legList.count {
+                                it is TimeTableState.JourneyCardInfo.Leg.TransportLeg
+                            } > 1,
                             duration = leg.totalDuration,
                             routeText = leg.displayText,
                             transportModeLine = leg.transportModeLine,
@@ -507,6 +532,7 @@ private fun PreviewJourneyCard() {
             legList = persistentListOf(),
             cardState = JourneyCardState.DEFAULT,
             totalWalkTime = null,
+            totalUniqueServiceAlerts = 0,
             onClick = {},
         )
     }
@@ -554,6 +580,7 @@ private fun PreviewJourneyCardCollapsed() {
             ),
             cardState = JourneyCardState.EXPANDED,
             totalWalkTime = "10 mins",
+            totalUniqueServiceAlerts = 1,
             onClick = {},
         )
     }
@@ -600,6 +627,7 @@ private fun PreviewJourneyCardExpanded() {
             ),
             cardState = JourneyCardState.EXPANDED,
             totalWalkTime = null,
+            totalUniqueServiceAlerts = 0,
             onClick = {},
         )
     }
@@ -642,6 +670,7 @@ private fun PreviewJourneyCardLongData() {
             legList = persistentListOf(),
             cardState = JourneyCardState.DEFAULT,
             totalWalkTime = "15 mins",
+            totalUniqueServiceAlerts = 2,
             onClick = {},
         )
     }

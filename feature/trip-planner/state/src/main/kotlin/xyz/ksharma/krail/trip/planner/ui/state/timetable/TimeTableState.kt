@@ -41,6 +41,8 @@ data class TimeTableState(
         val transportModeLines: ImmutableList<TransportModeLine>,
 
         val legs: ImmutableList<Leg>,
+
+        val totalUniqueServiceAlerts: Int,
     ) {
         val journeyId: String
             get() = buildString {

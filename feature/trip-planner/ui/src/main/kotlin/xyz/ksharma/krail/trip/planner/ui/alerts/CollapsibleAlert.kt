@@ -48,13 +48,13 @@ fun CollapsibleAlert(
                 color = if (collapsed) KrailTheme.colors.surface else themeBackgroundColor(),
                 shape = RoundedCornerShape(12.dp),
             )
-            .padding(vertical = 8.dp)
-            .padding(horizontal = 8.dp)
             .clickable(
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
                 onClick = onClick,
             )
+            .padding(vertical = 8.dp)
+            .padding(horizontal = 8.dp)
             .animateContentSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {

@@ -8,4 +8,8 @@
         <item quantity="one">%d stop</item>
         <item quantity="other">%d stops</item>
     </plurals>
+    <plurals name="alerts">
+        <item quantity="one">%d Alert</item>
+        <item quantity="other">%d Alerts</item>
+    </plurals>
 </resources>

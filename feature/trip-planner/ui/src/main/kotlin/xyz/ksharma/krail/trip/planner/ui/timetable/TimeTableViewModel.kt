@@ -87,7 +87,7 @@ class TimeTableViewModel @Inject constructor(
 
     private fun fetchTrip() {
         Timber.d("fetchTrip API Call")
-        viewModelScope.launch {
+        viewModelScope.launch(ioDispatcher) {
             // TODO - silent refresh here, UI to display loading but silent one.
             rateLimiter.rateLimitFlow {
                 Timber.d("rateLimitFlow block")
