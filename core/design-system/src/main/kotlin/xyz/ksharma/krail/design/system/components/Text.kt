@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -21,6 +22,31 @@ import xyz.ksharma.krail.design.system.theme.KrailTheme
 @Composable
 fun Text(
     text: String,
+    modifier: Modifier = Modifier,
+    style: TextStyle = LocalTextStyle.current,
+    color: Color? = null,
+    textAlign: TextAlign = TextAlign.Start,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = if (maxLines == Int.MAX_VALUE) TextOverflow.Clip else TextOverflow.Ellipsis,
+    fontFamily: FontFamily? = null,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
+) {
+   Text(
+        text = AnnotatedString(text),
+        modifier = modifier,
+        style = style,
+        color = color,
+        textAlign = textAlign,
+        maxLines = maxLines,
+        overflow = overflow,
+        fontFamily = fontFamily,
+        onTextLayout = onTextLayout,
+    )
+}
+
+@Composable
+fun Text(
+    text: AnnotatedString,
     modifier: Modifier = Modifier,
     style: TextStyle = LocalTextStyle.current,
     color: Color? = null,

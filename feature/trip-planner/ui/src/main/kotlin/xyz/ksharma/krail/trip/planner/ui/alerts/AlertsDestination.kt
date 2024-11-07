@@ -19,7 +19,10 @@ internal fun NavGraphBuilder.alertsDestination() {
 
         LaunchedEffect(route.alertsJsonList) {
             route.alertsJsonList.forEach {
-                ServiceAlert.fromJsonString(it)?.let { alert -> Timber.d("Alert Heading: ${alert.heading}") }
+                ServiceAlert.fromJsonString(it)?.let { alert ->
+         //           Timber.d("Alert Heading: ${alert.heading}")
+                    Timber.d("Alert Message: ${alert.message}")
+                }
             }
         }
 
