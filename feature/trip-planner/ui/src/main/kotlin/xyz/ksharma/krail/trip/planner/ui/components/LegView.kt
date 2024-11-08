@@ -42,6 +42,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
@@ -95,6 +96,7 @@ fun LegView(
                 time = stops.first().time,
                 name = stops.first().name,
                 isProminent = true,
+                isWheelchairAccessible = stops.first().isWheelchairAccessible,
                 modifier = Modifier
                     .timeLineTop(
                         color = timelineColor,
@@ -139,6 +141,7 @@ fun LegView(
                         time = stop.time,
                         name = stop.name,
                         isProminent = false,
+                        isWheelchairAccessible = stop.isWheelchairAccessible,
                         modifier = Modifier
                             .timeLineCenterWithStop(
                                 color = timelineColor,
@@ -159,6 +162,7 @@ fun LegView(
                 time = stops.last().time,
                 name = stops.last().name,
                 isProminent = true,
+                isWheelchairAccessible = stops.last().isWheelchairAccessible,
                 modifier = Modifier
                     .timeLineBottom(
                         color = timelineColor,
@@ -216,11 +220,13 @@ private fun RouteSummary(
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun StopInfo(
     time: String,
     name: String,
     isProminent: Boolean,
+    isWheelchairAccessible: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
@@ -229,11 +235,36 @@ private fun StopInfo(
             style = if (isProminent) KrailTheme.typography.bodyMedium else KrailTheme.typography.bodySmall,
             color = KrailTheme.colors.onSurface,
         )
-        Text(
-            text = name,
-            style = if (isProminent) KrailTheme.typography.titleSmall else KrailTheme.typography.bodySmall,
-            color = KrailTheme.colors.onSurface,
-        )
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+        ) {
+            Text(
+                text = name,
+                style = if (isProminent) KrailTheme.typography.titleSmall else KrailTheme.typography.bodySmall,
+                color = KrailTheme.colors.onSurface,
+                modifier = Modifier.align(Alignment.CenterVertically),
+            )
+            if (isWheelchairAccessible) {
+                Image(
+                    painter = painterResource(R.drawable.ic_a11y),
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(
+                        color = if (isProminent) {
+                            KrailTheme.colors.onSurface
+                        } else {
+                            KrailTheme.colors.onSurface.copy(
+                                alpha = 0.75f,
+                            )
+                        },
+                    ),
+                    modifier = Modifier
+                        .size(16.dp.toAdaptiveDecorativeIconSize())
+                        .padding(end = 4.dp)
+                        .align(Alignment.CenterVertically),
+                )
+            }
+        }
     }
 }
 
@@ -288,14 +319,17 @@ private fun PreviewLegView() {
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "12:00 am",
                     name = "XYZ Station, Platform 1",
+                    isWheelchairAccessible = false,
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "12:30 am",
                     name = "ABC Station, Platform 2",
+                    isWheelchairAccessible = false,
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "01:00 am",
                     name = "DEF Station, Platform 3",
+                    isWheelchairAccessible = true,
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
@@ -320,10 +354,12 @@ private fun PreviewLegViewTwoStops() {
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "12:00 am",
                     name = "XYZ Station, Platform 1",
+                    isWheelchairAccessible = true,
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "01:00 am",
                     name = "DEF Station, Platform 3",
+                    isWheelchairAccessible = true,
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
@@ -347,10 +383,12 @@ private fun PreviewLegViewMetro() {
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "12:00 am",
                     name = "XYZ Station, Platform 1",
+                    isWheelchairAccessible = true,
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "01:00 am",
                     name = "DEF Station, Platform 3",
+                    isWheelchairAccessible = true,
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
@@ -374,10 +412,12 @@ private fun PreviewLegViewFerry() {
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "12:00 am",
                     name = "XYZ Station, Platform 1",
+                    isWheelchairAccessible = true,
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "01:00 am",
                     name = "DEF Station, Platform 3",
+                    isWheelchairAccessible = true,
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
@@ -401,10 +441,12 @@ private fun PreviewLegViewLightRail() {
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "12:00 am",
                     name = "XYZ Station, Platform 1",
+                    isWheelchairAccessible = true,
                 ),
                 TimeTableState.JourneyCardInfo.Stop(
                     time = "01:00 am",
                     name = "DEF Station, Platform 3",
+                    isWheelchairAccessible = false,
                 ),
             ).toImmutableList(),
             modifier = Modifier.background(KrailTheme.colors.surface),
@@ -435,6 +477,7 @@ private fun PreviewProminentStopInfo() {
             time = "12:00",
             name = "XYZ Station, Platform 1",
             isProminent = true,
+            isWheelchairAccessible = true,
             modifier = Modifier.background(KrailTheme.colors.surface),
         )
     }
