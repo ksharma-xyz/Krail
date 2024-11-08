@@ -15,7 +15,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 
 /**
  * Reference - https://developer.android.com/codelabs/jetpack-compose-migration#8
@@ -30,7 +29,7 @@ fun HtmlText(html: String, modifier: Modifier = Modifier, onClick: () -> Unit = 
     val textColor = KrailTheme.colors.label.toArgb()
     val textStyle = KrailTheme.typography.bodyLarge
     val resolver: FontFamily.Resolver = LocalFontFamilyResolver.current
-    val urlColor = themeContentColor().toArgb()
+    val urlColor = KrailTheme.colors.alert.toArgb()
 
     val textTypeface: Typeface = remember(resolver, textStyle) {
         resolver.resolve(
