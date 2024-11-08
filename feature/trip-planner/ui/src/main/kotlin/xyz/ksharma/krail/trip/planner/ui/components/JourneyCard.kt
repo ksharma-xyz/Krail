@@ -637,14 +637,17 @@ private val PREVIEW_STOPS = persistentListOf(
     TimeTableState.JourneyCardInfo.Stop(
         name = "Stop 1",
         time = "8:30am",
+        isWheelchairAccessible = true,
     ),
     TimeTableState.JourneyCardInfo.Stop(
         name = "Stop 2",
         time = "8:35am",
+        isWheelchairAccessible = true,
     ),
     TimeTableState.JourneyCardInfo.Stop(
         name = "Stop 3",
         time = "8:40am",
+        isWheelchairAccessible = false,
     ),
 )
 

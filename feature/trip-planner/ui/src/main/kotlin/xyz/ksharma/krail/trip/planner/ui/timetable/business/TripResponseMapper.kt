@@ -225,6 +225,7 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
         TimeTableState.JourneyCardInfo.Stop(
             name = stopName,
             time = time.fromUTCToDisplayTimeString(),
+            isWheelchairAccessible = properties?.wheelchairAccess.toBoolean(),
         )
     } else {
         null

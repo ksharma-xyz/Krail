@@ -152,7 +152,10 @@ data class TripResponse(
 
     @Serializable
     data class DestinationProperties(
-        @SerialName("wheelchairAccess") val wheelchairAccess: String? = null,
+        /**
+         * true if the stop is wheelchair accessible, false otherwise.
+         */
+        @SerialName("WheelchairAccess") val wheelchairAccess: String? = null,
 
         @SerialName("downloads") val downloads: List<Download>? = null,
 
