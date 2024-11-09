@@ -9,6 +9,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
 import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.LocalThemeContentColor
+import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.theme.getForegroundColor
 import xyz.ksharma.krail.design.system.unspecifiedColor
 import xyz.ksharma.krail.splash.SplashScreen
@@ -61,11 +63,19 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
 
             composable<SplashScreen> {
                 val viewModel = hiltViewModel<SplashViewModel>()
-                val mode = viewModel.getThemeTransportMode()
+                val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+                val mode by viewModel.uiState.collectAsStateWithLifecycle()
+
                 productClass = mode?.productClass
                 themeColorHexCode.value = mode?.colorCode ?: unspecifiedColor
 
                 SplashScreen(
+                    logoColor = if (productClass != null && themeColorHexCode.value != unspecifiedColor) {
+                        themeColorHexCode.value.hexToComposeColor()
+                    } else {
+                        KrailTheme.colors.onSurface
+                    },
+                    backgroundColor = KrailTheme.colors.surface,
                     onSplashComplete = {
                         navController.navigate(
                             route = if (productClass != null) {
