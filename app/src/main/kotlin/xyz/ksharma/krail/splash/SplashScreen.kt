@@ -3,20 +3,19 @@ package xyz.ksharma.krail.splash
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.StartOffset
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,15 +26,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modifier) {
@@ -49,7 +53,7 @@ fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modifier) {
 
         val splashComplete by rememberUpdatedState(onSplashComplete)
         LaunchedEffect(key1 = Unit) {
-            delay(1100)
+            delay(1200)
             splashComplete()
         }
     }
@@ -59,27 +63,61 @@ fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modifier) {
 private fun AnimatedKrailLogo(modifier: Modifier = Modifier) {
     var animationStarted by remember { mutableStateOf(false) }
 
-    // Trigger animation after a delay (e.g., when the splash screen is displayed)
     LaunchedEffect(key1 = Unit) {
         animationStarted = true
     }
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Row {
+            AnimatedLetter(
+                letter = "K",
+                animationStarted = animationStarted,
+                fontSize = 80.sp,
+                delayMillis = 0.milliseconds,
+                modifier = Modifier.alignByBaseline(),
+            )
+            AnimatedLetter(
+                letter = "R",
+                animationStarted = animationStarted,
+                modifier = Modifier.alignByBaseline(),
+            )
+            AnimatedLetter(
+                letter = "A",
+                animationStarted = animationStarted,
+                modifier = Modifier.alignByBaseline(),
+            )
+            AnimatedLetter(
+                letter = "I",
+                animationStarted = animationStarted,
+                modifier = Modifier.alignByBaseline(),
+            )
+            AnimatedLetter(
+                letter = "L",
+                animationStarted = animationStarted,
+                modifier = Modifier.alignByBaseline(),
+            )
+        }
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentSize(),
-        horizontalArrangement = Arrangement.Center,
-    ) {
-        AnimatedLetter("K", animationStarted)
-        AnimatedLetter("R", animationStarted)
-        AnimatedLetter("A", animationStarted)
-        AnimatedLetter("I", animationStarted)
-        AnimatedLetter("L", animationStarted)
+        Text(
+            text = "Ride the rail, without fail.",
+            style = KrailTheme.typography.titleMedium.copy(
+                fontWeight = FontWeight.Normal,
+            ),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 0.dp),
+        )
     }
 }
 
 @Composable
-private fun AnimatedLetter(letter: String, animationStarted: Boolean, modifier: Modifier = Modifier) {
+private fun AnimatedLetter(
+    letter: String,
+    animationStarted: Boolean,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = TextUnit(65F, TextUnitType.Sp),
+    delayMillis: Duration = 100.milliseconds,
+) {
     val infiniteTransition = rememberInfiniteTransition(label = "animeAnimation")
 
     // Scale animation with anticipation and squash/stretch
@@ -96,6 +134,7 @@ private fun AnimatedLetter(letter: String, animationStarted: Boolean, modifier: 
                 1.0f at 1100 using LinearEasing // Keep at normal scale
             },
             repeatMode = RepeatMode.Reverse,
+            initialStartOffset = StartOffset(offsetMillis = delayMillis.inWholeMilliseconds.toInt()),
         ),
         label = "animeAnimation",
     )
@@ -106,12 +145,12 @@ private fun AnimatedLetter(letter: String, animationStarted: Boolean, modifier: 
         text = letter,
         color = if (isSystemInDarkTheme()) Color(0xFFFFFF33) else Color(0xFFFF69B4),
         style = KrailTheme.typography.displayLarge.copy(
-            fontSize = 80.sp,
+            fontSize = fontSize,
             letterSpacing = 4.sp,
             fontWeight = FontWeight.ExtraBold,
-            drawStyle = Stroke(
+            /*drawStyle = Stroke(
                 width = 8f, // Adjust stroke width for desired thickness
-            ),
+            ),*/
         ),
         modifier = modifier
             .graphicsLayer {
@@ -123,11 +162,20 @@ private fun AnimatedLetter(letter: String, animationStarted: Boolean, modifier: 
 }
 
 @PreviewLightDark
+@Preview
 @Composable
-private fun PreviewSplashScreen() {
+private fun PreviewLogo() {
     KrailTheme {
         Column(modifier = Modifier.background(color = KrailTheme.colors.surface)) {
             AnimatedKrailLogo()
         }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSplashScreen() {
+    KrailTheme {
+        SplashScreen(onSplashComplete = {})
     }
 }
