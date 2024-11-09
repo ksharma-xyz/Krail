@@ -35,6 +35,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -147,12 +149,14 @@ fun JourneyCard(
                     transportModeList = transportModeList,
                     platformNumber = platformNumber,
                     totalWalkTime = totalWalkTime,
-                    modifier = Modifier.clickable(
-                        role = Role.Button,
-                        onClick = onClick,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                    ),
+                    modifier = Modifier
+                        .semantics(mergeDescendants = true) { }
+                        .clickable(
+                            role = Role.Button,
+                            onClick = onClick,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ),
                 )
 
                 JourneyCardState.EXPANDED -> ExpandedJourneyCardContent(
@@ -195,7 +199,6 @@ fun ExpandedJourneyCardContent(
         legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
     }
     val context = LocalContext.current
-    val contentAlpha = LocalContentAlpha.current
 
     Column(modifier = modifier) {
         FlowRow(
@@ -223,7 +226,8 @@ fun ExpandedJourneyCardContent(
         }
         FlowRow(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
             horizontalArrangement = if (totalUniqueServiceAlerts > 0) {
                 Arrangement.SpaceBetween
             } else {
@@ -232,73 +236,33 @@ fun ExpandedJourneyCardContent(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (totalUniqueServiceAlerts > 0) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .align(Alignment.CenterVertically)
-                        .background(
-                            shape = RoundedCornerShape(50),
-                            color = KrailTheme.colors.alert.copy(alpha = contentAlpha),
-                        )
-                        .clickable(
-                            role = Role.Button,
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = { onAlertClick() },
-                        )
-                        .padding(horizontal = 8.dp, vertical = 2.dp),
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_alert),
-                        contentDescription = null,
-                        colorFilter = ColorFilter.tint(
-                            getForegroundColor(
-                                KrailTheme.colors.alert.copy(
-                                    alpha = contentAlpha,
-                                ),
-                            ),
-                        ),
-                        modifier = Modifier
-                            .size(iconSize),
-                    )
-                    Text(
-                        text = context.resources.getQuantityString(
-                            R.plurals.alerts,
-                            totalUniqueServiceAlerts,
-                            totalUniqueServiceAlerts,
-                        ),
-                        style = KrailTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(start = 6.dp),
-                        color = getForegroundColor(KrailTheme.colors.alert),
-                    )
-                }
-            }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .padding(top = 8.dp),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_clock),
-                    contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface.copy(alpha = contentAlpha)),
-                    modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .align(Alignment.CenterVertically)
-                        .size(iconSize),
-                )
-                Text(
-                    text = totalTravelTime,
-                    style = KrailTheme.typography.bodyLarge,
+                SmallButton(
+                    icon = R.drawable.ic_alert,
+                    text = context.resources.getQuantityString(
+                        R.plurals.alerts,
+                        totalUniqueServiceAlerts,
+                        totalUniqueServiceAlerts,
+                    ),
+                    color = getForegroundColor(KrailTheme.colors.alert),
+                    iconSize = iconSize,
+                    onClick = onAlertClick,
+                    modifier = Modifier.align(Alignment.CenterVertically),
                 )
             }
+
+            TextWithIcon(
+                icon = R.drawable.ic_clock,
+                text = totalTravelTime,
+                textStyle = KrailTheme.typography.bodyLarge,
+                iconSize = iconSize,
+                modifier = Modifier.align(Alignment.CenterVertically),
+            )
         }
 
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(8.dp),
+                .height(4.dp),
         )
 
         legList.forEachIndexed { _, leg ->
@@ -307,7 +271,7 @@ fun ExpandedJourneyCardContent(
                     WalkingLeg(
                         duration = leg.duration,
                         modifier = Modifier
-                            .padding(vertical = 2.dp),
+                            .padding(vertical = 8.dp, horizontal = 2.dp),
                     )
                 }
 
@@ -316,22 +280,16 @@ fun ExpandedJourneyCardContent(
                         leg.walkInterchange?.duration?.let { duration ->
                             WalkingLeg(
                                 duration = duration,
-                                modifier = Modifier.padding(vertical = 2.dp),
+                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 2.dp),
                             )
                         }
                     }
-
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(8.dp),
-                    )
 
                     if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.IDEST) {
                         leg.walkInterchange?.duration?.let { duration ->
                             WalkingLeg(
                                 duration = duration,
-                                modifier = Modifier.padding(vertical = 2.dp),
+                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 2.dp),
                             )
                         }
                     } else {
@@ -348,17 +306,11 @@ fun ExpandedJourneyCardContent(
                         )
                     }
 
-                    Spacer(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(8.dp),
-                    )
-
                     if (leg.walkInterchange?.position == TimeTableState.JourneyCardInfo.WalkPosition.AFTER) {
                         leg.walkInterchange?.duration?.let { duration ->
                             WalkingLeg(
                                 duration = duration,
-                                modifier = Modifier.padding(vertical = 2.dp),
+                                modifier = Modifier.padding(vertical = 8.dp, horizontal = 2.dp),
                             )
                         }
                     }
@@ -497,24 +449,76 @@ private fun TextWithIcon(
     icon: Int,
     text: String,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = KrailTheme.typography.bodyMedium,
+    color: Color = KrailTheme.colors.onSurface,
+    iconSize: Dp = 14.dp,
 ) {
     val contentAlpha = LocalContentAlpha.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
+        modifier = modifier
+            .semantics(mergeDescendants = true) { },
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Image(
             painter = painterResource(icon),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface.copy(alpha = contentAlpha)),
+            colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
             modifier = Modifier
-                .padding(end = 4.dp)
                 .align(Alignment.CenterVertically)
-                .size(14.dp.toAdaptiveSize()),
+                .size(iconSize.toAdaptiveSize()),
         )
         Text(
             text = text,
-            style = KrailTheme.typography.bodyMedium,
+            style = textStyle,
+            color = color,
+        )
+    }
+}
+
+@Composable
+private fun SmallButton(
+    icon: Int,
+    text: String,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = KrailTheme.typography.bodyMedium,
+    color: Color = KrailTheme.colors.onSurface,
+    iconSize: Dp = 14.dp,
+    onClick: () -> Unit = {},
+) {
+    val contentAlpha = LocalContentAlpha.current
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .background(
+                shape = RoundedCornerShape(50),
+                color = KrailTheme.colors.alert.copy(alpha = contentAlpha),
+            )
+            .padding(
+                horizontal = 8.dp,
+                vertical = 2.dp,
+            )
+            .clickable(
+                role = Role.Button,
+                indication = null,
+                interactionSource = remember { MutableInteractionSource() },
+                onClick = { onClick() },
+            )
+            .semantics(mergeDescendants = true) { },
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Image(
+            painter = painterResource(icon),
+            contentDescription = null,
+            colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
+            modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .size(iconSize.toAdaptiveSize()),
+        )
+        Text(
+            text = text,
+            style = textStyle,
+            color = color,
         )
     }
 }
