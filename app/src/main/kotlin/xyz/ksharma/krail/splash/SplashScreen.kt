@@ -9,7 +9,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.keyframes
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
@@ -38,18 +38,21 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
-import kotlin.time.Duration
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
-fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modifier) {
+fun SplashScreen(
+    logoColor: Color?,
+    backgroundColor: Color?,
+    onSplashComplete: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = KrailTheme.colors.surface),
+            .background(color = backgroundColor ?: KrailTheme.colors.surface),
         contentAlignment = Alignment.Center,
     ) {
-        AnimatedKrailLogo()
+        AnimatedKrailLogo(logoColor = logoColor ?: KrailTheme.colors.onSurface)
 
         val splashComplete by rememberUpdatedState(onSplashComplete)
         LaunchedEffect(key1 = Unit) {
@@ -60,7 +63,10 @@ fun SplashScreen(onSplashComplete: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun AnimatedKrailLogo(modifier: Modifier = Modifier) {
+private fun AnimatedKrailLogo(
+    logoColor: Color,
+    modifier: Modifier = Modifier,
+) {
     var animationStarted by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = Unit) {
@@ -72,27 +78,32 @@ private fun AnimatedKrailLogo(modifier: Modifier = Modifier) {
                 letter = "K",
                 animationStarted = animationStarted,
                 fontSize = 80.sp,
-                delayMillis = 0.milliseconds,
+                delayMillis = 0,
+                logoColor = logoColor,
                 modifier = Modifier.alignByBaseline(),
             )
             AnimatedLetter(
                 letter = "R",
                 animationStarted = animationStarted,
+                logoColor = logoColor,
                 modifier = Modifier.alignByBaseline(),
             )
             AnimatedLetter(
                 letter = "A",
                 animationStarted = animationStarted,
+                logoColor = logoColor,
                 modifier = Modifier.alignByBaseline(),
             )
             AnimatedLetter(
                 letter = "I",
                 animationStarted = animationStarted,
+                logoColor = logoColor,
                 modifier = Modifier.alignByBaseline(),
             )
             AnimatedLetter(
                 letter = "L",
                 animationStarted = animationStarted,
+                logoColor = logoColor,
                 modifier = Modifier.alignByBaseline(),
             )
         }
@@ -103,6 +114,7 @@ private fun AnimatedKrailLogo(modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Normal,
             ),
             textAlign = TextAlign.Center,
+            color = logoColor,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 0.dp),
@@ -114,9 +126,10 @@ private fun AnimatedKrailLogo(modifier: Modifier = Modifier) {
 private fun AnimatedLetter(
     letter: String,
     animationStarted: Boolean,
+    logoColor: Color,
     modifier: Modifier = Modifier,
     fontSize: TextUnit = TextUnit(65F, TextUnitType.Sp),
-    delayMillis: Duration = 100.milliseconds,
+    delayMillis: Int = 100,
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "animeAnimation")
 
@@ -134,23 +147,22 @@ private fun AnimatedLetter(
                 1.0f at 1100 using LinearEasing // Keep at normal scale
             },
             repeatMode = RepeatMode.Reverse,
-            initialStartOffset = StartOffset(offsetMillis = delayMillis.inWholeMilliseconds.toInt()),
+            initialStartOffset = StartOffset(offsetMillis = delayMillis),
         ),
         label = "animeAnimation",
     )
 
-    val letterScale = if (animationStarted) scale else 1f
+    val letterScale by remember(scale) {
+        mutableFloatStateOf(if (animationStarted) scale else 1f)
+    }
 
     Text(
         text = letter,
-        color = if (isSystemInDarkTheme()) Color(0xFFFFFF33) else Color(0xFFFF69B4),
+        color = logoColor,
         style = KrailTheme.typography.displayLarge.copy(
             fontSize = fontSize,
             letterSpacing = 4.sp,
             fontWeight = FontWeight.ExtraBold,
-            /*drawStyle = Stroke(
-                width = 8f, // Adjust stroke width for desired thickness
-            ),*/
         ),
         modifier = modifier
             .graphicsLayer {
@@ -167,7 +179,7 @@ private fun AnimatedLetter(
 private fun PreviewLogo() {
     KrailTheme {
         Column(modifier = Modifier.background(color = KrailTheme.colors.surface)) {
-            AnimatedKrailLogo()
+            AnimatedKrailLogo(logoColor = Color(0xFFF6891F))
         }
     }
 }
@@ -176,6 +188,10 @@ private fun PreviewLogo() {
 @Composable
 private fun PreviewSplashScreen() {
     KrailTheme {
-        SplashScreen(onSplashComplete = {})
+        SplashScreen(
+            onSplashComplete = {},
+            logoColor = KrailTheme.colors.onSurface,
+            backgroundColor = Color(0xFF009B77),
+        )
     }
 }
