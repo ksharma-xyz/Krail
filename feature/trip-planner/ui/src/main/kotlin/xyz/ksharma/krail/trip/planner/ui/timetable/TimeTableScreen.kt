@@ -190,7 +190,8 @@ fun TimeTableScreen(
                 items(timeTableState.journeyList) { journey ->
                     JourneyCardItem(
                         timeToDeparture = journey.timeText,
-                        departureLocationNumber = journey.platformText,
+                        platformNumber = journey.platformNumber,
+                        platformText = journey.platformText,
                         originTime = journey.originTime,
                         destinationTime = journey.destinationTime,
                         durationText = journey.travelTime,
@@ -235,10 +236,11 @@ fun TimeTableScreen(
     }
 }
 
-@Composable
+@Composable // todo - probably don't need this
 private fun JourneyCardItem(
     timeToDeparture: String,
-    departureLocationNumber: Char?,
+    platformNumber: String?,
+    platformText: String?,
     originTime: String,
     durationText: String,
     totalWalkTime: String?,
@@ -257,7 +259,8 @@ private fun JourneyCardItem(
             originTime = originTime,
             destinationTime = destinationTime,
             totalTravelTime = durationText,
-            platformNumber = departureLocationNumber,
+            platformNumber = platformNumber,
+            platformText = platformText,
             isWheelchairAccessible = false,
             cardState = cardState,
             transportModeList = transportModeLineList.map { it.transportMode }
@@ -289,7 +292,8 @@ private fun PreviewTimeTableScreen() {
                     journeyList = listOf(
                         TimeTableState.JourneyCardInfo(
                             timeText = "12:00",
-                            platformText = 'A',
+                            platformText = "Stand A",
+                            platformNumber = "A",
                             originTime = "12:00",
                             destinationTime = "12:30",
                             travelTime = "30 mins",

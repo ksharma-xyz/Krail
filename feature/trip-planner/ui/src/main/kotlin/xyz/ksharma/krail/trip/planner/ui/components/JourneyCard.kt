@@ -73,6 +73,8 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 @Composable
 fun JourneyCard(
     timeToDeparture: String,
+    platformNumber: String?,
+    platformText: String?,
     originTime: String,
     destinationTime: String,
     totalTravelTime: String,
@@ -85,7 +87,6 @@ fun JourneyCard(
     totalUniqueServiceAlerts: Int,
     modifier: Modifier = Modifier,
     onAlertClick: () -> Unit = {},
-    platformNumber: Char? = null,
 ) {
     val onSurface: Color = KrailTheme.colors.onSurface
     val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }
@@ -163,7 +164,7 @@ fun JourneyCard(
                     displayAllStops = false,
                     timeToDeparture = timeToDeparture,
                     themeColor = themeColor,
-                    platformNumber = platformNumber,
+                    platformText = platformText,
                     iconSize = iconSize,
                     totalTravelTime = totalTravelTime,
                     legList = legList,
@@ -187,7 +188,7 @@ fun ExpandedJourneyCardContent(
     displayAllStops: Boolean,
     timeToDeparture: String,
     themeColor: Color,
-    platformNumber: Char?,
+    platformText: String?,
     iconSize: Dp,
     totalTravelTime: String,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
@@ -195,16 +196,13 @@ fun ExpandedJourneyCardContent(
     onAlertClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val firstTransportLeg = remember(legList) {
-        legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
-    }
     val context = LocalContext.current
 
     Column(modifier = modifier) {
         FlowRow(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = if (platformText != null) Arrangement.SpaceBetween else Arrangement.Start,
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
@@ -213,15 +211,12 @@ fun ExpandedJourneyCardContent(
                 color = themeColor,
             )
 
-            platformNumber?.let { platform ->
-                firstTransportLeg?.transportModeLine?.transportMode?.buildPlatformText(platform)
-                    ?.let { platformText ->
-                        Text(
-                            text = platformText,
-                            style = KrailTheme.typography.titleLarge,
-                            color = themeColor,
-                        )
-                    }
+            platformText?.let { text ->
+                Text(
+                    text = text,
+                    style = KrailTheme.typography.titleLarge,
+                    color = themeColor,
+                )
             }
         }
         FlowRow(
@@ -330,7 +325,7 @@ fun DefaultJourneyCardContent(
     isWheelchairAccessible: Boolean,
     themeColor: Color,
     transportModeList: ImmutableList<TransportMode>,
-    platformNumber: Char?,
+    platformNumber: String?,
     totalWalkTime: String?,
     modifier: Modifier = Modifier,
 ) {
@@ -533,15 +528,6 @@ internal fun List<TransportMode>?.toColors(onSurface: Color): List<Color> = when
     }
 }
 
-internal fun TransportMode.buildPlatformText(platformNumber: Char): String? {
-    return when (this) {
-        is TransportMode.Train, is TransportMode.Metro -> "Platform $platformNumber"
-        is TransportMode.Bus -> "Stand $platformNumber"
-        is TransportMode.Ferry -> "Wharf $platformNumber"
-        else -> null
-    }
-}
-
 // region Previews
 
 @PreviewLightDark
@@ -554,7 +540,8 @@ private fun PreviewJourneyCard() {
             originTime = "8:25am",
             destinationTime = "8:40am",
             totalTravelTime = "15 mins",
-            platformNumber = '1',
+            platformNumber = "18",
+            platformText = "Platform 18",
             isWheelchairAccessible = true,
             transportModeList = listOf(
                 TransportMode.Train(),
@@ -579,7 +566,8 @@ private fun PreviewJourneyCardCollapsed() {
             originTime = "8:25am",
             destinationTime = "8:40am",
             totalTravelTime = "15 mins",
-            platformNumber = '1',
+            platformNumber = "1",
+            platformText = "Platform 1",
             isWheelchairAccessible = true,
             transportModeList = listOf(
                 TransportMode.Train(),
@@ -627,7 +615,8 @@ private fun PreviewJourneyCardExpanded() {
             originTime = "8:25am",
             destinationTime = "8:40am",
             totalTravelTime = "15 mins",
-            platformNumber = '1',
+            platformNumber = "3",
+            platformText = "Platform 3",
             isWheelchairAccessible = true,
             transportModeList = listOf(
                 TransportMode.Train(),
@@ -692,7 +681,8 @@ private fun PreviewJourneyCardLongData() {
             originTime = "12:25am",
             destinationTime = "12:40am",
             totalTravelTime = "45h 15minutes",
-            platformNumber = 'A',
+            platformNumber = "A",
+            platformText = "Stand A",
             isWheelchairAccessible = true,
             transportModeList = listOf(
                 TransportMode.Ferry(),

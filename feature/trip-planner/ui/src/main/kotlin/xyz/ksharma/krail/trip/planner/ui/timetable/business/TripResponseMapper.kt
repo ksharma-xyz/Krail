@@ -27,7 +27,6 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         val arrivalTimeUTC = lastPublicTransportLeg?.getArrivalTime()
         val legs = journey.getFilteredValidLegs()
         val totalStops = legs?.getTotalStops() ?: 0
-        val platformText = firstPublicTransportLeg?.getPlatformText()
 
         legs?.logTransportModes()
 
@@ -55,7 +54,8 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
 
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.getTimeText(),
-                platformText = platformText,
+                platformText = firstPublicTransportLeg.getPlatformText(),
+                platformNumber = firstPublicTransportLeg.getPlatformNumber(),
                 originTime = originTimeUTC.fromUTCToDisplayTimeString(),
                 originUtcDateTime = originTimeUTC,
                 destinationTime = arrivalTimeUTC.fromUTCToDisplayTimeString(),
@@ -93,11 +93,27 @@ private fun TripResponse.Journey.getFilteredValidLegs() = legs?.filter { it.tran
 
 private fun List<TripResponse.Leg>.getTotalStops() = sumOf { leg -> leg.stopSequence?.size ?: 0 }
 
-private fun TripResponse.Leg?.getPlatformText() =
-    this?.stopSequence?.firstOrNull()?.properties?.platform?.lastOrNull()
-        ?.takeIf { it != '0' && it.isLetterOrDigit() }?.uppercaseChar()
+fun TripResponse.Leg?.getPlatformText(): String? {
+    val disassembledName = this?.origin?.disassembledName ?: return null
+    val regex = Regex("(Platform|Stand|Wharf|Side)\\s*(\\d+|[A-Z])", RegexOption.IGNORE_CASE)
+    val matches = regex.findAll(disassembledName).toList()
+    return if (matches.isNotEmpty()) matches.joinToString(", ") { it.value } else null
+}
+
+/**
+ * The platform number such as 1, 2 etc. or Stand A, B etc.
+ */
+fun TripResponse.Leg?.getPlatformNumber(): String? {
+    val disassembledName = this?.origin?.disassembledName ?: return null
+    val regex = Regex("(Platform|Stand|Wharf)\\s*(\\d+|[A-Z])", RegexOption.IGNORE_CASE)
+    val match = regex.find(disassembledName)
+    return match?.groupValues?.get(2)
+}
 
 private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index, leg ->
+
+    // log origin's disassembledName
+    Timber.d("Origin #$index: ${leg.origin?.disassembledName}")
     Timber.d(
         "TransportMode #$index: ${leg.transportation?.product?.productClass}, " +
             "name: ${leg.transportation?.product?.name}, " +
