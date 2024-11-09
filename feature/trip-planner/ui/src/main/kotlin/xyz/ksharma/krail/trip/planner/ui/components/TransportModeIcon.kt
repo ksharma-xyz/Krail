@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.preview.PreviewComponent
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -32,24 +34,27 @@ fun TransportModeIcon(
     val density = LocalDensity.current
     val textStyle = KrailTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium)
 
-    Box(
-        modifier = modifier
-            .clip(shape = CircleShape)
-            .requiredSize(with(density) { iconSize.toDp() })
-            .aspectRatio(1f)
-            .background(color = backgroundColor)
-            .borderIfEnabled(enabled = borderEnabled),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = "$letter",
-            color = Color.White,
-            // todo - need concrete token for style, meanwhile keep same as TransportModeBadge,
-            style = textStyle.copy(
-                fontWeight = FontWeight.Medium,
-                fontSize = fontSize ?: textStyle.fontSize,
-            ),
-        )
+    // Content alphas should always be 100% for Transport related icons
+    CompositionLocalProvider(LocalContentAlpha provides 1f) {
+        Box(
+            modifier = modifier
+                .clip(shape = CircleShape)
+                .requiredSize(with(density) { iconSize.toDp() })
+                .aspectRatio(1f)
+                .background(color = backgroundColor)
+                .borderIfEnabled(enabled = borderEnabled),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = "$letter",
+                color = Color.White,
+                // todo - need concrete token for style, meanwhile keep same as TransportModeBadge,
+                style = textStyle.copy(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = fontSize ?: textStyle.fontSize,
+                ),
+            )
+        }
     }
 }
 

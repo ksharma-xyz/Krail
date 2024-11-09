@@ -3,10 +3,12 @@ package xyz.ksharma.krail.trip.planner.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 
 @Composable
@@ -18,13 +20,20 @@ fun TransportModeInfo(
     modifier: Modifier = Modifier,
     borderEnabled: Boolean = false,
 ) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-        TransportModeIcon(letter = letter, backgroundColor = backgroundColor, borderEnabled = borderEnabled)
+    // Content alphas should always be 100% for Transport related icons
+    CompositionLocalProvider(LocalContentAlpha provides 1f) {
+        Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            TransportModeIcon(
+                letter = letter,
+                backgroundColor = backgroundColor,
+                borderEnabled = borderEnabled,
+            )
 
-        TransportModeBadge(
-            backgroundColor = badgeColor,
-            badgeText = badgeText,
-        )
+            TransportModeBadge(
+                backgroundColor = badgeColor,
+                badgeText = badgeText,
+            )
+        }
     }
 }
 

@@ -64,7 +64,8 @@ fun Text(
         BasicText(
             text = text,
             style = style.merge(
-                color = color ?: LocalTextColor.current.copy(alpha = contentAlpha),
+                color = color?.copy(alpha = contentAlpha)
+                    ?: LocalTextColor.current.copy(alpha = contentAlpha),
                 textAlign = textAlign,
                 fontFamily = fontFamily,
             ),

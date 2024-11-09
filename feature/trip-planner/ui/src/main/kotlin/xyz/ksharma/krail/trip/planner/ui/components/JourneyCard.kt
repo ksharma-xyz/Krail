@@ -21,7 +21,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +44,7 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.components.SeparatorIcon
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
@@ -84,80 +87,92 @@ fun JourneyCard(
 ) {
     val onSurface: Color = KrailTheme.colors.onSurface
     val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }
-    val themeColor = transportModeList.firstOrNull()?.colorCode?.hexToComposeColor()
-        ?: KrailTheme.colors.onSurface
+    val isPastJourney by remember(timeToDeparture) {
+        mutableStateOf(
+            timeToDeparture.contains(other = "ago", ignoreCase = true),
+        )
+    }
+    val pastJourneyColor = KrailTheme.colors.onSurface.copy(alpha = 0.5f)
+    val themeColor = if (!isPastJourney) {
+        transportModeList.firstOrNull()?.colorCode?.hexToComposeColor()
+            ?: KrailTheme.colors.onSurface
+    } else {
+        pastJourneyColor
+    }
 
     val density = LocalDensity.current
     // todo can be reusable logic for consistent icon size
     val iconSize = with(density) { 14.sp.toDp() }
 
     val horizontalCardPadding by animateDpAsState(
-        if (cardState == JourneyCardState.DEFAULT) {
-            12.dp
-        } else {
-            0.dp
-        },
+        targetValue = if (cardState == JourneyCardState.DEFAULT) 12.dp else 0.dp,
         label = "cardPadding",
     )
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(12.dp))
-            .background(color = KrailTheme.colors.surface)
-            .then(
-                if (cardState == JourneyCardState.DEFAULT) {
-                    Modifier.border(
-                        width = 2.dp,
-                        shape = RoundedCornerShape(12.dp),
-                        brush = Brush.linearGradient(colors = borderColors),
-                    )
-                } else {
-                    Modifier
-                },
-            )
-            .padding(
-                vertical = 8.dp,
-                horizontal = horizontalCardPadding,
-            )
-            .animateContentSize(),
-    ) {
-        when (cardState) {
-            JourneyCardState.DEFAULT -> DefaultJourneyCardContent(
-                timeToDeparture = timeToDeparture,
-                originTime = originTime,
-                destinationTime = destinationTime,
-                totalTravelTime = totalTravelTime,
-                isWheelchairAccessible = isWheelchairAccessible,
-                themeColor = themeColor,
-                transportModeList = transportModeList,
-                platformNumber = platformNumber,
-                totalWalkTime = totalWalkTime,
-                modifier = Modifier.clickable(
-                    role = Role.Button,
-                    onClick = onClick,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                ),
-            )
+    CompositionLocalProvider(LocalContentAlpha provides if (isPastJourney) 0.5f else 1f) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(12.dp))
+                .background(color = KrailTheme.colors.surface)
+                .then(
+                    if (cardState == JourneyCardState.DEFAULT) {
+                        Modifier.border(
+                            width = 2.dp,
+                            shape = RoundedCornerShape(12.dp),
+                            brush = if (!isPastJourney) {
+                                Brush.linearGradient(colors = borderColors)
+                            } else {
+                                Brush.linearGradient(listOf(pastJourneyColor, pastJourneyColor))
+                            },
+                        )
+                    } else {
+                        Modifier
+                    },
+                )
+                .padding(
+                    vertical = 8.dp,
+                    horizontal = horizontalCardPadding,
+                )
+                .animateContentSize(),
+        ) {
+            when (cardState) {
+                JourneyCardState.DEFAULT -> DefaultJourneyCardContent(
+                    timeToDeparture = timeToDeparture,
+                    originTime = originTime,
+                    destinationTime = destinationTime,
+                    totalTravelTime = totalTravelTime,
+                    isWheelchairAccessible = isWheelchairAccessible,
+                    themeColor = themeColor,
+                    transportModeList = transportModeList,
+                    platformNumber = platformNumber,
+                    totalWalkTime = totalWalkTime,
+                    modifier = Modifier.clickable(
+                        role = Role.Button,
+                        onClick = onClick,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ),
+                )
 
-            JourneyCardState.EXPANDED -> ExpandedJourneyCardContent(
-                displayAllStops = false,
-                timeToDeparture = timeToDeparture,
-                themeColor = themeColor,
-                platformNumber = platformNumber,
-                iconSize = iconSize,
-                totalTravelTime = totalTravelTime,
-                legList = legList,
-                totalUniqueServiceAlerts = totalUniqueServiceAlerts,
-                onAlertClick = onAlertClick,
-                modifier = Modifier.clickable(
-                    role = Role.Button,
-                    onClick = onClick,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                ),
-            )
+                JourneyCardState.EXPANDED -> ExpandedJourneyCardContent(
+                    displayAllStops = false,
+                    timeToDeparture = timeToDeparture,
+                    themeColor = themeColor,
+                    platformNumber = platformNumber,
+                    iconSize = iconSize,
+                    totalTravelTime = totalTravelTime,
+                    legList = legList,
+                    totalUniqueServiceAlerts = totalUniqueServiceAlerts,
+                    onAlertClick = onAlertClick,
+                    modifier = Modifier.clickable(
+                        role = Role.Button,
+                        onClick = onClick,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ),
+                )
+            }
         }
     }
 }
@@ -180,6 +195,7 @@ fun ExpandedJourneyCardContent(
         legList.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>().firstOrNull()
     }
     val context = LocalContext.current
+    val contentAlpha = LocalContentAlpha.current
 
     Column(modifier = modifier) {
         FlowRow(
@@ -222,7 +238,7 @@ fun ExpandedJourneyCardContent(
                         .align(Alignment.CenterVertically)
                         .background(
                             shape = RoundedCornerShape(50),
-                            color = KrailTheme.colors.alert,
+                            color = KrailTheme.colors.alert.copy(alpha = contentAlpha),
                         )
                         .clickable(
                             role = Role.Button,
@@ -235,7 +251,13 @@ fun ExpandedJourneyCardContent(
                     Image(
                         painter = painterResource(id = R.drawable.ic_alert),
                         contentDescription = null,
-                        colorFilter = ColorFilter.tint(getForegroundColor(KrailTheme.colors.alert)),
+                        colorFilter = ColorFilter.tint(
+                            getForegroundColor(
+                                KrailTheme.colors.alert.copy(
+                                    alpha = contentAlpha,
+                                ),
+                            ),
+                        ),
                         modifier = Modifier
                             .size(iconSize),
                     )
@@ -260,7 +282,7 @@ fun ExpandedJourneyCardContent(
                 Image(
                     painter = painterResource(R.drawable.ic_clock),
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
+                    colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface.copy(alpha = contentAlpha)),
                     modifier = Modifier
                         .padding(horizontal = 4.dp)
                         .align(Alignment.CenterVertically)
@@ -471,7 +493,12 @@ fun DefaultJourneyCardContent(
 }
 
 @Composable
-private fun TextWithIcon(icon: Int, text: String, modifier: Modifier = Modifier) {
+private fun TextWithIcon(
+    icon: Int,
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    val contentAlpha = LocalContentAlpha.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
@@ -479,7 +506,7 @@ private fun TextWithIcon(icon: Int, text: String, modifier: Modifier = Modifier)
         Image(
             painter = painterResource(icon),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
+            colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface.copy(alpha = contentAlpha)),
             modifier = Modifier
                 .padding(end = 4.dp)
                 .align(Alignment.CenterVertically)

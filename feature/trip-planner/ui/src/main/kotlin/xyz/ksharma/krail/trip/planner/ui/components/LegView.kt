@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
@@ -67,110 +69,114 @@ fun LegView(
         remember(transportModeLine) { transportModeLine.lineColorCode.hexToComposeColor() }
     var showIntermediateStops by rememberSaveable { mutableStateOf(displayAllStops) }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .animateContentSize()
-            .background(
-                color = transportModeBackgroundColor(transportMode = transportModeLine.transportMode),
-                shape = RoundedCornerShape(12.dp),
-            )
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = { showIntermediateStops = !showIntermediateStops },
-                role = Role.Button,
-            )
-            .padding(vertical = 12.dp, horizontal = 12.dp),
-    ) {
-        RouteSummary(
-            routeText = routeText,
-            iconSize = iconSize,
-            duration = duration,
-            displayDuration = displayDuration,
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-        Column(modifier = Modifier.fillMaxWidth()) {
-            StopInfo(
-                time = stops.first().time,
-                name = stops.first().name,
-                isProminent = true,
-                isWheelchairAccessible = stops.first().isWheelchairAccessible,
-                modifier = Modifier
-                    .timeLineTop(
-                        color = timelineColor,
-                        strokeWidth = strokeWidth,
-                        circleRadius = circleRadius,
-                    )
-                    .padding(start = 16.dp),
+    // Content alpha to be 100% always, as it's only visible in the expanded state.
+    // If it's visible, it should be full alpha
+    CompositionLocalProvider(LocalContentAlpha provides 1f) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .animateContentSize()
+                .background(
+                    color = transportModeBackgroundColor(transportMode = transportModeLine.transportMode),
+                    shape = RoundedCornerShape(12.dp),
+                )
+                .clickable(
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = { showIntermediateStops = !showIntermediateStops },
+                    role = Role.Button,
+                )
+                .padding(vertical = 12.dp, horizontal = 12.dp),
+        ) {
+            RouteSummary(
+                routeText = routeText,
+                iconSize = iconSize,
+                duration = duration,
+                displayDuration = displayDuration,
             )
 
-            Column(
-                modifier = Modifier
-                    .timeLineCenter(
-                        color = timelineColor,
-                        strokeWidth = strokeWidth,
-                    )
-                    .padding(start = 16.dp, top = 12.dp),
-            ) {
-                if (stops.size > 2) {
-                    val context = LocalContext.current
-                    StopsRow(
-                        // Need to pass count twice - https://developer.android.com/guide/topics/resources/string-resource#Plurals
-                        stops = context.resources.getQuantityString(
-                            R.plurals.stops,
-                            stops.size - 2,
-                            stops.size - 2,
-                        ),
-                        line = transportModeLine,
-                    )
-                } else {
-                    TransportModeInfo(
-                        letter = transportModeLine.transportMode.name.first(),
-                        backgroundColor = transportModeLine.transportMode.colorCode.hexToComposeColor(),
-                        badgeText = transportModeLine.lineName,
-                        badgeColor = transportModeLine.lineColorCode.hexToComposeColor(),
-                    )
+            Spacer(modifier = Modifier.height(12.dp))
+            Column(modifier = Modifier.fillMaxWidth()) {
+                StopInfo(
+                    time = stops.first().time,
+                    name = stops.first().name,
+                    isProminent = true,
+                    isWheelchairAccessible = stops.first().isWheelchairAccessible,
+                    modifier = Modifier
+                        .timeLineTop(
+                            color = timelineColor,
+                            strokeWidth = strokeWidth,
+                            circleRadius = circleRadius,
+                        )
+                        .padding(start = 16.dp),
+                )
+
+                Column(
+                    modifier = Modifier
+                        .timeLineCenter(
+                            color = timelineColor,
+                            strokeWidth = strokeWidth,
+                        )
+                        .padding(start = 16.dp, top = 12.dp),
+                ) {
+                    if (stops.size > 2) {
+                        val context = LocalContext.current
+                        StopsRow(
+                            // Need to pass count twice - https://developer.android.com/guide/topics/resources/string-resource#Plurals
+                            stops = context.resources.getQuantityString(
+                                R.plurals.stops,
+                                stops.size - 2,
+                                stops.size - 2,
+                            ),
+                            line = transportModeLine,
+                        )
+                    } else {
+                        TransportModeInfo(
+                            letter = transportModeLine.transportMode.name.first(),
+                            backgroundColor = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                            badgeText = transportModeLine.lineName,
+                            badgeColor = transportModeLine.lineColorCode.hexToComposeColor(),
+                        )
+                    }
                 }
-            }
 
-            if (showIntermediateStops) {
-                stops.drop(1).dropLast(1).forEach { stop ->
-                    StopInfo(
-                        time = stop.time,
-                        name = stop.name,
-                        isProminent = false,
-                        isWheelchairAccessible = stop.isWheelchairAccessible,
-                        modifier = Modifier
-                            .timeLineCenterWithStop(
-                                color = timelineColor,
-                                strokeWidth = strokeWidth,
-                                circleRadius = circleRadius,
-                            )
-                            .timeLineTop(
-                                color = timelineColor,
-                                strokeWidth = strokeWidth,
-                                circleRadius = circleRadius,
-                            )
-                            .padding(start = 16.dp, top = 12.dp),
-                    )
+                if (showIntermediateStops) {
+                    stops.drop(1).dropLast(1).forEach { stop ->
+                        StopInfo(
+                            time = stop.time,
+                            name = stop.name,
+                            isProminent = false,
+                            isWheelchairAccessible = stop.isWheelchairAccessible,
+                            modifier = Modifier
+                                .timeLineCenterWithStop(
+                                    color = timelineColor,
+                                    strokeWidth = strokeWidth,
+                                    circleRadius = circleRadius,
+                                )
+                                .timeLineTop(
+                                    color = timelineColor,
+                                    strokeWidth = strokeWidth,
+                                    circleRadius = circleRadius,
+                                )
+                                .padding(start = 16.dp, top = 12.dp),
+                        )
+                    }
                 }
-            }
 
-            StopInfo(
-                time = stops.last().time,
-                name = stops.last().name,
-                isProminent = true,
-                isWheelchairAccessible = stops.last().isWheelchairAccessible,
-                modifier = Modifier
-                    .timeLineBottom(
-                        color = timelineColor,
-                        strokeWidth = strokeWidth,
-                        circleRadius = circleRadius,
-                    )
-                    .padding(start = 16.dp, top = 12.dp),
-            )
+                StopInfo(
+                    time = stops.last().time,
+                    name = stops.last().name,
+                    isProminent = true,
+                    isWheelchairAccessible = stops.last().isWheelchairAccessible,
+                    modifier = Modifier
+                        .timeLineBottom(
+                            color = timelineColor,
+                            strokeWidth = strokeWidth,
+                            circleRadius = circleRadius,
+                        )
+                        .padding(start = 16.dp, top = 12.dp),
+                )
+            }
         }
     }
 }

@@ -62,7 +62,9 @@ class TimeTableViewModel @Inject constructor(
     private val _isActive: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isActive: StateFlow<Boolean> = _isActive.onStart {
         while (true) {
-            updateTimeText()
+            if (_uiState.value.journeyList.isEmpty().not()) {
+                updateTimeText()
+            }
             delay(REFRESH_TIME_TEXT_DURATION)
         }
     }.stateIn(
@@ -182,18 +184,21 @@ class TimeTableViewModel @Inject constructor(
      * As the clock is progressing, the value [TimeTableState.JourneyCardInfo.timeText] of the
      * journey card should be updated.
      */
-    private fun updateTimeText() {
-        updateUiState {
-            copy(
-                journeyList = journeyList.map { journeyCardInfo ->
-                    journeyCardInfo.copy(
-                        timeText = calculateTimeDifferenceFromNow(
-                            utcDateString = journeyCardInfo.originUtcDateTime,
-                        ).toGenericFormattedTimeString(),
-                    )
-                }.toImmutableList(),
-            )
+    private fun updateTimeText() = viewModelScope.launch {
+        val updatedJourneyList = withContext(ioDispatcher) {
+            _uiState.value.journeyList.map { journeyCardInfo ->
+                journeyCardInfo.copy(
+                    timeText = calculateTimeDifferenceFromNow(
+                        utcDateString = journeyCardInfo.originUtcDateTime,
+                    ).toGenericFormattedTimeString(),
+                )
+            }.toImmutableList()
         }
+
+        updateUiState {
+            copy(journeyList = updatedJourneyList)
+        }
+
         // Timber.d("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
     }
 
