@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "xyz.ksharma.krail"
-        versionCode = 4
+        versionCode = 5
         versionName = "1.0-alpha01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -32,6 +32,11 @@ android {
             // Enables resource shrinking, which is performed by the
             // Android Gradle plugin.
             isShrinkResources = true
+
+            ndk {
+                isDebuggable = false
+                debugSymbolLevel = "FULL"
+            }
 
             proguardFiles(
                 // Includes the default ProGuard rules files that are packaged with
