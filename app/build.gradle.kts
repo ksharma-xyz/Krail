@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "xyz.ksharma.krail"
-        versionCode = 3
-        versionName = "0.3-alpha"
+        versionCode = 4
+        versionName = "1.0-alpha01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -42,13 +42,6 @@ android {
                 // Includes a local, custom Proguard rules file
                 "proguard-rules.pro"
             )
-
-
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -69,6 +62,7 @@ dependencies {
     implementation(projects.feature.sydneyTrains.network.real)
     implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.network.real)
+    implementation(projects.feature.tripPlanner.state)
     implementation(projects.feature.tripPlanner.ui)
     implementation(projects.sandook.api)
     implementation(projects.sandook.real)
@@ -87,7 +81,6 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.perf)
-    implementation(project(":feature:trip-planner:state"))
 
     // Test
     androidTestImplementation(libs.test.androidxTestExtJunit)

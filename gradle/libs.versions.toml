@@ -33,6 +33,7 @@ wire = "5.1.0"
 minSdk = "26"
 compileSdk = "34"
 targetSdk = "34"
+coreSplashscreen = "1.0.1"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
