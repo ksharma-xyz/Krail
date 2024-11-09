@@ -51,7 +51,7 @@ jobs:
         run: ./gradlew detekt
 
       - name: Build Debug
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleDebug test
 
       - name: Build Release
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease test

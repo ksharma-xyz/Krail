@@ -59,9 +59,9 @@ class ColorUtilsTest {
     fun testGetForegroundColor_darkMode() {
         assertEquals("#FF1F1B16", getForegroundColor(busTheme, true).toHex())
         assertEquals("#FF1F1B16", getForegroundColor(trainTheme, true).toHex())
-        assertEquals("#FFEAE1D9", getForegroundColor(metroTheme, true).toHex())
-        assertEquals("#FFEAE1D9", getForegroundColor(ferryTheme, true).toHex())
+        assertEquals("#FF1F1B16", getForegroundColor(metroTheme, true).toHex())
+        assertEquals("#FF1F1B16", getForegroundColor(ferryTheme, true).toHex())
         assertEquals("#FFEAE1D9", getForegroundColor(coachTheme, true).toHex())
-        assertEquals("#FFEAE1D9", getForegroundColor(lightRailTheme, true).toHex())
+        assertEquals("#FF1F1B16", getForegroundColor(lightRailTheme, true).toHex())
     }
 }
