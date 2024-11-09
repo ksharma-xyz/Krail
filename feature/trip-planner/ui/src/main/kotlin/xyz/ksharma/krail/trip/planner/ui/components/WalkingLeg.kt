@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import xyz.ksharma.krail.design.system.LocalContentAlpha
 import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
@@ -26,6 +27,7 @@ fun WalkingLeg(
     val density = LocalDensity.current
     // todo can be reusable logic for consistent icon size
     val iconSize = with(density) { 18.sp.toDp() }
+    val contentAlpha = LocalContentAlpha.current
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -36,7 +38,9 @@ fun WalkingLeg(
         Image(
             painter = painterResource(id = R.drawable.ic_walk),
             contentDescription = null,
-            colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
+            colorFilter = ColorFilter.tint(
+                color = KrailTheme.colors.onSurface.copy(alpha = contentAlpha),
+            ),
             modifier = Modifier.size(iconSize),
         )
         Text("Walk $duration", style = KrailTheme.typography.bodyLarge)

@@ -94,7 +94,10 @@ object DateTimeHelper {
         return formattedDifference
     }
 
-    fun calculateTimeDifference(utcDateString1: String, utcDateString2: String): kotlin.time.Duration {
+    fun calculateTimeDifference(
+        utcDateString1: String,
+        utcDateString2: String,
+    ): kotlin.time.Duration {
         // Parse the first UTC date string to a ZonedDateTime
         val dateTime1 = ZonedDateTime.parse(utcDateString1, DateTimeFormatter.ISO_ZONED_DATE_TIME)
 
