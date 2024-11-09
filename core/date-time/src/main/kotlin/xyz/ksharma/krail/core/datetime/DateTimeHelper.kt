@@ -72,7 +72,10 @@ object DateTimeHelper {
         val partialMinutes = totalMinutes - (hours * 60.minutes.inWholeMinutes)
 
         val formattedDifference = when {
-            totalMinutes < 0 -> "${totalMinutes.absoluteValue} mins ago"
+            totalMinutes < 0 ->
+                "${totalMinutes.absoluteValue} " +
+                    "${if (totalMinutes.absoluteValue == 1L) "min" else "mins"} ago"
+
             totalMinutes == 0L -> "Now"
             hours == 1L -> "In ${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
             hours >= 2 -> "In ${hours.absoluteValue}h"
