@@ -6,10 +6,11 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
 data class TimeTableState(
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val isTripSaved: Boolean = false,
     val journeyList: ImmutableList<JourneyCardInfo> = persistentListOf(),
     val trip: Trip? = null,
+    val isError: Boolean = false,
 ) {
     data class JourneyCardInfo(
         val timeText: String, // "in x mins"
