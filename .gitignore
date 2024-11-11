@@ -38,3 +38,9 @@ google-services.json
 # MAC OS specific
 .DS_Store
 **/.DS_Store
+
+# Ignore Android App Bundle files
+*.aab
+
+# Ignore Download Manager files
+*.dm
