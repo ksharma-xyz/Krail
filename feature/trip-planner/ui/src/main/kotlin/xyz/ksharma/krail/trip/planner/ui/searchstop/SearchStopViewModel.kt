@@ -52,7 +52,7 @@ class SearchStopViewModel @Inject constructor(
     )
 
     private fun SearchStopState.displayLoading() =
-        copy(isLoading = true, stops = persistentListOf(), isError = false)
+        copy(isLoading = true, isError = false)
 
     private fun SearchStopState.displayError() = copy(
         isLoading = false,

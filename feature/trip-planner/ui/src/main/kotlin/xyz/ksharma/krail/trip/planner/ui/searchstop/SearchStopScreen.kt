@@ -23,10 +23,12 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -35,9 +37,9 @@ import kotlinx.coroutines.flow.mapLatest
 import timber.log.Timber
 import xyz.ksharma.krail.design.system.LocalThemeColor
 import xyz.ksharma.krail.design.system.components.Divider
-import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TextField
 import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.StopSearchListItem
 import xyz.ksharma.krail.trip.planner.ui.components.backgroundColorOf
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
@@ -46,9 +48,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 
-/**
- * TODO - implement scroll to top, when too many search results are displayed.
- */
 @Composable
 fun SearchStopScreen(
     searchStopState: SearchStopState,
@@ -75,6 +74,16 @@ fun SearchStopScreen(
                 Timber.d("Query - $text")
                 onEvent(SearchStopUiEvent.SearchTextChanged(text))
             }.collectLatest {}
+    }
+
+    var displayNoMatchFound by remember { mutableStateOf(false) }
+    LaunchedEffect(searchStopState.stops.isEmpty()) {
+        if (!searchStopState.isLoading && textFieldText.isNotBlank() && searchStopState.stops.isEmpty()) {
+            delay(500)
+            displayNoMatchFound = true
+        } else {
+            displayNoMatchFound = false
+        }
     }
 
     Column(
@@ -106,18 +115,14 @@ fun SearchStopScreen(
         LazyColumn(
             contentPadding = PaddingValues(top = 16.dp, bottom = 48.dp),
         ) {
-            if (searchStopState.isLoading) {
+            if (searchStopState.isError && textFieldText.isNotBlank()) {
                 item {
-                    Text(
-                        text = "Loading...",
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                    )
-                }
-            } else if (searchStopState.isError) {
-                item {
-                    Text(
-                        text = "Error",
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                    ErrorMessage(
+                        title = "Eh! That's not looking right mate.",
+                        message = "Let's try searching again.",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
                     )
                 }
             } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
@@ -132,24 +137,82 @@ fun SearchStopScreen(
                                 keyboard?.hide()
                                 onStopSelect(stopItem)
                             },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItem(),
                         )
 
                         Divider()
                     }
                 }
-            } else {
+            } else if (displayNoMatchFound && textFieldText.isNotBlank()) {
                 item {
-                    Text(
-                        text = "Display Recent Search",
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                    ErrorMessage(
+                        title = "No match found!",
+                        message = if (textFieldText.length < 4) {
+                            "Throw in a few more chars! \uD83D\uDE0E"
+                        } else {
+                            "Try tweaking your search. \uD83D\uDD0D✨"
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
                     )
                 }
+            } else {
+                Unit
             }
         }
     }
 }
 
 // region Previews
+
+@Preview
+@Composable
+private fun PreviewSearchStopScreenLoading() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Bus().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState.copy(isLoading = true),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSearchStopScreenError() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Bus().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState.copy(isLoading = false, isError = true),
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewSearchStopScreenEmpty() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Bus().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            SearchStopScreen(
+                searchQuery = "Search Query",
+                searchStopState = searchStopState.copy(
+                    isLoading = false,
+                    isError = false,
+                    stops = persistentListOf(),
+                ),
+            )
+        }
+    }
+}
 
 @PreviewLightDark
 @Composable
