@@ -19,3 +19,47 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+#Need this to keep serializable members as is
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+
+
+# For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+#This will print mappings - very useful for troubleshooting.
+-printseeds ./build/seeds.txt
+-printusage ./build/unused.txt
+-printmapping ./build/mapping.txt
+
+#Some recommended settings for running with Android
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+
+-keep public enum * {}
+-keep public interface * {}
+
+-keepattributes *Annotation*
+
+-keepclassmembers,allowobfuscation class * {
+    @javax.inject.* *;
+    @dagger.* *;
+    <init>();
+}
+
+
+-keepattributes *Annotation*,Signature
+-dontwarn retrofit.**
+-keep class retrofit.** { *; }
+-keepclasseswithmembers class * {
+    @retrofit.* <methods>;
+}

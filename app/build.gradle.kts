@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "xyz.ksharma.krail"
-        versionCode = 5
-        versionName = "1.0-alpha01"
+        versionCode = 11
+        versionName = "1.0-alpha02"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -23,30 +23,24 @@ android {
         debug {
             applicationIdSuffix = ".debug"
             isDebuggable = true
+            ndk {
+                isDebuggable = true
+                debugSymbolLevel = "FULL"
+            }
         }
 
         release {
             isMinifyEnabled = true
             isDebuggable = false
-
-            // Enables resource shrinking, which is performed by the
-            // Android Gradle plugin.
             isShrinkResources = true
-
             ndk {
                 isDebuggable = false
                 debugSymbolLevel = "FULL"
             }
-
-            proguardFiles(
-                // Includes the default ProGuard rules files that are packaged with
-                // the Android Gradle plugin. To learn more, go to the section about
-                // R8 configuration files.
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-
-                // Includes a local, custom Proguard rules file
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled = true
+            }
         }
     }
 
