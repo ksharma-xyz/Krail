@@ -84,6 +84,7 @@ class TimeTableViewModel @Inject constructor(
             is TimeTableUiEvent.JourneyCardClicked -> onJourneyCardClicked(event.journeyId)
             TimeTableUiEvent.SaveTripButtonClicked -> onSaveTripButtonClicked()
             TimeTableUiEvent.ReverseTripButtonClicked -> onReverseTripButtonClicked()
+            TimeTableUiEvent.RetryButtonClicked -> onLoadTimeTable(tripInfo!!)
         }
     }
 
@@ -103,11 +104,13 @@ class TimeTableViewModel @Inject constructor(
                         copy(
                             isLoading = false,
                             journeyList = response.buildJourneyList() ?: persistentListOf(),
+                            isError = false,
                         )
                     }
                     response.logForUnderstandingData()
                 }.onFailure {
                     Timber.e("Error while fetching trip: $it")
+                    updateUiState { copy(isLoading = false, isError = true) }
                 }
             }
         }
@@ -155,7 +158,14 @@ class TimeTableViewModel @Inject constructor(
         Timber.d("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
         tripInfo = trip
         val savedTrip = sandook.getString(key = trip.tripId)
-        updateUiState { copy(isLoading = true, trip = trip, isTripSaved = savedTrip != null) }
+        updateUiState {
+            copy(
+                isLoading = true,
+                trip = trip,
+                isTripSaved = savedTrip != null,
+                isError = false,
+            )
+        }
         rateLimiter.triggerEvent()
     }
 
@@ -175,6 +185,7 @@ class TimeTableViewModel @Inject constructor(
                 trip = reverseTrip,
                 isTripSaved = savedTrip != null,
                 isLoading = true,
+                isError = false,
             )
         }
         rateLimiter.triggerEvent()

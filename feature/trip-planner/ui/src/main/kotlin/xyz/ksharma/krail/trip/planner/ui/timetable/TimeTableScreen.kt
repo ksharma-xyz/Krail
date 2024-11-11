@@ -50,6 +50,8 @@ import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.design.system.theme.shouldUseDarkIcons
 import xyz.ksharma.krail.trip.planner.ui.R
+import xyz.ksharma.krail.trip.planner.ui.components.ActionData
+import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
@@ -166,7 +168,21 @@ fun TimeTableScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
-            if (timeTableState.isLoading) {
+            if (timeTableState.isError) {
+                item {
+                    ErrorMessage(
+                        title = "Eh! That's not looking right mate!",
+                        message = "Let's try again.",
+                        actionData = ActionData(
+                            actionText = "Retry",
+                            onActionClick = { onEvent(TimeTableUiEvent.RetryButtonClicked) },
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
+                    )
+                }
+            } else if (timeTableState.isLoading) {
                 item {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         LoadingEmojiAnim(
@@ -219,9 +235,15 @@ fun TimeTableScreen(
                             .padding(horizontal = 12.dp, vertical = 8.dp),
                     )
                 }
-            } else {
+            } else { // Journey list is empty or null
                 item {
-                    Text("No data found")
+                    ErrorMessage(
+                        title = "No route found!",
+                        message = "Search for another stop or check back later.",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .animateItem(),
+                    )
                 }
             }
 
@@ -275,6 +297,29 @@ private fun JourneyCardItem(
     }
 }
 
+@Composable
+private fun ActionButton(
+    onClick: () -> Unit,
+    contentDescription: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = modifier
+            .size(40.dp)
+            .clip(CircleShape)
+            .clickable(role = Role.Button) { onClick() }
+            .semantics(mergeDescendants = true) {
+                this.contentDescription = contentDescription
+            },
+        contentAlignment = Alignment.Center,
+    ) {
+        content()
+    }
+}
+
+// region Preview
+
 @PreviewLightDark
 @Composable
 private fun PreviewTimeTableScreen() {
@@ -317,23 +362,54 @@ private fun PreviewTimeTableScreen() {
     }
 }
 
+@PreviewLightDark
 @Composable
-private fun ActionButton(
-    onClick: () -> Unit,
-    contentDescription: String,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
-) {
-    Box(
-        modifier = modifier
-            .size(40.dp)
-            .clip(CircleShape)
-            .clickable(role = Role.Button) { onClick() }
-            .semantics(mergeDescendants = true) {
-                this.contentDescription = contentDescription
-            },
-        contentAlignment = Alignment.Center,
-    ) {
-        content()
+private fun PreviewTimeTableScreenError() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Train().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            TimeTableScreen(
+                timeTableState = TimeTableState(
+                    trip = Trip(
+                        fromStopName = "From Stop",
+                        toStopName = "To Stop",
+                        fromStopId = "123",
+                        toStopId = "456",
+                    ),
+                    isError = true,
+                    isLoading = false,
+                ),
+                expandedJourneyId = null,
+                onEvent = {},
+                onAlertClick = {},
+            )
+        }
     }
 }
+
+@PreviewLightDark
+@Composable
+private fun PreviewTimeTableScreenNoResults() {
+    KrailTheme {
+        val themeColor = remember { mutableStateOf(TransportMode.Train().colorCode) }
+        CompositionLocalProvider(LocalThemeColor provides themeColor) {
+            TimeTableScreen(
+                timeTableState = TimeTableState(
+                    trip = Trip(
+                        fromStopName = "From Stop",
+                        toStopName = "To Stop",
+                        fromStopId = "123",
+                        toStopId = "456",
+                    ),
+                    isError = false,
+                    isLoading = false,
+                ),
+                expandedJourneyId = null,
+                onEvent = {},
+                onAlertClick = {},
+            )
+        }
+    }
+}
+
+// endregion

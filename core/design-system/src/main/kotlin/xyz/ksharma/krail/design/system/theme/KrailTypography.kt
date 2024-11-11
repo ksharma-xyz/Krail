@@ -26,6 +26,7 @@ data class KrailTypography(
     val titleLarge: TextStyle,
     val titleMedium: TextStyle,
     val titleSmall: TextStyle,
+    val emoji: TextStyle,
 )
 
 internal val LocalKrailTypography = staticCompositionLocalOf {
@@ -47,6 +48,7 @@ internal val LocalKrailTypography = staticCompositionLocalOf {
         titleLarge = TextStyle.Default,
         titleMedium = TextStyle.Default,
         titleSmall = TextStyle.Default,
+        emoji = TextStyle.Default,
     )
 }
 
@@ -169,5 +171,12 @@ internal val krailTypography = KrailTypography(
         fontSize = 18.sp,
         lineHeight = 24.sp,
         letterSpacing = 0.15.sp,
+    ),
+    emoji = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 64.sp,
+        lineHeight = 72.sp,
+        letterSpacing = 0.sp,
     ),
 )
