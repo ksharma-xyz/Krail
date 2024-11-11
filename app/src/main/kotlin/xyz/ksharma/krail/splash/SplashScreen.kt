@@ -86,24 +86,28 @@ private fun AnimatedKrailLogo(
                 letter = "R",
                 animationStarted = animationStarted,
                 logoColor = logoColor,
+                delayMillis = 50,
                 modifier = Modifier.alignByBaseline(),
             )
             AnimatedLetter(
                 letter = "A",
                 animationStarted = animationStarted,
                 logoColor = logoColor,
+                delayMillis = 100,
                 modifier = Modifier.alignByBaseline(),
             )
             AnimatedLetter(
                 letter = "I",
                 animationStarted = animationStarted,
                 logoColor = logoColor,
+                delayMillis = 150,
                 modifier = Modifier.alignByBaseline(),
             )
             AnimatedLetter(
                 letter = "L",
                 animationStarted = animationStarted,
                 logoColor = logoColor,
+                delayMillis = 200,
                 modifier = Modifier.alignByBaseline(),
             )
         }
