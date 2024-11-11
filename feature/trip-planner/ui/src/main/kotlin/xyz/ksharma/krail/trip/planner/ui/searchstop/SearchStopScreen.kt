@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -80,10 +82,23 @@ fun SearchStopScreen(
     }
 
     var displayNoMatchFound by remember { mutableStateOf(false) }
-    LaunchedEffect(searchStopState.stops.isEmpty()) {
-        if (!searchStopState.isLoading && textFieldText.isNotBlank() && searchStopState.stops.isEmpty()) {
-            delay(500)
-            displayNoMatchFound = true
+    var lastQueryTime by remember { mutableLongStateOf(0L) }
+    LaunchedEffect(
+        key1 = textFieldText,
+        key2 = searchStopState.stops,
+        key3 = searchStopState.isLoading,
+    ) {
+        if (textFieldText.isNotBlank() && searchStopState.stops.isEmpty()) {
+            // To ensure a smooth transition from the results state to the "No match found" state,
+            // track the time of the last query. If new results come in during the delay period,
+            // then lastQueryTime will be different, therefore, it will prevent
+            // "No match found" message from being displayed.
+            val currentQueryTime = System.currentTimeMillis()
+            lastQueryTime = currentQueryTime
+            delay(1000)
+            if (lastQueryTime == currentQueryTime && searchStopState.stops.isEmpty()) {
+                displayNoMatchFound = true
+            }
         } else {
             displayNoMatchFound = false
         }
@@ -123,7 +138,7 @@ fun SearchStopScreen(
             contentPadding = PaddingValues(top = 16.dp, bottom = 48.dp),
         ) {
             if (searchStopState.isError && textFieldText.isNotBlank()) {
-                item {
+                item(key = "Error") {
                     ErrorMessage(
                         title = "Eh! That's not looking right mate.",
                         message = "Let's try searching again.",
@@ -133,27 +148,27 @@ fun SearchStopScreen(
                     )
                 }
             } else if (searchStopState.stops.isNotEmpty() && textFieldText.isNotBlank()) {
-                searchStopState.stops.forEach { stop ->
-                    item {
-                        StopSearchListItem(
-                            stopId = stop.stopId,
-                            stopName = stop.stopName,
-                            transportModeSet = stop.transportModeType.toImmutableSet(),
-                            textColor = KrailTheme.colors.label,
-                            onClick = { stopItem ->
-                                keyboard?.hide()
-                                onStopSelect(stopItem)
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .animateItem(),
-                        )
+                items(
+                    items = searchStopState.stops,
+                    key = { it.stopId },
+                ) { stop ->
+                    StopSearchListItem(
+                        stopId = stop.stopId,
+                        stopName = stop.stopName,
+                        transportModeSet = stop.transportModeType.toImmutableSet(),
+                        textColor = KrailTheme.colors.label,
+                        onClick = { stopItem ->
+                            keyboard?.hide()
+                            onStopSelect(stopItem)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                    )
 
-                        Divider()
-                    }
+                    Divider()
                 }
             } else if (displayNoMatchFound && textFieldText.isNotBlank()) {
-                item {
+                item(key = "no_match") {
                     ErrorMessage(
                         title = "No match found!",
                         message = if (textFieldText.length < 4) {
@@ -166,8 +181,6 @@ fun SearchStopScreen(
                             .animateItem(),
                     )
                 }
-            } else {
-                Unit
             }
         }
     }
