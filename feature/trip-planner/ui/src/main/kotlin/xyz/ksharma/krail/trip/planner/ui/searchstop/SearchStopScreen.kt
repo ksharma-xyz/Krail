@@ -69,7 +69,10 @@ fun SearchStopScreen(
     val trimmedText by remember(textFieldText) { derivedStateOf { textFieldText.trim() } }
 
     LaunchedEffect(trimmedText) {
-        snapshotFlow { trimmedText }.distinctUntilChanged().debounce(250).filter { it.isNotBlank() }
+        snapshotFlow { trimmedText }
+            .distinctUntilChanged()
+            .debounce(250)
+            .filter { it.isNotBlank() }
             .mapLatest { text ->
                 Timber.d("Query - $text")
                 onEvent(SearchStopUiEvent.SearchTextChanged(text))
@@ -107,6 +110,10 @@ fun SearchStopScreen(
                 .padding(vertical = 12.dp)
                 .focusRequester(focusRequester)
                 .padding(horizontal = 16.dp),
+            maxLength = 30,
+            filter = { input ->
+                input.filter { it.isLetterOrDigit() || it.isWhitespace() }
+            },
         ) { value ->
             Timber.d("value: $value")
             textFieldText = value.toString()

@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.text.input.TextFieldLineLimits
 import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.runtime.Composable
@@ -53,6 +54,8 @@ fun TextField(
     textStyle: TextStyle? = null,
     readOnly: Boolean = false,
     imeAction: ImeAction = ImeAction.Default,
+    filter: (CharSequence) -> CharSequence = { it },
+    maxLength: Int = Int.MAX_VALUE,
     onTextChange: (CharSequence) -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -66,7 +69,11 @@ fun TextField(
     )
 
     LaunchedEffect(textFieldState.text) {
-        onTextChange(textFieldState.text)
+        val filteredText = filter(textFieldState.text).take(maxLength)
+        if (textFieldState.text != filteredText) {
+            textFieldState.setTextAndPlaceCursorAtEnd(filteredText.toString())
+        }
+        onTextChange(filteredText)
     }
 
     CompositionLocalProvider(
