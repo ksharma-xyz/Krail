@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableSet
@@ -74,9 +74,21 @@ fun UsualRideScreen(
         LazyColumn(contentPadding = PaddingValues(top = 24.dp, bottom = 152.dp)) {
             item {
                 Text(
-                    text = "What's your usual ride mate?",
+                    text = "Let's set the vibe.",
                     style = KrailTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Normal),
-                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .padding(bottom = 8.dp, top = 16.dp),
+                )
+            }
+
+            item {
+                Text(
+                    text = "What's your favourite color, mate?",
+                    style = KrailTheme.typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(horizontal = 24.dp)
+                        .padding(bottom = 16.dp),
                 )
             }
 
@@ -92,7 +104,7 @@ fun UsualRideScreen(
         }
 
         Text(
-            text = if (selectedProductClass != null) "Let's Go, Yeah!" else "Let's Go",
+            text = if (selectedProductClass != null) "Let's Go, Yeah!" else "Pick one.",
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
@@ -168,7 +180,7 @@ private fun TransportModeRadioButton(
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun PreviewUsualRideScreen() {
     KrailTheme {
