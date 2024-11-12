@@ -3,7 +3,6 @@ package xyz.ksharma.krail.trip.planner.ui.savedtrips
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +29,7 @@ import xyz.ksharma.krail.design.system.components.Text
 import xyz.ksharma.krail.design.system.components.TitleBar
 import xyz.ksharma.krail.design.system.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.R
+import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.SavedTripCard
 import xyz.ksharma.krail.trip.planner.ui.components.SearchStopRow
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
@@ -82,33 +82,46 @@ fun SavedTripsScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                 }
 
-                items(
-                    items = savedTripsState.savedTrips,
-                    key = { it.fromStopId + it.toStopId },
-                ) { trip ->
+                if (savedTripsState.savedTrips.isEmpty()) {
+                    item(key = "empty_state") {
+                        ErrorMessage(
+                            emoji = "🌟",
+                            title = "Ready to roll, mate?",
+                            message = "Star your fave trips and they'll be right here!",
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .animateItem(),
+                        )
+                    }
+                } else {
+                    items(
+                        items = savedTripsState.savedTrips,
+                        key = { it.fromStopId + it.toStopId },
+                    ) { trip ->
 
-                    SavedTripCard(
-                        trip = trip,
-                        onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
-                        onCardClick = {
-                            onSearchButtonClick(
-                                StopItem(
-                                    stopId = trip.fromStopId,
-                                    stopName = trip.fromStopName,
-                                ),
-                                StopItem(
-                                    stopId = trip.toStopId,
-                                    stopName = trip.toStopName,
-                                ),
-                            )
-                        },
-                        primaryTransportMode = null, // TODO
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .animateItem(fadeOutSpec = tween(durationMillis = 500)),
-                    )
+                        SavedTripCard(
+                            trip = trip,
+                            onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
+                            onCardClick = {
+                                onSearchButtonClick(
+                                    StopItem(
+                                        stopId = trip.fromStopId,
+                                        stopName = trip.fromStopName,
+                                    ),
+                                    StopItem(
+                                        stopId = trip.toStopId,
+                                        stopName = trip.toStopName,
+                                    ),
+                                )
+                            },
+                            primaryTransportMode = null, // TODO
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .animateItem(),
+                        )
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
                 }
             }
         }
