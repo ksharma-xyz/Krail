@@ -79,5 +79,4 @@ dependencies {
     // Test
     androidTestImplementation(libs.test.androidxTestExtJunit)
     testImplementation(libs.test.composeUiTestJunit4)
-    testImplementation(libs.test.paparazzi)
 }

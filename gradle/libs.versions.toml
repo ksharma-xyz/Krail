@@ -87,7 +87,6 @@ test-turbine = { group = "app.cash.turbine", name = "turbine", version = "1.2.0"
 test-mockitoKotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.4.0" }
 test-kotlinxCoroutineTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.9.0" }
 test-androidxCoreKtx = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
-test-paparazzi = { group = "app.cash.paparazzi", name = "paparazzi-gradle-plugin", version.ref = "paparazzi" }
 
 #BuildLogic
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }

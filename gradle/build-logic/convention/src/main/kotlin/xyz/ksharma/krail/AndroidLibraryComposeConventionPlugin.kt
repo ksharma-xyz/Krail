@@ -1,43 +1,41 @@
-import com.android.build.api.dsl.ApplicationExtension
+package xyz.ksharma.krail
+
+import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
-import org.gradle.kotlin.dsl.apply
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("UNUSED")
-class ApplicationConventionPlugin : Plugin<Project> {
+class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
             val javaVersion = libs.findVersion("java").get().toString().toInt()
             val minSdkVersion = libs.findVersion("minSdk").get().toString().toInt()
-            val targetSdkVersion = libs.findVersion("targetSdk").get().toString().toInt()
             val compileSdkVersion = libs.findVersion("compileSdk").get().toString().toInt()
-            val kotlinVersion = libs.findVersion("kotlin").get().toString()
 
             with(pluginManager) {
-                apply("com.android.application")
+                apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
                 apply("org.jetbrains.kotlin.plugin.compose")
-                apply("com.google.gms.google-services")
-                apply("com.google.firebase.crashlytics")
-                apply("com.google.firebase.firebase-perf")
             }
-            extensions.configure<ApplicationExtension> {
+
+            extensions.configure<LibraryExtension> {
                 compileSdk = compileSdkVersion
 
                 defaultConfig {
                     minSdk = minSdkVersion
-                    targetSdk = targetSdkVersion
-                    vectorDrawables {
-                        useSupportLibrary = true
+                }
+
+                buildTypes {
+                    release {
+                        isMinifyEnabled = false
                     }
                 }
 
@@ -59,21 +57,6 @@ class ApplicationConventionPlugin : Plugin<Project> {
                 buildFeatures {
                     compose = true
                     buildConfig = true
-                }
-
-                composeOptions {
-                    // Kotlin and Compose compiler version is same after K2 is released.
-                    kotlinCompilerExtensionVersion = kotlinVersion
-                }
-
-                packaging {
-                    resources {
-                        excludes += "/META-INF/{AL2.0,LGPL2.1}"
-                    }
-                }
-
-                dependencies {
-                    "implementation"(libs.findLibrary("timber").get())
                 }
             }
         }

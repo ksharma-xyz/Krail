@@ -1,16 +1,19 @@
+package xyz.ksharma.krail
+
 import com.android.build.gradle.LibraryExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 @Suppress("UNUSED")
-class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
+class AndroidLibraryConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -21,7 +24,6 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("com.android.library")
                 apply("org.jetbrains.kotlin.android")
-                apply("org.jetbrains.kotlin.plugin.compose")
             }
 
             extensions.configure<LibraryExtension> {
@@ -53,9 +55,12 @@ class AndroidLibraryComposeConventionPlugin : Plugin<Project> {
                 }
 
                 buildFeatures {
-                    compose = true
                     buildConfig = true
                 }
+            }
+
+            dependencies {
+                "implementation"(libs.findLibrary("timber").get())
             }
         }
     }
