@@ -2,7 +2,7 @@
 java = "17"
 agp = "8.7.2" # Android Gradle Plugin
 kotlin = "2.0.21"
-core-ktx = "1.13.1"
+core-ktx = "1.15.0"
 junit = "4.13.2"
 androidx-test = "1.6.1"
 androidx-test-ext-junit = "1.2.1"
@@ -28,8 +28,8 @@ wire = "5.1.0"
 
 #SDK
 minSdk = "26"
-compileSdk = "34"
-targetSdk = "34"
+compileSdk = "35"
+targetSdk = "35"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
