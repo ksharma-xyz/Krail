@@ -102,7 +102,6 @@ wire = { id = "com.squareup.wire", version.ref = "wire" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
 firebase-crashlyticsPlugin = { id = "com.google.firebase.crashlytics", version = "3.0.2" }
 firebase-performancePlugin = { id = "com.google.firebase.firebase-perf", version = "1.4.2" }
-kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }
