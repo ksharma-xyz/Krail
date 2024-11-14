@@ -4,6 +4,6 @@ import androidx.compose.runtime.Composable
 import xyz.ksharma.krail.navigation.KrailNavHost
 
 @Composable
-internal fun KrailApp() {
+fun KrailApp() {
     KrailNavHost()
 }
