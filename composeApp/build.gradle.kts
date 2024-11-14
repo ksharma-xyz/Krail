@@ -1,7 +1,7 @@
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.krail.android.application)
+    id("krail.android.application")
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
@@ -21,7 +21,7 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "KrailApp"
             isStatic = true
         }
     }
@@ -31,6 +31,26 @@ kotlin {
             implementation(libs.androidx.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.okhttp)
+
+            // Projects
+            implementation(projects.core.designSystem)
+            implementation(projects.core.network)
+            implementation(projects.core.utils)
+            implementation(projects.feature.tripPlanner.network.api)
+            implementation(projects.feature.tripPlanner.network.real)
+            implementation(projects.feature.tripPlanner.state)
+            implementation(projects.feature.tripPlanner.ui)
+            implementation(projects.sandook.api)
+            implementation(projects.sandook.real)
+
+            implementation(libs.activity.compose)
+            implementation(libs.compose.foundation)
+            implementation(libs.compose.navigation)
+            implementation(libs.core.ktx)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.lifecycle.runtime.ktx)
+            implementation(libs.timber)
+            implementation(libs.hilt.navigation.compose)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
