@@ -29,7 +29,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Krail"
 include(":composeApp")
-include(":app")
 include(":core:coroutines-ext")
 include(":core:date-time")
 include(":core:di")
