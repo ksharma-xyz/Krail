@@ -38,9 +38,6 @@ android {
                 debugSymbolLevel = "FULL"
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            firebaseCrashlytics {
-                nativeSymbolUploadEnabled = true
-            }
         }
     }
 
@@ -69,12 +66,6 @@ dependencies {
     implementation(libs.lifecycle.runtime.ktx)
     implementation(libs.timber)
     implementation(libs.hilt.navigation.compose)
-
-    // Firebase
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
-    implementation(libs.firebase.perf)
 
     // Test
     androidTestImplementation(libs.test.androidxTestExtJunit)
