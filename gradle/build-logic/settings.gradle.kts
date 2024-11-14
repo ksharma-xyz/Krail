@@ -2,8 +2,9 @@ dependencyResolutionManagement {
     repositories {
         google {
             content {
-                includeGroupByRegex(".*google.*")
-                includeGroupByRegex(".*android.*")
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
             }
         }
         mavenCentral()
