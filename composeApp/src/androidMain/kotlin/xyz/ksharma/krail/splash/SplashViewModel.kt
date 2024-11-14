@@ -2,7 +2,6 @@ package xyz.ksharma.krail.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,7 +14,6 @@ import xyz.ksharma.krail.sandook.di.SandookFactory
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import javax.inject.Inject
 
-@HiltViewModel
 class SplashViewModel @Inject constructor(
     sandookFactory: SandookFactory,
 ) : ViewModel() {
