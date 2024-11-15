@@ -15,6 +15,10 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
         extensions.configure<KotlinMultiplatformExtension> {
             applyDefaultHierarchyTemplate()
 
+            if (pluginManager.hasPlugin("com.android.library")) {
+                androidTarget()
+            }
+
             iosArm64()
             iosSimulatorArm64()
 

@@ -1,5 +1,7 @@
 plugins {
-    alias(libs.plugins.krail.android.library.compose)
+    alias(libs.plugins.krail.android.library)
+    alias(libs.plugins.krail.compose.multiplatform)
+    alias(libs.plugins.krail.kotlin.multiplatform)
 }
 
 android {
@@ -12,8 +14,10 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
     api(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3) // adding for reading code inspiration.
+    implementation(libs.compose.material3)
+    implementation(libs.core.ktx) // adding for reading code inspiration.
 
+    // Testing
     androidTestImplementation(platform(libs.compose.bom))
     debugApi(libs.compose.ui.tooling)
     debugApi(libs.test.composeUiTestManifest)

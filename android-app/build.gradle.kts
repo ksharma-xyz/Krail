@@ -45,15 +45,15 @@ android {
 
 dependencies {
 
-   /* // Projects
+    // Projects
     implementation(projects.core.designSystem)
-    implementation(projects.core.network)
-    implementation(projects.feature.tripPlanner.network.api)
-    implementation(projects.feature.tripPlanner.network.real)
-    implementation(projects.feature.tripPlanner.state)
-    implementation(projects.feature.tripPlanner.ui)
-    implementation(projects.sandook.api)
-    implementation(projects.sandook.real)*/
+    /*  implementation(projects.core.network)
+      implementation(projects.feature.tripPlanner.network.api)
+      implementation(projects.feature.tripPlanner.network.real)
+      implementation(projects.feature.tripPlanner.state)
+      implementation(projects.feature.tripPlanner.ui)
+      implementation(projects.sandook.api)
+      implementation(projects.sandook.real)*/
 
     implementation(libs.activity.compose)
     implementation(libs.compose.foundation)
