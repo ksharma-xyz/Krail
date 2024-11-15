@@ -1,21 +1,19 @@
+android {
+    namespace = "xyz.ksharma.krail.common"
+}
 
 plugins {
-    alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.composeMultiplatform)
+    alias(libs.plugins.krail.kotlin.multiplatform)
+    alias(libs.plugins.krail.compose.multiplatform)
+    alias(libs.plugins.krail.android.library)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
-        }
-    }
+    androidTarget()
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -27,55 +25,43 @@ kotlin {
 
     sourceSets {
         androidMain.dependencies {
-            implementation(libs.androidx.compose.ui.tooling.preview)
-            implementation(libs.androidx.activity.compose)
-            implementation(libs.ktor.client.okhttp)
+            implementation(compose.preview)
+            implementation(libs.activity.compose)
 
             // Projects
             implementation(projects.core.designSystem)
-            implementation(projects.core.network)
-            implementation(projects.core.utils)
-            implementation(projects.feature.tripPlanner.network.api)
-            implementation(projects.feature.tripPlanner.network.real)
-            implementation(projects.feature.tripPlanner.state)
-            implementation(projects.feature.tripPlanner.ui)
-            implementation(projects.sandook.api)
-            implementation(projects.sandook.real)
-
-            implementation(libs.activity.compose)
-            implementation(libs.compose.foundation)
+            /*
+                        implementation(projects.core.network)
+                        implementation(projects.core.utils)
+                        implementation(projects.feature.tripPlanner.network.api)
+                        implementation(projects.feature.tripPlanner.network.real)
+                        implementation(projects.feature.tripPlanner.state)
+                        implementation(projects.feature.tripPlanner.ui)
+                        implementation(projects.sandook.api)
+                        implementation(projects.sandook.real)
+            */
+            implementation(compose.foundation)
             implementation(libs.compose.navigation)
             implementation(libs.core.ktx)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.lifecycle.runtime.ktx)
-            implementation(libs.timber)
-            implementation(libs.hilt.navigation.compose)
         }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
-        }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material3)
+            implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.runtime.compose)
 
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
-
-            implementation(libs.coil.compose)
-            implementation(libs.coil.network.ktor)
-            implementation(libs.koin.core)
-            implementation(libs.koin.compose.viewmodel)
-            implementation(libs.navigation.compose)
         }
     }
 }
 
 
 dependencies {
-    debugImplementation(libs.androidx.compose.ui.tooling)
+//    debugImplementation(libs.androidx.compose.ui.tooling)
 }
