@@ -41,8 +41,6 @@ wire {
 dependencies {
     api(projects.core.di)
     implementation(projects.core.coroutinesExt)
-    implementation(projects.core.utils)
-
     implementation(libs.test.androidxCoreKtx)
     implementation(libs.kotlinx.serialization.json)
     implementation(platform(libs.okhttp.bom))

@@ -54,7 +54,6 @@ dependencies {
     // Projects
     implementation(projects.core.designSystem)
     implementation(projects.core.network)
-    implementation(projects.core.utils)
     implementation(projects.feature.tripPlanner.network.api)
     implementation(projects.feature.tripPlanner.network.real)
     implementation(projects.feature.tripPlanner.state)
