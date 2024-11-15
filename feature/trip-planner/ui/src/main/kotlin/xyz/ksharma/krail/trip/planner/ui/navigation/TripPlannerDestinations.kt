@@ -15,7 +15,7 @@ import xyz.ksharma.krail.trip.planner.ui.usualride.usualRideDestination
  * It contains all the screens in the feature Trip Planner.
  */
 fun NavGraphBuilder.tripPlannerDestinations(
-    // TODO -  do not wanna add NavController here, but moving all callbacks to app module is not scaleable.
+    // TODO -  do not wanna add NavController here, but moving all callbacks to android-app module is not scaleable.
     navController: NavHostController,
 ) {
     navigation<TripPlannerNavRoute>(startDestination = SavedTripsRoute) {

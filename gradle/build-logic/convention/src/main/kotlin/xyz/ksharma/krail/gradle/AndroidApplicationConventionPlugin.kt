@@ -8,8 +8,6 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
         with(target) {
             with(pluginManager) {
                 apply("com.android.application")
-                apply("org.gradle.android.cache-fix")
-                apply("org.jetbrains.kotlin.android") // Support Kotlin in Android projects
             }
 
             configureAndroid()

@@ -51,7 +51,7 @@ class TimeTableViewModel @Inject constructor(
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
-        // Will start fetching the trip as soon as the screen is visible, which means if app goes
+        // Will start fetching the trip as soon as the screen is visible, which means if android-app goes
         // to background and come back up again, the API call will be made.
         // Probably good to have data up to date.
         .onStart {

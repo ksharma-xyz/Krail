@@ -40,12 +40,12 @@ jobs:
       - name: Firebase (Release) - Google Services.json file
         env:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_RELEASE }}
-        run: echo $DATA | base64 -di > app/google-services.json
+        run: echo $DATA | base64 -di > android-app/google-services.json
 
       - name: Firebase (Debug) - Google Services.json file
         env:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
-        run: echo $DATA | base64 -di > app/src/debug/google-services.json
+        run: echo $DATA | base64 -di > android-app/src/debug/google-services.json
 
       - name: Detekt Checks
         run: ./gradlew detekt

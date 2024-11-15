@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.krail.android.application)
-    alias(libs.plugins.krail.android.hilt)
+    alias(libs.plugins.krail.kotlin.android)
+    alias(libs.plugins.krail.compose.multiplatform)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -40,15 +41,11 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
-
-    hilt {
-        enableAggregatingTask = true
-    }
 }
 
 dependencies {
 
-    // Projects
+   /* // Projects
     implementation(projects.core.designSystem)
     implementation(projects.core.network)
     implementation(projects.feature.tripPlanner.network.api)
@@ -56,7 +53,7 @@ dependencies {
     implementation(projects.feature.tripPlanner.state)
     implementation(projects.feature.tripPlanner.ui)
     implementation(projects.sandook.api)
-    implementation(projects.sandook.real)
+    implementation(projects.sandook.real)*/
 
     implementation(libs.activity.compose)
     implementation(libs.compose.foundation)
@@ -64,10 +61,5 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.timber)
     implementation(libs.hilt.navigation.compose)
-
-    // Test
-    androidTestImplementation(libs.test.androidxTestExtJunit)
-    testImplementation(libs.test.composeUiTestJunit4)
 }

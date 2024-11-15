@@ -20,6 +20,10 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
+kotlin {
+    jvmToolchain(javaVersion)
+}
+
 dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.android.gradlePlugin)
@@ -28,6 +32,50 @@ dependencies {
 }
 
 gradlePlugin {
+    plugins {
+        /**
+         * Supports building UIs for Android, Desktop, and Web using Jetpack Compose.
+         */
+        register("composeMultiplatform") {
+            id = "krail.compose.multiplatform"
+            implementationClass = "xyz.ksharma.krail.gradle.ComposeMultiplatformConventionPlugin"
+        }
+
+        /**
+         * Configures the project for Android application development.
+         */
+        register("androidApplication") {
+            id = "krail.android.application"
+            implementationClass = "xyz.ksharma.krail.gradle.AndroidApplicationConventionPlugin"
+        }
+
+        /**
+         * Configures the project for developing Android libraries.
+         */
+        register("androidLibrary") {
+            id = "krail.android.library"
+            implementationClass = "xyz.ksharma.krail.gradle.AndroidLibraryConventionPlugin"
+        }
+
+        /**
+         * Adds support for Kotlin in Android projects.
+         */
+        register("kotlinAndroid") {
+            id = "krail.kotlin.android"
+            implementationClass = "xyz.ksharma.krail.gradle.KotlinAndroidConventionPlugin"
+        }
+
+        /**
+         * Configures the project for Kotlin Multiplatform development, supporting JVM, Android, iOS,
+         * and JS targets.
+         */
+        register("kotlinMultiplatform") {
+            id = "krail.kotlin.multiplatform"
+            implementationClass = "xyz.ksharma.krail.gradle.KotlinMultiplatformConventionPlugin"
+        }
+    }
+}
+
 /*
     plugins {
         register("application") {
@@ -38,14 +86,10 @@ gradlePlugin {
             id = "krail.android.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
-        register("androidLibraryCompose") {
-            id = "krail.android.library.compose"
-            implementationClass = "AndroidLibraryComposeConventionPlugin"
-        }
+
         register("jvmLibrary") {
             id = "krail.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
     }
 */
-}
