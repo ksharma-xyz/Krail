@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.krail.android.library.compose)
-    alias(libs.plugins.cash.paparazzi)
 }
 
 android {

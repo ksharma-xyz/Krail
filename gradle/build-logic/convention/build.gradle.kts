@@ -75,21 +75,3 @@ gradlePlugin {
         }
     }
 }
-
-/*
-    plugins {
-        register("application") {
-            id = "krail.android.application"
-            implementationClass = "ApplicationConventionPlugin"
-        }
-        register("androidLibrary") {
-            id = "krail.android.library"
-            implementationClass = "AndroidLibraryConventionPlugin"
-        }
-
-        register("jvmLibrary") {
-            id = "krail.jvm.library"
-            implementationClass = "JvmLibraryConventionPlugin"
-        }
-    }
-*/
