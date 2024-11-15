@@ -31,7 +31,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "Krail"
 include(":android-app")
-include(":core:design-system")
 include(":composeApp")
 /*
 include(":core:coroutines-ext")

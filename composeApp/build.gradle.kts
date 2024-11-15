@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 android {
     namespace = "xyz.ksharma.krail.common"
 }
@@ -11,7 +14,13 @@ plugins {
 }
 
 kotlin {
-    androidTarget()
+    applyDefaultHierarchyTemplate()
+    androidTarget {
+        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
 
     listOf(
         iosArm64(),
@@ -29,7 +38,6 @@ kotlin {
             implementation(libs.activity.compose)
 
             // Projects
-            implementation(projects.core.designSystem)
             /*
                         implementation(projects.core.network)
                         implementation(projects.core.utils)
@@ -41,7 +49,6 @@ kotlin {
                         implementation(projects.sandook.real)
             */
             implementation(compose.foundation)
-            implementation(libs.compose.navigation)
             implementation(libs.core.ktx)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.lifecycle.runtime.ktx)
@@ -61,7 +68,5 @@ kotlin {
     }
 }
 
-
 dependencies {
-//    debugImplementation(libs.androidx.compose.ui.tooling)
 }

@@ -83,7 +83,7 @@ data class ActionData(
 
 // region Preview
 
-@PreviewLightDark
+
 @Composable
 private fun PreviewErrorMessage() {
     val themeColor = remember { mutableStateOf(TransportMode.Ferry().colorCode) }

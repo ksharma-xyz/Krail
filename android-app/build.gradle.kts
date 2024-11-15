@@ -46,7 +46,7 @@ android {
 dependencies {
 
     // Projects
-    implementation(projects.core.designSystem)
+    implementation(projects.composeApp)
     /*  implementation(projects.core.network)
       implementation(projects.feature.tripPlanner.network.api)
       implementation(projects.feature.tripPlanner.network.real)
@@ -56,10 +56,8 @@ dependencies {
       implementation(projects.sandook.real)*/
 
     implementation(libs.activity.compose)
-    implementation(libs.compose.foundation)
-    implementation(libs.compose.navigation)
+    implementation(compose.foundation)
     implementation(libs.core.ktx)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
-    implementation(libs.hilt.navigation.compose)
 }

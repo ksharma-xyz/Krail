@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.components
+package xyz.ksharma.krail.common.designSystem.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,13 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.LocalContentAlpha
-import xyz.ksharma.krail.design.system.LocalTextColor
-import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.preview.PreviewComponent
-import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.tokens.TextFieldTokens
-import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextFieldHeight
+import xyz.ksharma.krail.common.designSystem.LocalContentAlpha
+import xyz.ksharma.krail.common.designSystem.LocalTextColor
+import xyz.ksharma.krail.common.designSystem.LocalTextStyle
+import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
+import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens
+import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens.TextFieldHeight
 
 /**
  * A button that looks like a text field.
@@ -59,17 +58,3 @@ fun TextFieldButton(
         }
     }
 }
-
-// region Previews
-
-@PreviewComponent
-@Composable
-private fun TextFieldButtonPreview() {
-    KrailTheme {
-        TextFieldButton(onClick = {}) {
-            Text(text = "Search")
-        }
-    }
-}
-
-// endregion

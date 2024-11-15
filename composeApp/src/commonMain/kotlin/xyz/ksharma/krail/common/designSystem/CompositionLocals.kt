@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system
+package xyz.ksharma.krail.common.designSystem
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf

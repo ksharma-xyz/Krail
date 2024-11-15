@@ -30,16 +30,16 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.intl.LocaleList
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.LocalContentAlpha
-import xyz.ksharma.krail.design.system.LocalTextColor
-import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.tokens.TextFieldTokens
-import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.PlaceholderOpacity
-import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextFieldHeight
-import xyz.ksharma.krail.design.system.tokens.TextFieldTokens.TextSelectionBackgroundOpacity
+import xyz.ksharma.krail.common.designSystem.components.Text
+import xyz.ksharma.krail.common.designSystem.LocalContentAlpha
+import xyz.ksharma.krail.common.designSystem.LocalTextColor
+import xyz.ksharma.krail.common.designSystem.LocalTextStyle
+import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
+import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens
+import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens.PlaceholderOpacity
+import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens.TextFieldHeight
+import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens.TextSelectionBackgroundOpacity
 
 /**
  * Important documentation links:
@@ -147,7 +147,7 @@ private fun TextFieldPlaceholder(placeholder: String? = null) {
 
 // region Previews
 
-@PreviewLightDark
+
 @Composable
 private fun TextFieldEnabledPreview() {
     KrailTheme {
@@ -155,7 +155,6 @@ private fun TextFieldEnabledPreview() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun TextFieldEnabledPlaceholderPreview() {
     KrailTheme {
@@ -163,7 +162,6 @@ private fun TextFieldEnabledPlaceholderPreview() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun TextFieldDisabledPreview() {
     KrailTheme {
@@ -171,7 +169,6 @@ private fun TextFieldDisabledPreview() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun TextFieldDisabledPlaceholderPreview() {
     KrailTheme {

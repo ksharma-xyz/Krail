@@ -530,7 +530,7 @@ internal fun List<TransportMode>?.toColors(onSurface: Color): List<Color> = when
 
 // region Previews
 
-@PreviewLightDark
+
 @Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyCard() {
@@ -556,7 +556,7 @@ private fun PreviewJourneyCard() {
     }
 }
 
-@PreviewLightDark
+
 @Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyCardCollapsed() {

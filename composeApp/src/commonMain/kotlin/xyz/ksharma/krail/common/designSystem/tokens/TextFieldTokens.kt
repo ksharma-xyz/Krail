@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.tokens
+package xyz.ksharma.krail.common.designSystem.tokens
 
 import androidx.compose.ui.unit.dp
 

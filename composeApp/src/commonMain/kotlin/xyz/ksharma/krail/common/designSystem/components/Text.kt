@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.components
+package xyz.ksharma.krail.common.designSystem.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,11 +13,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import xyz.ksharma.krail.design.system.LocalContentAlpha
-import xyz.ksharma.krail.design.system.LocalTextColor
-import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.preview.PreviewComponent
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.common.designSystem.LocalContentAlpha
+import xyz.ksharma.krail.common.designSystem.LocalTextColor
+import xyz.ksharma.krail.common.designSystem.LocalTextStyle
+import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
 
 @Composable
 fun Text(
@@ -79,7 +78,6 @@ fun Text(
 
 // region Previews
 
-@PreviewComponent
 @Composable
 private fun TextPreview() {
     KrailTheme {
@@ -92,7 +90,6 @@ private fun TextPreview() {
     }
 }
 
-@PreviewComponent
 @Composable
 private fun TextWithColorPreview() {
     KrailTheme {

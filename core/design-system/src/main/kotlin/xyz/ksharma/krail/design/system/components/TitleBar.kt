@@ -20,12 +20,10 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.LocalContentColor
-import xyz.ksharma.krail.design.system.LocalTextColor
-import xyz.ksharma.krail.design.system.LocalTextStyle
-import xyz.ksharma.krail.design.system.R
-import xyz.ksharma.krail.design.system.preview.PreviewComponent
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.LocalTextColor
+import xyz.ksharma.krail.taj.LocalTextStyle
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun TitleBar(
@@ -76,7 +74,6 @@ fun TitleBar(
 
 // region Previews
 
-@PreviewComponent
 @Composable
 private fun TitleBarPreview() {
     KrailTheme {
@@ -138,7 +135,6 @@ private fun TitleBarPreviewMultipleActions() {
     }
 }
 
-@PreviewComponent
 @Composable
 private fun TitleBarPreviewNoActions() {
     KrailTheme {

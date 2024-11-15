@@ -1,6 +1,5 @@
-package xyz.ksharma.krail.design.system.components
+package xyz.ksharma.krail.common.designSystem.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,16 +11,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
-import xyz.ksharma.krail.design.system.LocalContentColor
-import xyz.ksharma.krail.design.system.LocalOnContentColor
-import xyz.ksharma.krail.design.system.R
-import xyz.ksharma.krail.design.system.preview.PreviewComponent
-import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.tokens.ButtonTokens.RoundButtonSize
+import xyz.ksharma.krail.common.designSystem.LocalContentColor
+import xyz.ksharma.krail.common.designSystem.LocalOnContentColor
+import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
+import xyz.ksharma.krail.common.designSystem.tokens.ButtonTokens.RoundButtonSize
 
 /**
  * A round icon button with customizable content and colors.
@@ -61,19 +55,5 @@ fun RoundIconButton(
 }
 
 // region Previews
-
-@PreviewComponent
-@Composable
-private fun RoundIconButtonPreview() {
-    KrailTheme {
-        RoundIconButton(onClick = {}) {
-            Image(
-                imageVector = ImageVector.vectorResource(R.drawable.star_outline),
-                contentDescription = null,
-                colorFilter = ColorFilter.tint(LocalOnContentColor.current),
-            )
-        }
-    }
-}
 
 // endregion

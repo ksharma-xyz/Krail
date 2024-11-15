@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.design.system.theme
+package xyz.ksharma.krail.common.designSystem.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
