@@ -1,7 +1,6 @@
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    id("krail.android.application")
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)

@@ -1,6 +1,8 @@
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
+    includeBuild("gradle/build-logic")
+
     repositories {
         google {
             mavenContent {
@@ -28,7 +30,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Krail"
-include(":composeApp")
+//include(":composeApp")
+/*
 include(":core:coroutines-ext")
 include(":core:date-time")
 include(":core:di")
@@ -40,3 +43,4 @@ include(":feature:trip-planner:state")
 include(":feature:trip-planner:ui")
 include(":sandook:api")
 include(":sandook:real")
+*/

@@ -5,7 +5,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "xyz.ksharma.buildlogic"
+group = "xyz.ksharma.krail.gradle"
 
 val javaVersion = libs.versions.java.get().toInt()
 
@@ -28,14 +28,11 @@ dependencies {
 }
 
 gradlePlugin {
+/*
     plugins {
         register("application") {
             id = "krail.android.application"
             implementationClass = "ApplicationConventionPlugin"
-        }
-        register("androidHilt") {
-            id = "krail.android.hilt"
-            implementationClass = "AndroidHiltConventionPlugin"
         }
         register("androidLibrary") {
             id = "krail.android.library"
@@ -50,4 +47,5 @@ gradlePlugin {
             implementationClass = "JvmLibraryConventionPlugin"
         }
     }
+*/
 }

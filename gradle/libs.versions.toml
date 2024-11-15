@@ -80,6 +80,8 @@ test-androidxCoreKtx = { group = "androidx.test", name = "core-ktx", version.ref
 #BuildLogic
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
 #CodeStyle Use spotless plugin for multiplatform support
 
