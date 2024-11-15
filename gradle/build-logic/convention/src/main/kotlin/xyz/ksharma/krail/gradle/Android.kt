@@ -18,11 +18,8 @@ fun Project.configureAndroid(
             minSdk = AndroidVersion.MIN_SDK
             targetSdk = AndroidVersion.TARGET_SDK
         }
-        tasks.withType<KotlinCompile>().configureEach {
-            compilerOptions {
-                jvmTarget.set(JvmTarget.JVM_17)
-            }
-        }
+
+        configureJava()
 
         if (this is CommonExtension<*, *, *, *, *, *>) {
             buildFeatures {
