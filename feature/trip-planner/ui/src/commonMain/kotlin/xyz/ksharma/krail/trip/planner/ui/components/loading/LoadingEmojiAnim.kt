@@ -69,7 +69,7 @@ fun LoadingEmojiAnim(modifier: Modifier = Modifier, emoji: String? = null) {
     }
 }
 
-@Preview
+//@Preview
 @Composable
 private fun Preview() {
     KrailTheme {

@@ -14,7 +14,7 @@ import androidx.compose.ui.text.font.FontSynthesis
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 /**
  * Reference - https://developer.android.com/codelabs/jetpack-compose-migration#8

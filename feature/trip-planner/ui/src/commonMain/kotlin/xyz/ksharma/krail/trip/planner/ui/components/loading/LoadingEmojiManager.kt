@@ -3,8 +3,8 @@ package xyz.ksharma.krail.trip.planner.ui.components.loading
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
+import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
-import java.time.MonthDay
 import kotlin.random.Random
 
 object LoadingEmojiManager {
@@ -35,6 +35,13 @@ object LoadingEmojiManager {
         FestivalType.CHINESE_NEW_YEAR to listOf("🧧"),
     )
 
+    // TODO - test logic
+    data class MonthDay(val month: Int, val dayOfMonth: Int) {
+        companion object {
+            fun of(month: Int, dayOfMonth: Int) = MonthDay(month, dayOfMonth)
+        }
+    }
+
     private val knownFestivalDates = mapOf(
         FestivalType.CHRISTMAS to MonthDay.of(12, 25),
         FestivalType.NEW_YEAR to MonthDay.of(1, 1),
@@ -48,7 +55,7 @@ object LoadingEmojiManager {
 
         val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
         val festivalEmoji = knownFestivalDates.entries
-            .firstOrNull { it.value.month == today.month && it.value.dayOfMonth == today.dayOfMonth }
+            .firstOrNull { it.value.month == today.month.number && it.value.dayOfMonth == today.dayOfMonth }
             ?.let { festivalEmojiMap[it.key]?.randomOrNull() }
         if (festivalEmoji != null) return festivalEmoji
 
