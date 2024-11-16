@@ -1,21 +1,26 @@
 package xyz.ksharma.krail.di
 
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import me.tatarka.inject.annotations.Component
+import me.tatarka.inject.annotations.Inject
+import me.tatarka.inject.annotations.Provides
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 
-@Module
-@InstallIn(SingletonComponent::class)
-object DispatchersModule {
+@Component
+abstract class DispatchersComponent {
+
+    abstract val dispatchersModule: DispatchersModule
 
     @Provides
-    @Dispatcher(AppDispatchers.Default)
     fun defaultDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
-    @Dispatcher(AppDispatchers.IO)
     fun ioDispatcher(): CoroutineDispatcher = Dispatchers.IO
 }
+
+@Inject
+class DispatchersModule(
+    @Dispatcher(AppDispatchers.Default) val defaultDispatcher: CoroutineDispatcher,
+    @Dispatcher(AppDispatchers.IO) val ioDispatcher: CoroutineDispatcher
+)

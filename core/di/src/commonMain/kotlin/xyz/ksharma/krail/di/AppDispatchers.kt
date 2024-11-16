@@ -1,6 +1,6 @@
 package xyz.ksharma.krail.di
 
-import javax.inject.Qualifier
+import me.tatarka.inject.annotations.Qualifier
 
 enum class AppDispatchers {
     Default,

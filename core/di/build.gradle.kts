@@ -20,6 +20,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.di.kotlinInjectRuntime)
+                implementation(libs.kotlinx.coroutines.core)
             }
         }
     }
