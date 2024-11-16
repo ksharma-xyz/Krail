@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem
+package xyz.ksharma.krail.taj
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

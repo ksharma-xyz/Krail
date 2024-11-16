@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem.components
+package xyz.ksharma.krail.taj.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -13,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.common.designSystem.LocalContentColor
-import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun Divider(

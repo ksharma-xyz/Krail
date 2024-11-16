@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem.theme
+package xyz.ksharma.krail.taj.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf

@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem.components
+package xyz.ksharma.krail.taj.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,10 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
-import xyz.ksharma.krail.common.designSystem.LocalContentColor
-import xyz.ksharma.krail.common.designSystem.LocalOnContentColor
-import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
-import xyz.ksharma.krail.common.designSystem.tokens.ButtonTokens.RoundButtonSize
+import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.LocalOnContentColor
+import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.tokens.ButtonTokens.RoundButtonSize
 
 /**
  * A round icon button with customizable content and colors.

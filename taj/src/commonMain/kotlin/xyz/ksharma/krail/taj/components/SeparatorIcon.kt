@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem.components
+package xyz.ksharma.krail.taj.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
-import xyz.ksharma.krail.common.designSystem.toAdaptiveSize
+import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.toAdaptiveSize
 
 @Composable
 fun SeparatorIcon(modifier: Modifier = Modifier, color: Color = KrailTheme.colors.onSurface) {

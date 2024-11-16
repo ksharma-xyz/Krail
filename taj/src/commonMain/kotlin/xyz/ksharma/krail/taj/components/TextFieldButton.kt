@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem.components
+package xyz.ksharma.krail.taj.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,12 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.common.designSystem.LocalContentAlpha
-import xyz.ksharma.krail.common.designSystem.LocalTextColor
-import xyz.ksharma.krail.common.designSystem.LocalTextStyle
-import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
-import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens
-import xyz.ksharma.krail.common.designSystem.tokens.TextFieldTokens.TextFieldHeight
+import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.LocalTextColor
+import xyz.ksharma.krail.taj.LocalTextStyle
+import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.tokens.TextFieldTokens
+import xyz.ksharma.krail.taj.tokens.TextFieldTokens.TextFieldHeight
 
 /**
  * A button that looks like a text field.

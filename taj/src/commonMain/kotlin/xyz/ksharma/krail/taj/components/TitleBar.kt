@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem.components
+package xyz.ksharma.krail.taj.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -11,10 +11,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.common.designSystem.LocalContentColor
-import xyz.ksharma.krail.common.designSystem.LocalTextColor
-import xyz.ksharma.krail.common.designSystem.LocalTextStyle
-import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.LocalTextColor
+import xyz.ksharma.krail.taj.LocalTextStyle
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun TitleBar(

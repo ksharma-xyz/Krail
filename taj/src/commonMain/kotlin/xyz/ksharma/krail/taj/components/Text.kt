@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.common.designSystem.components
+package xyz.ksharma.krail.taj.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -13,10 +13,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import xyz.ksharma.krail.common.designSystem.LocalContentAlpha
-import xyz.ksharma.krail.common.designSystem.LocalTextColor
-import xyz.ksharma.krail.common.designSystem.LocalTextStyle
-import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.LocalTextColor
+import xyz.ksharma.krail.taj.LocalTextStyle
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun Text(

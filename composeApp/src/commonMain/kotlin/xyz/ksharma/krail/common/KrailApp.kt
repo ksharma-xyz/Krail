@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import xyz.ksharma.krail.common.designSystem.components.Text
-import xyz.ksharma.krail.common.designSystem.theme.KrailTheme
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun KrailApp() {

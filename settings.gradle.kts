@@ -32,6 +32,7 @@ dependencyResolutionManagement {
 rootProject.name = "Krail"
 include(":android-app")
 include(":composeApp")
+include(":taj") // Design System
 /*
 include(":core:coroutines-ext")
 include(":core:date-time")
