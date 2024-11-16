@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.components.TitleBar
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.components.TitleBar
+import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.DefaultSystemBarColors
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
@@ -95,7 +95,7 @@ fun ServiceAlertScreen(
     }
 }
 
-@Preview
+//@Preview
 @Composable
 private fun PreviewServiceAlertScreen() {
     KrailTheme {

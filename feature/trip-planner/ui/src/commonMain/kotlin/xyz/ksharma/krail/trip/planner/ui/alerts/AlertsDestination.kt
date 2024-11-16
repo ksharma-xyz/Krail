@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.toImmutableSet
-import timber.log.Timber
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
@@ -22,7 +21,7 @@ internal fun NavGraphBuilder.alertsDestination(navController: NavHostController)
             route.alertsJsonList.forEach {
                 ServiceAlert.fromJsonString(it)?.let { alert ->
                     //           Timber.d("Alert Heading: ${alert.heading}")
-                    Timber.d("Alert Message: ${alert.message}")
+                    //Timber.d("Alert Message: ${alert.message}")
                 }
             }
         }

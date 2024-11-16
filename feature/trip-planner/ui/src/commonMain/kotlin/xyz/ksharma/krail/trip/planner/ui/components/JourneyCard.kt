@@ -46,14 +46,13 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.design.system.LocalContentAlpha
-import xyz.ksharma.krail.design.system.components.SeparatorIcon
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.theme.getForegroundColor
-import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
-import xyz.ksharma.krail.design.system.toAdaptiveSize
-import xyz.ksharma.krail.trip.planner.ui.R
+import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.components.SeparatorIcon
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.theme.getForegroundColor
+import xyz.ksharma.krail.taj.toAdaptiveDecorativeIconSize
+import xyz.ksharma.krail.taj.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
@@ -531,7 +530,7 @@ internal fun List<TransportMode>?.toColors(onSurface: Color): List<Color> = when
 // region Previews
 
 
-@Preview(fontScale = 2f)
+//@Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyCard() {
     KrailTheme {
@@ -557,7 +556,7 @@ private fun PreviewJourneyCard() {
 }
 
 
-@Preview(fontScale = 2f)
+//@Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyCardCollapsed() {
     KrailTheme {

@@ -2,8 +2,7 @@ package xyz.ksharma.krail.trip.planner.ui.components
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import org.junit.Assert.assertEquals
-import org.junit.Test
+
 
 // Define the colors
 private val myWhiteLightMode = Color(0xFFFFFBFF)

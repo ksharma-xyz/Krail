@@ -106,7 +106,7 @@ fun CollapsibleAlert(
 // region Previews
 
 
-@Preview(fontScale = 2f)
+//@Preview(fontScale = 2f)
 @Composable
 private fun PreviewCollapsibleAlertCollapsed() {
     KrailTheme {
