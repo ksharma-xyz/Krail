@@ -11,6 +11,7 @@ android-lifecycle = "2.8.7"
 activity-compose = "1.9.3"
 hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
+kotlinInject = "0.7.2"
 kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDatetime = "0.6.1"
 okhttpBom = "4.12.0"
@@ -40,6 +41,10 @@ timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 androidx-lifecycle-viewmodel = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
+
+# DI
+di-kotlinInjectRuntime = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kotlinInject" }
+di-kotlinInjectCompilerKsp = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
 
 #Network
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
