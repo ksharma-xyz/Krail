@@ -34,7 +34,7 @@ wire {
         javaInterop = true
     }
     sourcePath {
-        srcDir(files("src/main/proto"))
+        srcDir(files("src/commonMain/proto"))
     }
 }
 

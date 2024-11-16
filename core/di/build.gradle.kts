@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.krail.android.library)
     alias(libs.plugins.krail.kotlin.multiplatform)
     alias(libs.plugins.ksp)
-
 }
 
 android {
