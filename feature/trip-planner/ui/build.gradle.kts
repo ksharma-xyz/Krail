@@ -26,6 +26,7 @@ kotlin {
         commonMain  {
             dependencies {
                 implementation(projects.taj)
+                implementation(projects.feature.tripPlanner.state)
 
                 implementation(compose.foundation)
                 implementation(compose.animation)

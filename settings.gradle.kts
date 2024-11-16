@@ -38,10 +38,10 @@ include(":core:date-time")
 include(":core:coroutines-ext")
 include(":core:network")
 include(":feature:trip-planner:ui")
+include(":feature:trip-planner:state")
 /*
 include(":feature:trip-planner:network:api")
 include(":feature:trip-planner:network:real")
-include(":feature:trip-planner:state")
 include(":sandook:api")
 include(":sandook:real")
 */
