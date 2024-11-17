@@ -19,6 +19,8 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -71,6 +73,7 @@ fun TimeTableScreen(
     expandedJourneyId: String?,
     onEvent: (TimeTableUiEvent) -> Unit,
     onAlertClick: (String) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val themeColorHex by LocalThemeColor.current
@@ -106,6 +109,19 @@ fun TimeTableScreen(
                 .background(color = themeColor),
         ) {
             TitleBar(
+                navAction = {
+                    ActionButton(
+                        onClick = onBackClick,
+                        contentDescription = "Back",
+                    ) {
+                        Image(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null,
+                            colorFilter = ColorFilter.tint(themeContentColor),
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
+                },
                 title = {
                     Text(
                         text = stringResource(R.string.time_table_screen_title),
@@ -298,7 +314,7 @@ private fun JourneyCardItem(
 }
 
 @Composable
-private fun ActionButton(
+fun ActionButton(
     onClick: () -> Unit,
     contentDescription: String,
     modifier: Modifier = Modifier,
@@ -357,6 +373,7 @@ private fun PreviewTimeTableScreen() {
                 expandedJourneyId = null,
                 onEvent = {},
                 onAlertClick = {},
+                onBackClick = {},
             )
         }
     }
@@ -382,6 +399,7 @@ private fun PreviewTimeTableScreenError() {
                 expandedJourneyId = null,
                 onEvent = {},
                 onAlertClick = {},
+                onBackClick = {},
             )
         }
     }
@@ -407,6 +425,7 @@ private fun PreviewTimeTableScreenNoResults() {
                 expandedJourneyId = null,
                 onEvent = {},
                 onAlertClick = {},
+                onBackClick = {},
             )
         }
     }

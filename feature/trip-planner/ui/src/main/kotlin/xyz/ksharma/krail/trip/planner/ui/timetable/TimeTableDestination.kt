@@ -31,6 +31,7 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             timeTableState = timeTableState,
             expandedJourneyId = expandedJourneyId,
             onEvent = { viewModel.onEvent(it) },
+            onBackClick = { navController.popBackStack() },
             onAlertClick = { journeyId ->
                 Timber.d("journeyId: $journeyId")
                 viewModel.fetchAlertsForJourney(journeyId) { alerts ->

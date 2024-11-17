@@ -78,7 +78,7 @@ fun UsualRideScreen(
                     style = KrailTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Normal),
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
-                        .padding(bottom = 8.dp, top = 16.dp),
+                        .padding(bottom = 8.dp, top = 24.dp),
                 )
             }
 
