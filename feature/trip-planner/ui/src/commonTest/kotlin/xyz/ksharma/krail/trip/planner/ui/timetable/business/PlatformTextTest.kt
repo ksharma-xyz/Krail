@@ -1,7 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable.business
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 
 class PlatformTextTest {

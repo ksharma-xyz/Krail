@@ -20,6 +20,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -31,15 +35,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -195,8 +196,6 @@ fun ExpandedJourneyCardContent(
     onAlertClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-
     Column(modifier = modifier) {
         FlowRow(
             modifier = Modifier
@@ -231,12 +230,12 @@ fun ExpandedJourneyCardContent(
         ) {
             if (totalUniqueServiceAlerts > 0) {
                 SmallButton(
-                    icon = R.drawable.ic_alert,
-                    text = context.resources.getQuantityString(
-                        R.plurals.alerts,
-                        totalUniqueServiceAlerts,
-                        totalUniqueServiceAlerts,
-                    ),
+                    imageVector = Icons.Filled.Call, // TODO - R.drawable.ic_alert,
+                    text = if(totalUniqueServiceAlerts > 1) {
+                        "$totalUniqueServiceAlerts Alerts"
+                    } else {
+                        "$totalUniqueServiceAlerts Alert"
+                    },
                     color = getForegroundColor(KrailTheme.colors.alert),
                     iconSize = iconSize,
                     onClick = onAlertClick,
@@ -245,7 +244,7 @@ fun ExpandedJourneyCardContent(
             }
 
             TextWithIcon(
-                icon = R.drawable.ic_clock,
+                imageVector = Icons.Filled.ShoppingCart,//TODO - R.drawable.ic_clock,
                 text = totalTravelTime,
                 textStyle = KrailTheme.typography.bodyLarge,
                 iconSize = iconSize,
@@ -408,7 +407,7 @@ fun DefaultJourneyCardContent(
                 modifier = Modifier.padding(end = 10.dp),
             )
             TextWithIcon(
-                icon = R.drawable.ic_clock,
+                imageVector = Icons.Filled.ShoppingCart, //TODO - R.drawable.ic_clock,
                 text = totalTravelTime,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -416,7 +415,7 @@ fun DefaultJourneyCardContent(
             )
             totalWalkTime?.let {
                 TextWithIcon(
-                    icon = R.drawable.ic_walk,
+                    imageVector = Icons.Filled.ShoppingCart,// TODO - R.drawable.ic_walk,
                     text = totalWalkTime,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
@@ -426,7 +425,7 @@ fun DefaultJourneyCardContent(
             Spacer(modifier = Modifier.weight(1f))
             if (isWheelchairAccessible) {
                 Image(
-                    painter = painterResource(R.drawable.ic_a11y),
+                    imageVector = Icons.Outlined.Add,
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                     modifier = Modifier
@@ -440,7 +439,7 @@ fun DefaultJourneyCardContent(
 
 @Composable
 private fun TextWithIcon(
-    icon: Int,
+    imageVector: ImageVector,
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KrailTheme.typography.bodyMedium,
@@ -455,7 +454,7 @@ private fun TextWithIcon(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Image(
-            painter = painterResource(icon),
+            imageVector = imageVector,
             contentDescription = null,
             colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
             modifier = Modifier
@@ -472,7 +471,7 @@ private fun TextWithIcon(
 
 @Composable
 private fun SmallButton(
-    icon: Int,
+    imageVector: ImageVector,
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KrailTheme.typography.bodyMedium,
@@ -502,7 +501,7 @@ private fun SmallButton(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Image(
-            painter = painterResource(icon),
+            imageVector = imageVector,
             contentDescription = null,
             colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
             modifier = Modifier
@@ -604,8 +603,6 @@ private fun PreviewJourneyCardCollapsed() {
     }
 }
 
-@PreviewLightDark
-@Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyCardExpanded() {
     KrailTheme {
@@ -670,8 +667,6 @@ private val PREVIEW_STOPS = persistentListOf(
     ),
 )
 
-@Preview
-@Preview(fontScale = 2f)
 @Composable
 private fun PreviewJourneyCardLongData() {
     KrailTheme {

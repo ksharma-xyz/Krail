@@ -1,6 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.alerts
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -16,15 +15,6 @@ internal fun NavGraphBuilder.alertsDestination(navController: NavHostController)
         val serviceAlerts = route.alertsJsonList.mapNotNull { alertJson ->
             ServiceAlert.fromJsonString(alertJson)
         }.toImmutableSet()
-
-        LaunchedEffect(route.alertsJsonList) {
-            route.alertsJsonList.forEach {
-                ServiceAlert.fromJsonString(it)?.let { alert ->
-                    //           Timber.d("Alert Heading: ${alert.heading}")
-                    //Timber.d("Alert Message: ${alert.message}")
-                }
-            }
-        }
 
         ServiceAlertScreen(serviceAlerts = serviceAlerts, onBackClick = {
             navController.popBackStack()

@@ -17,6 +17,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -28,24 +30,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.design.system.LocalContentAlpha
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.toAdaptiveDecorativeIconSize
-import xyz.ksharma.krail.trip.planner.ui.R
+import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
@@ -120,14 +117,8 @@ fun LegView(
                         .padding(start = 16.dp, top = 12.dp),
                 ) {
                     if (stops.size > 2) {
-                        val context = LocalContext.current
                         StopsRow(
-                            // Need to pass count twice - https://developer.android.com/guide/topics/resources/string-resource#Plurals
-                            stops = context.resources.getQuantityString(
-                                R.plurals.stops,
-                                stops.size - 2,
-                                stops.size - 2,
-                            ),
+                            stops = if (stops.size == 1) "${stops.size} stop" else "${stops.size} stops",
                             line = transportModeLine,
                         )
                     } else {
@@ -208,7 +199,7 @@ private fun RouteSummary(
         if (displayDuration) {
             Row(horizontalArrangement = Arrangement.End) {
                 Image(
-                    painter = painterResource(R.drawable.ic_clock),
+                    imageVector = Icons.Filled.Add, //painterResource(R.drawable.ic_clock), // TODO replace with clock icon
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                     modifier = Modifier
@@ -253,7 +244,7 @@ private fun StopInfo(
             )
             if (isWheelchairAccessible) {
                 Image(
-                    painter = painterResource(R.drawable.ic_a11y),
+                    imageVector = Icons.Filled.Add, // TODO - //painterResource(R.drawable.ic_a11y),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(
                         color = if (isProminent) {
@@ -309,8 +300,6 @@ private fun StopsRow(stops: String, line: TransportModeLine, modifier: Modifier 
 
 // region Previews
 
-@PreviewLightDark
-@Preview(fontScale = 2f)
 @Composable
 private fun PreviewLegView() {
     KrailTheme {
@@ -344,8 +333,6 @@ private fun PreviewLegView() {
     }
 }
 
-@PreviewLightDark
-@Preview(fontScale = 2f)
 @Composable
 private fun PreviewLegViewTwoStops() {
     KrailTheme {
@@ -374,7 +361,6 @@ private fun PreviewLegViewTwoStops() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewLegViewMetro() {
     KrailTheme {
@@ -403,7 +389,6 @@ private fun PreviewLegViewMetro() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewLegViewFerry() {
     KrailTheme {
@@ -432,7 +417,6 @@ private fun PreviewLegViewFerry() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewLegViewLightRail() {
     KrailTheme {
@@ -461,7 +445,6 @@ private fun PreviewLegViewLightRail() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewStopsRow() {
     KrailTheme {
@@ -475,7 +458,6 @@ private fun PreviewStopsRow() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewProminentStopInfo() {
     KrailTheme {
@@ -489,8 +471,6 @@ private fun PreviewProminentStopInfo() {
     }
 }
 
-@Preview
-@Preview(fontScale = 2f)
 @Composable
 private fun PreviewRouteSummary() {
     KrailTheme {

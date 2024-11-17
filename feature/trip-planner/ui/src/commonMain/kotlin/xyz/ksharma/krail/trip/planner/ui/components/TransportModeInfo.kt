@@ -6,10 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.LocalContentAlpha
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun TransportModeInfo(
@@ -39,8 +38,6 @@ fun TransportModeInfo(
 
 // region Previews
 
-@Preview
-@Preview(fontScale = 2.0f)
 @Composable
 private fun TransportModeInfoPreview() {
     KrailTheme {

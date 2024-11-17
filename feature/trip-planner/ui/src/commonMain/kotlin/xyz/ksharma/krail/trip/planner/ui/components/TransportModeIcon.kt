@@ -17,10 +17,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import xyz.ksharma.krail.design.system.LocalContentAlpha
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.PreviewComponent
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun TransportModeIcon(
@@ -67,7 +66,7 @@ private fun Modifier.borderIfEnabled(enabled: Boolean): Modifier =
 
 // region Previews
 
-@PreviewComponent
+
 @Composable
 private fun TrainPreview() {
     KrailTheme {
@@ -75,7 +74,7 @@ private fun TrainPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun BusPreview() {
     KrailTheme {
@@ -86,7 +85,7 @@ private fun BusPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun MetroPreview() {
     KrailTheme {
@@ -97,7 +96,7 @@ private fun MetroPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun LightRailPreview() {
     KrailTheme {
@@ -108,7 +107,7 @@ private fun LightRailPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun FerryPreview() {
     KrailTheme {
@@ -119,7 +118,7 @@ private fun FerryPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun TrainWithBackgroundPreview() {
     KrailTheme {
@@ -131,7 +130,6 @@ private fun TrainWithBackgroundPreview() {
     }
 }
 
-@PreviewComponent
 @Composable
 private fun BusWithBackgroundPreview() {
     KrailTheme {
@@ -143,7 +141,7 @@ private fun BusWithBackgroundPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun MetroWithBackgroundPreview() {
     KrailTheme {
@@ -155,7 +153,7 @@ private fun MetroWithBackgroundPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun LightRailWithBackgroundPreview() {
     KrailTheme {
@@ -167,7 +165,7 @@ private fun LightRailWithBackgroundPreview() {
     }
 }
 
-@PreviewComponent
+
 @Composable
 private fun FerryWithBackgroundPreview() {
     KrailTheme {

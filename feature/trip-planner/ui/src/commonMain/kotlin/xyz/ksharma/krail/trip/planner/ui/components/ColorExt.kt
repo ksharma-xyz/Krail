@@ -5,26 +5,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import xyz.ksharma.krail.design.system.LocalThemeColor
-import xyz.ksharma.krail.design.system.LocalThemeContentColor
+import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import kotlin.math.absoluteValue
 
-/**
- * Converts a hexadecimal color string to a Compose Color object.
- *
- * This function takes a string representing a hexadecimal color code
- * (e.g., "#FF0000" for red) and attempts to convert it into a Compose Color
- * object.
- *
- * @throws IllegalArgumentException if the provided string is not a valid
- * hexadecimal color code. A valid code must start with "#" followed by
- * either 6 or 8 hexadecimal digits (0-9, A-F, a-f).
- *
- * @return A Compose Color object representing the provided hex color code.
- */
 fun String.hexToComposeColor(): Color {
-    require(this.isValidHexColorCode()) { "Invalid hex color code: $this" }
-    return Color(android.graphics.Color.parseColor(this))
+    require(isValidHexColorCode()) {
+        "Invalid hex color code: $this. Hex color codes must be in the format #RRGGBB or #AARRGGBB."
+    }
+
+    // Remove the leading '#' if present
+    val hex = removePrefix("#")
+
+    // Parse the hex value
+    return when (hex.length) {
+        6 -> {
+            // If the string is in the format RRGGBB, add full opacity (FF) at the start
+            val r = hex.substring(0, 2).toInt(16)
+            val g = hex.substring(2, 4).toInt(16)
+            val b = hex.substring(4, 6).toInt(16)
+            Color(red = r / 255f, green = g / 255f, blue = b / 255f)
+        }
+        8 -> {
+            // If the string is in the format AARRGGBB
+            val a = hex.substring(0, 2).toInt(16)
+            val r = hex.substring(2, 4).toInt(16)
+            val g = hex.substring(4, 6).toInt(16)
+            val b = hex.substring(6, 8).toInt(16)
+            Color(alpha = a / 255f, red = r / 255f, green = g / 255f, blue = b / 255f)
+        }
+        else -> throw IllegalArgumentException("Invalid hex color format. Use #RRGGBB or #AARRGGBB.")
+    }
 }
 
 /**
@@ -80,26 +92,17 @@ internal fun themeContentColor(): Color {
  *
  * @return A string representing the hexadecimal color code (e.g., "#FF0000" for red).
  */
-@Suppress("ImplicitDefaultLocale")
 fun Color.toHex(): String {
     val red = (this.red * 255).toInt()
     val green = (this.green * 255).toInt()
     val blue = (this.blue * 255).toInt()
     val alpha = (this.alpha * 255).toInt()
-    return String.format("#%02X%02X%02X%02X", alpha, red, green, blue)
+    return "#${alpha.toHex()}${red.toHex()}${green.toHex()}${blue.toHex()}"
 }
 
-/**
- * The default light scrim, as defined by androidx and the platform:
- * https://cs.android.com/androidx/platform/frameworks/support/+/androidx-commonMain:activity/activity/src/commonMain/java/androidx/activity/EdgeToEdge.kt;l=35-38;drc=27e7d52e8604a080133e8b842db10c89b4482598
- */
-val lightScrim = android.graphics.Color.argb(0xe6, 0xFF, 0xFF, 0xFF)
-
-/**
- * The default dark scrim, as defined by androidx and the platform:
- * https://cs.android.com/androidx/platform/frameworks/support/+/androidx-commonMain:activity/activity/src/commonMain/java/androidx/activity/EdgeToEdge.kt;l=40-44;drc=27e7d52e8604a080133e8b842db10c89b4482598
- */
-val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
+private fun Int.toHex(): String {
+    return this.toString(16).padStart(2, '0').uppercase()
+}
 
 /**
  * Update the theme color to make text more readable on top of it.
@@ -115,26 +118,63 @@ val darkScrim = android.graphics.Color.argb(0x80, 0x1b, 0x1b, 0x1b)
  *
  * @return The brightened color in ARGB format
  */
-private fun brightenColor(color: Int, factor: Float = 0.2f): Int {
-    // Convert the color to RGB components
-    val red = android.graphics.Color.red(color) / 255f
-    val green = android.graphics.Color.green(color) / 255f
-    val blue = android.graphics.Color.blue(color) / 255f
+fun brightenColor(color: Int, factor: Float = 0.2f): Int {
+    // Extract RGB components from the color
+    val red = (color shr 16 and 0xFF) / 255f
+    val green = (color shr 8 and 0xFF) / 255f
+    val blue = (color and 0xFF) / 255f
 
-    // Convert RGB to HSL
-    val hsl = FloatArray(3)
-    android.graphics.Color.RGBToHSV(
-        (red * 255).toInt(),
-        (green * 255).toInt(),
-        (blue * 255).toInt(),
-        hsl,
-    )
+    // Convert RGB to HSV
+    val hsv = rgbToHsv(red, green, blue)
 
-    // Adjust lightness (value) within bounds
-    hsl[2] = (hsl[2] + factor).coerceIn(0f, 1f)
+    // Adjust brightness (value) within bounds
+    hsv[2] = (hsv[2] + factor).coerceIn(0f, 1f)
 
-    // Convert back to RGB
-    return android.graphics.Color.HSVToColor(hsl)
+    // Convert back to RGB and return the color as an Int
+    return hsvToColor(hsv)
+}
+
+private fun rgbToHsv(r: Float, g: Float, b: Float): FloatArray {
+    val max = maxOf(r, g, b)
+    val min = minOf(r, g, b)
+    val delta = max - min
+
+    val h: Float = when {
+        delta == 0f -> 0f
+        max == r -> ((g - b) / delta + (if (g < b) 6 else 0)) % 6
+        max == g -> (b - r) / delta + 2
+        else -> (r - g) / delta + 4
+    } * 60
+
+    val s: Float = if (max == 0f) 0f else delta / max
+    val v: Float = max
+
+    return floatArrayOf(h, s, v)
+}
+
+private fun hsvToColor(hsv: FloatArray): Int {
+    val h = hsv[0]
+    val s = hsv[1]
+    val v = hsv[2]
+
+    val c = v * s
+    val x = c * (1 - ((h / 60) % 2 - 1).absoluteValue)
+    val m = v - c
+
+    val (r, g, b) = when {
+        h < 60 -> Triple(c, x, 0f)
+        h < 120 -> Triple(x, c, 0f)
+        h < 180 -> Triple(0f, c, x)
+        h < 240 -> Triple(0f, x, c)
+        h < 300 -> Triple(x, 0f, c)
+        else -> Triple(c, 0f, x)
+    }
+
+    val red = ((r + m) * 255).toInt()
+    val green = ((g + m) * 255).toInt()
+    val blue = ((b + m) * 255).toInt()
+
+    return (255 shl 24) or (red shl 16) or (green shl 8) or blue
 }
 
 /**
@@ -152,27 +192,20 @@ private fun Color.brighten(factor: Float = 0.2f): Color {
     val brightenedArgb = brightenColor(argb, factor)
     return Color(brightenedArgb)
 }
+fun darkenColor(color: Int, factor: Float = 0.2f): Int {
+    // Extract RGB components from the color
+    val red = (color shr 16 and 0xFF) / 255f
+    val green = (color shr 8 and 0xFF) / 255f
+    val blue = (color and 0xFF) / 255f
 
-private fun darkenColor(color: Int, factor: Float = 0.2f): Int {
-    // Convert the color to RGB components
-    val red = android.graphics.Color.red(color) / 255f
-    val green = android.graphics.Color.green(color) / 255f
-    val blue = android.graphics.Color.blue(color) / 255f
+    // Convert RGB to HSV
+    val hsv = rgbToHsv(red, green, blue)
 
-    // Convert RGB to HSL
-    val hsl = FloatArray(3)
-    android.graphics.Color.RGBToHSV(
-        (red * 255).toInt(),
-        (green * 255).toInt(),
-        (blue * 255).toInt(),
-        hsl,
-    )
+    // Adjust brightness (value) within bounds
+    hsv[2] = (hsv[2] - factor).coerceIn(0f, 1f)
 
-    // Adjust lightness (value) within bounds
-    hsl[2] = (hsl[2] - factor).coerceIn(0f, 1f)
-
-    // Convert back to RGB
-    return android.graphics.Color.HSVToColor(hsl)
+    // Convert back to RGB and return the color as an Int
+    return hsvToColor(hsv)
 }
 
 private fun Color.darken(factor: Float = 0.2f): Color {

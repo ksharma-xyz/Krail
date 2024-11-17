@@ -1,5 +1,3 @@
-import com.android.build.gradle.internal.ide.kmp.KotlinAndroidSourceSetMarker.Companion.android
-
 plugins {
     alias(libs.plugins.krail.kotlin.multiplatform)
     alias(libs.plugins.krail.compose.multiplatform)
@@ -31,6 +29,7 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.animation)
                 implementation(compose.ui)
+                implementation(compose.material3)
 
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.kotlinx.collections.immutable)

@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -21,19 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.LocalThemeColor
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.preview.PreviewComponent
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
-import xyz.ksharma.krail.design.system.R as DSR
 
 @Composable
 fun SavedTripCard(
@@ -92,7 +89,7 @@ fun SavedTripCard(
             contentAlignment = Alignment.Center,
         ) {
             Image(
-                imageVector = ImageVector.vectorResource(DSR.drawable.star_filled),
+                imageVector = Icons.Filled.Star,
                 contentDescription = "Save Trip",
                 colorFilter = ColorFilter.tint(
                     primaryTransportMode?.colorCode
@@ -105,7 +102,6 @@ fun SavedTripCard(
 
 // region Previews
 
-@PreviewComponent
 @Composable
 private fun SavedTripCardPreview() {
     KrailTheme {
@@ -127,7 +123,6 @@ private fun SavedTripCardPreview() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun SavedTripCardListPreview() {
     KrailTheme {

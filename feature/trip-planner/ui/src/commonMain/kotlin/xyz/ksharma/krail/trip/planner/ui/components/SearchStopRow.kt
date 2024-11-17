@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -17,21 +20,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.LocalOnContentColor
-import xyz.ksharma.krail.design.system.LocalThemeColor
-import xyz.ksharma.krail.design.system.components.RoundIconButton
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.components.TextFieldButton
-import xyz.ksharma.krail.design.system.preview.PreviewComponent
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.LocalOnContentColor
+import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.RoundIconButton
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.components.TextFieldButton
+import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
-import xyz.ksharma.krail.trip.planner.ui.R as TripPlannerUiR
 
 @Composable
 fun SearchStopRow(
@@ -69,14 +67,14 @@ fun SearchStopRow(
             TextFieldButton(onClick = fromButtonClick) {
                 Text(
                     text = fromStopItem?.stopName
-                        ?: stringResource(TripPlannerUiR.string.from_text_field_placeholder),
+                        ?: "Where from",
                     maxLines = 1,
                 )
             }
             TextFieldButton(onClick = toButtonClick) {
                 Text(
                     text = toStopItem?.stopName
-                        ?: stringResource(TripPlannerUiR.string.to_text_field_placeholder),
+                        ?: "Where to",
                     maxLines = 1,
                 )
             }
@@ -90,7 +88,7 @@ fun SearchStopRow(
             RoundIconButton(
                 content = {
                     Image(
-                        imageVector = ImageVector.vectorResource(TripPlannerUiR.drawable.ic_reverse),
+                        imageVector = Icons.Filled.Edit, //todo 0  //.vectorResource(TripPlannerUiR.drawable.ic_reverse),
                         contentDescription = "Reverse",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
@@ -101,7 +99,7 @@ fun SearchStopRow(
             RoundIconButton(
                 content = {
                     Image(
-                        imageVector = ImageVector.vectorResource(TripPlannerUiR.drawable.ic_search),
+                        imageVector = Icons.Filled.Search, // TODO - ImageVector.vectorResource(TripPlannerUiR.drawable.ic_search),
                         contentDescription = "Search",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
@@ -114,7 +112,6 @@ fun SearchStopRow(
 
 // region Previews
 
-@PreviewComponent
 @Composable
 private fun SearchStopColumnPreview() {
     KrailTheme {
