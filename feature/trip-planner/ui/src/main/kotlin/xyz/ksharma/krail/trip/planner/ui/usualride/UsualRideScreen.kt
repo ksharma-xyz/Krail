@@ -84,7 +84,7 @@ fun UsualRideScreen(
 
             item {
                 Text(
-                    text = "What's your favourite color, mate?",
+                    text = "What's your favourite colour, mate?",
                     style = KrailTheme.typography.bodyMedium,
                     modifier = Modifier
                         .padding(horizontal = 24.dp)
@@ -104,7 +104,7 @@ fun UsualRideScreen(
         }
 
         Text(
-            text = if (selectedProductClass != null) "Let's Go, Yeah!" else "Pick one.",
+            text = if (selectedProductClass != null) "Let's Go, Yeah!" else "Pick a colour.",
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp))
@@ -131,7 +131,11 @@ fun UsualRideScreen(
                 }
                 .padding(vertical = 12.dp),
             textAlign = TextAlign.Center,
-            style = KrailTheme.typography.titleMedium,
+            style = if (selectedProductClass != null) {
+                KrailTheme.typography.titleMedium
+            } else {
+                KrailTheme.typography.bodyLarge
+            },
         )
     }
 }
