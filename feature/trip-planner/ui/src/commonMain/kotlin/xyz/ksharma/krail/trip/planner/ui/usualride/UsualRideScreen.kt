@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.TransportModeIcon
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.transportModeBackgroundColor

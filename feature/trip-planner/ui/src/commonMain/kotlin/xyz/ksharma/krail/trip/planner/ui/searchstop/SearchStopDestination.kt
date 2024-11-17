@@ -7,7 +7,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import timber.log.Timber
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
 
 fun NavGraphBuilder.searchStopDestination(navController: NavHostController) {
@@ -19,7 +18,7 @@ fun NavGraphBuilder.searchStopDestination(navController: NavHostController) {
         SearchStopScreen(
             searchStopState = searchStopState,
             onStopSelect = { stopItem ->
-                Timber.d("onStopSelected: fieldTypeKey=${route.fieldType.key} and stopItem: $stopItem")
+                //Timber.d("onStopSelected: fieldTypeKey=${route.fieldType.key} and stopItem: $stopItem")
 
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     route.fieldType.key,

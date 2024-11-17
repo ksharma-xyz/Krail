@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import timber.log.Timber
+
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent

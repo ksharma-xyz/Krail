@@ -25,22 +25,22 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapLatest
-import timber.log.Timber
-import xyz.ksharma.krail.design.system.LocalThemeColor
-import xyz.ksharma.krail.design.system.components.Divider
-import xyz.ksharma.krail.design.system.components.TextField
-import xyz.ksharma.krail.design.system.theme.KrailTheme
+import kotlinx.datetime.Clock
+import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.Divider
+import xyz.ksharma.krail.taj.components.TextField
+import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.StopSearchListItem
 import xyz.ksharma.krail.trip.planner.ui.components.backgroundColorOf
@@ -50,6 +50,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 
+@OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun SearchStopScreen(
     searchStopState: SearchStopState,
@@ -76,7 +77,7 @@ fun SearchStopScreen(
             .debounce(250)
             .filter { it.isNotBlank() }
             .mapLatest { text ->
-                Timber.d("Query - $text")
+               // Timber.d("Query - $text")
                 onEvent(SearchStopUiEvent.SearchTextChanged(text))
             }.collectLatest {}
     }
@@ -93,7 +94,7 @@ fun SearchStopScreen(
             // track the time of the last query. If new results come in during the delay period,
             // then lastQueryTime will be different, therefore, it will prevent
             // "No match found" message from being displayed.
-            val currentQueryTime = System.currentTimeMillis()
+            val currentQueryTime = Clock.System.now().toEpochMilliseconds()
             lastQueryTime = currentQueryTime
             delay(1000)
             if (lastQueryTime == currentQueryTime && searchStopState.stops.isEmpty()) {
@@ -130,7 +131,7 @@ fun SearchStopScreen(
                 input.filter { it.isLetterOrDigit() || it.isWhitespace() }
             },
         ) { value ->
-            Timber.d("value: $value")
+            //Timber.d("value: $value")
             textFieldText = value.toString()
         }
 
@@ -188,7 +189,6 @@ fun SearchStopScreen(
 
 // region Previews
 
-@Preview
 @Composable
 private fun PreviewSearchStopScreenLoading() {
     KrailTheme {
@@ -202,7 +202,6 @@ private fun PreviewSearchStopScreenLoading() {
     }
 }
 
-@Preview
 @Composable
 private fun PreviewSearchStopScreenError() {
     KrailTheme {
@@ -216,7 +215,6 @@ private fun PreviewSearchStopScreenError() {
     }
 }
 
-@Preview
 @Composable
 private fun PreviewSearchStopScreenEmpty() {
     KrailTheme {
@@ -234,7 +232,6 @@ private fun PreviewSearchStopScreenEmpty() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewSearchStopScreenTrain() {
     KrailTheme {
@@ -248,7 +245,6 @@ private fun PreviewSearchStopScreenTrain() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewSearchStopScreenCoach() {
     KrailTheme {
@@ -262,7 +258,6 @@ private fun PreviewSearchStopScreenCoach() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewSearchStopScreenFerry() {
     KrailTheme {
@@ -276,7 +271,6 @@ private fun PreviewSearchStopScreenFerry() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewSearchStopScreenMetro() {
     KrailTheme {
@@ -290,7 +284,6 @@ private fun PreviewSearchStopScreenMetro() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewSearchStopScreenLightRail() {
     KrailTheme {
@@ -304,7 +297,6 @@ private fun PreviewSearchStopScreenLightRail() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewSearchStopScreenBus() {
     KrailTheme {

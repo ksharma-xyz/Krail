@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import timber.log.Timber
+
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.di.AppDispatchers

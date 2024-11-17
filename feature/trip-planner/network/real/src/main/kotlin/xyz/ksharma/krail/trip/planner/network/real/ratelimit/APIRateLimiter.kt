@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
-import timber.log.Timber
+
 import xyz.ksharma.krail.trip.planner.network.api.RateLimiter
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds

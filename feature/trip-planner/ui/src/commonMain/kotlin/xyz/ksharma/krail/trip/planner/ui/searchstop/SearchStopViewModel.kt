@@ -2,22 +2,18 @@ package xyz.ksharma.krail.trip.planner.ui.searchstop
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.repository.TripPlanningRepository
 import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
-import javax.inject.Inject
 
-@HiltViewModel
 class SearchStopViewModel @Inject constructor(
     private val tripPlanningRepository: TripPlanningRepository,
 ) : ViewModel() {
@@ -32,7 +28,7 @@ class SearchStopViewModel @Inject constructor(
     }
 
     private fun onSearchTextChanged(query: String) {
-        Timber.d("onSearchTextChanged: $query")
+        //Timber.d("onSearchTextChanged: $query")
         updateUiState { displayLoading() }
 
         viewModelScope.launch {

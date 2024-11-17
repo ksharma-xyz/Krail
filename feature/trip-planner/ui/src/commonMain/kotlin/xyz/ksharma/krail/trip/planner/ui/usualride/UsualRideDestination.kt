@@ -10,9 +10,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.collections.immutable.toImmutableSet
-import xyz.ksharma.krail.design.system.LocalThemeColor
-import xyz.ksharma.krail.design.system.LocalThemeContentColor
-import xyz.ksharma.krail.design.system.theme.getForegroundColor
+import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.LocalThemeContentColor
+import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute

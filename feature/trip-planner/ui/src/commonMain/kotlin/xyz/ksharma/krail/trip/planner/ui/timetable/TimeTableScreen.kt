@@ -45,12 +45,12 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.design.system.LocalThemeColor
-import xyz.ksharma.krail.design.system.LocalThemeContentColor
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.components.TitleBar
-import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.design.system.theme.shouldUseDarkIcons
+import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.LocalThemeContentColor
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.components.TitleBar
+import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.theme.shouldUseDarkIcons
 import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.ActionData
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
@@ -65,7 +65,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
-import xyz.ksharma.krail.design.system.R as DesignSystemR
+import xyz.ksharma.krail.taj.R as DesignSystemR
 
 @Composable
 fun TimeTableScreen(

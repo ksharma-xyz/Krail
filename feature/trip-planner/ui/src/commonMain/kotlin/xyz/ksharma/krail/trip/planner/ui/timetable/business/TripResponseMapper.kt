@@ -2,7 +2,7 @@ package xyz.ksharma.krail.trip.planner.ui.timetable.business
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import timber.log.Timber
+
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.aestToHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifference
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
