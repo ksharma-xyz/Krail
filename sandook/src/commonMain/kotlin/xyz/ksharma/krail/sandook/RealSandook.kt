@@ -1,9 +1,8 @@
 package xyz.ksharma.krail.sandook
 
 import com.russhwolf.settings.Settings
-import me.tatarka.inject.annotations.Inject
 
-internal class RealSandook @Inject constructor(private val settings: Settings) : Sandook {
+class RealSandook (private val settings: Settings) : Sandook {
 
     override fun keys(): Set<String> = settings.keys
 

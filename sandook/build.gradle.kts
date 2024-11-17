@@ -48,3 +48,7 @@ dependencies {
     // kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
     // kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
 }
+
+ksp {
+    arg("me.tatarka.inject.generateCompanionExtensions", "true")
+}

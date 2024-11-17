@@ -16,4 +16,6 @@ abstract class SandookComponent {
 
     @Provides
     fun provideSandook(settings: Settings): Sandook = RealSandook(settings)
+
+    companion object
 }

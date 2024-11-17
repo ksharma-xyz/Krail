@@ -14,6 +14,8 @@ class ApiClient {
     private val client = HttpClient {
         install(ContentNegotiation) {
             json(Json {
+                prettyPrint = true
+                isLenient = true
                 ignoreUnknownKeys = true // To avoid crashes if the API sends extra fields
             })
         }
