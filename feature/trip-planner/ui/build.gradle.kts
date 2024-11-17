@@ -24,7 +24,9 @@ kotlin {
         commonMain  {
             dependencies {
                 implementation(projects.taj)
+                implementation(projects.core.di)
                 implementation(projects.feature.tripPlanner.state)
+                implementation(projects.core.dateTime)
 
                 implementation(compose.foundation)
                 implementation(compose.animation)
@@ -35,6 +37,7 @@ kotlin {
                 implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.navigation.compose)
+                implementation(libs.lifecycle.viewmodel.compose)
             }
         }
         commonTest {

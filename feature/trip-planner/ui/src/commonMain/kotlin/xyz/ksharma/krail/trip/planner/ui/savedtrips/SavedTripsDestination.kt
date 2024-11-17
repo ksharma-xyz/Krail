@@ -5,13 +5,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import timber.log.Timber
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopFieldType
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
@@ -19,11 +21,12 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Companion.fromJsonString
+import xyz.ksharma.krail.trip.planner.ui.viewmodel.SavedTripsViewModelFactory
 
 @Suppress("LongMethod")
 internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostController) {
     composable<SavedTripsRoute> { backStackEntry ->
-        val viewModel = hiltViewModel<SavedTripsViewModel>()
+        val viewModel = viewModel { createSavedTripsViewModel() }
         val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
         val fromArg: String? =
@@ -45,12 +48,12 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
 
         LaunchedEffect(fromArg) {
             fromArg?.let { fromStopItem = fromJsonString(it) }
-            Timber.d("Change fromStopItem: $fromStopItem")
+//            Timber.d("Change fromStopItem: $fromStopItem")
         }
 
         LaunchedEffect(toArg) {
             toArg?.let { toStopItem = fromJsonString(it) }
-            Timber.d("Change toStopItem: $toStopItem")
+//            Timber.d("Change toStopItem: $toStopItem")
         }
 
         SavedTripsScreen(
@@ -58,18 +61,18 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
             fromStopItem = fromStopItem,
             toStopItem = toStopItem,
             fromButtonClick = {
-                Timber.d("fromButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.FROM)}")
+  //              Timber.d("fromButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.FROM)}")
                 navController.navigate(SearchStopRoute(fieldType = SearchStopFieldType.FROM))
             },
             toButtonClick = {
-                Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
+  //              Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
                 navController.navigate(
                     route = SearchStopRoute(fieldType = SearchStopFieldType.TO),
                     navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                 )
             },
             onReverseButtonClick = {
-                Timber.d("onReverseButtonClick:")
+  //              Timber.d("onReverseButtonClick:")
                 val bufferStop = fromStopItem
                 backStackEntry.savedStateHandle[SearchStopFieldType.FROM.key] =
                     toStopItem?.toJsonString()
@@ -102,10 +105,18 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                     )
                 } else {
                     // TODO - show message - to select both stops
-                    Timber.e("Select both stops")
+ //                   Timber.e("Select both stops")
                 }
             },
             onEvent = { event -> viewModel.onEvent(event) },
         )
     }
+}
+
+// Create an instance of ViewModelFactory with injected dependencies
+fun createSavedTripsViewModel(
+    ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+): SavedTripsViewModel {
+    val factory = SavedTripsViewModelFactory(ioDispatcher)
+    return factory.create()  // Instantiate the ViewModel
 }
