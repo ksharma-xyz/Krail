@@ -1,20 +1,15 @@
 package xyz.ksharma.krail.trip.planner.network.real.repository
 
 import kotlinx.coroutines.CoroutineDispatcher
+import me.tatarka.inject.annotations.Inject
 import xyz.ksharma.krail.coroutines.ext.suspendSafeResult
-import xyz.ksharma.krail.di.AppDispatchers
-import xyz.ksharma.krail.di.Dispatcher
-import xyz.ksharma.krail.network.toSafeResult
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.StopType
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.repository.TripPlanningRepository
-import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
-import javax.inject.Inject
 
 class RealTripPlanningRepository @Inject constructor(
-    private val tripPlanningService: TripPlanningService,
-    @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
+    val ioDispatcher: CoroutineDispatcher,
 ) : TripPlanningRepository {
 
     override suspend fun stopFinder(

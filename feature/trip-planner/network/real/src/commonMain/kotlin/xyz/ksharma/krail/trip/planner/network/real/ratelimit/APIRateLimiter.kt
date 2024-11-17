@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.trip.planner.network.real.ratelimit
 
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -7,9 +9,8 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
-
+import me.tatarka.inject.annotations.Inject
 import xyz.ksharma.krail.trip.planner.network.api.RateLimiter
-import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -30,19 +31,20 @@ class APIRateLimiter @Inject constructor() : RateLimiter {
      * @param block A suspend function representing the API call to be rate-limited.
      * @return A Flow that emits the result of the API call.
      */
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     override fun <T> rateLimitFlow(block: suspend () -> T): Flow<T> {
         return triggerFlow
             .debounce {
                 // First time the block should be executed immediately and subsequent must be rate limited.
                 val interval = if (isFirstTime.value) rateLimitInterval else 0.milliseconds
-                Timber.d("state: ${isFirstTime.value} and interval: $interval")
+               // Timber.d("state: ${isFirstTime.value} and interval: $interval")
                 interval
             }
             .flatMapLatest {
-                Timber.d("flatmapLatest: Triggered")
+                //Timber.d("flatmapLatest: Triggered")
                 isFirstTime.update { true } // Mark the first trigger
                 flow {
-                    Timber.d("Inside flow -emitting block")
+                 //   Timber.d("Inside flow -emitting block")
                     emit(block())
                 }
             }

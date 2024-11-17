@@ -3,9 +3,9 @@ package xyz.ksharma.krail.trip.planner.network.api.repository
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.StopType
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
-import java.time.Instant
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 interface TripPlanningRepository {
 
@@ -26,6 +26,6 @@ interface TripPlanningRepository {
  * // todo - move to another module for time related functions
  */
 fun Instant.toItdTime(): String {
-    val formatter = DateTimeFormatter.ofPattern("HHMM").withZone(ZoneId.of("Australia/Sydney"))
-    return formatter.format(this)
+    val localDateTime = this.toLocalDateTime(TimeZone.of("Australia/Sydney"))
+    return localDateTime.hour.toString().padStart(2, '0') + localDateTime.minute.toString().padStart(2, '0')
 }

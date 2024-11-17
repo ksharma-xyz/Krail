@@ -1,9 +1,5 @@
 package xyz.ksharma.krail.trip.planner.network.api.service
 
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Query
-import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 
 /**
@@ -20,7 +16,7 @@ interface TripPlanningService {
      * points of interest and known addresses to be used for auto-suggest/auto-complete (to be
      * used with the Trip planner and Departure board APIs).
      */
-    @GET("v1/tp/stop_finder")
+    //@GET("v1/tp/stop_finder")
     suspend fun stopFinder(
         /**
          * Used to set the response data type. This documentation only covers responses that use the JSON format.
@@ -28,7 +24,7 @@ interface TripPlanningService {
          *
          * Available values : rapidJSON
          */
-        @Query("outputFormat") outputFormat: String = "rapidJSON",
+       // @Query("outputFormat") outputFormat: String = "rapidJSON",
 
         /**
          * This specifies the type of results expected in the list of returned stops.
@@ -39,7 +35,7 @@ interface TripPlanningService {
          *
          * Available values : any, coord, poi, stop
          */
-        @Query("type_sf") typeSf: String = "stop",
+      //  @Query("type_sf") typeSf: String = "stop",
 
         /**
          * This is the search term that will be used to find locations.
@@ -49,7 +45,7 @@ interface TripPlanningService {
          *
          * Default value : Circular Quay
          */
-        @Query("name_sf") nameSf: String,
+       // @Query("name_sf") nameSf: String,
 
         /**
          * This specifies the format the coordinates are returned in.
@@ -57,7 +53,7 @@ interface TripPlanningService {
          *
          * Available values : EPSG:4326
          */
-        @Query("coordOutputFormat") coordOutputFormat: String = "EPSG:4326",
+      //  @Query("coordOutputFormat") coordOutputFormat: String = "EPSG:4326",
 
         /**
          * Including this parameter enables a number of options that result in the stop finder
@@ -67,7 +63,7 @@ interface TripPlanningService {
          *
          * Default value : true
          */
-        @Query("TfNSWSF") tfNSWSF: String = "true",
+      //  @Query("TfNSWSF") tfNSWSF: String = "true",
 
         /**
          * Indicates which version of the API the caller is expecting for both request and response
@@ -76,8 +72,8 @@ interface TripPlanningService {
          *
          * Default value : 10.2.1.42
          */
-        @Query("version") version: String? = null,
-    ): Response<StopFinderResponse>
+       // @Query("version") version: String? = null,
+    )//: Response<StopFinderResponse>
 
     /**
      * This endpoint is used to find a list of journeys between two locations at the specified
@@ -89,13 +85,13 @@ interface TripPlanningService {
      * Provides capability to provide NSW public transport trip plan options,
      * including walking and driving legs, real-time and Opal fare information.
      */
-    @GET("v1/tp/trip")
+   // @GET("v1/tp/trip")
     suspend fun trip(
         /**
          * Used to set the response data type. This documentation only covers responses that use
          * the JSON format. Setting the outputFormat value to rapidJSON is required to enable JSON output.
          */
-        @Query("outputFormat") outputFormat: String = "rapidJSON",
+     //   @Query("outputFormat") outputFormat: String = "rapidJSON",
 
         /**
          * This specifies the format the coordinates are returned in. While other variations are
