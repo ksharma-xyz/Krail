@@ -2,6 +2,7 @@ package xyz.ksharma.krail.trip.planner.ui.alerts
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import kotlinx.collections.immutable.toImmutableSet
@@ -9,7 +10,7 @@ import timber.log.Timber
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
-internal fun NavGraphBuilder.alertsDestination() {
+internal fun NavGraphBuilder.alertsDestination(navController: NavHostController) {
     composable<ServiceAlertRoute> { backStackEntry ->
 
         val route = backStackEntry.toRoute<ServiceAlertRoute>()
@@ -26,6 +27,8 @@ internal fun NavGraphBuilder.alertsDestination() {
             }
         }
 
-        ServiceAlertScreen(serviceAlerts = serviceAlerts)
+        ServiceAlertScreen(serviceAlerts = serviceAlerts, onBackClick = {
+            navController.popBackStack()
+        })
     }
 }

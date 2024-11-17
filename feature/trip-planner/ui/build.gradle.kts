@@ -24,6 +24,7 @@ dependencies {
     implementation(libs.timber)
     implementation(libs.kotlinx.datetime)
     implementation(projects.sandook.real)
+    implementation(libs.compose.material3)
 
     testImplementation(libs.test.composeUiTestJunit4)
     testImplementation(libs.test.kotlin)

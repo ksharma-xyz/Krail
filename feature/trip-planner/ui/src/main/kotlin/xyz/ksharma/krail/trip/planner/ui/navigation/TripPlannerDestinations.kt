@@ -27,7 +27,7 @@ fun NavGraphBuilder.tripPlannerDestinations(
 
         usualRideDestination(navController)
 
-        alertsDestination()
+        alertsDestination(navController)
     }
 }
 
