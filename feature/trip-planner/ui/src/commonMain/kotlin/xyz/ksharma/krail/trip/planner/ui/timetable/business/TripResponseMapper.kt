@@ -68,7 +68,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 legs = legsList,
                 totalUniqueServiceAlerts = legs.flatMap { leg -> leg.infos.orEmpty() }.toSet().size,
             ).also {
-                Timber.d("\tJourneyId: ${it.journeyId}")
+                //Timber.d("\tJourneyId: ${it.journeyId}")
             }
         } else {
             null
@@ -137,7 +137,7 @@ private fun List<TripResponse.Leg>.getTransportModeLines() = mapNotNull { leg ->
 private fun List<TripResponse.Leg>.getLegsList() = mapNotNull { it.toUiModel() }.toImmutableList()
 
 private fun String.getTimeText() = let {
-    Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
+   // Timber.d("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
     calculateTimeDifferenceFromNow(utcDateString = it).toGenericFormattedTimeString()
 }
 
@@ -161,9 +161,9 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
     val stops = stopSequence?.mapNotNull { it.toUiModel() }?.toImmutableList()
     val alerts = infos?.mapNotNull { it.toAlert() }?.toImmutableList()
     alerts?.forEach {
-        Timber.d("\t Alert: ${it.heading.take(5)}, ${it.message.take(5)}, ${it.priority}")
+        //Timber.d("\t Alert: ${it.heading.take(5)}, ${it.message.take(5)}, ${it.priority}")
     }
-    Timber.d("Alert---")
+   // Timber.d("Alert---")
 
     return when {
         // Walking Leg - Always check before public transport leg

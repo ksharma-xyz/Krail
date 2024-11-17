@@ -1,8 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -11,7 +11,7 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
 
 fun NavGraphBuilder.searchStopDestination(navController: NavHostController) {
     composable<SearchStopRoute> { backStackEntry ->
-        val viewModel = hiltViewModel<SearchStopViewModel>()
+        val viewModel: SearchStopViewModel = viewModel()
         val searchStopState by viewModel.uiState.collectAsStateWithLifecycle()
         val route: SearchStopRoute = backStackEntry.toRoute()
 

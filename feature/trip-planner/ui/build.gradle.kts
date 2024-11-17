@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.krail.android.library)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -38,6 +39,8 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.navigation.compose)
                 implementation(libs.lifecycle.viewmodel.compose)
+
+                implementation(libs.di.kotlinInjectRuntime)
             }
         }
         commonTest {
@@ -51,6 +54,19 @@ kotlin {
 android {
     namespace = "xyz.ksharma.krail.trip.planner.ui"
 }
+
+
+dependencies {
+    // 1. Configure code generation into the common source set
+    kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
+
+    // 2. Configure code generation into each KMP target source set
+    //kspAndroid(libs.di.kotlinInjectCompilerKsp)
+    // kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+    // kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+    // kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+}
+
 
 /*
 dependencies {

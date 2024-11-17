@@ -1,8 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -16,7 +16,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
 internal fun NavGraphBuilder.timeTableDestination(navController: NavHostController) {
     composable<TimeTableRoute> { backStackEntry ->
-        val viewModel = hiltViewModel<TimeTableViewModel>()
+        val viewModel: TimeTableViewModel = viewModel()
         val timeTableState by viewModel.uiState.collectAsStateWithLifecycle()
         val route: TimeTableRoute = backStackEntry.toRoute()
         val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

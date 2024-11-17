@@ -1,8 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
-import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -21,9 +18,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
+>>>>>>> 142d9d4b (Make timetable multiplatform)
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,16 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -51,7 +45,6 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.shouldUseDarkIcons
-import xyz.ksharma.krail.trip.planner.ui.R
 import xyz.ksharma.krail.trip.planner.ui.components.ActionData
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
@@ -59,13 +52,11 @@ import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
-import xyz.ksharma.krail.trip.planner.ui.getActivityOrNull
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
-import xyz.ksharma.krail.taj.R as DesignSystemR
 
 @Composable
 fun TimeTableScreen(
@@ -80,9 +71,8 @@ fun TimeTableScreen(
     val themeContentColorHex by LocalThemeContentColor.current
     val themeColor by remember { mutableStateOf(themeColorHex.hexToComposeColor()) }
     val themeContentColor by remember { mutableStateOf(themeContentColorHex.hexToComposeColor()) }
-    val context = LocalContext.current
     val darkIcons = shouldUseDarkIcons(themeColor)
-    DisposableEffect(darkIcons) {
+    /*DisposableEffect(darkIcons) {
         context.getActivityOrNull()?.let { activity ->
             (activity as ComponentActivity).enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.auto(
@@ -96,7 +86,7 @@ fun TimeTableScreen(
             )
         }
         onDispose {}
-    }
+    }*///TODO - Fix status bar colors
 
     Column(
         modifier = modifier
@@ -124,7 +114,7 @@ fun TimeTableScreen(
                 },
                 title = {
                     Text(
-                        text = stringResource(R.string.time_table_screen_title),
+                        text = "TimeTable",
                         color = themeContentColor,
                     )
                 },
@@ -136,7 +126,7 @@ fun TimeTableScreen(
                         contentDescription = "Reverse Trip Search",
                     ) {
                         Image(
-                            imageVector = ImageVector.vectorResource(R.drawable.ic_reverse),
+                            imageVector = Icons.Filled.Edit,// TODO - icons ImageVector.vectorResource(R.drawable.ic_reverse),
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(themeContentColor),
                             modifier = Modifier.size(24.dp),
@@ -151,13 +141,11 @@ fun TimeTableScreen(
                         },
                     ) {
                         Image(
-                            imageVector = ImageVector.vectorResource(
-                                if (timeTableState.isTripSaved) {
-                                    DesignSystemR.drawable.star_filled
-                                } else {
-                                    DesignSystemR.drawable.star_outline
-                                },
-                            ),
+                            imageVector = if (timeTableState.isTripSaved) {
+                                Icons.Filled.Star
+                            } else {
+                                Icons.Outlined.Star
+                            },
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(themeContentColor),
                             modifier = Modifier.size(24.dp),
@@ -336,7 +324,6 @@ fun ActionButton(
 
 // region Preview
 
-@PreviewLightDark
 @Composable
 private fun PreviewTimeTableScreen() {
     KrailTheme {
@@ -379,7 +366,6 @@ private fun PreviewTimeTableScreen() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewTimeTableScreenError() {
     KrailTheme {
@@ -405,7 +391,6 @@ private fun PreviewTimeTableScreenError() {
     }
 }
 
-@PreviewLightDark
 @Composable
 private fun PreviewTimeTableScreenNoResults() {
     KrailTheme {
