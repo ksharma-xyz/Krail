@@ -5,13 +5,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import xyz.ksharma.krail.sandook.di.SandookComponent
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
 fun KrailApp() {
     KrailTheme {
+
+        LaunchedEffect(Unit) {
+        }
+
         Column(modifier = Modifier.fillMaxSize().background(color = KrailTheme.colors.surface)) {
             Text(
                 "Hello, Krail!",

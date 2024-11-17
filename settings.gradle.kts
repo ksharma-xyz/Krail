@@ -41,7 +41,4 @@ include(":feature:trip-planner:ui")
 include(":feature:trip-planner:state")
 include(":feature:trip-planner:network:api")
 include(":feature:trip-planner:network:real")
-/*
-include(":sandook:api")
-include(":sandook:real")
-*/
+include(":sandook")

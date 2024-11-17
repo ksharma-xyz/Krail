@@ -30,6 +30,7 @@ kotlin {
                 implementation(compose.animation)
                 implementation(compose.ui)
                 implementation(compose.material3)
+                implementation(compose.runtime)
             }
         }
     }

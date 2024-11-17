@@ -56,6 +56,7 @@ kotlin {
 
         commonMain.dependencies {
             implementation(projects.taj)
+            implementation(projects.sandook)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -66,7 +67,4 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
         }
     }
-}
-
-dependencies {
 }
