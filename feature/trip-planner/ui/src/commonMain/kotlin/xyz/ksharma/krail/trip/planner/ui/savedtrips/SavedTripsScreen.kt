@@ -1,8 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.savedtrips
 
-import androidx.activity.ComponentActivity
-import androidx.activity.SystemBarStyle
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,25 +12,17 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.design.system.LocalThemeContentColor
-import xyz.ksharma.krail.design.system.components.Text
-import xyz.ksharma.krail.design.system.components.TitleBar
-import xyz.ksharma.krail.design.system.theme.KrailTheme
-import xyz.ksharma.krail.trip.planner.ui.R
+import xyz.ksharma.krail.taj.LocalThemeContentColor
+import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.components.TitleBar
+import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.SavedTripCard
 import xyz.ksharma.krail.trip.planner.ui.components.SearchStopRow
-import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
-import xyz.ksharma.krail.trip.planner.ui.getActivityOrNull
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
@@ -51,8 +40,8 @@ fun SavedTripsScreen(
     onEvent: (SavedTripUiEvent) -> Unit = {},
 ) {
     val themeContentColor by LocalThemeContentColor.current
-    val context = LocalContext.current
-    DisposableEffect(themeContentColor) {
+    // TODO -  handle colors of status bar
+/*    DisposableEffect(themeContentColor) {
         context.getActivityOrNull()?.let { activity ->
             (activity as ComponentActivity).enableEdgeToEdge(
                 navigationBarStyle = SystemBarStyle.auto(
@@ -62,7 +51,7 @@ fun SavedTripsScreen(
             )
         }
         onDispose {}
-    }
+    }*/
 
     Box(
         modifier = modifier
@@ -72,7 +61,7 @@ fun SavedTripsScreen(
     ) {
         Column {
             TitleBar(title = {
-                Text(text = stringResource(R.string.saved_trips_screen_title))
+                Text(text = "Saved Trips")
             })
 
             LazyColumn(
@@ -116,8 +105,7 @@ fun SavedTripsScreen(
                             },
                             primaryTransportMode = null, // TODO
                             modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .animateItem(),
+                                .padding(horizontal = 16.dp),
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
@@ -140,7 +128,6 @@ fun SavedTripsScreen(
 
 // region Previews
 
-@PreviewLightDark
 @Composable
 private fun SavedTripsScreenPreview() {
     KrailTheme {

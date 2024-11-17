@@ -8,7 +8,26 @@ android {
     namespace = "xyz.ksharma.krail.trip.planner.state"
 }
 
-dependencies {
-    implementation(libs.kotlinx.collections.immutable)
-    implementation(libs.kotlinx.serialization.json)
+kotlin {
+    applyDefaultHierarchyTemplate()
+
+    androidTarget()
+
+    iosArm64()
+    iosSimulatorArm64()
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(JavaVersion.VERSION_17.majorVersion))
+        }
+    }
+
+    sourceSets {
+        commonMain {
+            dependencies {
+                implementation(libs.kotlinx.collections.immutable)
+                implementation(libs.kotlinx.serialization.json)
+            }
+        }
+    }
 }

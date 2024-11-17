@@ -8,7 +8,7 @@ data class ServiceAlert(
     val heading: String,
     val message: String,
     val priority: ServiceAlertPriority,
-) : java.io.Serializable {
+) {
 
     fun toJsonString() = Json.encodeToString(serializer(), this)
 
