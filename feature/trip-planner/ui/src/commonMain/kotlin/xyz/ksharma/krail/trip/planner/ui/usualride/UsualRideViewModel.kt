@@ -2,12 +2,10 @@ package xyz.ksharma.krail.trip.planner.ui.usualride
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
 import xyz.ksharma.krail.di.AppDispatchers
 import xyz.ksharma.krail.di.Dispatcher
 import xyz.ksharma.krail.sandook.Sandook
@@ -15,10 +13,8 @@ import xyz.ksharma.krail.sandook.di.SandookFactory
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideState
-import javax.inject.Inject
 
-@HiltViewModel
-class UsualRideViewModel @Inject constructor(
+class UsualRideViewModel(
     sandookFactory: SandookFactory,
     @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
@@ -37,7 +33,7 @@ class UsualRideViewModel @Inject constructor(
     private fun onTransportModeSelected(productClass: Int) {
         viewModelScope.launch(ioDispatcher) {
             TransportMode.toTransportModeType(productClass)?.let { mode ->
-                Timber.d("onTransportModeSelected: $mode")
+                //Timber.d("onTransportModeSelected: $mode")
                 sandook.putInt("selectedMode", mode.productClass)
             }
         }

@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -23,7 +23,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 
 internal fun NavGraphBuilder.usualRideDestination(navController: NavHostController) {
     composable<UsualRideRoute> {
-        val viewModel = hiltViewModel<UsualRideViewModel>()
+        val viewModel:UsualRideViewModel = viewModel()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
         var mode: TransportMode? by remember { mutableStateOf(null) }

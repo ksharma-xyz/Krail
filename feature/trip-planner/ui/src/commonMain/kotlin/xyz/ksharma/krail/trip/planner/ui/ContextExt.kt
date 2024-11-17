@@ -1,9 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui
+/*
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import android.graphics.Color
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
@@ -39,3 +36,4 @@ internal fun DefaultSystemBarColors() {
         onDispose {}
     }
 }
+*/
