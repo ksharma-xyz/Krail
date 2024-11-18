@@ -20,6 +20,7 @@ import xyz.ksharma.krail.taj.theme.KrailTheme
 fun TitleBar(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
+    navAction: @Composable (() -> Unit)? = null,
     actions: @Composable (() -> Unit)? = null,
 ) {
     Row(
@@ -27,11 +28,19 @@ fun TitleBar(
             .statusBarsPadding()
             .fillMaxWidth()
             .heightIn(min = 56.dp)
-            .padding(horizontal = 16.dp, vertical = 4.dp),
+            .padding(end = 16.dp, start = 8.dp)
+            .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(modifier = Modifier.weight(1f)) {
+        navAction?.let {
+            navAction()
+        }
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .padding(start = 10.dp),
+        ) {
             CompositionLocalProvider(
                 LocalTextColor provides KrailTheme.colors.onSurface,
                 LocalTextStyle provides KrailTheme.typography.headlineMedium,
