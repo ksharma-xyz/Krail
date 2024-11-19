@@ -7,7 +7,7 @@ import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFro
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toFormattedDurationTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToAEST_LocalDateTime
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
@@ -298,7 +298,7 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
     }
 }*/
 
-private fun String.fromUTCToDisplayTimeString() = this.utcToAEST_LocalDateTime().toHHMM()
+private fun String.fromUTCToDisplayTimeString() = this.utcToLocalDateTimeAEST().toHHMM()
 
 private fun TripResponse.Leg.isWalkingLeg(): Boolean =
     transportation?.product?.productClass == 99L || transportation?.product?.productClass == 100L

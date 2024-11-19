@@ -27,7 +27,7 @@ object DateTimeHelper {
         return localDateTime.toString()
     }
 
-    fun String.utcToAEST_LocalDateTime(): LocalDateTime {
+    fun String.utcToLocalDateTimeAEST(): LocalDateTime {
         val instant = Instant.parse(this)
         val aestZone = TimeZone.of("Australia/Sydney")
         val localDateTime = instant.toLocalDateTime(aestZone)
@@ -41,14 +41,14 @@ object DateTimeHelper {
         return "$hour:$minute $amPm"
     }
 
-    fun String.aestToHHMM(): String {
+   /* fun String.aestToHHMM(): String {
         val dateTimeString = if (this.length == 16) "$this:00" else this
         val localDateTime = Instant.parse(dateTimeString).toLocalDateTime(TimeZone.of("Australia/Sydney"))
         val hour = if (localDateTime.hour % 12 == 0) 12 else localDateTime.hour % 12 // Ensure 12-hour format
         val minute = localDateTime.minute.toString().padStart(2, '0')
         val amPm = if (localDateTime.hour < 12) "AM" else "PM"
         return "$hour:$minute $amPm"
-    }
+    }*/
 
     fun calculateTimeDifferenceFromNow(
         utcDateString: String,
@@ -66,9 +66,9 @@ object DateTimeHelper {
         return when {
             totalMinutes < 0 -> "${totalMinutes.absoluteValue} ${if (totalMinutes.absoluteValue == 1L) "min" else "mins"} ago"
             totalMinutes == 0L -> "Now"
-            hours == 1L -> "In ${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
-            hours >= 2 -> "In ${hours.absoluteValue}h"
-            else -> "In ${totalMinutes.absoluteValue} ${if (totalMinutes.absoluteValue == 1L) "min" else "mins"}"
+            hours == 1L -> "in ${hours.absoluteValue}h ${partialMinutes.absoluteValue}m"
+            hours >= 2 -> "in ${hours.absoluteValue}h"
+            else -> "in ${totalMinutes.absoluteValue} ${if (totalMinutes.absoluteValue == 1L) "min" else "mins"}"
         }
     }
 
