@@ -13,7 +13,7 @@ import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.service.NSW_TRANSPORT_BASE_URL
 
 suspend fun fetchTrip(
-    httpClient: HttpClient, apiKey: String,
+    httpClient: HttpClient,
     originStopId: String,
     destinationStopId: String,
 ): TripResponse = withContext(Dispatchers.IO) {

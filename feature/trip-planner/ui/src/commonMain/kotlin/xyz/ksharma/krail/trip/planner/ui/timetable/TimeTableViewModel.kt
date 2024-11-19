@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,13 +19,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
-import xyz.ksharma.krail.di.AppDispatchers
-import xyz.ksharma.krail.di.Dispatcher
+import xyz.ksharma.krail.sandook.RealSandook
 import xyz.ksharma.krail.sandook.Sandook
-import xyz.ksharma.krail.sandook.di.SandookFactory
-import xyz.ksharma.krail.trip.planner.network.api.RateLimiter
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
-import xyz.ksharma.krail.trip.planner.network.api.repository.TripPlanningRepository
+import xyz.ksharma.krail.trip.planner.network.api.ratelimit.NetworkRateLimiter
+import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
+import xyz.ksharma.krail.trip.planner.network.api.service.getHttpClient
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -33,17 +33,15 @@ import xyz.ksharma.krail.trip.planner.ui.timetable.business.buildJourneyList
 import xyz.ksharma.krail.trip.planner.ui.timetable.business.logForUnderstandingData
 import kotlin.time.Duration.Companion.seconds
 
-class TimeTableViewModel (
-    private val tripRepository: TripPlanningRepository,
-    sandookFactory: SandookFactory,
-    @Dispatcher(AppDispatchers.IO) private val ioDispatcher: CoroutineDispatcher,
-    private val rateLimiter: RateLimiter,
-) : ViewModel() {
+class TimeTableViewModel : ViewModel() {
 
-    private val sandook: Sandook = sandookFactory.create(SandookFactory.SandookKey.SAVED_TRIP)
+    private val sandook: Sandook = RealSandook()
+    private val rateLimiter: RateLimiter = NetworkRateLimiter()
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
     val uiState: StateFlow<TimeTableState> = _uiState
+
+    private val httpClient = getHttpClient()
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -51,7 +49,7 @@ class TimeTableViewModel (
         // to background and come back up again, the API call will be made.
         // Probably good to have data up to date.
         .onStart {
-           // Timber.d("onStart: Fetching Trip")
+            // Timber.d("onStart: Fetching Trip")
             fetchTrip()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
@@ -85,17 +83,17 @@ class TimeTableViewModel (
     }
 
     private fun fetchTrip() {
-       // Timber.d("fetchTrip API Call")
-        viewModelScope.launch(ioDispatcher) {
+        // Timber.d("fetchTrip API Call")
+        viewModelScope.launch(Dispatchers.IO) {
             // TODO - silent refresh here, UI to display loading but silent one.
             rateLimiter.rateLimitFlow {
-            //    Timber.d("rateLimitFlow block")
+                //    Timber.d("rateLimitFlow block")
                 loadTrip()
             }.catch { e ->
                 println("Error while fetching trip: $e")
             }.collectLatest { result ->
                 result.onSuccess { response ->
-                   // Timber.d("Success API response")
+                    // Timber.d("Success API response")
                     updateUiState {
                         copy(
                             isLoading = false,
@@ -105,40 +103,46 @@ class TimeTableViewModel (
                     }
                     response.logForUnderstandingData()
                 }.onFailure {
-                   // Timber.e("Error while fetching trip: $it")
+                    // Timber.e("Error while fetching trip: $it")
                     updateUiState { copy(isLoading = false, isError = true) }
                 }
             }
         }
     }
 
-    private suspend fun loadTrip(): Result<TripResponse> = withContext(ioDispatcher) {
-      //  Timber.d("loadTrip API Call")
+    private suspend fun loadTrip(): Result<TripResponse> = withContext(Dispatchers.IO) {
+        //  Timber.d("loadTrip API Call")
         require(
             tripInfo != null && tripInfo!!.fromStopId.isNotEmpty() && tripInfo!!.toStopId.isNotEmpty(),
         ) { "Trip Info is null or empty" }
 
-        tripRepository.trip(
-            originStopId = tripInfo!!.fromStopId,
-            destinationStopId = tripInfo!!.toStopId,
-        )
+        runCatching {
+            val tripResponse = xyz.ksharma.krail.trip.planner.network.api.service.trip.fetchTrip(
+                httpClient = httpClient,
+                originStopId = tripInfo!!.fromStopId,
+                destinationStopId = tripInfo!!.toStopId,
+            )
+            Result.success(tripResponse)
+        }.getOrElse { error ->
+            Result.failure(error)
+        }
     }
 
     private fun onSaveTripButtonClicked() {
         //Timber.d("Save Trip Button Clicked")
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch(Dispatchers.IO) {
             tripInfo?.let { trip ->
-               // Timber.d("Toggle Save Trip: $trip")
+                // Timber.d("Toggle Save Trip: $trip")
                 val savedTrip = sandook.getString(key = trip.tripId)
                 if (savedTrip != null) {
                     // Trip is already saved, so delete it
                     sandook.remove(key = trip.tripId)
-                  //  Timber.d("Deleted Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
+                    //  Timber.d("Deleted Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
                     updateUiState { copy(isTripSaved = false) }
                 } else {
                     // Trip is not saved, so save it
                     sandook.putString(key = trip.tripId, value = trip.toJsonString())
-                 //   Timber.d("Saved Trip (Pref): $trip")
+                    //   Timber.d("Saved Trip (Pref): $trip")
                     updateUiState { copy(isTripSaved = true) }
                 }
             }
@@ -166,7 +170,7 @@ class TimeTableViewModel (
     }
 
     private fun onReverseTripButtonClicked() {
-      //  Timber.d("Reverse Trip Button Clicked -- Trigger")
+        //  Timber.d("Reverse Trip Button Clicked -- Trigger")
         require(tripInfo != null) { "Trip Info is null" }
         val reverseTrip = Trip(
             fromStopId = tripInfo!!.toStopId,
@@ -192,7 +196,7 @@ class TimeTableViewModel (
      * journey card should be updated.
      */
     private fun updateTimeText() = viewModelScope.launch {
-        val updatedJourneyList = withContext(ioDispatcher) {
+        val updatedJourneyList = withContext(Dispatchers.IO) {
             _uiState.value.journeyList.map { journeyCardInfo ->
                 journeyCardInfo.copy(
                     timeText = calculateTimeDifferenceFromNow(
@@ -215,7 +219,7 @@ class TimeTableViewModel (
 
     fun fetchAlertsForJourney(journeyId: String, onResult: (Set<ServiceAlert>) -> Unit) {
         viewModelScope.launch {
-            val alerts = withContext(ioDispatcher) {
+            val alerts = withContext(Dispatchers.IO) {
                 runCatching {
                     _uiState.value.journeyList.find { it.journeyId == journeyId }?.let { journey ->
                         getAlertsFromJourney(journey)

@@ -8,7 +8,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -33,7 +32,7 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             onEvent = { viewModel.onEvent(it) },
             onBackClick = { navController.popBackStack() },
             onAlertClick = { journeyId ->
-                Timber.d("journeyId: $journeyId")
+                println("journeyId: $journeyId")
                 viewModel.fetchAlertsForJourney(journeyId) { alerts ->
                     if (alerts.isNotEmpty()) {
                         navController.navigate(

@@ -4,11 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
+import kotlinx.coroutines.withContext
+import xyz.ksharma.krail.trip.planner.network.api.service.getHttpClient
+import xyz.ksharma.krail.trip.planner.network.api.service.stop_finder.fetchStop
 import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
@@ -17,6 +23,8 @@ class SearchStopViewModel : ViewModel() {
 
     private val _uiState: MutableStateFlow<SearchStopState> = MutableStateFlow(SearchStopState())
     val uiState: StateFlow<SearchStopState> = _uiState
+
+    private val httpClient = getHttpClient()
 
     fun onEvent(event: SearchStopUiEvent) {
         when (event) {
@@ -29,13 +37,13 @@ class SearchStopViewModel : ViewModel() {
         updateUiState { displayLoading() }
 
         viewModelScope.launch {
-            tripPlanningRepository.stopFinder(stopSearchQuery = query)
-                .onSuccess { response: StopFinderResponse ->
-                    val results = response.toStopResults()
-                    updateUiState { displayData(results) }
-                }.onFailure {
-                    updateUiState { displayError() }
-                }
+            runCatching {
+                val results =
+                    fetchStop(httpClient = httpClient, stopSearchQuery = query).toStopResults()
+                updateUiState { displayData(results) }
+            }.getOrElse {
+                updateUiState { displayError() }
+            }
         }
     }
 

@@ -3,18 +3,13 @@ package xyz.ksharma.krail.trip.planner.network.api.service.stop_finder
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.http.HttpHeaders
-import io.ktor.http.headers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.withContext
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.StopType
 import xyz.ksharma.krail.trip.planner.network.api.service.NSW_TRANSPORT_BASE_URL
 
 suspend fun fetchStop(
     httpClient: HttpClient,
-    stopType: StopType,
+    stopType: StopType = StopType.STOP,
     stopSearchQuery: String,
 ): StopFinderResponse {
     return httpClient.get("${NSW_TRANSPORT_BASE_URL}/v1/tp/stop_finder") {
