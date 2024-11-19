@@ -25,7 +25,6 @@ kotlin {
         commonMain  {
             dependencies {
                 implementation(projects.taj)
-                implementation(projects.core.di)
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.core.dateTime)
 

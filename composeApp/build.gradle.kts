@@ -57,6 +57,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.taj)
             implementation(projects.sandook)
+            implementation(projects.feature.tripPlanner.network)
 
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -67,6 +68,13 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
 
             implementation(libs.multiplatform.settings)
+
+
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
     }
 }

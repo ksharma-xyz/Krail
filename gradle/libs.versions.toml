@@ -12,6 +12,7 @@ activity-compose = "1.9.3"
 kotlinInject = "0.7.2"
 kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDatetime = "0.6.1"
+ktorClientAuth = "2.3.12"
 lifecycleViewmodelCompose = "2.8.2"
 multiplatformSettings = "1.2.0"
 navigationCompose = "2.8.0-alpha10"
@@ -22,17 +23,21 @@ compose-multiplatform = "1.7.0"
 ktor = "3.0.1"
 androidx-lifecycle = "2.8.3"
 kotlinxCoroutines = "1.9.0"
+buildkonfigGradlePlugin = "0.15.2"
 
 #SDK
 minSdk = "26"
 compileSdk = "35"
+slf4jSimple = "2.0.16"
 targetSdk = "35"
 
 [libraries]
+buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfigGradlePlugin" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktorClientAuth" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "android-lifecycle" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -56,6 +61,7 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
 #Test
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 test-composeUiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 test-composeUiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -82,6 +88,7 @@ kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 cash-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfigGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

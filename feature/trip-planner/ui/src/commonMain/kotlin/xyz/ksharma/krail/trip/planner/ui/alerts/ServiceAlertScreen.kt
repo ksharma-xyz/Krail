@@ -20,7 +20,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
@@ -28,7 +27,6 @@ import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
-import xyz.ksharma.krail.trip.planner.ui.DefaultSystemBarColors
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
 import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
@@ -39,7 +37,7 @@ fun ServiceAlertScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
-    DefaultSystemBarColors()
+//    DefaultSystemBarColors()
 
     Column(
         modifier = modifier

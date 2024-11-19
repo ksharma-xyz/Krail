@@ -3,8 +3,6 @@ package xyz.ksharma.krail.trip.planner.network.api.service.trip
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.http.HttpHeaders
-import io.ktor.http.headers
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
@@ -20,11 +18,6 @@ suspend fun fetchTrip(
     destinationStopId: String,
 ): TripResponse = withContext(Dispatchers.IO) {
     httpClient.get("$NSW_TRANSPORT_BASE_URL/v1/tp/trip") {
-        headers {
-            append("Authorization", "apikey $apiKey") // Example of Authorization header
-            append(HttpHeaders.Accept, "application/json") // Accept JSON response
-        }
-
         url {
             parameters.append(TripRequestParams.nameOrigin, originStopId)
             parameters.append(TripRequestParams.nameDestination, destinationStopId)

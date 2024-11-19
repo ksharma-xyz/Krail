@@ -35,7 +35,6 @@ include(":composeApp")
 include(":taj") // Design System
 include(":core:di")
 include(":core:date-time")
-include(":core:coroutines-ext")
 include(":feature:trip-planner:ui")
 include(":feature:trip-planner:state")
 include(":feature:trip-planner:network")
