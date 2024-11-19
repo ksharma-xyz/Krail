@@ -11,7 +11,7 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
 
 fun NavGraphBuilder.searchStopDestination(navController: NavHostController) {
     composable<SearchStopRoute> { backStackEntry ->
-        val viewModel: SearchStopViewModel = viewModel()
+        val viewModel: SearchStopViewModel = viewModel { SearchStopViewModel() }
         val searchStopState by viewModel.uiState.collectAsStateWithLifecycle()
         val route: SearchStopRoute = backStackEntry.toRoute()
 

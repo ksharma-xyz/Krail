@@ -62,7 +62,7 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
             tripPlannerDestinations(navController = navController)
 
             composable<SplashScreen> {
-                val viewModel: SplashViewModel = viewModel<SplashViewModel>()
+                val viewModel: SplashViewModel = viewModel { SplashViewModel() }
                 val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
                 val mode by viewModel.uiState.collectAsStateWithLifecycle()
 

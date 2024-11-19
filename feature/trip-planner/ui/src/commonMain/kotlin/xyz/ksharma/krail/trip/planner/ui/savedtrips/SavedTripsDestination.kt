@@ -22,7 +22,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Compani
 @Suppress("LongMethod")
 internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostController) {
     composable<SavedTripsRoute> { backStackEntry ->
-        val viewModel: SavedTripsViewModel = viewModel()
+        val viewModel: SavedTripsViewModel = viewModel { SavedTripsViewModel() }
         val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
         val fromArg: String? =

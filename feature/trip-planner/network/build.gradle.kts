@@ -33,9 +33,9 @@ kotlin {
     iosSimulatorArm64()
 
     sourceSets {
-        /*androidMain.dependencies {
+        androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
-        }*/
+        }
 
         commonMain {
             dependencies {
@@ -53,11 +53,11 @@ kotlin {
             }
         }
 
-        /*iosMain {
+        iosMain {
             dependencies {
                 implementation(libs.ktor.client.darwin)
             }
-        }*/
+        }
     }
 }
 

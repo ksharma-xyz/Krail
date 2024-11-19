@@ -15,7 +15,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
 internal fun NavGraphBuilder.timeTableDestination(navController: NavHostController) {
     composable<TimeTableRoute> { backStackEntry ->
-        val viewModel: TimeTableViewModel = viewModel()
+        val viewModel: TimeTableViewModel = viewModel { TimeTableViewModel() }
         val timeTableState by viewModel.uiState.collectAsStateWithLifecycle()
         val route: TimeTableRoute = backStackEntry.toRoute()
         val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
