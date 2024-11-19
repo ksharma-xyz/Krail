@@ -29,7 +29,7 @@ class SplashViewModel : ViewModel() {
 
     private fun getThemeTransportMode() {
         viewModelScope.launch(Dispatchers.IO) {
-            val productClass = sandook.getInt("selectedMode")
+            val productClass = sandook.getString("selectedMode")?.toIntOrNull() ?: 0
             val mode = TransportMode.toTransportModeType(productClass)
             _uiState.value = mode
         }

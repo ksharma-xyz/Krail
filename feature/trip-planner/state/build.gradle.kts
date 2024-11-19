@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.krail.android.library)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.krail.kotlin.multiplatform)
+    alias(libs.plugins.krail.compose.multiplatform)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -27,6 +29,8 @@ kotlin {
             dependencies {
                 implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.kotlinx.serialization.json)
+
+                implementation(compose.runtime)
             }
         }
     }

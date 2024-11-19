@@ -11,9 +11,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopFieldType
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
@@ -21,7 +18,6 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Companion.fromJsonString
-import xyz.ksharma.krail.trip.planner.ui.viewmodel.SavedTripsViewModelFactory
 
 @Suppress("LongMethod")
 internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostController) {
@@ -111,12 +107,4 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
             onEvent = { event -> viewModel.onEvent(event) },
         )
     }
-}
-
-// Create an instance of ViewModelFactory with injected dependencies
-fun createSavedTripsViewModel(
-    ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-): SavedTripsViewModel {
-    val factory = SavedTripsViewModelFactory(ioDispatcher)
-    return factory.create()  // Instantiate the ViewModel
 }

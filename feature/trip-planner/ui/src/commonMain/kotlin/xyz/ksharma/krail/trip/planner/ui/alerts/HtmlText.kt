@@ -1,4 +1,5 @@
 package xyz.ksharma.krail.trip.planner.ui.alerts
+/*
 
 import android.graphics.Typeface
 import android.text.method.LinkMovementMethod
@@ -16,9 +17,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import xyz.ksharma.krail.taj.theme.KrailTheme
 
+*/
 /**
  * Reference - https://developer.android.com/codelabs/jetpack-compose-migration#8
- */
+ *//*
+
 @Composable
 fun HtmlText(html: String, modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     // Remembers the HTML formatted description. Re-executes on a new description
@@ -61,3 +64,4 @@ fun HtmlText(html: String, modifier: Modifier = Modifier, onClick: () -> Unit = 
         modifier = modifier,
     )
 }
+*/

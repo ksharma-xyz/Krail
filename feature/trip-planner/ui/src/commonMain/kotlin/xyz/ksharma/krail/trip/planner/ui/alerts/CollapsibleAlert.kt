@@ -89,7 +89,8 @@ fun CollapsibleAlert(
                 )
             }
             if (isHtml) {
-                HtmlText(serviceAlert.message, onClick = onClick)
+                // TODO - Html  Text Component
+                Text(text = serviceAlert.message) // , onClick = onClick
             } else {
                 Text(
                     text = serviceAlert.message,

@@ -30,7 +30,7 @@ class UsualRideViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             TransportMode.toTransportModeType(productClass)?.let { mode ->
                 //Timber.d("onTransportModeSelected: $mode")
-                sandook.putInt("selectedMode", mode.productClass)
+                sandook.putString("selectedMode", mode.productClass.toString())
             }
         }
     }
