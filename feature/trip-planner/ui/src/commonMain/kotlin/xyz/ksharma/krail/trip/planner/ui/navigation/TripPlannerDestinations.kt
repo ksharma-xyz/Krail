@@ -31,9 +31,20 @@ fun NavGraphBuilder.tripPlannerDestinations(
     }
 }
 
-internal enum class SearchStopFieldType(val key: String) {
-    FROM(key = "FromSearchStopResult"),
-    TO(key = "ToSearchStopResult"),
+@Serializable
+internal sealed class SearchStopFieldType(val key: String) {
+    data object FROM : SearchStopFieldType("FromSearchStopResult")
+    data object TO : SearchStopFieldType("ToSearchStopResult")
+
+    companion object {
+        fun fromKey(key: String): SearchStopFieldType {
+            return when (key) {
+                FROM.key -> FROM
+                TO.key -> TO
+                else -> throw IllegalArgumentException("Unknown key: $key")
+            }
+        }
+    }
 }
 
 @Serializable
@@ -51,7 +62,10 @@ internal data class TimeTableRoute(
 )
 
 @Serializable
-internal data class SearchStopRoute(val fieldType: SearchStopFieldType)
+internal data class SearchStopRoute(val fieldTypeKey: String) {
+    val fieldType: SearchStopFieldType
+        get() = SearchStopFieldType.fromKey(fieldTypeKey)
+}
 
 @Serializable
 data object UsualRideRoute
