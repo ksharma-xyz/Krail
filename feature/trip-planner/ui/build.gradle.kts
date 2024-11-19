@@ -27,6 +27,8 @@ kotlin {
                 implementation(projects.taj)
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.core.dateTime)
+                implementation(projects.sandook)
+                implementation(projects.feature.tripPlanner.network)
 
                 implementation(compose.foundation)
                 implementation(compose.animation)

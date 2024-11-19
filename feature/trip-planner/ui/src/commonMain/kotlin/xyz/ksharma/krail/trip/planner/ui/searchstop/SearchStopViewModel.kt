@@ -8,15 +8,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
-import xyz.ksharma.krail.trip.planner.network.api.repository.TripPlanningRepository
+import me.tatarka.inject.annotations.Inject
 import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 
-class SearchStopViewModel @Inject constructor(
-    private val tripPlanningRepository: TripPlanningRepository,
-) : ViewModel() {
+class SearchStopViewModel : ViewModel() {
 
     private val _uiState: MutableStateFlow<SearchStopState> = MutableStateFlow(SearchStopState())
     val uiState: StateFlow<SearchStopState> = _uiState

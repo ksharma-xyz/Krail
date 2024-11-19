@@ -2,7 +2,7 @@ package xyz.ksharma.krail.sandook
 
 import com.russhwolf.settings.Settings
 
-class RealSandook (private val settings: Settings) : Sandook {
+class RealSandook (private val settings: Settings = Settings()) : Sandook {
 
     override fun keys(): Set<String> = settings.keys
 
