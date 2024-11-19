@@ -30,7 +30,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.trip.planner.ui.timetable.business.buildJourneyList
-import xyz.ksharma.krail.trip.planner.ui.timetable.business.logForUnderstandingData
 import kotlin.time.Duration.Companion.seconds
 
 class TimeTableViewModel : ViewModel() {
@@ -101,7 +100,7 @@ class TimeTableViewModel : ViewModel() {
                             isError = false,
                         )
                     }
-                    response.logForUnderstandingData()
+                    //response.logForUnderstandingData()
                 }.onFailure {
                     // Timber.e("Error while fetching trip: $it")
                     updateUiState { copy(isLoading = false, isError = true) }

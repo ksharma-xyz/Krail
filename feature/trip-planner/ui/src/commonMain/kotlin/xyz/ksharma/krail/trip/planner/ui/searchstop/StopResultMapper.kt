@@ -19,11 +19,15 @@ object StopResultMapper {
     fun StopFinderResponse.toStopResults(
         selectedModes: Set<TransportMode> = TransportMode.values(),
     ): List<SearchStopState.StopResult> {
+        println( "selectedModes: " + selectedModes)
+
         return locations.orEmpty().mapNotNull { location ->
             val stopName = location.disassembledName ?: return@mapNotNull null // Skip if stop name is null
             val stopId = location.id ?: return@mapNotNull null // Skip if stop ID is null
             val modes = location.productClasses.orEmpty()
                 .mapNotNull { productClass -> TransportMode.toTransportModeType(productClass) }
+
+            println("productClasses [${location.name}]: ${location.productClasses}")
 
             // Filter based on selected mode types
             if (selectedModes.isNotEmpty() && !modes.any { it in selectedModes }) {

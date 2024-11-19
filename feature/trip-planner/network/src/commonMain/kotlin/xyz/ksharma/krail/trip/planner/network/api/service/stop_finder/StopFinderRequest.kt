@@ -12,15 +12,18 @@ suspend fun fetchStop(
     stopType: StopType = StopType.STOP,
     stopSearchQuery: String,
 ): StopFinderResponse {
-    return httpClient.get("${NSW_TRANSPORT_BASE_URL}/v1/tp/stop_finder") {
-        url {
-            parameters.append(StopFinderRequestParams.nameSf, stopSearchQuery)
+    val response: StopFinderResponse =
+        httpClient.get("${NSW_TRANSPORT_BASE_URL}/v1/tp/stop_finder") {
+            url {
+                parameters.append(StopFinderRequestParams.nameSf, stopSearchQuery)
 
-            parameters.append(StopFinderRequestParams.typeSf, stopType.type)
-            parameters.append(StopFinderRequestParams.coordOutputFormat, "EPSG:4326")
-            parameters.append(StopFinderRequestParams.outputFormat, "rapidJSON")
-            parameters.append(StopFinderRequestParams.version, "10.2.1.42")
-            parameters.append(StopFinderRequestParams.tfNSWSF, "true")
-        }
-    }.body()
+                parameters.append(StopFinderRequestParams.typeSf, stopType.type)
+                parameters.append(StopFinderRequestParams.coordOutputFormat, "EPSG:4326")
+                parameters.append(StopFinderRequestParams.outputFormat, "rapidJSON")
+//                parameters.append(StopFinderRequestParams.version, "10.2.1.42")
+                parameters.append(StopFinderRequestParams.tfNSWSF, "true")
+            }
+        }.body()
+    println("response: $response")
+    return response
 }

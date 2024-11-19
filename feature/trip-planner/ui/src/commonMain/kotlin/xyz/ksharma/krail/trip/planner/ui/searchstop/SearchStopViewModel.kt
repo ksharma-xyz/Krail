@@ -38,8 +38,13 @@ class SearchStopViewModel : ViewModel() {
 
         viewModelScope.launch {
             runCatching {
-                val results =
-                    fetchStop(httpClient = httpClient, stopSearchQuery = query).toStopResults()
+                val response =
+                    fetchStop(httpClient = httpClient, stopSearchQuery = query)
+                println("response VM: $response")
+
+                val results = response.toStopResults()
+                println("results: $results")
+
                 updateUiState { displayData(results) }
             }.getOrElse {
                 updateUiState { displayError() }

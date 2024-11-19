@@ -2,14 +2,12 @@ package xyz.ksharma.krail.trip.planner.ui.timetable.business
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.aestToHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifference
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toFormattedDurationTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToAEST
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToAEST_LocalDateTime
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
@@ -248,7 +246,7 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
     }
 }
 
-internal fun TripResponse.logForUnderstandingData() {
+/*internal fun TripResponse.logForUnderstandingData() {
     println("Journeys: ${journeys?.size}")
     journeys?.mapIndexed { jindex, j ->
         println("JOURNEY #${jindex + 1}")
@@ -279,12 +277,12 @@ internal fun TripResponse.logForUnderstandingData() {
             )
         }
     }
-}
+}*/
 
 /**
  * Prints the stops for legs when interchange required.
  */
-private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNotNull {
+/*private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNotNull {
     // TODO - figure role of ARR vs DEP time
     val timeArr = it.arrivalTimeEstimated?.utcToAEST()
         ?.formatTo12HourTime() ?: it.arrivalTimePlanned?.utcToAEST()?.formatTo12HourTime()
@@ -298,9 +296,9 @@ private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNot
         "\n\t\t\t\t Stop: ${it.name}," +
             " depTime: ${timeArr ?: depTime}"
     }
-}
+}*/
 
-private fun String.fromUTCToDisplayTimeString() = this.utcToAEST().aestToHHMM()
+private fun String.fromUTCToDisplayTimeString() = this.utcToAEST_LocalDateTime().toHHMM()
 
 private fun TripResponse.Leg.isWalkingLeg(): Boolean =
     transportation?.product?.productClass == 99L || transportation?.product?.productClass == 100L

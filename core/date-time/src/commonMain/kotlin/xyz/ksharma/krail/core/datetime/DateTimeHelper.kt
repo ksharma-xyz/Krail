@@ -2,6 +2,7 @@ package xyz.ksharma.krail.core.datetime
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.math.absoluteValue
@@ -26,15 +27,28 @@ object DateTimeHelper {
         return localDateTime.toString()
     }
 
+    fun String.utcToAEST_LocalDateTime(): LocalDateTime {
+        val instant = Instant.parse(this)
+        val aestZone = TimeZone.of("Australia/Sydney")
+        val localDateTime = instant.toLocalDateTime(aestZone)
+        return localDateTime
+    }
+
+    fun LocalDateTime.toHHMM(): String {
+        val hour = if (this.hour % 12 == 0) 12 else this.hour % 12 // Ensure 12-hour format
+        val minute = this.minute.toString().padStart(2, '0')
+        val amPm = if (this.hour < 12) "AM" else "PM"
+        return "$hour:$minute $amPm"
+    }
 
     fun String.aestToHHMM(): String {
-        val localDateTime = Instant.parse(this).toLocalDateTime(TimeZone.of("Australia/Sydney"))
+        val dateTimeString = if (this.length == 16) "$this:00" else this
+        val localDateTime = Instant.parse(dateTimeString).toLocalDateTime(TimeZone.of("Australia/Sydney"))
         val hour = if (localDateTime.hour % 12 == 0) 12 else localDateTime.hour % 12 // Ensure 12-hour format
         val minute = localDateTime.minute.toString().padStart(2, '0')
         val amPm = if (localDateTime.hour < 12) "AM" else "PM"
         return "$hour:$minute $amPm"
     }
-
 
     fun calculateTimeDifferenceFromNow(
         utcDateString: String,
