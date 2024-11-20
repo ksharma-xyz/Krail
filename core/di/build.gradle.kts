@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.krail.android.library)
     alias(libs.plugins.krail.kotlin.multiplatform)
+    alias(libs.plugins.krail.compose.multiplatform)
+    alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
 }
 
@@ -20,6 +22,8 @@ kotlin {
             dependencies {
                 implementation(libs.di.kotlinInjectRuntime)
                 implementation(libs.kotlinx.coroutines.core)
+
+                implementation(compose.runtime)
             }
         }
     }
@@ -31,7 +35,11 @@ dependencies {
 
     // 2. Configure code generation into each KMP target source set
     kspAndroid(libs.di.kotlinInjectCompilerKsp)
-   // kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-   // kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-   // kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+    // kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+    // kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+    // kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+}
+
+ksp {
+    arg("me.tatarka.inject.generateCompanionExtensions", "true")
 }

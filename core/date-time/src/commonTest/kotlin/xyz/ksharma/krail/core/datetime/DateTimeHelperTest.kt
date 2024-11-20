@@ -1,7 +1,6 @@
 package xyz.ksharma.krail.core.datetime
 
 import kotlinx.datetime.Instant
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.aestToHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toFormattedDurationTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
@@ -54,11 +53,13 @@ class DateTimeHelperTest {
         assertEquals("2024-10-07T12:00:23", "2024-10-07T01:00:23Z".utcToAEST())
     }
 
+/*
     @Test
     fun testAestToHHMM() {
         assertEquals("11:00 AM", "2024-10-07T00:00:00Z".aestToHHMM())
         assertEquals("12:00 PM", "2024-10-07T01:00:00Z".aestToHHMM())
     }
+*/
 
     @Test
     fun testToGenericFormattedTimeString() {

@@ -76,25 +76,8 @@ dependencies {
     kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
 
     // 2. Configure code generation into each KMP target source set
-    //kspAndroid(libs.di.kotlinInjectCompilerKsp)
+    ksp(libs.di.kotlinInjectCompilerKsp)
     // kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
     // kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
     // kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
 }
-
-
-/*
-dependencies {
-    implementation(projects.core.dateTime)
-    implementation(projects.core.designSystem)
-    implementation(projects.feature.tripPlanner.network.api)
-    implementation(projects.feature.tripPlanner.state)
-    implementation(projects.sandook.api)
-
-    implementation(projects.sandook.real)
-    implementation(libs.compose.material3)
-
-    testImplementation(libs.test.composeUiTestJunit4)
-    testImplementation(libs.test.kotlin)
-}
-*/

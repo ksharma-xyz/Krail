@@ -29,8 +29,15 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     androidTarget()
-    iosArm64()
-    iosSimulatorArm64()
+    listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    ).forEach {
+        it.binaries.framework {
+            baseName = "network"
+        }
+    }
 
     sourceSets {
         androidMain.dependencies {

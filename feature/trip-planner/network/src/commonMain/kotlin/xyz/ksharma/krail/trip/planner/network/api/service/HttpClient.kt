@@ -14,6 +14,7 @@ import xyz.ksharma.krail.trip.planner.network.BuildKonfig
 
 fun getHttpClient(): HttpClient {
     return HttpClient {
+        expectSuccess = true
         install(ContentNegotiation) {
             json(Json {
                 ignoreUnknownKeys = true

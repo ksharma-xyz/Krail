@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import me.tatarka.inject.annotations.Inject
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.sandook.RealSandook
@@ -32,10 +33,11 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.trip.planner.ui.timetable.business.buildJourneyList
 import kotlin.time.Duration.Companion.seconds
 
+@Inject
 class TimeTableViewModel : ViewModel() {
 
-    private val sandook: Sandook = RealSandook()
     private val rateLimiter: RateLimiter = NetworkRateLimiter()
+    private val sandook: Sandook = RealSandook()
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
     val uiState: StateFlow<TimeTableState> = _uiState

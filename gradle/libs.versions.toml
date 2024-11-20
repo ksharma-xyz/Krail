@@ -24,6 +24,7 @@ ktor = "3.0.1"
 androidx-lifecycle = "2.8.3"
 kotlinxCoroutines = "1.9.0"
 buildkonfigGradlePlugin = "0.15.2"
+kermit = "2.0.4"
 
 #SDK
 minSdk = "26"
@@ -41,6 +42,8 @@ ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktorCli
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "android-lifecycle" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+
+log-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
