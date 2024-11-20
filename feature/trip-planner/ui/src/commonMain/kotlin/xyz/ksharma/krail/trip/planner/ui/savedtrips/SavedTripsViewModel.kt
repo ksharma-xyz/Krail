@@ -23,17 +23,19 @@ class SavedTripsViewModel : ViewModel() {
     val uiState: StateFlow<SavedTripsState> = _uiState
 
     private fun loadSavedTrips() {
+        println("loadSavedTrips, keys: ${sandook.keys()}")
         viewModelScope.launch(context = Dispatchers.IO) {
             val trips = persistentListOf<Trip>()
-            sandook.keys().mapNotNull { key ->
+            sandook.keys().mapNotNull { key -> /// ERROR HERE TODO - keys mismatch
                 val tripString = sandook.getString(key, null)
                 tripString?.let { tripJsonString ->
                     Trip.fromJsonString(tripJsonString)
                 }
             }.toImmutableList()
 
+            println( "SavedTrips: ${trips.size} number")
             trips.forEachIndexed { index, trip ->
-                //Timber.d("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
+                println("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
             }
 
             updateUiState { copy(savedTrips = trips) }
