@@ -17,8 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -39,6 +37,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_a11y
+import krail.feature.trip_planner.ui.generated.resources.ic_clock
+import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -199,7 +201,7 @@ private fun RouteSummary(
         if (displayDuration) {
             Row(horizontalArrangement = Arrangement.End) {
                 Image(
-                    imageVector = Icons.Filled.Add, //painterResource(R.drawable.ic_clock), // TODO replace with clock icon
+                    painter = painterResource(Res.drawable.ic_clock),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                     modifier = Modifier
@@ -244,7 +246,7 @@ private fun StopInfo(
             )
             if (isWheelchairAccessible) {
                 Image(
-                    imageVector = Icons.Filled.Add, // TODO - //painterResource(R.drawable.ic_a11y),
+                    painter = painterResource(Res.drawable.ic_a11y),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(
                         color = if (isProminent) {

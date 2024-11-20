@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
@@ -38,6 +37,11 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_reverse
+import krail.feature.trip_planner.ui.generated.resources.ic_star
+import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
+import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.components.Text
@@ -125,7 +129,7 @@ fun TimeTableScreen(
                         contentDescription = "Reverse Trip Search",
                     ) {
                         Image(
-                            imageVector = Icons.Filled.Edit,// TODO - icons ImageVector.vectorResource(R.drawable.ic_reverse),
+                            painter = painterResource(Res.drawable.ic_reverse),
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(themeContentColor),
                             modifier = Modifier.size(24.dp),
@@ -140,10 +144,10 @@ fun TimeTableScreen(
                         },
                     ) {
                         Image(
-                            imageVector = if (timeTableState.isTripSaved) {
-                                Icons.Filled.Star
+                            painter = if (timeTableState.isTripSaved) {
+                                painterResource(Res.drawable.ic_star_filled)
                             } else {
-                                Icons.Outlined.Star
+                                painterResource(Res.drawable.ic_star)
                             },
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(themeContentColor),

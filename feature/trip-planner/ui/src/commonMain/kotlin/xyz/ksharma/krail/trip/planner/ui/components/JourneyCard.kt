@@ -21,8 +21,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -35,7 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -47,6 +45,12 @@ import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_a11y
+import krail.feature.trip_planner.ui.generated.resources.ic_alert
+import krail.feature.trip_planner.ui.generated.resources.ic_clock
+import krail.feature.trip_planner.ui.generated.resources.ic_walk
+import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
@@ -230,8 +234,8 @@ fun ExpandedJourneyCardContent(
         ) {
             if (totalUniqueServiceAlerts > 0) {
                 SmallButton(
-                    imageVector = Icons.Filled.Call, // TODO - R.drawable.ic_alert,
-                    text = if(totalUniqueServiceAlerts > 1) {
+                    painter = painterResource(Res.drawable.ic_alert),
+                    text = if (totalUniqueServiceAlerts > 1) {
                         "$totalUniqueServiceAlerts Alerts"
                     } else {
                         "$totalUniqueServiceAlerts Alert"
@@ -244,7 +248,7 @@ fun ExpandedJourneyCardContent(
             }
 
             TextWithIcon(
-                imageVector = Icons.Filled.ShoppingCart,//TODO - R.drawable.ic_clock,
+                painter = painterResource(Res.drawable.ic_clock),
                 text = totalTravelTime,
                 textStyle = KrailTheme.typography.bodyLarge,
                 iconSize = iconSize,
@@ -364,7 +368,7 @@ fun DefaultJourneyCardContent(
                 }
             }
 
-            platformNumber?.let { platform -> // todo - extract
+            platformNumber?.let { platform ->
                 Box(
                     modifier = Modifier
                         .padding(start = 8.dp)
@@ -378,7 +382,7 @@ fun DefaultJourneyCardContent(
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(
-                        text = platform.toString(),
+                        text = platform,
                         textAlign = TextAlign.Center,
                         style = KrailTheme.typography.labelLarge,
                     )
@@ -407,7 +411,7 @@ fun DefaultJourneyCardContent(
                 modifier = Modifier.padding(end = 10.dp),
             )
             TextWithIcon(
-                imageVector = Icons.Filled.ShoppingCart, //TODO - R.drawable.ic_clock,
+                painter = painterResource(Res.drawable.ic_clock),
                 text = totalTravelTime,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
@@ -415,7 +419,7 @@ fun DefaultJourneyCardContent(
             )
             totalWalkTime?.let {
                 TextWithIcon(
-                    imageVector = Icons.Filled.ShoppingCart,// TODO - R.drawable.ic_walk,
+                    painter = painterResource(Res.drawable.ic_walk),
                     text = totalWalkTime,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
@@ -425,7 +429,7 @@ fun DefaultJourneyCardContent(
             Spacer(modifier = Modifier.weight(1f))
             if (isWheelchairAccessible) {
                 Image(
-                    imageVector = Icons.Outlined.Add,
+                    painter = painterResource(Res.drawable.ic_a11y),
                     contentDescription = null,
                     colorFilter = ColorFilter.tint(color = KrailTheme.colors.onSurface),
                     modifier = Modifier
@@ -439,7 +443,7 @@ fun DefaultJourneyCardContent(
 
 @Composable
 private fun TextWithIcon(
-    imageVector: ImageVector,
+    painter: Painter,
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KrailTheme.typography.bodyMedium,
@@ -454,7 +458,7 @@ private fun TextWithIcon(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Image(
-            imageVector = imageVector,
+            painter = painter,
             contentDescription = null,
             colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
             modifier = Modifier
@@ -471,7 +475,7 @@ private fun TextWithIcon(
 
 @Composable
 private fun SmallButton(
-    imageVector: ImageVector,
+    painter: Painter,
     text: String,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KrailTheme.typography.bodyMedium,
@@ -501,7 +505,7 @@ private fun SmallButton(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Image(
-            imageVector = imageVector,
+            painter = painter,
             contentDescription = null,
             colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
             modifier = Modifier
@@ -594,7 +598,7 @@ private fun PreviewJourneyCardCollapsed() {
                     ),
                 ),
 
-            ),
+                ),
             cardState = JourneyCardState.EXPANDED,
             totalWalkTime = "10 mins",
             totalUniqueServiceAlerts = 1,

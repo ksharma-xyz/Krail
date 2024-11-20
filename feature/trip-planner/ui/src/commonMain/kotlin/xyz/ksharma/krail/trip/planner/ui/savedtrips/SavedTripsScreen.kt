@@ -26,6 +26,10 @@ import xyz.ksharma.krail.trip.planner.ui.components.SearchStopRow
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
+import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_reverse
+import org.jetbrains.compose.resources.painterResource
+
 
 @Composable
 fun SavedTripsScreen(

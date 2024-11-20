@@ -6,14 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_walk
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -35,7 +37,7 @@ fun WalkingLeg(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Image(
-            imageVector = Icons.Filled.Add,// TODO - painterResource(id = R.drawable.ic_walk),
+            painter = painterResource(Res.drawable.ic_walk),
             contentDescription = null,
             colorFilter = ColorFilter.tint(
                 color = KrailTheme.colors.onSurface.copy(alpha = contentAlpha),
@@ -46,6 +48,7 @@ fun WalkingLeg(
     }
 }
 
+@Preview
 @Composable
 private fun PreviewWalkingLeg() {
     KrailTheme {

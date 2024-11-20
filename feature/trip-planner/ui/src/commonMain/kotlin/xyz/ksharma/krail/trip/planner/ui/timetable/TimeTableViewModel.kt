@@ -48,7 +48,7 @@ class TimeTableViewModel : ViewModel() {
         // to background and come back up again, the API call will be made.
         // Probably good to have data up to date.
         .onStart {
-            // Timber.d("onStart: Fetching Trip")
+             println("onStart: Fetching Trip")
             fetchTrip()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
@@ -82,17 +82,17 @@ class TimeTableViewModel : ViewModel() {
     }
 
     private fun fetchTrip() {
-        // Timber.d("fetchTrip API Call")
+        println("fetchTrip API Call")
         viewModelScope.launch(Dispatchers.IO) {
             // TODO - silent refresh here, UI to display loading but silent one.
             rateLimiter.rateLimitFlow {
-                //    Timber.d("rateLimitFlow block")
+                //    println("rateLimitFlow block")
                 loadTrip()
             }.catch { e ->
                 println("Error while fetching trip: $e")
             }.collectLatest { result ->
                 result.onSuccess { response ->
-                    // Timber.d("Success API response")
+                    // println("Success API response")
                     updateUiState {
                         copy(
                             isLoading = false,
@@ -110,7 +110,7 @@ class TimeTableViewModel : ViewModel() {
     }
 
     private suspend fun loadTrip(): Result<TripResponse> = withContext(Dispatchers.IO) {
-        //  Timber.d("loadTrip API Call")
+      println("loadTrip API Call")
         require(
             tripInfo != null && tripInfo!!.fromStopId.isNotEmpty() && tripInfo!!.toStopId.isNotEmpty(),
         ) { "Trip Info is null or empty" }
@@ -128,20 +128,20 @@ class TimeTableViewModel : ViewModel() {
     }
 
     private fun onSaveTripButtonClicked() {
-        //Timber.d("Save Trip Button Clicked")
+        println("Save Trip Button Clicked")
         viewModelScope.launch(Dispatchers.IO) {
             tripInfo?.let { trip ->
-                // Timber.d("Toggle Save Trip: $trip")
+                println("Toggle Save Trip: $trip")
                 val savedTrip = sandook.getString(key = trip.tripId)
-                if (savedTrip != null) {
+                if (savedTrip != null && savedTrip != "null") {
                     // Trip is already saved, so delete it
                     sandook.remove(key = trip.tripId)
-                    //  Timber.d("Deleted Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
+                    println("Deleted Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
                     updateUiState { copy(isTripSaved = false) }
                 } else {
                     // Trip is not saved, so save it
                     sandook.putString(key = trip.tripId, value = trip.toJsonString())
-                    //   Timber.d("Saved Trip (Pref): $trip")
+                    println("Saved Trip (Pref): $trip")
                     updateUiState { copy(isTripSaved = true) }
                 }
             }
@@ -149,14 +149,15 @@ class TimeTableViewModel : ViewModel() {
     }
 
     private fun onJourneyCardClicked(journeyId: String) {
-        //Timber.d("Journey Card Clicked(JourneyId): $journeyId")
+       println("Journey Card Clicked(JourneyId): $journeyId")
         _expandedJourneyId.update { if (it == journeyId) null else journeyId }
     }
 
     private fun onLoadTimeTable(trip: Trip) {
-        //Timber.d("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
+        println("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
         tripInfo = trip
         val savedTrip = sandook.getString(key = trip.tripId)
+        println("Saved Trip[${trip.tripId}]: $savedTrip")
         updateUiState {
             copy(
                 isLoading = true,
@@ -169,7 +170,7 @@ class TimeTableViewModel : ViewModel() {
     }
 
     private fun onReverseTripButtonClicked() {
-        //  Timber.d("Reverse Trip Button Clicked -- Trigger")
+        println("Reverse Trip Button Clicked -- Trigger")
         require(tripInfo != null) { "Trip Info is null" }
         val reverseTrip = Trip(
             fromStopId = tripInfo!!.toStopId,
@@ -182,7 +183,7 @@ class TimeTableViewModel : ViewModel() {
         updateUiState {
             copy(
                 trip = reverseTrip,
-                isTripSaved = savedTrip != null,
+                isTripSaved = savedTrip != null && savedTrip != "null",
                 isLoading = true,
                 isError = false,
             )
@@ -209,7 +210,7 @@ class TimeTableViewModel : ViewModel() {
             copy(journeyList = updatedJourneyList)
         }
 
-        // Timber.d("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
+        // println("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
     }
 
     private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {

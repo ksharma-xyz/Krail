@@ -22,6 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_reverse
+import krail.feature.trip_planner.ui.generated.resources.ic_search
+import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalOnContentColor
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.RoundIconButton
@@ -88,7 +92,7 @@ fun SearchStopRow(
             RoundIconButton(
                 content = {
                     Image(
-                        imageVector = Icons.Filled.Edit, //todo 0  //.vectorResource(TripPlannerUiR.drawable.ic_reverse),
+                        painter = painterResource(Res.drawable.ic_reverse),
                         contentDescription = "Reverse",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )
@@ -99,7 +103,7 @@ fun SearchStopRow(
             RoundIconButton(
                 content = {
                     Image(
-                        imageVector = Icons.Filled.Search, // TODO - ImageVector.vectorResource(TripPlannerUiR.drawable.ic_search),
+                        painter = painterResource(Res.drawable.ic_search),
                         contentDescription = "Search",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
                     )

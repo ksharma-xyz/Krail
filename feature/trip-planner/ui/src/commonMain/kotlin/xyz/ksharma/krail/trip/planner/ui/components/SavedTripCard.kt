@@ -26,6 +26,9 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
+import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
+import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -89,7 +92,7 @@ fun SavedTripCard(
             contentAlignment = Alignment.Center,
         ) {
             Image(
-                imageVector = Icons.Filled.Star,
+                painter = painterResource(Res.drawable.ic_star_filled),
                 contentDescription = "Save Trip",
                 colorFilter = ColorFilter.tint(
                     primaryTransportMode?.colorCode
