@@ -32,7 +32,7 @@ kotlin {
     sourceSets {
         androidMain {
             dependencies {
-                implementation(libs.db.android.driver)
+                implementation(libs.db.sqlAndroidDriver)
             }
         }
 
@@ -46,7 +46,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(libs.log.kermit)
                 implementation(libs.kotlinx.datetime)
-                implementation(libs.db.runtime)
+                implementation(libs.db.sqlRuntime)
 
                 api(libs.di.koinComposeViewmodelNav)
             }
@@ -54,11 +54,9 @@ kotlin {
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.db.native.driver)
+            implementation(libs.db.sqlNativeDriver)
         }
     }
-
-    //configureCommonMainKsp()
 }
 
 dependencies {
@@ -75,14 +73,11 @@ dependencies {
 ksp {
     arg("me.tatarka.inject.generateCompanionExtensions", "true")
 }
-/*
-fun KotlinMultiplatformExtension.configureCommonMainKsp() {
-    sourceSets.named("commonMain").configure {
-        kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-    }
 
-    project.tasks.withType(KotlinCompilationTask::class.java).configureEach {
-        if(name != "kspCommonMainKotlinMetadata") {
-            dependsOn("kspCommonMainKotlinMetadata")
+sqldelight {
+    databases {
+        create("KrailSandook") {
+            packageName.set("xyz.ksharma.krail.sandook")
         }
-    }*/
+    }
+}

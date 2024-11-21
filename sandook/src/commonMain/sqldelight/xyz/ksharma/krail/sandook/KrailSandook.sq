@@ -1,0 +1,36 @@
+-- Theme Table --
+CREATE TABLE theme (
+    productClass INTEGER NOT NULL
+);
+
+insertOrReplaceTheme:
+INSERT OR REPLACE INTO theme(productClass)
+VALUES (?);
+
+getTheme:
+SELECT productClass FROM theme LIMIT 1;
+
+-- Saved Trip Table --
+CREATE TABLE savedtrip (
+    tripId TEXT PRIMARY KEY,
+    fromStopId TEXT NOT NULL,
+    fromStopName TEXT NOT NULL,
+    toStopId TEXT NOT NULL,
+    toStopName TEXT NOT NULL,
+    timestamp TEXT DEFAULT (datetime('now'))
+);
+
+insertOrReplaceTrip:
+INSERT OR REPLACE INTO savedtrip(tripId, fromStopId, fromStopName, toStopId, toStopName, timestamp)
+VALUES (?, ?, ?, ?, ?, datetime('now'));
+
+deleteTrip:
+DELETE FROM savedtrip WHERE tripId = ?;
+
+selectAllTrips:
+SELECT * FROM savedtrip
+ORDER BY timestamp DESC;
+
+findTripById:
+SELECT * FROM savedtrip
+WHERE tripId = ?;

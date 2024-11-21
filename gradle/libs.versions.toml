@@ -91,9 +91,9 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 #CodeStyle Use spotless plugin for multiplatform support
 
 # Database
-db-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
-db-native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
-db-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqlDelight" }
+db-sqlAndroidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
+db-sqlNativeDriver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
+db-sqlRuntime = { module = "app.cash.sqldelight:runtime", version.ref = "sqlDelight" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
