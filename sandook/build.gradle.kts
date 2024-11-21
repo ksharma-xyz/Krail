@@ -8,6 +8,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.sqldelight)
 }
 
 android {
@@ -29,6 +30,12 @@ kotlin {
     }
 
     sourceSets {
+        androidMain {
+            dependencies {
+                implementation(libs.db.android.driver)
+            }
+        }
+
         commonMain {
             dependencies {
 //               implementation(projects.core.di)
@@ -36,10 +43,18 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.di.kotlinInjectRuntime)
                 implementation(libs.multiplatform.settings)
-
                 implementation(compose.runtime)
                 implementation(libs.log.kermit)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.db.runtime)
+
+                api(libs.di.koinComposeViewmodelNav)
             }
+        }
+
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+            implementation(libs.db.native.driver)
         }
     }
 

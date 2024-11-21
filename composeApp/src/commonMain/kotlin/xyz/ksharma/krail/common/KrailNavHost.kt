@@ -15,6 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
+import org.koin.compose.viewmodel.koinNavViewModel
+import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import xyz.ksharma.krail.common.splash.SplashScreen
 import xyz.ksharma.krail.common.splash.SplashViewModel
 import xyz.ksharma.krail.taj.LocalThemeColor
@@ -39,6 +42,7 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
  *   so fine for now. But I will want to refactor it to something nicer e.g. using Circuit library
  *   from Slack, but that would also mean refactoring to use MVP instead of MVVM.
  */
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun KrailNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
@@ -62,7 +66,7 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
             tripPlannerDestinations(navController = navController)
 
             composable<SplashScreen> {
-                val viewModel: SplashViewModel = viewModel { SplashViewModel() }
+                val viewModel: SplashViewModel = koinNavViewModel<SplashViewModel>()
                 val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
                 val mode by viewModel.uiState.collectAsStateWithLifecycle()
 

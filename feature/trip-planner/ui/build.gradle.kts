@@ -56,6 +56,8 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.slf4j.simple) // Logging
                 // TODO - remove once DI added - end
+
+                implementation(libs.di.koinComposeViewmodelNav)
             }
         }
         commonTest {

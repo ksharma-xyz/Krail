@@ -10,6 +10,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.collections.immutable.toImmutableSet
+import org.koin.compose.viewmodel.koinNavViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.theme.getForegroundColor
@@ -21,9 +23,10 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 
+@OptIn(KoinExperimentalAPI::class)
 internal fun NavGraphBuilder.usualRideDestination(navController: NavHostController) {
     composable<UsualRideRoute> {
-        val viewModel:UsualRideViewModel = viewModel { UsualRideViewModel() }
+        val viewModel:UsualRideViewModel = koinNavViewModel<UsualRideViewModel>()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
         var mode: TransportMode? by remember { mutableStateOf(null) }

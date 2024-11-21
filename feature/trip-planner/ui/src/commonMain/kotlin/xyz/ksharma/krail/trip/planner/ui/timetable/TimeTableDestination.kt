@@ -2,20 +2,22 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import org.koin.compose.viewmodel.koinNavViewModel
+import org.koin.core.annotation.KoinExperimentalAPI
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
+@OptIn(KoinExperimentalAPI::class)
 internal fun NavGraphBuilder.timeTableDestination(navController: NavHostController) {
     composable<TimeTableRoute> { backStackEntry ->
-        val viewModel: TimeTableViewModel = viewModel { TimeTableViewModel() }
+        val viewModel: TimeTableViewModel = koinNavViewModel<TimeTableViewModel>()
         val timeTableState by viewModel.uiState.collectAsStateWithLifecycle()
         val route: TimeTableRoute = backStackEntry.toRoute()
         val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()

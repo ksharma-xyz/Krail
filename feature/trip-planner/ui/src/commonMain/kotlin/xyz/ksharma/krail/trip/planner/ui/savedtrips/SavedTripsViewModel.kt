@@ -10,17 +10,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import xyz.ksharma.krail.sandook.RealSandook
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
-@Inject
-class SavedTripsViewModel : ViewModel() {
+class SavedTripsViewModel(
+    private val sandook: Sandook,
+) : ViewModel() {
 
-    private val sandook: Sandook = RealSandook()
     private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
     val uiState: StateFlow<SavedTripsState> = _uiState
 
@@ -35,7 +33,7 @@ class SavedTripsViewModel : ViewModel() {
                 }
             }.toImmutableList()
 
-            println( "SavedTrips: ${trips.size} number")
+            println("SavedTrips: ${trips.size} number")
             trips.forEachIndexed { index, trip ->
                 println("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
             }

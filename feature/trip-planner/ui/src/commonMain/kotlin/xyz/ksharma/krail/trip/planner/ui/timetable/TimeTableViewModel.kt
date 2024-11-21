@@ -17,15 +17,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
-import xyz.ksharma.krail.sandook.RealSandook
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
-import xyz.ksharma.krail.trip.planner.network.api.ratelimit.NetworkRateLimiter
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
-import xyz.ksharma.krail.trip.planner.network.api.service.getHttpClient
+import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -33,16 +30,14 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.trip.planner.ui.timetable.business.buildJourneyList
 import kotlin.time.Duration.Companion.seconds
 
-@Inject
-class TimeTableViewModel : ViewModel() {
-
-    private val rateLimiter: RateLimiter = NetworkRateLimiter()
-    private val sandook: Sandook = RealSandook()
+class TimeTableViewModel(
+    private val tripPlanningService: TripPlanningService,
+    private val rateLimiter: RateLimiter,
+    private val sandook: Sandook,
+) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
     val uiState: StateFlow<TimeTableState> = _uiState
-
-    private val httpClient = getHttpClient()
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -50,7 +45,7 @@ class TimeTableViewModel : ViewModel() {
         // to background and come back up again, the API call will be made.
         // Probably good to have data up to date.
         .onStart {
-             println("onStart: Fetching Trip")
+            println("onStart: Fetching Trip")
             fetchTrip()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
@@ -112,14 +107,13 @@ class TimeTableViewModel : ViewModel() {
     }
 
     private suspend fun loadTrip(): Result<TripResponse> = withContext(Dispatchers.IO) {
-      println("loadTrip API Call")
+        println("loadTrip API Call")
         require(
             tripInfo != null && tripInfo!!.fromStopId.isNotEmpty() && tripInfo!!.toStopId.isNotEmpty(),
         ) { "Trip Info is null or empty" }
 
         runCatching {
-            val tripResponse = xyz.ksharma.krail.trip.planner.network.api.service.trip.fetchTrip(
-                httpClient = httpClient,
+            val tripResponse = tripPlanningService.trip(
                 originStopId = tripInfo!!.fromStopId,
                 destinationStopId = tripInfo!!.toStopId,
             )
@@ -151,7 +145,7 @@ class TimeTableViewModel : ViewModel() {
     }
 
     private fun onJourneyCardClicked(journeyId: String) {
-       println("Journey Card Clicked(JourneyId): $journeyId")
+        println("Journey Card Clicked(JourneyId): $journeyId")
         _expandedJourneyId.update { if (it == journeyId) null else journeyId }
     }
 

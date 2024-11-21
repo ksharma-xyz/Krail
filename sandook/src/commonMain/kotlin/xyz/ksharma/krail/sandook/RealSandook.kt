@@ -1,9 +1,7 @@
 package xyz.ksharma.krail.sandook
 
 import com.russhwolf.settings.Settings
-import me.tatarka.inject.annotations.Inject
 
-@Inject
 class RealSandook : Sandook {
     private val settings: Settings = Settings()
 

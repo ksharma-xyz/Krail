@@ -57,6 +57,8 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
                 implementation(compose.runtime)
                 implementation(libs.slf4j.simple) // Logging
+
+                api(libs.di.koinComposeViewmodelNav)
             }
         }
 

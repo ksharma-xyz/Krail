@@ -1,7 +1,5 @@
 package xyz.ksharma.krail.trip.planner.network.api.service
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -12,7 +10,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import xyz.ksharma.krail.trip.planner.network.BuildKonfig
 
-fun getHttpClient(): HttpClient {
+internal fun getHttpClient(): HttpClient {
     return HttpClient {
         expectSuccess = true
         install(ContentNegotiation) {
@@ -32,8 +30,3 @@ fun getHttpClient(): HttpClient {
         }
     }
 }
-
-@Composable
-fun rememberHttpClient() = remember { getHttpClient() }
-
-internal const val NSW_TRANSPORT_BASE_URL = "https://api.transport.nsw.gov.au"

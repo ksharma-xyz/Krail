@@ -14,10 +14,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideState
 
-@Inject
-class UsualRideViewModel : ViewModel() {
-
-    private val sandook: Sandook = RealSandook()
+class UsualRideViewModel(private val sandook: Sandook) : ViewModel() {
 
     private val _uiState: MutableStateFlow<UsualRideState> = MutableStateFlow(UsualRideState())
     val uiState: StateFlow<UsualRideState> = _uiState

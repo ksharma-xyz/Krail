@@ -1,8 +1,24 @@
 package xyz.ksharma.krail.trip.planner.network.api.service
 
+import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
+import xyz.ksharma.krail.trip.planner.network.api.model.StopType
+import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
+
 /**
  * Swagger: https://opendata.transport.nsw.gov.au/dataset/trip-planner-apis/resource/917c66c3-8123-4a0f-b1b1-b4220f32585d
  */
+internal const val NSW_TRANSPORT_BASE_URL = "https://api.transport.nsw.gov.au"
+
+interface TripPlanningService {
+
+    suspend fun trip(originStopId: String, destinationStopId: String): TripResponse
+
+    suspend fun stopFinder(
+        stopSearchQuery: String,
+        stopType: StopType = StopType.STOP,
+    ): StopFinderResponse
+}
+
 
 /**
  * This endpoint returns a list of departures for a given location based on the date and time

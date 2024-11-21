@@ -25,6 +25,8 @@ androidx-lifecycle = "2.8.3"
 kotlinxCoroutines = "1.9.0"
 buildkonfigGradlePlugin = "0.15.2"
 kermit = "2.0.4"
+sqlDelight = "2.0.2"
+koin = "4.0.1-Beta1"
 
 #SDK
 minSdk = "26"
@@ -52,6 +54,10 @@ multiplatform-settings = { module = "com.russhwolf:multiplatform-settings-no-arg
 # DI
 di-kotlinInjectRuntime = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kotlinInject" }
 di-kotlinInjectCompilerKsp = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kotlinInject" }
+
+di-koinAndroid = {module = "io.insert-koin:koin-android", version.ref = "koin"}
+di-koinComposeViewmodel = {module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin"}
+di-koinComposeViewmodelNav = {module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin"}
 
 #Network
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
@@ -84,6 +90,10 @@ composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler
 
 #CodeStyle Use spotless plugin for multiplatform support
 
+# Database
+db-android-driver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
+db-native-driver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
+db-runtime = { module = "app.cash.sqldelight:runtime", version.ref = "sqlDelight" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -96,6 +106,7 @@ compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }

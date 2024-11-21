@@ -80,8 +80,7 @@ kotlin {
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)
 
-
-            implementation(libs.di.kotlinInjectRuntime)
+            implementation(libs.di.koinComposeViewmodelNav)
         }
     }
 }

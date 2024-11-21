@@ -10,15 +10,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import xyz.ksharma.krail.sandook.RealSandook
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
-@Inject
-class SplashViewModel : ViewModel() {
-
-    private val sandook: Sandook = RealSandook()
+class SplashViewModel(
+    private val sandook: Sandook,
+) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TransportMode?> = MutableStateFlow(null)
     val uiState: MutableStateFlow<TransportMode?> = _uiState
