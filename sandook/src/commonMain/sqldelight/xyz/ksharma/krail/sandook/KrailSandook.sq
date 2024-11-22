@@ -1,17 +1,20 @@
 -- Theme Table --
-CREATE TABLE theme (
+CREATE TABLE Theme (
     productClass INTEGER NOT NULL
 );
 
-insertOrReplaceTheme:
-INSERT OR REPLACE INTO theme(productClass)
+insertOrReplaceProductClass:
+INSERT OR REPLACE INTO Theme(productClass)
 VALUES (?);
 
-getTheme:
-SELECT productClass FROM theme LIMIT 1;
+selectProductClass:
+SELECT productClass FROM Theme LIMIT 1;
+
+clearTheme:
+DELETE FROM Theme;
 
 -- Saved Trip Table --
-CREATE TABLE savedtrip (
+CREATE TABLE SavedTrip (
     tripId TEXT PRIMARY KEY,
     fromStopId TEXT NOT NULL,
     fromStopName TEXT NOT NULL,
@@ -21,16 +24,19 @@ CREATE TABLE savedtrip (
 );
 
 insertOrReplaceTrip:
-INSERT OR REPLACE INTO savedtrip(tripId, fromStopId, fromStopName, toStopId, toStopName, timestamp)
+INSERT OR REPLACE INTO SavedTrip(tripId, fromStopId, fromStopName, toStopId, toStopName, timestamp)
 VALUES (?, ?, ?, ?, ?, datetime('now'));
 
 deleteTrip:
-DELETE FROM savedtrip WHERE tripId = ?;
+DELETE FROM SavedTrip WHERE tripId = ?;
 
 selectAllTrips:
-SELECT * FROM savedtrip
+SELECT * FROM SavedTrip
 ORDER BY timestamp DESC;
 
-findTripById:
-SELECT * FROM savedtrip
+selectTripById:
+SELECT * FROM SavedTrip
 WHERE tripId = ?;
+
+clearSavedTrips:
+DELETE FROM SavedTrip;
