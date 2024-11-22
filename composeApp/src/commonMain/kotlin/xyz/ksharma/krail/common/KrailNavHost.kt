@@ -9,13 +9,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
-import org.koin.compose.viewmodel.koinNavViewModel
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 import xyz.ksharma.krail.common.splash.SplashScreen
@@ -66,7 +64,7 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
             tripPlannerDestinations(navController = navController)
 
             composable<SplashScreen> {
-                val viewModel: SplashViewModel = koinNavViewModel<SplashViewModel>()
+                val viewModel: SplashViewModel = koinViewModel<SplashViewModel>()
                 val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
                 val mode by viewModel.uiState.collectAsStateWithLifecycle()
 

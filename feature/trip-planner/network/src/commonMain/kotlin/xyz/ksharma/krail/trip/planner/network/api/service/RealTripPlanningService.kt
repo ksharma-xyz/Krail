@@ -16,7 +16,7 @@ internal class RealTripPlanningService(private val httpClient: HttpClient) : Tri
 
     override suspend fun trip(
         originStopId: String,
-        destinationStopId: String
+        destinationStopId: String,
     ): TripResponse = withContext(Dispatchers.IO) {
 
         httpClient.get("$NSW_TRANSPORT_BASE_URL/v1/tp/trip") {
@@ -44,7 +44,6 @@ internal class RealTripPlanningService(private val httpClient: HttpClient) : Tri
         stopSearchQuery: String,
         stopType: StopType,
     ): StopFinderResponse = withContext(Dispatchers.IO) {
-
         httpClient.get("${NSW_TRANSPORT_BASE_URL}/v1/tp/stop_finder") {
             url {
                 parameters.append(StopFinderRequestParams.nameSf, stopSearchQuery)

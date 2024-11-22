@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import xyz.ksharma.krail.sandook.Sandook
+import xyz.ksharma.krail.sandook.SandookDb
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 class SplashViewModel(
-    private val sandook: Sandook,
+    private val sandookDb: SandookDb,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TransportMode?> = MutableStateFlow(null)
@@ -28,7 +28,7 @@ class SplashViewModel(
 
     private fun getThemeTransportMode() {
         viewModelScope.launch(Dispatchers.IO) {
-            val productClass = sandook.getString("selectedMode")?.toIntOrNull() ?: 0
+            val productClass = sandookDb.getProductClass()?.toInt() ?: 0
             val mode = TransportMode.toTransportModeType(productClass)
             _uiState.value = mode
         }

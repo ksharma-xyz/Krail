@@ -33,6 +33,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.db.sqlAndroidDriver)
+                implementation(libs.di.koinAndroid)
             }
         }
 

@@ -34,25 +34,30 @@ kotlin {
     }
 
     sourceSets {
-        androidMain.dependencies {
-            implementation(compose.preview)
-            implementation(libs.activity.compose)
+        androidMain {
+            dependencies {
+                implementation(compose.preview)
+                implementation(libs.activity.compose)
 
-            // Projects
-            /*
-                        implementation(projects.core.network)
-                        implementation(projects.core.utils)
-                        implementation(projects.feature.tripPlanner.network.api)
-                        implementation(projects.feature.tripPlanner.network.real)
-                        implementation(projects.feature.tripPlanner.state)
-                        implementation(projects.feature.tripPlanner.ui)
-                        implementation(projects.sandook.api)
-                        implementation(projects.sandook.real)
-            */
-            implementation(compose.foundation)
-            implementation(libs.core.ktx)
-            implementation(libs.kotlinx.serialization.json)
-            implementation(libs.lifecycle.runtime.ktx)
+                // Projects
+                /*
+                            implementation(projects.core.network)
+                            implementation(projects.core.utils)
+                            implementation(projects.feature.tripPlanner.network.api)
+                            implementation(projects.feature.tripPlanner.network.real)
+                            implementation(projects.feature.tripPlanner.state)
+                            implementation(projects.feature.tripPlanner.ui)
+                            implementation(projects.sandook.api)
+                            implementation(projects.sandook.real)
+                */
+                implementation(compose.foundation)
+                implementation(libs.core.ktx)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.lifecycle.runtime.ktx)
+
+                implementation(libs.di.koinAndroid)
+            }
+
         }
 
         commonMain.dependencies {
@@ -86,12 +91,12 @@ kotlin {
 }
 
 dependencies {
-    // 1. Configure code generation into the common source set
+// 1. Configure code generation into the common source set
     kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
 
-    // 2. Configure code generation into each KMP target source set
-    //kspAndroid(libs.di.kotlinInjectCompilerKsp)
-    // kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-    // kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-    // kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+// 2. Configure code generation into each KMP target source set
+//kspAndroid(libs.di.kotlinInjectCompilerKsp)
+// kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+// kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+// kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
 }

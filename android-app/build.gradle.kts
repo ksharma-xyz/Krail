@@ -47,6 +47,8 @@ dependencies {
 
     // Projects
     implementation(projects.composeApp)
+    implementation(projects.sandook)
+
     /*  implementation(projects.core.network)
       implementation(projects.feature.tripPlanner.network.api)
       implementation(projects.feature.tripPlanner.network.real)
@@ -60,4 +62,6 @@ dependencies {
     implementation(libs.core.ktx)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
+
+    implementation(libs.di.koinAndroid)
 }
