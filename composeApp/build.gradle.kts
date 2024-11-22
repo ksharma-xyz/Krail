@@ -62,7 +62,7 @@ kotlin {
 
         commonMain.dependencies {
             implementation(projects.taj)
-//            implementation(projects.sandook)
+            implementation(projects.sandook)
             implementation(projects.feature.tripPlanner.network)
 //            implementation(projects.feature.tripPlanner.ui)
 //            implementation(projects.feature.tripPlanner.state)
@@ -86,17 +86,21 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
 
             implementation(libs.di.koinComposeViewmodelNav)
+            implementation(libs.di.kotlinInjectRuntime)
         }
     }
 }
 
 dependencies {
-// 1. Configure code generation into the common source set
+    // 1. Configure code generation into the common source set
     kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
+    // 2. Configure code generation into each KMP target source set
+    //kspAndroid(libs.di.kotlinInjectCompilerKsp)
+    kspIosArm64(libs.di.kotlinInjectCompilerKsp)
+    kspIosSimulatorArm64(libs.di.kotlinInjectCompilerKsp)
+}
 
-// 2. Configure code generation into each KMP target source set
-//kspAndroid(libs.di.kotlinInjectCompilerKsp)
-// kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-// kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-// kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+ksp {
+    arg("me.tatarka.inject.dumpGraph", "true")
+    arg("me.tatarka.inject.generateCompanionExtensions", "true")
 }

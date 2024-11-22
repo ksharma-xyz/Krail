@@ -86,6 +86,11 @@ dependencies {
     kspIosSimulatorArm64(libs.di.kotlinInjectCompilerKsp)
 }
 
+ksp {
+    arg("me.tatarka.inject.generateCompanionExtensions", "true")
+    arg("me.tatarka.inject.dumpGraph", "true")
+}
+
 // READ API KEY
 val localProperties = gradleLocalProperties(rootProject.rootDir, providers)
 val nswTransportApiKey: String = localProperties.getProperty("NSW_TRANSPORT_API_KEY", "")

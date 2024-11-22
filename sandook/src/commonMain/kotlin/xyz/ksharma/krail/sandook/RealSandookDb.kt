@@ -1,8 +1,11 @@
 package xyz.ksharma.krail.sandook
 
-internal class RealSandookDb(factory: SandookDriverFactory) : SandookDb {
+import me.tatarka.inject.annotations.Inject
 
-    private val database = KrailSandook(factory.createDriver())
+@Inject
+internal class RealSandookDb(factory: SandookFactory) : SandookDb {
+
+    private val database = factory.build()
     private val query = database.krailSandookQueries
 
     // region Theme

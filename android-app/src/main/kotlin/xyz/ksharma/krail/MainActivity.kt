@@ -9,8 +9,14 @@ import xyz.ksharma.krail.common.KrailApp
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
+        super.onCreate(savedInstanceState)
+
+/*
+        val applicationComponent = AndroidApplicationComponent.from(this)
+*/
+
         setContent {
             KrailApp()
         }
@@ -24,3 +30,9 @@ class MainActivity : ComponentActivity() {
         }
     */
 }
+
+/*
+private fun AndroidApplicationComponent.Companion.from(context: Context): AndroidApplicationComponent {
+    return (context.applicationContext as KrailApplication).component
+}
+*/

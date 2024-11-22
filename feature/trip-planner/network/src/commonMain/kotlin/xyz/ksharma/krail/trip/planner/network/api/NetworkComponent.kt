@@ -21,6 +21,8 @@ abstract class NetworkComponent {
 
     protected val NetworkRateLimiter.bind: RateLimiter
         @Provides get() = this
+
+    companion object
 }
 
 @KmpComponentCreate

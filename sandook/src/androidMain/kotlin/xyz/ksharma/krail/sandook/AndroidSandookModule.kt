@@ -1,3 +1,4 @@
+/*
 package xyz.ksharma.krail.sandook
 
 import org.koin.android.ext.koin.androidContext
@@ -16,3 +17,4 @@ val androidDbModule = module {
           )
       }
 }
+*/
