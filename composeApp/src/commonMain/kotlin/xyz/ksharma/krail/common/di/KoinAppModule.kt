@@ -1,3 +1,4 @@
+/*
 package xyz.ksharma.krail.common.di
 
 import io.ktor.client.plugins.logging.DEFAULT
@@ -18,3 +19,4 @@ val koinConfig = koinConfiguration {
 val splashModule = module {
     viewModelOf(::SplashViewModel)
 }
+*/

@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.krail.kotlin.android)
     alias(libs.plugins.krail.compose.multiplatform)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {

@@ -1,3 +1,4 @@
+/*
 package xyz.ksharma.krail.common
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +30,7 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
 
+*/
 /**
  * TODO - I don't like [NavHost] defined in app module, I would love to refactor it to :core:navigation module
  *    but that results in a cyclic dependency. Feature module needs to depend on :core:navigation for navigation logic and
@@ -39,7 +41,8 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
  *   Navigation logic is currently taken from [NowInAndroid](https://github.com/android/nowinandroid] app,
  *   so fine for now. But I will want to refactor it to something nicer e.g. using Circuit library
  *   from Slack, but that would also mean refactoring to use MVP instead of MVVM.
- */
+ *//*
+
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun KrailNavHost(modifier: Modifier = Modifier) {
@@ -99,3 +102,4 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
 
 @Serializable
 private data object SplashScreen
+*/

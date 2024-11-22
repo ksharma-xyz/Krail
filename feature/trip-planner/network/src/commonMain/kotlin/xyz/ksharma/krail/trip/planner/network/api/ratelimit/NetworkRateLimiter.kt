@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
+import me.tatarka.inject.annotations.Inject
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
@@ -18,7 +19,8 @@ import kotlin.time.Duration.Companion.seconds
  *
  * Note: This class should not be Singleton. It should be created per use-case.
  */
-internal class NetworkRateLimiter : RateLimiter {
+@Inject
+class NetworkRateLimiter : RateLimiter {
 
     private val triggerFlow = MutableSharedFlow<Unit>(replay = 1)
     private val isFirstTime = MutableStateFlow(false)

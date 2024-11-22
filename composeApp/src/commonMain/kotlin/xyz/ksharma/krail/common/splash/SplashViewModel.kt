@@ -1,3 +1,4 @@
+/*
 package xyz.ksharma.krail.common.splash
 
 import androidx.lifecycle.ViewModel
@@ -34,3 +35,4 @@ class SplashViewModel(
         }
     }
 }
+*/

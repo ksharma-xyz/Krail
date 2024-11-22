@@ -62,10 +62,10 @@ kotlin {
 
         commonMain.dependencies {
             implementation(projects.taj)
-            implementation(projects.sandook)
+//            implementation(projects.sandook)
             implementation(projects.feature.tripPlanner.network)
-            implementation(projects.feature.tripPlanner.ui)
-            implementation(projects.feature.tripPlanner.state)
+//            implementation(projects.feature.tripPlanner.ui)
+//            implementation(projects.feature.tripPlanner.state)
 
             implementation(libs.navigation.compose)
 
