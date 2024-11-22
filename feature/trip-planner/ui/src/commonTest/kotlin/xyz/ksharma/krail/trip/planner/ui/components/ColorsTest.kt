@@ -2,6 +2,8 @@ package xyz.ksharma.krail.trip.planner.ui.components
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 
 // Define the colors
@@ -34,13 +36,13 @@ fun getForegroundColor(backgroundColor: Color, isDarkMode: Boolean): Color {
     return if (whiteContrast >= 4.0f) whiteColor else blackColor
 }
 
-fun Color.toHex(): String {
+/*fun Color.toHex(): String {
     val red = (this.red * 255).toInt()
     val green = (this.green * 255).toInt()
     val blue = (this.blue * 255).toInt()
     val alpha = (this.alpha * 255).toInt()
     return String.format("#%02X%02X%02X%02X", alpha, red, green, blue)
-}
+}*/
 
 class ColorUtilsTest {
 

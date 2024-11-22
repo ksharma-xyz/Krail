@@ -72,14 +72,11 @@ android {
     namespace = "xyz.ksharma.krail.trip.planner.ui"
 }
 
-
 dependencies {
     // 1. Configure code generation into the common source set
     kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
-
     // 2. Configure code generation into each KMP target source set
-    ksp(libs.di.kotlinInjectCompilerKsp)
-    // kspIosX64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-    // kspIosArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
-    // kspIosSimulatorArm64("me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2")
+//    kspAndroid(libs.di.kotlinInjectCompilerKsp)
+    kspIosArm64(libs.di.kotlinInjectCompilerKsp)
+    kspIosSimulatorArm64(libs.di.kotlinInjectCompilerKsp)
 }

@@ -1,4 +1,4 @@
-package ratelimit
+package xyz.ksharma.krail.trip.planner.network.api.ratelimit
 
 import app.cash.turbine.test
 import kotlinx.coroutines.delay
@@ -9,7 +9,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class APIRateLimiterTest {
 
-    private val rateLimiter = APIRateLimiter()
+    private val rateLimiter = NetworkRateLimiter()
 
     @Test
     fun `Given rate limiter When triggered once Then should emit only once within the time interval`() = runTest {
