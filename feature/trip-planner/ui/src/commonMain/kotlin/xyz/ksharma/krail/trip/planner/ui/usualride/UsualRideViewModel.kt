@@ -7,10 +7,7 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
-import xyz.ksharma.krail.sandook.RealSandook
 import xyz.ksharma.krail.sandook.Sandook
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideState
 
@@ -27,10 +24,7 @@ class UsualRideViewModel(private val sandook: Sandook) : ViewModel() {
 
     private fun onTransportModeSelected(productClass: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            TransportMode.toTransportModeType(productClass)?.let { mode ->
-                //Timber.d("onTransportModeSelected: $mode")
-                sandook.putString("selectedMode", mode.productClass.toString())
-            }
+            sandook.insertOrReplaceTheme(productClass.toLong())
         }
     }
 }

@@ -1,57 +1,56 @@
 package xyz.ksharma.krail.sandook
 
-import com.russhwolf.settings.Settings
+internal class RealSandook(factory: SandookDriverFactory) : Sandook {
 
-class RealSandook : Sandook {
-    private val settings: Settings = Settings()
+    private val sandook = KrailSandook(factory.createDriver())
+    private val query = sandook.krailSandookQueries
 
-    override fun keys(): Set<String> = settings.keys
-
-    override fun putString(key: String, value: String) {
-        settings.putString(key, value)
+    // region Theme
+    override fun insertOrReplaceTheme(productClass: Long) {
+        query.insertOrReplaceProductClass(productClass)
     }
 
-    override fun getString(key: String, defaultValue: String?): String? {
-        return settings.getStringOrNull(key) ?: defaultValue
+    override fun getProductClass(): Long? {
+        return query.selectProductClass().executeAsOneOrNull()
     }
 
-    override fun putInt(key: String, value: Int) {
-        settings.putInt(key, value)
+    override fun clearTheme() {
+        query.clearTheme()
     }
 
-    override fun getInt(key: String, defaultValue: Int): Int {
-        return settings.getInt(key, defaultValue)
+    // endregion
+
+    // region SavedTrip
+    override fun insertOrReplaceTrip(
+        tripId: String,
+        fromStopId: String,
+        fromStopName: String,
+        toStopId: String,
+        toStopName: String,
+    ) {
+        query.insertOrReplaceTrip(
+            tripId,
+            fromStopId,
+            fromStopName,
+            toStopId,
+            toStopName,
+        )
     }
 
-    override fun putBoolean(key: String, value: Boolean) {
-        settings.putBoolean(key, value)
+    override fun deleteTrip(tripId: String) {
+        query.deleteTrip(tripId)
     }
 
-    override fun getBoolean(key: String, defaultValue: Boolean): Boolean {
-        return settings.getBoolean(key, defaultValue)
+    override fun selectAllTrips(): List<SavedTrip> {
+        return query.selectAllTrips().executeAsList()
     }
 
-    override fun putFloat(key: String, value: Float) {
-        settings.putFloat(key, value)
+    override fun selectTripById(tripId: String): SavedTrip? {
+        return query.selectTripById(tripId).executeAsOneOrNull()
     }
 
-    override fun getFloat(key: String, defaultValue: Float): Float {
-        return settings.getFloat(key, defaultValue)
+    override fun clearSavedTrips() {
+        query.clearSavedTrips()
     }
-
-    override fun putLong(key: String, value: Long) {
-        settings.putLong(key, value)
-    }
-
-    override fun getLong(key: String, defaultValue: Long): Long {
-        return settings.getLong(key, defaultValue)
-    }
-
-    override fun remove(key: String) {
-        settings.remove(key)
-    }
-
-    override fun clear() {
-        settings.clear()
-    }
+    // endregion
 }

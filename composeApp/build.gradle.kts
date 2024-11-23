@@ -2,13 +2,47 @@ import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 android {
-    namespace = "xyz.ksharma.krail.common"
+    namespace = "xyz.ksharma.krail"
+
+    defaultConfig {
+        applicationId = "xyz.ksharma.krail"
+        versionCode = 12
+        versionName = "1.0-alpha03"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+    }
+
+    buildTypes {
+
+        debug {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+            ndk {
+                isDebuggable = true
+                debugSymbolLevel = "FULL"
+            }
+        }
+
+        release {
+            isMinifyEnabled = true
+            isDebuggable = false
+            isShrinkResources = true
+            ndk {
+                isDebuggable = false
+                debugSymbolLevel = "FULL"
+            }
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+        }
+    }
 }
 
 plugins {
     alias(libs.plugins.krail.kotlin.multiplatform)
     alias(libs.plugins.krail.compose.multiplatform)
-    alias(libs.plugins.krail.android.library)
+    alias(libs.plugins.krail.android.application)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
@@ -38,34 +72,20 @@ kotlin {
             dependencies {
                 implementation(compose.preview)
                 implementation(libs.activity.compose)
-
-                // Projects
-                /*
-                            implementation(projects.core.network)
-                            implementation(projects.core.utils)
-                            implementation(projects.feature.tripPlanner.network.api)
-                            implementation(projects.feature.tripPlanner.network.real)
-                            implementation(projects.feature.tripPlanner.state)
-                            implementation(projects.feature.tripPlanner.ui)
-                            implementation(projects.sandook.api)
-                            implementation(projects.sandook.real)
-                */
                 implementation(compose.foundation)
                 implementation(libs.core.ktx)
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.lifecycle.runtime.ktx)
-
-                implementation(libs.di.koinAndroid)
+                api(libs.di.koinAndroid)
             }
-
         }
 
         commonMain.dependencies {
             implementation(projects.taj)
             implementation(projects.sandook)
             implementation(projects.feature.tripPlanner.network)
-//            implementation(projects.feature.tripPlanner.ui)
-//            implementation(projects.feature.tripPlanner.state)
+            implementation(projects.feature.tripPlanner.ui)
+            implementation(projects.feature.tripPlanner.state)
 
             implementation(libs.navigation.compose)
 
@@ -85,22 +105,13 @@ kotlin {
             implementation(libs.ktor.client.logging)
             implementation(libs.ktor.serialization.kotlinx.json)
 
-            implementation(libs.di.koinComposeViewmodelNav)
+            api(libs.di.koinComposeViewmodel)
+
             implementation(libs.di.kotlinInjectRuntime)
         }
     }
 }
 
 dependencies {
-    // 1. Configure code generation into the common source set
-    kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
-    // 2. Configure code generation into each KMP target source set
-    //kspAndroid(libs.di.kotlinInjectCompilerKsp)
-    kspIosArm64(libs.di.kotlinInjectCompilerKsp)
-    kspIosSimulatorArm64(libs.di.kotlinInjectCompilerKsp)
-}
-
-ksp {
-    arg("me.tatarka.inject.dumpGraph", "true")
-    arg("me.tatarka.inject.generateCompanionExtensions", "true")
+    implementation(projects.sandook)
 }

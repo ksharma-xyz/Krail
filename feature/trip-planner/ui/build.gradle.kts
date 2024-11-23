@@ -57,7 +57,7 @@ kotlin {
                 implementation(libs.slf4j.simple) // Logging
                 // TODO - remove once DI added - end
 
-                implementation(libs.di.koinComposeViewmodelNav)
+                api(libs.di.koinComposeViewmodel)
             }
         }
         commonTest {

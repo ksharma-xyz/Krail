@@ -48,18 +48,17 @@ kotlin {
                 implementation(libs.log.kermit)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.db.sqlRuntime)
-
-                api(libs.di.koinComposeViewmodelNav)
+                api(libs.di.koinComposeViewmodel)
             }
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-            implementation(libs.db.sqlNativeDriver)
+            api(libs.db.sqlNativeDriver)
         }
     }
 }
-
+/*
 dependencies {
     // 1. Configure code generation into the common source set
     kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
@@ -72,7 +71,7 @@ dependencies {
 ksp {
     arg("me.tatarka.inject.generateCompanionExtensions", "true")
     arg("me.tatarka.inject.dumpGraph", "true")
-}
+}*/
 
 sqldelight {
     databases {

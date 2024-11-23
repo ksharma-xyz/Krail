@@ -128,15 +128,19 @@ class TimeTableViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             tripInfo?.let { trip ->
                 println("Toggle Save Trip: $trip")
-                val savedTrip = sandook.getString(key = trip.tripId)
-                if (savedTrip != null && savedTrip != "null") {
+                val savedTrip = sandook.selectTripById(tripId = trip.tripId)
+                if (savedTrip != null) {
                     // Trip is already saved, so delete it
-                    sandook.remove(key = trip.tripId)
-                    println("Deleted Trip (Pref): ${Trip.fromJsonString(savedTrip)}")
+                    sandook.deleteTrip(tripId = trip.tripId)
+                    println("Deleted Trip (Pref): $savedTrip")
                     updateUiState { copy(isTripSaved = false) }
                 } else {
                     // Trip is not saved, so save it
-                    sandook.putString(key = trip.tripId, value = trip.toJsonString())
+                    sandook.insertOrReplaceTrip(
+                        tripId = trip.tripId,
+                        fromStopId = trip.fromStopId, fromStopName = trip.fromStopName,
+                        toStopId = trip.toStopId, toStopName = trip.toStopName
+                    )
                     println("Saved Trip (Pref): $trip")
                     updateUiState { copy(isTripSaved = true) }
                 }
@@ -152,7 +156,7 @@ class TimeTableViewModel(
     private fun onLoadTimeTable(trip: Trip) {
         println("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
         tripInfo = trip
-        val savedTrip = sandook.getString(key = trip.tripId)
+        val savedTrip = sandook.selectTripById(tripId = trip.tripId)
         println("Saved Trip[${trip.tripId}]: $savedTrip")
         updateUiState {
             copy(
@@ -175,11 +179,11 @@ class TimeTableViewModel(
             toStopName = tripInfo!!.fromStopName,
         )
         tripInfo = reverseTrip
-        val savedTrip = sandook.getString(key = reverseTrip.tripId)
+        val savedTrip = sandook.selectTripById(tripId = reverseTrip.tripId)
         updateUiState {
             copy(
                 trip = reverseTrip,
-                isTripSaved = savedTrip != null && savedTrip != "null",
+                isTripSaved = savedTrip != null,
                 isLoading = true,
                 isError = false,
             )

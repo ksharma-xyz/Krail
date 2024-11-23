@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name="krail.KrailApplication"
+        android:name=".KrailApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:enableOnBackInvokedCallback="true"
@@ -17,7 +17,7 @@
         android:theme="@style/Theme.Krail"
         tools:ignore="UnusedAttribute">
         <activity
-            android:name="krail.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Krail">
             <intent-filter>

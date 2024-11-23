@@ -42,6 +42,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
+            api(libs.di.koinAndroid)
         }
 
         commonMain {
@@ -57,7 +58,7 @@ kotlin {
                 implementation(compose.runtime)
                 implementation(libs.slf4j.simple) // Logging
 
-                api(libs.di.koinComposeViewmodelNav)
+                api(libs.di.koinComposeViewmodel)
             }
         }
 

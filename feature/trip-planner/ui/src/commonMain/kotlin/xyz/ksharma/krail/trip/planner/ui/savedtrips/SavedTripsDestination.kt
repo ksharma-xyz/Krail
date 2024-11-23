@@ -10,9 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import org.koin.compose.viewmodel.koinNavViewModel
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopFieldType
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
@@ -22,10 +20,9 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Companion.fromJsonString
 
 @Suppress("LongMethod")
-@OptIn(KoinExperimentalAPI::class)
 internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostController) {
     composable<SavedTripsRoute> { backStackEntry ->
-        val viewModel: SavedTripsViewModel = koinNavViewModel<SavedTripsViewModel>()
+        val viewModel: SavedTripsViewModel = koinViewModel<SavedTripsViewModel>()
         val savedTripState by viewModel.uiState.collectAsStateWithLifecycle()
 
         val fromArg: String? =

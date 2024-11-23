@@ -30,7 +30,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Krail"
-include(":android-app")
+//include(":android-app")
 include(":composeApp")
 include(":taj") // Design System
 include(":core:di")

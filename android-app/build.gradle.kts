@@ -1,9 +1,5 @@
 plugins {
-    alias(libs.plugins.krail.android.application)
     alias(libs.plugins.krail.kotlin.android)
-    alias(libs.plugins.krail.compose.multiplatform)
-    alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -64,5 +60,4 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.ktx)
 
-    implementation(libs.di.koinAndroid)
 }
