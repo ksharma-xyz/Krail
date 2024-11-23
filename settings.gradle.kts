@@ -33,7 +33,6 @@ rootProject.name = "Krail"
 //include(":android-app")
 include(":composeApp")
 include(":taj") // Design System
-include(":core:di")
 include(":core:date-time")
 include(":feature:trip-planner:ui")
 include(":feature:trip-planner:state")

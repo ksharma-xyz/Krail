@@ -23,7 +23,7 @@ actual fun httpClient(): HttpClient {
         }
         install(Logging) {
 //            if(debug) - TODO
-            level = LogLevel.ALL
+            level = LogLevel.BODY
         }
 
         defaultRequest {

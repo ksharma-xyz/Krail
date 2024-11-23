@@ -97,8 +97,6 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.runtime.compose)
 
-            implementation(libs.multiplatform.settings)
-
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.content.negotiation)
@@ -106,8 +104,6 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
 
             api(libs.di.koinComposeViewmodel)
-
-            implementation(libs.di.kotlinInjectRuntime)
         }
     }
 }

@@ -43,10 +43,7 @@ kotlin {
                 implementation(libs.navigation.compose)
                 implementation(libs.lifecycle.viewmodel.compose)
 
-                implementation(libs.di.kotlinInjectRuntime)
-
                 // TODO - remove once DI added - start
-                implementation(libs.multiplatform.settings)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.client.auth)
@@ -70,13 +67,4 @@ kotlin {
 
 android {
     namespace = "xyz.ksharma.krail.trip.planner.ui"
-}
-
-dependencies {
-    // 1. Configure code generation into the common source set
-    kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
-    // 2. Configure code generation into each KMP target source set
-//    kspAndroid(libs.di.kotlinInjectCompilerKsp)
-    kspIosArm64(libs.di.kotlinInjectCompilerKsp)
-    kspIosSimulatorArm64(libs.di.kotlinInjectCompilerKsp)
 }

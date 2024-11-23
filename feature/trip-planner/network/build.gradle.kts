@@ -47,7 +47,7 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation(libs.di.kotlinInjectRuntime)
+
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.auth)
@@ -76,20 +76,6 @@ kotlin {
             }
         }
     }
-}
-
-dependencies {
-    // 1. Configure code generation into the common source set
-    kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
-    // 2. Configure code generation into each KMP target source set
-    kspAndroid(libs.di.kotlinInjectCompilerKsp)
-    kspIosArm64(libs.di.kotlinInjectCompilerKsp)
-    kspIosSimulatorArm64(libs.di.kotlinInjectCompilerKsp)
-}
-
-ksp {
-    arg("me.tatarka.inject.generateCompanionExtensions", "true")
-    arg("me.tatarka.inject.dumpGraph", "true")
 }
 
 // READ API KEY

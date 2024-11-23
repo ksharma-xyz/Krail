@@ -1,6 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
-
 plugins {
     alias(libs.plugins.krail.android.library)
     alias(libs.plugins.krail.kotlin.multiplatform)
@@ -39,11 +36,8 @@ kotlin {
 
         commonMain {
             dependencies {
-//               implementation(projects.core.di)
-
                 implementation(libs.kotlinx.serialization.json)
-                implementation(libs.di.kotlinInjectRuntime)
-                implementation(libs.multiplatform.settings)
+                
                 implementation(compose.runtime)
                 implementation(libs.log.kermit)
                 implementation(libs.kotlinx.datetime)
@@ -58,20 +52,6 @@ kotlin {
         }
     }
 }
-/*
-dependencies {
-    // 1. Configure code generation into the common source set
-    kspCommonMainMetadata(libs.di.kotlinInjectRuntime)
-    // 2. Configure code generation into each KMP target source set
-    kspAndroid(libs.di.kotlinInjectCompilerKsp)
-    kspIosArm64(libs.di.kotlinInjectCompilerKsp)
-    kspIosSimulatorArm64(libs.di.kotlinInjectCompilerKsp)
-}
-
-ksp {
-    arg("me.tatarka.inject.generateCompanionExtensions", "true")
-    arg("me.tatarka.inject.dumpGraph", "true")
-}*/
 
 sqldelight {
     databases {
