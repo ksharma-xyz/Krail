@@ -1,3 +1,7 @@
+## Build Status
+
+[![Krail App CI](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml/badge.svg)](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml)
+
 # Krail - Making travel simple and fun.
 
 ### Tag Lines
