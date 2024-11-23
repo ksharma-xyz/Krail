@@ -28,6 +28,7 @@ class KotlinMultiplatformConventionPlugin : Plugin<Project> {
                 binaries.configureEach {
                     // Add linker flag for SQLite. See:
                     // https://github.com/touchlab/SQLiter/issues/77
+                    // required for iOS targets
                     linkerOpts("-lsqlite3")
                 }
             }
