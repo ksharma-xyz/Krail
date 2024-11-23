@@ -4,9 +4,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifference
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toFormattedDurationTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToAEST
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -66,7 +68,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 legs = legsList,
                 totalUniqueServiceAlerts = legs.flatMap { leg -> leg.infos.orEmpty() }.toSet().size,
             ).also {
-                //println("\tJourneyId: ${it.journeyId}")
+                println("\tJourneyId: ${it.journeyId}")
             }
         } else {
             null
@@ -246,7 +248,7 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
     }
 }
 
-/*internal fun TripResponse.logForUnderstandingData() {
+internal fun TripResponse.logForUnderstandingData() {
     println("Journeys: ${journeys?.size}")
     journeys?.mapIndexed { jindex, j ->
         println("JOURNEY #${jindex + 1}")
@@ -277,12 +279,12 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
             )
         }
     }
-}*/
+}
 
 /**
  * Prints the stops for legs when interchange required.
  */
-/*private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNotNull {
+private fun List<TripResponse.StopSequence>.interchangeStopsList() = this.mapNotNull {
     // TODO - figure role of ARR vs DEP time
     val timeArr = it.arrivalTimeEstimated?.utcToAEST()
         ?.formatTo12HourTime() ?: it.arrivalTimePlanned?.utcToAEST()?.formatTo12HourTime()
@@ -296,7 +298,7 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
         "\n\t\t\t\t Stop: ${it.name}," +
             " depTime: ${timeArr ?: depTime}"
     }
-}*/
+}
 
 private fun String.fromUTCToDisplayTimeString() = this.utcToLocalDateTimeAEST().toHHMM()
 

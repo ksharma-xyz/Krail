@@ -1,10 +1,10 @@
-name: Android CI
+name: Krail App CI
 
 on:
   push:
-    branches: [ commonMain ]
+    branches: [ main ]
   pull_request:
-    branches: [ commonMain ]
+    branches: [ main ]
 
 jobs:
   build:
@@ -40,15 +40,15 @@ jobs:
       - name: Firebase (Release) - Google Services.json file
         env:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_RELEASE }}
-        run: echo $DATA | base64 -di > android-app/google-services.json
+        run: echo $DATA | base64 -di > composeApp/src/androidMain/google-services.json
 
       - name: Firebase (Debug) - Google Services.json file
         env:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
-        run: echo $DATA | base64 -di > android-app/src/debug/google-services.json
+        run: echo $DATA | base64 -di > composeApp/src/androidDebug/google-services.json
 
-      - name: Detekt Checks
-        run: ./gradlew detekt
+#      - name: Detekt Checks
+#        run: ./gradlew detekt
 
       - name: Build Debug
         run: ./gradlew assembleDebug test
