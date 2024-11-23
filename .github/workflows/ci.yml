@@ -7,9 +7,11 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  android:
     runs-on: ubuntu-latest
     environment: Firebase
+    timeout-minutes: 60
+
     steps:
       - uses: actions/checkout@v4
         name: Setup environment variables
@@ -51,7 +53,48 @@ jobs:
 #        run: ./gradlew detekt
 
       - name: Build Debug
-        run: ./gradlew assembleDebug test
+        run: ./gradlew :composeApp:assembleDebug test
 
       - name: Build Release
-        run: ./gradlew assembleRelease test
+        run: ./gradlew :composeApp:assembleRelease test
+
+  iOS:
+    runs-on: macos-14
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - name: Set up Kotlin
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: brew install swiftlint
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
+
+      - name: Build iOS App - Debug
+        run: |
+          xcodebuild -project iosApp/iosApp.xcodeproj \
+                     -scheme iosApp \
+                     -configuration Debug \
+                     OBJROOT=$GITHUB_WORKSPACE/build/ios \
+                     SYMROOT=$GITHUB_WORKSPACE/build/ios \
+                     -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' \
+                     -allowProvisioningDeviceRegistration \
+                     -allowProvisioningUpdates
