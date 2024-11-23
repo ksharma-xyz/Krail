@@ -1,0 +1,105 @@
+name: Krail App CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    environment: Firebase
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment variables
+        run: |
+          echo "NSW_TRANSPORT_API_KEY=${{ secrets.NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Firebase (Release) - Google Services.json file
+        env:
+          DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_RELEASE }}
+        run: echo $DATA | base64 -di > composeApp/src/androidMain/google-services.json
+
+      - name: Firebase (Debug) - Google Services.json file
+        env:
+          DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
+        run: echo $DATA | base64 -di > composeApp/src/androidDebug/google-services.json
+
+#      - name: Detekt Checks
+#        run: ./gradlew detekt
+
+      - name: Build Debug
+        env:
+          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
+        run: ./gradlew :composeApp:assembleDebug test
+
+      - name: Build Release
+        env:
+          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
+        run: ./gradlew :composeApp:assembleRelease test
+
+  iOS:
+    runs-on: macos-14
+    environment: Firebase
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment variables
+        run: |
+          echo "NSW_TRANSPORT_API_KEY=${{ secrets.NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 21
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: brew install swiftlint
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-disabled: true
+
+      - name: Build iOS App - Debug (Without Code Signing)
+        env:
+          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
+        run: |
+          xcodebuild -project iosApp/iosApp.xcodeproj \
+                     -scheme iosApp \
+                     -configuration Debug \
+                     OBJROOT=$GITHUB_WORKSPACE/build/ios \
+                     SYMROOT=$GITHUB_WORKSPACE/build/ios \
+                     CODE_SIGN_IDENTITY="" \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGNING_ALLOWED=NO \
+                     -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest'

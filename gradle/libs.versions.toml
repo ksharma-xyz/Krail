@@ -1,30 +1,32 @@
 [versions]
 java = "17"
-agp = "8.7.2" # Android Gradle Plugin
+# AGP - Android API level mapping https://developer.android.com/build/releases/gradle-plugin#api-level-support
+agp = "8.5.2" # Android Gradle Plugin
 kotlin = "2.0.21"
-core-ktx = "1.15.0"
+core-ktx = "1.13.0"
 junit = "4.13.2"
 androidx-test = "1.6.1"
 androidx-test-ext-junit = "1.2.1"
 android-lifecycle = "2.8.7"
 activity-compose = "1.9.3"
-compose-bom = "2024.10.01"
-compose-navigation = "2.8.3"
-detekt = "1.23.7"
-detektCompose = "0.4.17"
-firebaseBom = "33.5.1"
-hilt = "2.52"
-hiltNavigationCompose = "1.2.0"
+kotlinInject = "0.7.2"
 kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDatetime = "0.6.1"
-okhttpBom = "4.12.0"
+ktorClientAuth = "2.3.12"
+lifecycleViewmodelCompose = "2.8.3"
+navigationCompose = "2.8.0-alpha10"
 kotlinxSerializationJson = "1.7.3"
 ksp = "2.0.21-1.0.27" # ksp to kotlin version mapping https://github.com/google/ksp/releases
 paparazzi = "1.3.5"
-retrofit = "2.11.0"
-retrofit2KotlinxSerializationConverter = "1.0.0"
-timber = "5.0.1"
-wire = "5.1.0"
+compose-multiplatform = "1.7.0"
+ktor = "3.0.1"
+androidx-lifecycle = "2.8.3"
+kotlinxCoroutines = "1.9.0"
+buildkonfigGradlePlugin = "0.15.2"
+kermit = "2.0.4"
+sqlDelight = "2.0.2"
+koin = "4.0.1-Beta1"
+slf4jSimple = "2.0.16"
 
 #SDK
 minSdk = "26"
@@ -32,43 +34,38 @@ compileSdk = "35"
 targetSdk = "35"
 
 [libraries]
+buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfigGradlePlugin" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activity-compose" }
-firebase-perf = { module = "com.google.firebase:firebase-perf" }
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktorClientAuth" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "android-lifecycle" }
-retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
-timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 
-#Compose
-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
-compose-ui = { group = "androidx.compose.ui", name = "ui" }
-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "compose-navigation" }
-compose-material3 = { group = "androidx.compose.material3", name = "material3", version = "1.3.1" }
+log-kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
-#Firebase
-firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
-firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
+lifecycle-viewmodel-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-lifecycle-runtime-compose = { group = "org.jetbrains.androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 
-#Hilt
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+# DI
+di-koinAndroid = {module = "io.insert-koin:koin-android", version.ref = "koin"}
+di-koinComposeViewmodel = {module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin"}
+di-koinComposeViewmodelNav = {module = "io.insert-koin:koin-compose-viewmodel-navigation", version.ref = "koin"}
 
 #Network
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
-okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor" }
-okhttp = { module = "com.squareup.okhttp3:okhttp" }
-okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version.ref = "okhttpBom" }
-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
 #Test
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 test-composeUiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 test-composeUiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -79,33 +76,36 @@ test-turbine = { group = "app.cash.turbine", name = "turbine", version = "1.2.0"
 test-mockitoKotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.4.0" }
 test-kotlinxCoroutineTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.9.0" }
 test-androidxCoreKtx = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
-test-paparazzi = { group = "app.cash.paparazzi", name = "paparazzi-gradle-plugin", version.ref = "paparazzi" }
 
 #BuildLogic
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
+compose-gradlePlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose-multiplatform" }
+composeCompiler-gradlePlugin = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "kotlin" }
 
-#CodeStyle
-detektFormat = { group = "io.gitlab.arturbosch.detekt", name = "detekt-formatting", version.ref = "detekt" }
-detektCompose = { group = "io.nlopez.compose.rules", name = "detekt", version.ref = "detektCompose" }
+#CodeStyle Use spotless plugin for multiplatform support
+
+# Database
+db-sqlAndroidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqlDelight" }
+db-sqlNativeDriver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqlDelight" }
+db-sqlRuntime = { module = "app.cash.sqldelight:runtime", version.ref = "sqlDelight" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 cash-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfigGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-wire = { id = "com.squareup.wire", version.ref = "wire" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
-firebase-crashlyticsPlugin = { id = "com.google.firebase.crashlytics", version = "3.0.2" }
-firebase-performancePlugin = { id = "com.google.firebase.firebase-perf", version = "1.4.2" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }
-krail-android-hilt = { id = "krail.android.hilt", version = "unspecified" }
+krail-compose-multiplatform = { id = "krail.compose.multiplatform", version = "unspecified" }
 krail-android-library = { id = "krail.android.library", version = "unspecified" }
-krail-android-library-compose = { id = "krail.android.library.compose", version = "unspecified" }
-krail-jvm-library = { id = "krail.jvm.library", version = "unspecified" }
+krail-kotlin-android = { id = "krail.kotlin.android", version = "unspecified" }
+krail-kotlin-multiplatform = { id = "krail.kotlin.multiplatform", version = "unspecified" }
