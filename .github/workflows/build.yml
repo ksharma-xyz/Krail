@@ -14,11 +14,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        name: Setup environment variables
-        env:
-          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
-          run: |
-            echo "::set-env name=NSW_TRANSPORT_API_KEY::${{ secrets.NSW_TRANSPORT_API_KEY }}"
+      - name: Setup environment variables
+        run: |
+          echo "NSW_TRANSPORT_API_KEY=${{ secrets.NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
 
       - name: set up JDK
         uses: actions/setup-java@v4
@@ -53,16 +51,26 @@ jobs:
 #        run: ./gradlew detekt
 
       - name: Build Debug
+        env:
+          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
         run: ./gradlew :composeApp:assembleDebug test
 
       - name: Build Release
+        env:
+          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
         run: ./gradlew :composeApp:assembleRelease test
 
   iOS:
     runs-on: macos-14
+    environment: Firebase
     timeout-minutes: 60
 
     steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment variables
+        run: |
+          echo "NSW_TRANSPORT_API_KEY=${{ secrets.NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -71,12 +79,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
-
-      - name: Set up Kotlin
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: '11'
 
       - uses: ruby/setup-ruby@v1
         with:
@@ -88,13 +90,16 @@ jobs:
         with:
           cache-disabled: true
 
-      - name: Build iOS App - Debug
+      - name: Build iOS App - Debug (Without Code Signing)
+        env:
+          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
         run: |
           xcodebuild -project iosApp/iosApp.xcodeproj \
                      -scheme iosApp \
                      -configuration Debug \
                      OBJROOT=$GITHUB_WORKSPACE/build/ios \
                      SYMROOT=$GITHUB_WORKSPACE/build/ios \
-                     -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest' \
-                     -allowProvisioningDeviceRegistration \
-                     -allowProvisioningUpdates
+                     CODE_SIGN_IDENTITY="" \
+                     CODE_SIGNING_REQUIRED=NO \
+                     CODE_SIGNING_ALLOWED=NO \
+                     -destination 'platform=iOS Simulator,name=iPhone 12,OS=latest'

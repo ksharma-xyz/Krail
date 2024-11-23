@@ -1,6 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable.business
 
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 class PlatformTextTest {
 

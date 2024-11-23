@@ -53,20 +53,12 @@ class DateTimeHelperTest {
         assertEquals("2024-10-07T12:00:23", "2024-10-07T01:00:23Z".utcToAEST())
     }
 
-/*
-    @Test
-    fun testAestToHHMM() {
-        assertEquals("11:00 AM", "2024-10-07T00:00:00Z".aestToHHMM())
-        assertEquals("12:00 PM", "2024-10-07T01:00:00Z".aestToHHMM())
-    }
-*/
-
     @Test
     fun testToGenericFormattedTimeString() {
         assertEquals("40 mins ago", (-40).minutes.toGenericFormattedTimeString())
         assertEquals("Now", 0.minutes.toGenericFormattedTimeString())
-        assertEquals("In 1h 20m", 80.minutes.toGenericFormattedTimeString())
-        assertEquals("In 2h", 120.minutes.toGenericFormattedTimeString())
+        assertEquals("in 1h 20m", 80.minutes.toGenericFormattedTimeString())
+        assertEquals("in 2h", 120.minutes.toGenericFormattedTimeString())
     }
 
     @Test
