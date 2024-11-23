@@ -2,50 +2,71 @@
 
 [![Krail App CI](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml/badge.svg)](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml)
 
-# Krail - Making travel simple and fun.
+## Download
 
-### Tag Lines
-- Hop On, Mate!
-- Ride the rail without fail
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1280px-Google_Play_Store_badge_EN.svg.png" alt="Download Krail App - Google Play Store" width="200"/>](https://play.google.com/store/apps/details?id=xyz.ksharma.krail)
 
-## Technology
+# Krail
 
-### Architecture
+Making travel simple and fun.
 
-This project follows MVVM [**Modern Android Development Architecture
-**](https://developer.android.com/topic/architecture) with a focus on separation of concerns and
-testability.
+Krail is a Compose Multiplatform application designed to provide a seamless user experience across
+Android and iOS platforms. This project leverages modern libraries and frameworks to ensure a robust
+and scalable architecture.
 
-* **UI Layer:** Built using Jetpack Compose, providing a declarative and reactive approach to UI
-  development.
-* **Data Layer:** Utilizes repositories to abstract data sources and provide a clean API for
-  accessing data.
-* **Domain Layer:** Contains business logic and use cases, separated from UI and data concerns.
+## Architecture
 
-[Diagram here - TBD]
+Krail follows a modular architecture with a clear separation of concerns. The main modules include:
 
-### Navigation
+- **ComposeApp**: Contains the main entry point for the android application and has platform target
+  implementations as well.
+- **iosApp**: Contains the main entry point for the iOS application
 
-[TBD]
+## Libraries Used
 
-### Design System
+### Dependency Injection
 
-Using a fully custom design system built using Compose Foundation APIs. Not using the Material
-Design system but taking inspiration from it.
+- **Koin**: Used for dependency injection to manage and inject dependencies efficiently.
 
-### Accessibility
+### Network
 
-[TBD]
+- **Ktor**: A framework for building asynchronous servers and clients in connected systems using
+  Kotlin.
 
-### Testing
+### Database
 
-1. UI / Snapshot Testing - Paparazzi - TBD
-2. Junit 4 - TBD
+- **SQLDelight**: A library for generating typesafe Kotlin APIs from SQL.
 
+## Theming / Design System
+
+**:taj** module is the design system for the Krail App.
+It's built using the compose foundation APIs. For now, Material Design is not used but inspiration
+has been taken from it.
+
+## Getting Started
+
+To build the project, follow these steps:
+
+1. **Clone the repository**:
+    ```sh
+    git clone git@github.com:ksharma-xyz/Krail.git
+    ```
+
+2. **Open the project in Android Studio**:
+
+- Open `build.gradle.kts` file in Android Studio.
+- Perform Gradle Sync (should happen automatically).
+- Add `NSW_TRIP_PLANNER_API_KEY` in local.properties file, you can get a developer key from
+  [here](https://opendata.transport.nsw.gov.au/).
+
+3. **Build and run the project**:
+
+- Select the desired target (Android or iOS).
+- Click on the `Run` button.
 
 ## Contributing
 
-Not accepting any contributions until MVP is ready.
+Welcoming contributions from the community. Please create a new issue or pick up an existing one.
 
 ## License
 
@@ -67,4 +88,5 @@ limitations under the License.
 
 ## Contact
 
-www.ksharma.xyz
+https://krail.app
+[hey@krail.app](mailto:hey@krail.app)
