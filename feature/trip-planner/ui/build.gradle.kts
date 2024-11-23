@@ -44,6 +44,7 @@ kotlin {
                 implementation(libs.lifecycle.viewmodel.compose)
 
                 // TODO - remove once DI added - start
+/*
                 implementation(libs.ktor.client.core)
                 implementation(libs.ktor.client.cio)
                 implementation(libs.ktor.client.auth)
@@ -52,6 +53,7 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.slf4j.simple) // Logging
+*/
                 // TODO - remove once DI added - end
 
                 api(libs.di.koinComposeViewmodel)

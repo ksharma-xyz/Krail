@@ -6,14 +6,12 @@ import io.ktor.client.request.get
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.StopType
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.service.stop_finder.StopFinderRequestParams
 import xyz.ksharma.krail.trip.planner.network.api.service.trip.TripRequestParams
 
-@Inject
 class RealTripPlanningService(private val httpClient: HttpClient) : TripPlanningService {
 
     override suspend fun trip(
