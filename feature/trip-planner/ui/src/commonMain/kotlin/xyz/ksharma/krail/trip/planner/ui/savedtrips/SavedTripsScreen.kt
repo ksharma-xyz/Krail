@@ -94,7 +94,7 @@ fun SavedTripsScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                 }
 
-                if (savedTripsState.savedTrips.isEmpty()) {
+                if (savedTripsState.savedTrips.isEmpty() && savedTripsState.isLoading.not()) {
                     item(key = "empty_state") {
                         ErrorMessage(
                             emoji = "🌟",

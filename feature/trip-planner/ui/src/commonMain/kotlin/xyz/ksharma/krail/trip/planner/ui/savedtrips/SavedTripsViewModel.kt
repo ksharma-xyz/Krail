@@ -25,6 +25,7 @@ class SavedTripsViewModel(
 
     private fun loadSavedTrips() {
         viewModelScope.launch(context = Dispatchers.IO) {
+            updateUiState { copy(isLoading = true) }
             val trips = mutableSetOf<Trip>()
 
             val savedTrips = sandook.selectAllTrips()
@@ -42,7 +43,7 @@ class SavedTripsViewModel(
                 println("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
             }
 
-            updateUiState { copy(savedTrips = trips.toImmutableList()) }
+            updateUiState { copy(savedTrips = trips.toImmutableList(), isLoading = false) }
         }
     }
 
