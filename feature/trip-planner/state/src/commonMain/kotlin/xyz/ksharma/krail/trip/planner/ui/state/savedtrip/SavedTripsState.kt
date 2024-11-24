@@ -4,4 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
-data class SavedTripsState(val savedTrips: ImmutableList<Trip> = persistentListOf())
+data class SavedTripsState(
+    val savedTrips: ImmutableList<Trip> = persistentListOf(),
+    val isLoading: Boolean = true,
+)
