@@ -1,6 +1,9 @@
 package xyz.ksharma.krail.trip.planner.ui.alerts
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -21,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
@@ -39,11 +43,23 @@ fun CollapsibleAlert(
     modifier: Modifier = Modifier,
     collapsed: Boolean = true,
 ) {
+    val indexBackgroundColor by animateColorAsState(
+        targetValue = if (collapsed) themeBackgroundColor() else Color.Transparent,
+        label = "indexBackgroundColor",
+        animationSpec = tween(durationMillis = 300, easing = LinearEasing)
+    )
+
+    val parentBackgroundColor by animateColorAsState(
+        targetValue = if (collapsed) KrailTheme.colors.surface else themeBackgroundColor(),
+        label = "parentBackgroundColor",
+        animationSpec = tween(durationMillis = 300, easing = LinearEasing)
+    )
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = if (collapsed) KrailTheme.colors.surface else themeBackgroundColor(),
+                color = parentBackgroundColor,
                 shape = RoundedCornerShape(12.dp),
             )
             .clickable(
@@ -65,7 +81,7 @@ fun CollapsibleAlert(
                     .size(24.dp.toAdaptiveSize())
                     .clip(CircleShape)
                     .background(
-                        color = if (collapsed) themeBackgroundColor() else KrailTheme.colors.surface,
+                        color = indexBackgroundColor,
                     ),
                 contentAlignment = Alignment.Center,
             ) {
