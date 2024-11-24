@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -38,6 +36,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -47,7 +46,6 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_a11y
-import krail.feature.trip_planner.ui.generated.resources.ic_alert
 import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
@@ -169,7 +167,6 @@ fun JourneyCard(
                     timeToDeparture = timeToDeparture,
                     themeColor = themeColor,
                     platformText = platformText,
-                    iconSize = iconSize,
                     totalTravelTime = totalTravelTime,
                     legList = legList,
                     totalUniqueServiceAlerts = totalUniqueServiceAlerts,
@@ -193,7 +190,6 @@ fun ExpandedJourneyCardContent(
     timeToDeparture: String,
     themeColor: Color,
     platformText: String?,
-    iconSize: Dp,
     totalTravelTime: String,
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     totalUniqueServiceAlerts: Int,
@@ -233,25 +229,37 @@ fun ExpandedJourneyCardContent(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             if (totalUniqueServiceAlerts > 0) {
-                SmallButton(
-                    painter = painterResource(Res.drawable.ic_alert),
-                    text = if (totalUniqueServiceAlerts > 1) {
-                        "$totalUniqueServiceAlerts Alerts"
-                    } else {
-                        "$totalUniqueServiceAlerts Alert"
-                    },
-                    color = getForegroundColor(KrailTheme.colors.alert),
-                    iconSize = iconSize,
-                    onClick = onAlertClick,
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                )
+                Box(
+                    modifier = Modifier
+                        .padding()
+                        .background(
+                            color = KrailTheme.colors.alert,
+                            shape = RoundedCornerShape(50),
+                        )
+                        .padding(horizontal = 12.dp, vertical = 2.dp)
+                        .clickable(
+                            role = Role.Button,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) { onAlertClick() },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = if (totalUniqueServiceAlerts > 1) {
+                            "$totalUniqueServiceAlerts Alerts"
+                        } else {
+                            "$totalUniqueServiceAlerts Alert"
+                        },
+                        style = KrailTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                        color = getForegroundColor(KrailTheme.colors.alert),
+                    )
+                }
             }
 
             TextWithIcon(
                 painter = painterResource(Res.drawable.ic_clock),
                 text = totalTravelTime,
                 textStyle = KrailTheme.typography.bodyLarge,
-                iconSize = iconSize,
                 modifier = Modifier.align(Alignment.CenterVertically),
             )
         }
@@ -262,7 +270,7 @@ fun ExpandedJourneyCardContent(
                 .height(4.dp),
         )
 
-        legList.forEachIndexed { _, leg ->
+        legList.forEachIndexed { index, leg ->
             when (leg) {
                 is TimeTableState.JourneyCardInfo.Leg.WalkingLeg -> {
                     WalkingLeg(
@@ -299,7 +307,11 @@ fun ExpandedJourneyCardContent(
                             transportModeLine = leg.transportModeLine,
                             stops = leg.stops,
                             displayAllStops = displayAllStops,
-                            modifier = Modifier,
+                            modifier = Modifier.padding(
+                                top = if (index > 0) getPaddingValue(
+                                    lastLeg = legList[(index - 1).coerceAtLeast(0)]
+                                ) else 0.dp
+                            ),
                         )
                     }
 
@@ -315,6 +327,13 @@ fun ExpandedJourneyCardContent(
             }
         }
     }
+}
+
+fun getPaddingValue(lastLeg: TimeTableState.JourneyCardInfo.Leg): Dp {
+    return if (
+        lastLeg is TimeTableState.JourneyCardInfo.Leg.TransportLeg &&
+        lastLeg.walkInterchange?.position != TimeTableState.JourneyCardInfo.WalkPosition.AFTER
+    ) 16.dp else 0.dp
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -448,59 +467,14 @@ private fun TextWithIcon(
     modifier: Modifier = Modifier,
     textStyle: TextStyle = KrailTheme.typography.bodyMedium,
     color: Color = KrailTheme.colors.onSurface,
-    iconSize: Dp = 14.dp,
 ) {
     val contentAlpha = LocalContentAlpha.current
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier
-            .semantics(mergeDescendants = true) { },
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        Image(
-            painter = painter,
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .size(iconSize.toAdaptiveSize()),
-        )
-        Text(
-            text = text,
-            style = textStyle,
-            color = color,
-        )
-    }
-}
+    val density = LocalDensity.current
+    val iconSize = with(density) { 14.sp.toDp() }
 
-@Composable
-private fun SmallButton(
-    painter: Painter,
-    text: String,
-    modifier: Modifier = Modifier,
-    textStyle: TextStyle = KrailTheme.typography.bodyMedium,
-    color: Color = KrailTheme.colors.onSurface,
-    iconSize: Dp = 14.dp,
-    onClick: () -> Unit = {},
-) {
-    val contentAlpha = LocalContentAlpha.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .background(
-                shape = RoundedCornerShape(50),
-                color = KrailTheme.colors.alert.copy(alpha = contentAlpha),
-            )
-            .padding(
-                horizontal = 8.dp,
-                vertical = 2.dp,
-            )
-            .clickable(
-                role = Role.Button,
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = { onClick() },
-            )
             .semantics(mergeDescendants = true) { },
         horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
@@ -510,7 +484,7 @@ private fun SmallButton(
             colorFilter = ColorFilter.tint(color = color.copy(alpha = contentAlpha)),
             modifier = Modifier
                 .align(Alignment.CenterVertically)
-                .size(iconSize.toAdaptiveSize()),
+                .size(iconSize),
         )
         Text(
             text = text,
