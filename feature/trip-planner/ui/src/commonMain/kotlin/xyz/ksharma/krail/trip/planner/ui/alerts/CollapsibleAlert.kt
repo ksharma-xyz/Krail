@@ -6,6 +6,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.content.MediaType.Companion.HtmlText
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -105,8 +106,7 @@ fun CollapsibleAlert(
                 )
             }
             if (isHtml) {
-                // TODO - Html  Text Component
-                Text(text = serviceAlert.message) // , onClick = onClick
+                HtmlText(text = serviceAlert.message, onClick = onClick)
             } else {
                 Text(
                     text = serviceAlert.message,
