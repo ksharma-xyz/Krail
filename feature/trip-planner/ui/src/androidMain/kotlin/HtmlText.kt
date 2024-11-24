@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalFontFamilyResolver
 import androidx.compose.ui.text.font.FontFamily
@@ -20,16 +21,21 @@ import xyz.ksharma.krail.taj.theme.KrailTheme
  * Reference - https://developer.android.com/codelabs/jetpack-compose-migration#8
  */
 @Composable
-actual fun HtmlText(text: String, modifier: Modifier, onClick: () -> Unit) {
+actual fun HtmlText(
+    text: String,
+    modifier: Modifier,
+    onClick: () -> Unit,
+    color: Color,
+    urlColor: Color,
+) {
     // Remembers the HTML formatted description. Re-executes on a new description
     val htmlDescription = remember(text) {
         HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT)
     }
 
-    val textColor = KrailTheme.colors.label.toArgb()
+    val textColor = color.toArgb()
     val textStyle = KrailTheme.typography.bodyLarge
     val resolver: FontFamily.Resolver = LocalFontFamilyResolver.current
-    val urlColor = KrailTheme.colors.alert.toArgb()
 
     val textTypeface: Typeface = remember(resolver, textStyle) {
         resolver.resolve(
@@ -49,7 +55,7 @@ actual fun HtmlText(text: String, modifier: Modifier, onClick: () -> Unit) {
                 setTextColor(textColor)
                 setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP, textStyle.fontSize.value)
                 typeface = textTypeface
-                setLinkTextColor(urlColor)
+                setLinkTextColor(urlColor.toArgb())
                 setOnClickListener {
                     onClick()
                 }

@@ -1,12 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.alerts
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.content.MediaType.Companion.HtmlText
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,13 +21,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.toAdaptiveSize
-import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
@@ -44,24 +40,14 @@ fun CollapsibleAlert(
     modifier: Modifier = Modifier,
     collapsed: Boolean = true,
 ) {
-    val indexBackgroundColor by animateColorAsState(
-        targetValue = if (collapsed) themeBackgroundColor() else Color.Transparent,
-        label = "indexBackgroundColor",
-        animationSpec = tween(durationMillis = 300, easing = LinearEasing)
-    )
-
-    val parentBackgroundColor by animateColorAsState(
-        targetValue = if (collapsed) KrailTheme.colors.surface else themeBackgroundColor(),
-        label = "parentBackgroundColor",
-        animationSpec = tween(durationMillis = 300, easing = LinearEasing)
-    )
+    val backgroundColor = KrailTheme.colors.alert.copy(alpha = 0.7f)
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = parentBackgroundColor,
-                shape = RoundedCornerShape(12.dp),
+                color = backgroundColor,
+                shape = RoundedCornerShape(16.dp),
             )
             .clickable(
                 indication = null,
@@ -69,7 +55,6 @@ fun CollapsibleAlert(
                 onClick = onClick,
             )
             .padding(vertical = 8.dp)
-            .padding(horizontal = 8.dp)
             .animateContentSize(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
@@ -81,21 +66,22 @@ fun CollapsibleAlert(
                 modifier = Modifier
                     .size(24.dp.toAdaptiveSize())
                     .clip(CircleShape)
-                    .background(
-                        color = indexBackgroundColor,
-                    ),
+                    .alignByBaseline(),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = index.toString(),
+                    text = "$index",
                     style = KrailTheme.typography.titleSmall,
+                    color = getForegroundColor(backgroundColor),
+                    modifier = Modifier
                 )
             }
 
             Text(
                 text = serviceAlert.heading,
                 style = KrailTheme.typography.titleSmall,
-                modifier = Modifier.padding(start = 12.dp),
+                modifier = Modifier.padding(start = 12.dp).alignByBaseline(),
+                color = getForegroundColor(backgroundColor),
             )
         }
 
@@ -106,12 +92,36 @@ fun CollapsibleAlert(
                 )
             }
             if (isHtml) {
-                HtmlText(text = serviceAlert.message, onClick = onClick)
+                HtmlText(
+                    text = serviceAlert.message,
+                    onClick = onClick,
+                    color = getForegroundColor(backgroundColor),
+                    urlColor = getForegroundColor(backgroundColor),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             } else {
                 Text(
                     text = serviceAlert.message,
                     style = KrailTheme.typography.body,
-                    modifier = Modifier.padding(vertical = 8.dp),
+                    color = getForegroundColor(backgroundColor),
+                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                )
+            }
+        } else {
+            Box(
+                modifier = Modifier
+                    .padding(start = 12.dp + 24.dp.toAdaptiveSize(), bottom = 12.dp)
+                    .background(
+                        color = getForegroundColor(backgroundColor),
+                        shape = RoundedCornerShape(50),
+                    )
+                    .padding(horizontal = 16.dp, vertical = 2.dp),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = "Read More",
+                    style = KrailTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                    color = getForegroundColor(getForegroundColor(backgroundColor)),
                 )
             }
         }
