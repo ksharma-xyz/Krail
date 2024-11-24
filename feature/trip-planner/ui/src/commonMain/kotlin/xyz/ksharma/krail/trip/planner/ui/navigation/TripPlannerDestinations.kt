@@ -7,6 +7,7 @@ import kotlinx.serialization.Serializable
 import xyz.ksharma.krail.trip.planner.ui.alerts.alertsDestination
 import xyz.ksharma.krail.trip.planner.ui.savedtrips.savedTripsDestination
 import xyz.ksharma.krail.trip.planner.ui.searchstop.searchStopDestination
+import xyz.ksharma.krail.trip.planner.ui.settings.settingsDestination
 import xyz.ksharma.krail.trip.planner.ui.timetable.timeTableDestination
 import xyz.ksharma.krail.trip.planner.ui.usualride.usualRideDestination
 
@@ -28,6 +29,8 @@ fun NavGraphBuilder.tripPlannerDestinations(
         usualRideDestination(navController)
 
         alertsDestination(navController)
+
+        settingsDestination(navController)
     }
 }
 
@@ -74,3 +77,6 @@ data object UsualRideRoute
 internal data class ServiceAlertRoute(
     val alertsJsonList: List<String>,
 )
+
+@Serializable
+data object SettingsRoute

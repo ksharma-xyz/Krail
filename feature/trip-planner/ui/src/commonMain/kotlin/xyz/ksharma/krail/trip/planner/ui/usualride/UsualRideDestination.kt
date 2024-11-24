@@ -45,7 +45,7 @@ internal fun NavGraphBuilder.usualRideDestination(navController: NavHostControll
                     route = SavedTripsRoute,
                     navOptions = NavOptions.Builder()
                         .setLaunchSingleTop(true)
-                        .setPopUpTo<UsualRideRoute>(inclusive = true)
+                        .setPopUpTo<SavedTripsRoute>(inclusive = false)
                         .build(),
                 )
             },

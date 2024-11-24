@@ -24,6 +24,7 @@ class UsualRideViewModel(private val sandook: Sandook) : ViewModel() {
 
     private fun onTransportModeSelected(productClass: Int) {
         viewModelScope.launch(Dispatchers.IO) {
+            sandook.clearTheme() // Only one entry should exist at a time
             sandook.insertOrReplaceTheme(productClass.toLong())
         }
     }

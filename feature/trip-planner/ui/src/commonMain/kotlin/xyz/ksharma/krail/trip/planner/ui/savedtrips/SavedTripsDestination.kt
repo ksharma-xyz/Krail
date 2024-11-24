@@ -14,6 +14,7 @@ import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopFieldType
 import xyz.ksharma.krail.trip.planner.ui.navigation.SearchStopRoute
+import xyz.ksharma.krail.trip.planner.ui.navigation.SettingsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
@@ -103,6 +104,12 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                     // TODO - show message - to select both stops
  //                   Timber.e("Select both stops")
                 }
+            },
+            onSettingsButtonClick = {
+                navController.navigate(
+                    route = SettingsRoute,
+                    navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
+                )
             },
             onEvent = { event -> viewModel.onEvent(event) },
         )
