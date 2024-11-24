@@ -27,13 +27,13 @@ fun LoadingEmojiAnim(modifier: Modifier = Modifier, emoji: String? = null) {
 
     val rotation by infiniteTransition.animateFloat(
         initialValue = 0f,
-        targetValue = 360f * 4,
+        targetValue = 360f * 3,
         animationSpec = infiniteRepeatable(
             animation = keyframes {
                 durationMillis = 2000 // Total animation duration
                 0f at 0 using FastOutLinearInEasing // Start at 0 rotation
-                360f * 4 at 1000 using LinearEasing // Fast rotation for 0.5 seconds (4 rotations)
-                360f * 4 at 2000 using FastOutSlowInEasing // Maintain rotation but slow down (cumulative 4 rotations)
+                360f * 3 at 1000 using LinearEasing // Fast rotation for 0.5 seconds (4 rotations)
+                360f * 3 at 2000 using FastOutSlowInEasing // Maintain rotation but slow down (cumulative 4 rotations)
             },
             repeatMode = RepeatMode.Reverse,
         ),
