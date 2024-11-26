@@ -152,6 +152,7 @@ fun SearchStopScreen(
                             interactionSource = remember { MutableInteractionSource() },
                         ) {
                             keyboard?.hide()
+                            focusRequester.freeFocus()
                             onBackClick()
                         },
                     contentAlignment = Alignment.Center,
@@ -194,6 +195,7 @@ fun SearchStopScreen(
                         textColor = KrailTheme.colors.label,
                         onClick = { stopItem ->
                             keyboard?.hide()
+                            focusRequester.freeFocus()
                             onStopSelect(stopItem)
                         },
                         modifier = Modifier
