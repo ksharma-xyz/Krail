@@ -26,7 +26,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 @Composable
 internal fun OriginDestination(
     trip: Trip,
-    themeContentColor: Color,
+    timeLineColor: Color,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -40,7 +40,7 @@ internal fun OriginDestination(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .timeLineTop(
-                    color = themeContentColor,
+                    color = timeLineColor,
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
@@ -70,7 +70,7 @@ internal fun OriginDestination(
             ) { targetText ->
                 Text(
                     text = targetText,
-                    color = themeContentColor,
+                    color = timeLineColor,
                     style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
                 )
             }
@@ -81,7 +81,7 @@ internal fun OriginDestination(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .timeLineBottom(
-                    color = themeContentColor,
+                    color = timeLineColor,
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
@@ -111,7 +111,7 @@ internal fun OriginDestination(
             ) { targetText ->
                 Text(
                     text = targetText,
-                    color = themeContentColor,
+                    color = timeLineColor,
                     style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
                 )
             }
