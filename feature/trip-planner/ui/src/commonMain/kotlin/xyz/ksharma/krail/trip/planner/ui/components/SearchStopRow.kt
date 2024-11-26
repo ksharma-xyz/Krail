@@ -52,13 +52,14 @@ fun SearchStopRow(
                 color = themeColor.hexToComposeColor(),
                 shape = RoundedCornerShape(topStart = 36.dp, topEnd = 36.dp),
             )
-            .padding(vertical = 24.dp, horizontal = 16.dp)
+            .padding(vertical = 20.dp, horizontal = 16.dp)
             .padding(
                 bottom = with(LocalDensity.current) {
                     WindowInsets.navigationBars
                         .getBottom(this)
                         .toDp()
                 },
+                top = 8.dp
             ),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {

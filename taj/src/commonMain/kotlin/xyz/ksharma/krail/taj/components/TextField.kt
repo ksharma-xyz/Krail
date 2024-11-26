@@ -6,9 +6,11 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -53,6 +55,7 @@ fun TextField(
     enabled: Boolean = true,
     textStyle: TextStyle? = null,
     readOnly: Boolean = false,
+    leadingIcon: (@Composable () -> Unit)? = null,
     imeAction: ImeAction = ImeAction.Default,
     filter: (CharSequence) -> CharSequence = { it },
     maxLength: Int = Int.MAX_VALUE,
@@ -98,7 +101,7 @@ fun TextField(
                 autoCorrectEnabled = false,
                 keyboardType = KeyboardType.Text,
                 imeAction = imeAction,
-                hintLocales = LocaleList.current, // todo - required?
+                hintLocales = LocaleList.current,
             ),
             lineLimits = TextFieldLineLimits.SingleLine,
             readOnly = readOnly,
@@ -111,10 +114,15 @@ fun TextField(
                             shape = RoundedCornerShape(TextFieldHeight.div(2)),
                             color = KrailTheme.colors.surface,
                         )
-                        .padding(horizontal = 16.dp, vertical = 4.dp),
+                        .padding(vertical = 4.dp)
+                        .padding(end = 16.dp, start = if (leadingIcon != null) 0.dp else 16.dp),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
+                    leadingIcon?.let { icon ->
+                        icon.invoke()
+                        Spacer(modifier = Modifier.width(4.dp))
+                    }
                     if (textFieldState.text.isEmpty() && isFocused) {
                         /* Using a Box ensures that cursor and placeholder are displayed on top of
                      each other, so the cursor is always displayed at the start if the TextField.
@@ -126,7 +134,6 @@ fun TextField(
                     } else if (textFieldState.text.isEmpty()) {
                         TextFieldPlaceholder(placeholder = placeholder)
                     } else {
-                        // add leading icon here - todo
                         innerTextField()
                         // add trailing icon here / Clear - todo
                     }
@@ -138,12 +145,12 @@ fun TextField(
 
 @Composable
 private fun TextFieldPlaceholder(placeholder: String? = null) {
-    val color = LocalTextColor.current
-    Text(
-        text = placeholder.orEmpty(),
-        maxLines = 1,
-        color = color.copy(alpha = PlaceholderOpacity),
-    )
+    CompositionLocalProvider(LocalContentAlpha provides PlaceholderOpacity) {
+        Text(
+            text = placeholder.orEmpty(),
+            maxLines = 1,
+        )
+    }
 }
 
 // region Previews

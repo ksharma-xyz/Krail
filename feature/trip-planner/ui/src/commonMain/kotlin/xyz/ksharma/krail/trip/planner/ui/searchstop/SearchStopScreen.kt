@@ -1,15 +1,23 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -20,10 +28,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
@@ -56,6 +67,7 @@ fun SearchStopScreen(
     searchStopState: SearchStopState,
     modifier: Modifier = Modifier,
     searchQuery: String = "",
+    onBackClick: () -> Unit = {},
     onStopSelect: (StopItem) -> Unit = {},
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
@@ -77,7 +89,7 @@ fun SearchStopScreen(
             .debounce(250)
             .filter { it.isNotBlank() }
             .mapLatest { text ->
-               // Timber.d("Query - $text")
+                // Timber.d("Query - $text")
                 onEvent(SearchStopUiEvent.SearchTextChanged(text))
             }.collectLatest {}
     }
@@ -119,7 +131,7 @@ fun SearchStopScreen(
             .imePadding(),
     ) {
         TextField(
-            placeholder = "Search station / stop",
+            placeholder = "Search here",
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
@@ -130,6 +142,28 @@ fun SearchStopScreen(
             filter = { input ->
                 input.filter { it.isLetterOrDigit() || it.isWhitespace() }
             },
+            leadingIcon = {
+                Box(
+                    modifier = Modifier
+                        .size(48.dp)
+                        .clip(CircleShape)
+                        .clickable(
+                            indication = null,
+                            interactionSource = remember { MutableInteractionSource() },
+                        ) {
+                            keyboard?.hide()
+                            onBackClick()
+                        },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
+                        modifier = Modifier.size(24.dp),
+                    )
+                }
+            }
         ) { value ->
             //Timber.d("value: $value")
             textFieldText = value.toString()
