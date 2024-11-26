@@ -180,7 +180,7 @@ private fun RouteSummary(
     routeText: String,
     iconSize: Dp,
     duration: String,
-    displayDuration: Boolean,
+    displayDuration: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     Row(

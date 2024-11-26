@@ -299,9 +299,8 @@ fun ExpandedJourneyCardContent(
                         }
                     } else {
                         LegView(
-                            displayDuration = legList.count {
-                                it is TimeTableState.JourneyCardInfo.Leg.TransportLeg
-                            } > 1,
+                            // legList.count { it is TimeTableState.JourneyCardInfo.Leg.TransportLeg } > 1,
+                            displayDuration = false,
                             duration = leg.totalDuration,
                             routeText = leg.displayText,
                             transportModeLine = leg.transportModeLine,
