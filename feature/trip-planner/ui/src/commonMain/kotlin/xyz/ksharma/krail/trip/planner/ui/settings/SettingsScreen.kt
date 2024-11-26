@@ -62,7 +62,7 @@ fun SettingsScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
-                            modifier = Modifier.size(24.dp),
+                            modifier = Modifier.size(32.dp),
                         )
                     }
                 },
@@ -102,7 +102,6 @@ fun SettingsScreen(
                 }
                 Divider()
             }
-
         }
     }
 }

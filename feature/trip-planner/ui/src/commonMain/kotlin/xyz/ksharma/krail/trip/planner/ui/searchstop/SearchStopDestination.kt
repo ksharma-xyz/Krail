@@ -26,6 +26,9 @@ fun NavGraphBuilder.searchStopDestination(navController: NavHostController) {
                 )
                 navController.popBackStack()
             },
+            onBackClick = {
+                navController.popBackStack()
+            },
         ) { event -> viewModel.onEvent(event) }
     }
 }
