@@ -155,7 +155,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
             ?.let { TransportMode.toTransportModeType(productClass = it) }
     val lineName = transportation?.disassembledName
 
-    val displayText = transportation?.description
+    val displayText = transportation?.destination?.name
     val numberOfStops = stopSequence?.size
     val displayDuration = duration?.seconds?.toFormattedDurationTimeString()
     val stops = stopSequence?.mapNotNull { it.toUiModel() }?.toImmutableList()
