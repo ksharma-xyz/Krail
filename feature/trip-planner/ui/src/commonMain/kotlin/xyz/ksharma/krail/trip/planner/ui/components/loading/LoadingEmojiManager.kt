@@ -27,7 +27,12 @@ object LoadingEmojiManager {
         FestivalType.CHRISTMAS to listOf("🎁"),
         FestivalType.NEW_YEAR to listOf("🎉"),
         FestivalType.NEW_YEAR_EVE to listOf("🎆"),
-        FestivalType.ANZAC_DAY to listOf("🌺", "🇦🇺", "\uD83C\uDF96\uFE0F"),
+        FestivalType.ANZAC_DAY to listOf(
+            "🌺", // Flower
+            "🇦🇺", // Australia Flag
+            "\uD83C\uDF96\uFE0F", // Military Medal
+            "\uD83C\uDF3F" // Herb Rosemary
+        ),
         FestivalType.EASTER to listOf("🐰", "🐣", "🥚"),
         FestivalType.VALENTINES_DAY to listOf("❤️", "🌹"),
         FestivalType.HALLOWEEN to listOf("🎃", "👻"),
