@@ -9,8 +9,6 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
 
 internal fun NavGraphBuilder.settingsDestination(navController: NavHostController) {
     composable<SettingsRoute> {
-//        val viewModel: SettingsViewModel = koinViewModel<SettingsViewModel>()
-
         SettingsScreen(
             onChangeThemeClick = {
                 navController.navigate(

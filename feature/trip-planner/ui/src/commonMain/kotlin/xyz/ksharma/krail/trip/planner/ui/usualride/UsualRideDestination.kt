@@ -23,7 +23,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 
 internal fun NavGraphBuilder.usualRideDestination(navController: NavHostController) {
     composable<UsualRideRoute> {
-        val viewModel:UsualRideViewModel = koinViewModel<UsualRideViewModel>()
+        val viewModel: UsualRideViewModel = koinViewModel<UsualRideViewModel>()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
         var mode: TransportMode? by remember { mutableStateOf(null) }
@@ -49,6 +49,7 @@ internal fun NavGraphBuilder.usualRideDestination(navController: NavHostControll
                         .build(),
                 )
             },
+            onBackClick = { navController.popBackStack() }
         )
     }
 }
