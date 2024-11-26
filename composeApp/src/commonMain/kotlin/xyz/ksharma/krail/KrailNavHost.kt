@@ -1,4 +1,3 @@
-
 package xyz.ksharma.krail
 
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +25,8 @@ import xyz.ksharma.krail.taj.unspecifiedColor
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
-import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 /**
  * TODO - I don't like [NavHost] defined in app module, I would love to refactor it to :core:navigation module
@@ -67,8 +66,8 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
                 val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
                 val mode by viewModel.uiState.collectAsStateWithLifecycle()
 
-                productClass = mode?.productClass
-                themeColorHexCode.value = mode?.colorCode ?: unspecifiedColor
+                productClass = mode.productClass
+                themeColorHexCode.value = mode.colorCode
 
                 SplashScreen(
                     logoColor = if (productClass != null && themeColorHexCode.value != unspecifiedColor) {
@@ -79,11 +78,7 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
                     backgroundColor = KrailTheme.colors.surface,
                     onSplashComplete = {
                         navController.navigate(
-                            route = if (productClass != null) {
-                                SavedTripsRoute
-                            } else {
-                                UsualRideRoute
-                            },
+                            route = SavedTripsRoute,
                             navOptions = NavOptions.Builder()
                                 .setLaunchSingleTop(true)
                                 .setPopUpTo<SplashScreen>(inclusive = true)
@@ -98,3 +93,5 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
 
 @Serializable
 private data object SplashScreen
+
+internal val DEFAULT_THEME_TRANSPORT_MODE = TransportMode.Train()

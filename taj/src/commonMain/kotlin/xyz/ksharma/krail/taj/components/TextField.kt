@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -77,7 +78,7 @@ fun TextField(
 
     CompositionLocalProvider(
         LocalTextColor provides KrailTheme.colors.onSurface,
-        LocalTextStyle provides KrailTheme.typography.titleLarge,
+        LocalTextStyle provides KrailTheme.typography.titleLarge.copy(fontWeight = FontWeight.Normal),
         LocalTextSelectionColors provides textSelectionColors,
         LocalContentAlpha provides contentAlpha,
     ) {
@@ -137,10 +138,11 @@ fun TextField(
 
 @Composable
 private fun TextFieldPlaceholder(placeholder: String? = null) {
+    val color = LocalTextColor.current
     Text(
         text = placeholder.orEmpty(),
         maxLines = 1,
-        color = LocalTextColor.current.copy(alpha = PlaceholderOpacity),
+        color = color.copy(alpha = PlaceholderOpacity),
     )
 }
 
