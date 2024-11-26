@@ -18,11 +18,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -43,17 +40,14 @@ import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
-import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
-import xyz.ksharma.krail.taj.theme.shouldUseDarkIcons
 import xyz.ksharma.krail.trip.planner.ui.components.ActionData
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
-import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
@@ -70,27 +64,6 @@ fun TimeTableScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val themeColorHex by LocalThemeColor.current
-    val themeContentColorHex by LocalThemeContentColor.current
-    val themeColor by remember { mutableStateOf(themeColorHex.hexToComposeColor()) }
-    val themeContentColor by remember { mutableStateOf(themeContentColorHex.hexToComposeColor()) }
-    val darkIcons = shouldUseDarkIcons(themeColor)
-    /*DisposableEffect(darkIcons) {
-        context.getActivityOrNull()?.let { activity ->
-            (activity as ComponentActivity).enableEdgeToEdge(
-                statusBarStyle = SystemBarStyle.auto(
-                    android.graphics.Color.TRANSPARENT,
-                    android.graphics.Color.TRANSPARENT,
-                ) { darkIcons },
-                navigationBarStyle = SystemBarStyle.auto(
-                    lightScrim = themeContentColor.toArgb(),
-                    darkScrim = themeContentColor.toArgb(),
-                ),
-            )
-        }
-        onDispose {}
-    }*///TODO - Fix status bar colors
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -98,8 +71,7 @@ fun TimeTableScreen(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .background(color = themeColor),
+                .fillMaxWidth(),
         ) {
             TitleBar(
                 navAction = {
@@ -110,7 +82,7 @@ fun TimeTableScreen(
                         Image(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(themeContentColor),
+                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -118,7 +90,7 @@ fun TimeTableScreen(
                 title = {
                     Text(
                         text = "TimeTable",
-                        color = themeContentColor,
+                        color = KrailTheme.colors.onSurface,
                     )
                 },
                 actions = {
@@ -131,7 +103,7 @@ fun TimeTableScreen(
                         Image(
                             painter = painterResource(Res.drawable.ic_reverse),
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(themeContentColor),
+                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -150,7 +122,7 @@ fun TimeTableScreen(
                                 painterResource(Res.drawable.ic_star)
                             },
                             contentDescription = null,
-                            colorFilter = ColorFilter.tint(themeContentColor),
+                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
                             modifier = Modifier.size(24.dp),
                         )
                     }
@@ -163,10 +135,11 @@ fun TimeTableScreen(
                 timeTableState.trip?.let { trip ->
                     OriginDestination(
                         trip = trip,
-                        themeContentColor = themeContentColor,
+                        timeLineColor = KrailTheme.colors.onSurface,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color = themeColor),
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .background(color = KrailTheme.colors.surface),
                     )
                 }
             }
