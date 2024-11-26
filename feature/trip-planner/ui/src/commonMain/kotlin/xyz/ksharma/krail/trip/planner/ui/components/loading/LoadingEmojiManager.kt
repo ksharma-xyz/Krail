@@ -9,29 +9,28 @@ import kotlin.random.Random
 
 object LoadingEmojiManager {
 
-    private val emojiList = persistentListOf(
+    private val commonEmojiList = persistentListOf(
         "🛴",
         "🛹",
         "🚀",
         "🛶",
-        "\uD83C\uDFC2", // Snowboarder
         "\uD83D\uDC2C", // Dolphin
-        "\uD83E\uDD21", // Clown,
+        "⏰", // Alarm Clock
         "\uD83D\uDEFA", // Auto
         "\uD83D\uDEB2", // Bicycle
     )
 
+    private val rareEmojiList = persistentListOf("🐦‍🔥")
+
     private val festivalEmojiMap = mapOf(
-        FestivalType.AUSTRALIA_DAY to listOf("🇦🇺"),
-        FestivalType.CHRISTMAS to listOf("🎄", "🎅", "🎁", "☃\uFE0F"),
-        FestivalType.NEW_YEAR to listOf("🎉", "🎆"),
-        FestivalType.ANZAC_DAY to listOf("🌺", "🇦🇺"),
-        FestivalType.MOTHERS_DAY to listOf("💐", "💕"),
-        FestivalType.FATHERS_DAY to listOf("👔", "🍻"),
+        FestivalType.CHRISTMAS to listOf("🎄", "🎅", "☃\uFE0F"),
+        FestivalType.CHRISTMAS to listOf("🎁"),
+        FestivalType.NEW_YEAR to listOf("🎉"),
+        FestivalType.NEW_YEAR_EVE to listOf("🎆"),
+        FestivalType.ANZAC_DAY to listOf("🌺", "🇦🇺", "\uD83C\uDF96\uFE0F"),
         FestivalType.EASTER to listOf("🐰", "🐣", "🥚"),
         FestivalType.VALENTINES_DAY to listOf("❤️", "🌹"),
         FestivalType.HALLOWEEN to listOf("🎃", "👻"),
-        FestivalType.DIWALI to listOf("\uD83E\uDE94"),
         FestivalType.CHINESE_NEW_YEAR to listOf("🧧"),
     )
 
@@ -44,9 +43,10 @@ object LoadingEmojiManager {
 
     private val knownFestivalDates = mapOf(
         FestivalType.CHRISTMAS to MonthDay.of(12, 25),
+        FestivalType.BOXING_DAY to MonthDay.of(12, 26),
+        FestivalType.NEW_YEAR_EVE to MonthDay.of(12, 31),
         FestivalType.NEW_YEAR to MonthDay.of(1, 1),
         FestivalType.VALENTINES_DAY to MonthDay.of(2, 14),
-        FestivalType.AUSTRALIA_DAY to MonthDay.of(1, 26),
         FestivalType.ANZAC_DAY to MonthDay.of(4, 25),
     )
 
@@ -59,15 +59,10 @@ object LoadingEmojiManager {
             ?.let { festivalEmojiMap[it.key]?.randomOrNull() }
         if (festivalEmoji != null) return festivalEmoji
 
-        val commonEmojis = listOf("🛴", "🛹", "🚀", "🛶", "\uD83E\uDD21", "\uD83D\uDC2C")
-        val rareEmoji = "🐦‍🔥"
-        val otherEmojis = emojiList - commonEmojis - rareEmoji
-
         val randomValue = Random.nextInt(100)
         return when {
-            randomValue < 60 -> commonEmojis.random() // 50% chance for common emojis
-            randomValue < 99 -> otherEmojis.random() // 49% chance for other emojis
-            else -> rareEmoji // 1% chance for the rare emoji
+            randomValue < 99 -> commonEmojiList.random() // 99% chance for common emojis
+            else -> rareEmojiList.random() // 1% chance for the rare emoji
         }
     }
 }
