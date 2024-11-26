@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
@@ -45,7 +46,7 @@ fun StopSearchListItem(
         Text(
             text = stopName,
             color = textColor,
-            style = KrailTheme.typography.titleSmall,
+            style = KrailTheme.typography.titleLarge.copy(fontWeight = FontWeight.Medium),
         )
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),

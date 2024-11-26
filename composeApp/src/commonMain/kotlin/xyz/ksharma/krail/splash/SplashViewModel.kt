@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import xyz.ksharma.krail.DEFAULT_THEME_TRANSPORT_MODE
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
@@ -17,8 +18,8 @@ class SplashViewModel(
     private val sandook: Sandook,
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<TransportMode?> = MutableStateFlow(null)
-    val uiState: MutableStateFlow<TransportMode?> = _uiState
+    private val _uiState: MutableStateFlow<TransportMode> = MutableStateFlow(DEFAULT_THEME_TRANSPORT_MODE)
+    val uiState: MutableStateFlow<TransportMode> = _uiState
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -28,9 +29,11 @@ class SplashViewModel(
 
     private fun getThemeTransportMode() {
         viewModelScope.launch(Dispatchers.IO) {
-            val productClass = sandook.getProductClass()?.toInt() ?: 0
+            // First app launch there will be no product class, so use default transport mode theme.
+            val productClass =
+                sandook.getProductClass()?.toInt() ?: DEFAULT_THEME_TRANSPORT_MODE.productClass
             val mode = TransportMode.toTransportModeType(productClass)
-            _uiState.value = mode
+            _uiState.value = mode ?: DEFAULT_THEME_TRANSPORT_MODE
         }
     }
 }

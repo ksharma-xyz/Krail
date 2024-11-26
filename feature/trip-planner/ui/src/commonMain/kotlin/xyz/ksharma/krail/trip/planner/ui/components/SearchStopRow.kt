@@ -9,10 +9,8 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -71,14 +69,14 @@ fun SearchStopRow(
             TextFieldButton(onClick = fromButtonClick) {
                 Text(
                     text = fromStopItem?.stopName
-                        ?: "Where from",
+                        ?: "Starting from",
                     maxLines = 1,
                 )
             }
             TextFieldButton(onClick = toButtonClick) {
                 Text(
                     text = toStopItem?.stopName
-                        ?: "Where to",
+                        ?: "Destination",
                     maxLines = 1,
                 )
             }
@@ -95,6 +93,7 @@ fun SearchStopRow(
                         painter = painterResource(Res.drawable.ic_reverse),
                         contentDescription = "Reverse",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
+                        modifier = Modifier.size(24.dp),
                     )
                 },
                 onClick = onReverseButtonClick,
@@ -106,6 +105,7 @@ fun SearchStopRow(
                         painter = painterResource(Res.drawable.ic_search),
                         contentDescription = "Search",
                         colorFilter = ColorFilter.tint(LocalOnContentColor.current),
+                        modifier = Modifier.size(24.dp),
                     )
                 },
                 onClick = onSearchButtonClick,
