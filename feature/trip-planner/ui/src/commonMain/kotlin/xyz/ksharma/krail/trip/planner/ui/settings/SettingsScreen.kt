@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -27,6 +28,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_paint
+import krail.feature.trip_planner.ui.generated.resources.ic_dev
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Divider
@@ -38,6 +40,7 @@ import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @Composable
 fun SettingsScreen(
+    appVersion: String,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onChangeThemeClick: () -> Unit = {},
@@ -62,7 +65,7 @@ fun SettingsScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
                             colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
-                            modifier = Modifier.size(32.dp),
+                            modifier = Modifier.size(24.dp),
                         )
                     }
                 },
@@ -78,13 +81,14 @@ fun SettingsScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .height(56.dp)
                         .clickable(
                             role = Role.Button,
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() },
                             onClick = { onChangeThemeClick() },
                         )
-                        .padding(vertical = 12.dp, horizontal = 16.dp)
                         .semantics(mergeDescendants = true) {},
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -100,7 +104,32 @@ fun SettingsScreen(
                         style = KrailTheme.typography.bodyLarge,
                     )
                 }
-                Divider()
+                Divider(modifier = Modifier.padding(horizontal = 16.dp))
+            }
+
+            item {
+                // todo - common component
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .height(56.dp)
+                        .semantics(mergeDescendants = true) {},
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Image(
+                        contentDescription = null,
+                        painter = painterResource(Res.drawable.ic_dev),
+                        colorFilter = ColorFilter.tint(color = themeColor.hexToComposeColor()),
+                        modifier = Modifier.size(24.dp),
+                    )
+                    Text(
+                        text = "KRAIL App Version: $appVersion",
+                        style = KrailTheme.typography.bodyLarge,
+                    )
+                }
+                Divider(modifier = Modifier.padding(horizontal = 16.dp))
             }
         }
     }

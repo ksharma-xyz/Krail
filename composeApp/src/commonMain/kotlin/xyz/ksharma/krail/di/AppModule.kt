@@ -9,14 +9,21 @@ import xyz.ksharma.krail.sandook.di.sandookModule
 import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.trip.planner.network.api.di.networkModule
 import xyz.ksharma.krail.trip.planner.ui.di.viewModelsModule
+import xyz.ksharma.krail.version.appVersionModule
 
 val koinConfig = koinConfiguration {
     includes(nativeConfig())
-    modules(networkModule + viewModelsModule + sandookModule + splashModule)
+    modules(
+        networkModule,
+        viewModelsModule,
+        sandookModule,
+        splashModule,
+        appVersionModule,
+    )
 }
 
 val splashModule = module {
     viewModelOf(::SplashViewModel)
 }
 
-expect fun nativeConfig() : KoinAppDeclaration
+expect fun nativeConfig(): KoinAppDeclaration
