@@ -27,6 +27,9 @@ fun Project.configureAndroid(
                 buildConfig = true
             }
             packaging {
+                jniLibs {
+                    keepDebugSymbols += "**/*.so"
+                }
                 resources {
                     excludes += "/META-INF/{AL2.0,LGPL2.1}"
                 }

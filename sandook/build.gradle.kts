@@ -39,7 +39,6 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 
                 implementation(compose.runtime)
-                implementation(libs.log.kermit)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.db.sqlRuntime)
                 api(libs.di.koinComposeViewmodel)

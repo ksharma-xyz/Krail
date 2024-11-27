@@ -63,3 +63,7 @@
 -keepclasseswithmembers class * {
     @retrofit.* <methods>;
 }
+
+# For Ktor client in Android
+# https://youtrack.jetbrains.com/issue/KTOR-5528
+-dontwarn org.slf4j.**
