@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -29,6 +30,8 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
         updateUiState { displayLoading() }
 
         viewModelScope.launch {
+
+            delay(300)
             runCatching {
                 val response = tripPlanningService.stopFinder(stopSearchQuery = query)
                 println("response VM: $response")
