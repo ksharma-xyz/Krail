@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,7 +58,7 @@ fun SavedTripCard(
                 onClickLabel = "Open Trip Details",
                 onClick = onCardClick,
             )
-            .padding(12.dp),
+            .padding(vertical = 16.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         primaryTransportMode?.let {
@@ -71,7 +72,7 @@ fun SavedTripCard(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(text = trip.fromStopName, style = KrailTheme.typography.bodyMedium)
             Text(text = trip.toStopName, style = KrailTheme.typography.bodyMedium)
@@ -95,8 +96,10 @@ fun SavedTripCard(
                 painter = painterResource(Res.drawable.ic_star_filled),
                 contentDescription = "Save Trip",
                 colorFilter = ColorFilter.tint(
-                    primaryTransportMode?.colorCode
-                        ?.hexToComposeColor() ?: themeColor.hexToComposeColor(),
+                    if (isSystemInDarkTheme().not()) {
+                        primaryTransportMode?.colorCode
+                            ?.hexToComposeColor() ?: themeColor.hexToComposeColor()
+                    } else KrailTheme.colors.onSurface,
                 ),
             )
         }
