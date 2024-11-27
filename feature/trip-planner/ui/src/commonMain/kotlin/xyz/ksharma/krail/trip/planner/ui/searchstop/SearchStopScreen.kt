@@ -1,14 +1,26 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -34,7 +46,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
@@ -56,6 +72,7 @@ import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.StopSearchListItem
 import xyz.ksharma.krail.trip.planner.ui.components.backgroundColorOf
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.trip.planner.ui.components.loading.AnimatedDots
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
@@ -171,9 +188,24 @@ fun SearchStopScreen(
         }
 
         LazyColumn(
-            contentPadding = PaddingValues(top = 16.dp, bottom = 48.dp),
+            contentPadding = PaddingValues(top = 0.dp, bottom = 48.dp),
         ) {
-            if (searchStopState.isError && textFieldText.isNotBlank()) {
+            item {
+                Column(
+                    modifier = Modifier.height(KrailTheme.typography.bodyLarge.fontSize.value.dp + 12.dp),
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    AnimatedVisibility(
+                        visible = searchStopState.isLoading,
+                        enter = fadeIn(),
+                        exit = fadeOut(),
+                    ) {
+                        AnimatedDots()
+                    }
+                }
+            }
+
+            if (searchStopState.isError && textFieldText.isNotBlank() && searchStopState.isLoading.not()) {
                 item(key = "Error") {
                     ErrorMessage(
                         title = "Eh! That's not looking right mate.",
@@ -204,7 +236,7 @@ fun SearchStopScreen(
 
                     Divider()
                 }
-            } else if (displayNoMatchFound && textFieldText.isNotBlank()) {
+            } else if (displayNoMatchFound && textFieldText.isNotBlank() && searchStopState.isLoading.not()) {
                 item(key = "no_match") {
                     ErrorMessage(
                         title = "No match found!",
@@ -371,3 +403,46 @@ private val searchStopState = SearchStopState(
 )
 
 // endregion
+
+@Composable
+fun AnimatedSquigglyLine() {
+    val infiniteTransition = rememberInfiniteTransition()
+    val offset1 by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 100f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val offset2 by infiniteTransition.animateFloat(
+        initialValue = 100f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1200, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    Canvas(modifier = Modifier.fillMaxSize()) {
+        val path = Path().apply {
+            val width = size.width
+            val height = size.height / 2
+            moveTo(0f, height)
+            for (i in 0 until 10) {
+                val startX = (i * width / 10)
+                val endX = ((i + 1) * width / 10)
+                quadraticTo(
+                    startX + offset1, height - offset2, // Control Point
+                    endX, height // End Point
+                )
+            }
+        }
+
+        drawPath(
+            path = path,
+            color = Color.Blue,
+            style = Stroke(width = 4f, cap = StrokeCap.Round)
+        )
+    }
+}
