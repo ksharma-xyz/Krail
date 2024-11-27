@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId = "xyz.ksharma.krail"
-        versionCode = 12
-        versionName = "1.0-alpha03"
+        versionCode = 16
+        versionName = "1.0-alpha05"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -24,6 +24,11 @@ android {
                 isDebuggable = true
                 debugSymbolLevel = "FULL"
             }
+            packaging {
+                jniLibs {
+                    keepDebugSymbols += "**/*.so"
+                }
+            }
         }
 
         release {
@@ -33,6 +38,11 @@ android {
             ndk {
                 isDebuggable = false
                 debugSymbolLevel = "FULL"
+            }
+            packaging {
+                jniLibs {
+                    keepDebugSymbols += "**/*.so"
+                }
             }
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
