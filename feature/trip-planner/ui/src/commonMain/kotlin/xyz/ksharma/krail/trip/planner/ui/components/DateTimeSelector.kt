@@ -59,16 +59,16 @@ fun DateTimeSelector(
             RadioButton(
                 text = "Arrive",
                 selected = true,
-                backgroundColor = themeColor,
+                themeColor = themeColor,
             )
             RadioButton(
                 text = "Leave",
-                backgroundColor = themeColor,
+                themeColor = themeColor,
 
                 )
             RadioButton(
                 text = "Now",
-                backgroundColor = themeColor,
+                themeColor = themeColor,
             )
         }
 
@@ -183,7 +183,7 @@ fun IconButton(
 @Composable
 fun RadioButton(
     text: String,
-    backgroundColor: Color,
+    themeColor: Color,
     type: RadioButtonType = RadioButtonType.DEFAULT,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
@@ -199,12 +199,12 @@ fun RadioButton(
             )
             .clip(shape = RoundedCornerShape(8.dp))
             .background(
-                color = if (selected) backgroundColor else Color.Transparent,
+                color = if (selected) themeColor else Color.Transparent,
                 shape = RoundedCornerShape(8.dp)
             )
             .border(
                 width = if (!selected) 1.dp else 0.dp, // Apply border only when not selected
-                color = backgroundColor, // Use backgroundColor for border color
+                color = themeColor, // Use backgroundColor for border color
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(vertical = 4.dp, horizontal = 12.dp),
@@ -213,7 +213,7 @@ fun RadioButton(
         Text(
             text = text,
             style = KrailTheme.typography.title,
-            color = if (selected) KrailTheme.colors.onSurface else backgroundColor, // themecontentcolor
+            color = if (selected) themeContentColor() else themeColor,
         )
     }
 }
@@ -241,7 +241,7 @@ private fun PreviewRadioButton() {
             RadioButton(
                 text = "Hello",
                 selected = true,
-                backgroundColor = KrailTheme.colors.trainTheme,
+                themeColor = KrailTheme.colors.trainTheme,
                 onClick = {})
         }
     }
@@ -254,7 +254,7 @@ private fun PreviewRadioButtonUnselected() {
             RadioButton(
                 text = "Hello",
                 selected = false,
-                backgroundColor = KrailTheme.colors.trainTheme,
+                themeColor = KrailTheme.colors.trainTheme,
                 onClick = {})
         }
     }

@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -151,20 +152,25 @@ fun TimeTableScreen(
             }
 
             item {
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            item {
                 Text(
                     text = "Leaving Now",
                     style = KrailTheme.typography.bodyLarge,
                     color = themeColor,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 16.dp).clickable {
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .clickable(
+                            role = Role.Button,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) {
                             dateTimeSelectorClicked()
                         },
                 )
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(8.dp))
             }
 
             if (timeTableState.isError) {

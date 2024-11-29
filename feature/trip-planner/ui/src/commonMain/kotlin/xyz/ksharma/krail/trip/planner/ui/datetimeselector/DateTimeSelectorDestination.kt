@@ -10,6 +10,8 @@ internal fun NavGraphBuilder.dateTimeSelectorDestination(navController: NavHostC
     composable<DateTimeSelectorRoute> { backStackEntry ->
         val viewModel: DateTimeSelectorViewModel = koinViewModel<DateTimeSelectorViewModel>()
 
-        DateTimeSelectorScreen()
+        DateTimeSelectorScreen(onBackClick = {
+            navController.popBackStack()
+        })
     }
 }
