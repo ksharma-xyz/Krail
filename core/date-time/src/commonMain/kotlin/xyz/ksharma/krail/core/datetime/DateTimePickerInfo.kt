@@ -27,22 +27,14 @@ fun rememberCurrentDateTime(): DateTimePickerInfo {
         formatDate(currentDateTime.date)
     }
 
-    // Extracting hour and minute in 12-hour format
-    val hour = remember(currentDateTime.time.hour) {
-        (currentDateTime.time.hour % 12).takeIf { it != 0 } ?: 12 // Convert 24-hour to 12-hour
-    }
-    val minute = remember(currentDateTime.time.minute) {
-        currentDateTime.time.minute
-    }
-
     return DateTimePickerInfo(
         date = formattedDate,
-        hour = hour,
-        minute = minute
+        hour = currentDateTime.hour,
+        minute = currentDateTime.minute,
     )
 }
 
-private fun formatDate(date: LocalDate): String {
+fun formatDate(date: LocalDate): String {
     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val tomorrow = today.plus(1, DateTimeUnit.DAY)
 
@@ -55,4 +47,20 @@ private fun formatDate(date: LocalDate): String {
             "$dayOfWeek ${date.dayOfMonth} ${month.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }}"
         }
     }
+}
+
+fun incrementDateByOneDay(date: LocalDate): LocalDate {
+    return date.plus(1, DateTimeUnit.DAY)
+}
+
+fun decrementDateByOneDay(date: LocalDate): LocalDate {
+    return date.plus(-1, DateTimeUnit.DAY)
+}
+
+@Composable
+fun formatTime(hour: Int, minute: Int): String {
+    val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
+    val amPm = if (hour < 12) "AM" else "PM"
+    val formattedMinute = if (minute < 10) "0$minute" else minute.toString()
+    return "$displayHour:$formattedMinute $amPm"
 }
