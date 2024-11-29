@@ -23,7 +23,7 @@ fun IconButton(
 ) {
     Box(
         modifier = modifier
-            .size(48.dp)
+            .size(56.dp)
             .clip(CircleShape)
             .clickable { onClick() }, contentAlignment = Alignment.Center
     ) {

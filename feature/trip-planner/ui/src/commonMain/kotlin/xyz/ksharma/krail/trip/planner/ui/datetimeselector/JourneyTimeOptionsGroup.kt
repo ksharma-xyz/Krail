@@ -1,0 +1,39 @@
+package xyz.ksharma.krail.trip.planner.ui.datetimeselector
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.trip.planner.ui.components.RadioButton
+
+@Composable
+fun JourneyTimeOptionsGroup(
+    selectedOption: JourneyTimeOptions = JourneyTimeOptions.LEAVE,
+    themeColor: Color,
+    modifier: Modifier,
+    onOptionSelected: (JourneyTimeOptions) -> Unit,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+    ) {
+        JourneyTimeOptions.entries.forEach { option ->
+            RadioButton(
+                text = option.text,
+                selected = option == selectedOption,
+                themeColor = themeColor,
+                onClick = { onOptionSelected(option) },
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
+        }
+    }
+}
+
+enum class JourneyTimeOptions(val text: String) {
+    LEAVE("Leave"),
+    ARRIVE("Arrive")
+}
