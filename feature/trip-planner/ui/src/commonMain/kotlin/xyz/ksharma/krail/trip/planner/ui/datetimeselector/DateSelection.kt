@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_chevron_left
@@ -32,7 +33,7 @@ fun DateSelection(
         )
         Text(
             text = date,
-            style = KrailTheme.typography.bodyLarge,
+            style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
             color = KrailTheme.colors.onSurface,
             modifier = Modifier.weight(1f),
             textAlign = TextAlign.Center,
