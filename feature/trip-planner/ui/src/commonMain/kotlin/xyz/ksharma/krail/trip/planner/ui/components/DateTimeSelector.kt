@@ -159,7 +159,7 @@ private fun KrailTimePicker(
 }
 
 @Composable
-private fun IconButton(
+fun IconButton(
     painter: Painter,
     color: Color,
     modifier: Modifier = Modifier,
