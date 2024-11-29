@@ -8,6 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import org.koin.compose.viewmodel.koinViewModel
+import xyz.ksharma.krail.trip.planner.ui.navigation.DateTimeSelectorRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -42,6 +43,12 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
                         )
                     }
                 }
+            },
+            dateTimeSelectorClicked = {
+                navController.navigate(
+                    route = DateTimeSelectorRoute,
+                    navOptions = NavOptions.Builder().setLaunchSingleTop(singleTop = true).build(),
+                )
             },
         )
     }
