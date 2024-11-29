@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_chevron_left
 import krail.feature.trip_planner.ui.generated.resources.ic_chevron_right
@@ -52,11 +51,16 @@ import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DateTimeSelectorScreen(modifier: Modifier = Modifier, onBackClick: () -> Unit = {}) {
+fun DateTimeSelectorScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Unit = {},
+    onDateTimeSelected: () -> Unit = {},
+) {
     val themeColorHex by LocalThemeColor.current
     val themeColor = remember(themeColorHex) {
         themeColorHex.hexToComposeColor()
     }
+    val currentDateTime = rememberCurrentDateTime()
 
     Column(
         modifier = modifier
@@ -89,7 +93,6 @@ fun DateTimeSelectorScreen(modifier: Modifier = Modifier, onBackClick: () -> Uni
             }
 
             item {
-                val currentDateTime = rememberCurrentDateTime()
                 val timePickerState = rememberTimePickerState(
                     initialHour = currentDateTime.hour,
                     initialMinute = currentDateTime.minute,
@@ -111,17 +114,27 @@ fun DateTimeSelectorScreen(modifier: Modifier = Modifier, onBackClick: () -> Uni
             }
 
             item {
-                SelectedDateTimeRow()
+                SelectedDateTimeRow(
+                    dateTimeText = "Today, 12th July, 10:30 AM",
+                    onResetClick = {},
+                )
             }
         }
     }
 }
 
 @Composable
-private fun SelectedDateTimeRow(modifier: Modifier = Modifier, resetClick: () -> Unit = {}) {
-    Row(modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(20.dp)) {
-        Text("Reset", modifier = Modifier.clickable { resetClick() })
-        Text("Leaving at 12:00 PM")
+private fun SelectedDateTimeRow(
+    dateTimeText: String,
+    modifier: Modifier = Modifier,
+    onResetClick: () -> Unit = {},
+) {
+    Row(
+        modifier.fillMaxWidth().padding(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(24.dp)
+    ) {
+        Text("Reset", modifier = Modifier.clickable { onResetClick() })
+        Text(dateTimeText)
     }
 }
 
