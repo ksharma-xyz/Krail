@@ -55,7 +55,7 @@ fun SplashScreen(
 
         val splashComplete by rememberUpdatedState(onSplashComplete)
         LaunchedEffect(key1 = Unit) {
-            delay(1200)
+            delay(100) // 1200 for Prod
             splashComplete()
         }
     }
