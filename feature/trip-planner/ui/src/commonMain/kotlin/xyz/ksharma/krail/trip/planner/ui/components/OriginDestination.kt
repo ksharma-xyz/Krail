@@ -33,7 +33,7 @@ internal fun OriginDestination(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp, top = 4.dp),
+            .padding(top = 4.dp),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -44,7 +44,7 @@ internal fun OriginDestination(
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
-                .padding(start = 12.dp, bottom = 8.dp),
+                .padding(start = 16.dp, bottom = 8.dp),
         ) {
             AnimatedContent(
                 targetState = trip.fromStopName,
@@ -85,7 +85,7 @@ internal fun OriginDestination(
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
-                .padding(start = 12.dp, top = 8.dp),
+                .padding(start = 16.dp, top = 8.dp),
         ) {
             AnimatedContent(
                 targetState = trip.toStopName,

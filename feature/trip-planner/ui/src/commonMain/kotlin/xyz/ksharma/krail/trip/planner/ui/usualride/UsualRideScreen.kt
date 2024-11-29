@@ -12,10 +12,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -116,7 +115,7 @@ fun UsualRideScreen(
             LazyColumn(contentPadding = PaddingValues(top = 12.dp, bottom = 152.dp)) {
                 item {
                     Text(
-                        text = "Let's set the vibe.",
+                        text = "Let's set the vibe!",
                         style = KrailTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Normal),
                         modifier = Modifier
                             .padding(horizontal = 24.dp)
@@ -127,7 +126,7 @@ fun UsualRideScreen(
                 item {
                     Text(
                         text = "Select a color",
-                        style = KrailTheme.typography.bodyMedium,
+                        style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
                         modifier = Modifier
                             .padding(horizontal = 24.dp)
                             .padding(bottom = 16.dp),
@@ -149,8 +148,8 @@ fun UsualRideScreen(
         if (selectedProductClass != null) {
             Column(
                 modifier = Modifier.align(Alignment.BottomCenter)
-                    .statusBarsPadding()
-                    .padding(bottom = 20.dp)
+                    .navigationBarsPadding()
+                    .padding(bottom = 10.dp)
             ) {
                 Text(
                     text = "Let's #KRAIL",
@@ -176,8 +175,6 @@ fun UsualRideScreen(
                         }
                         .padding(vertical = 10.dp),
                 )
-
-                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }

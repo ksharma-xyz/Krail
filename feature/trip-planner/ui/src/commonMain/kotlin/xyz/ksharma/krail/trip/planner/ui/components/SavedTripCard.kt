@@ -72,7 +72,7 @@ fun SavedTripCard(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .weight(1f),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(text = trip.fromStopName, style = KrailTheme.typography.bodyMedium)
             Text(text = trip.toStopName, style = KrailTheme.typography.bodyMedium)
