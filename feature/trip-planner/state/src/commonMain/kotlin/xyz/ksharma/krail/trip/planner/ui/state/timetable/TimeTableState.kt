@@ -7,6 +7,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
 data class TimeTableState(
     val isLoading: Boolean = true,
+    val silentLoading: Boolean = false, // Loading anim while still displaying TimeTable results.
     val isTripSaved: Boolean = false,
     val journeyList: ImmutableList<JourneyCardInfo> = persistentListOf(),
     val trip: Trip? = null,

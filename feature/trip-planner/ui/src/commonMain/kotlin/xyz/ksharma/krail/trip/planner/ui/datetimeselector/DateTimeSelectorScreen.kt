@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -82,7 +83,7 @@ fun DateTimeSelectorScreen(
     var selectedDate by remember { mutableStateOf(today) }
 
     // Reset
-    var reset by remember { mutableStateOf(false) }
+    var reset by remember { mutableStateOf(true) }
     LaunchedEffect(timePickerState, journeyTimeOption, selectedDate) {
         // if any of the date / time value changes, then reset is invalid.
         reset = false
@@ -123,7 +124,10 @@ fun DateTimeSelectorScreen(
                     })
         })
 
-        LazyColumn(contentPadding = PaddingValues(vertical = 16.dp)) {
+        LazyColumn(
+            contentPadding = PaddingValues(vertical = 16.dp),
+            modifier = Modifier.systemBarsPadding(),
+        ) {
             item {
                 JourneyTimeOptionsGroup(
                     selectedOption = journeyTimeOption,
@@ -168,7 +172,7 @@ fun DateTimeSelectorScreen(
             item {
                 Text(
                     text = if (reset) {
-                        "Leaving: Now"
+                        "Leave: Now"
                     } else {
                         DateTimeSelectionItem(
                             option = journeyTimeOption,
@@ -202,7 +206,7 @@ fun DateTimeSelectorScreen(
                                     }
                                 )
                             },
-                        ).padding(vertical = 10.dp)
+                        ).padding(vertical = 10.dp, horizontal = 12.dp)
                 )
             }
         }

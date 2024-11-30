@@ -1,12 +1,17 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -52,6 +57,7 @@ import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.trip.planner.ui.components.loading.AnimatedDots
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -99,10 +105,20 @@ fun TimeTableScreen(
                     }
                 },
                 title = {
-                    Text(
-                        text = "TimeTable",
-                        color = KrailTheme.colors.onSurface,
-                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = "TimeTable",
+                            color = KrailTheme.colors.onSurface,
+                        )
+
+                        AnimatedVisibility(
+                            visible = timeTableState.silentLoading && !timeTableState.isLoading,
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                        ) {
+                            AnimatedDots(color = themeColor, modifier = Modifier.padding(start = 24.dp))
+                        }
+                    }
                 },
                 actions = {
                     ActionButton(
@@ -157,7 +173,7 @@ fun TimeTableScreen(
 
             item {
                 Text(
-                    text = dateTimeSelectionItem?.toDateTimeText() ?: "Leave: Now",
+                    text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
                     style = KrailTheme.typography.titleMedium,
                     color = themeContentColor(),
                     modifier = Modifier
@@ -167,7 +183,7 @@ fun TimeTableScreen(
                         .clickable(
                             role = Role.Button,
                             interactionSource = remember { MutableInteractionSource() },
-                            indication = null
+                            indication = null,
                         ) {
                             dateTimeSelectorClicked()
                         },

@@ -28,9 +28,8 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
     private fun onSearchTextChanged(query: String) {
         //Timber.d("onSearchTextChanged: $query")
         updateUiState { displayLoading() }
-
+        // TODO - cancel previous flow before starting new one.
         viewModelScope.launch {
-
             delay(300)
             runCatching {
                 val response = tripPlanningService.stopFinder(stopSearchQuery = query)

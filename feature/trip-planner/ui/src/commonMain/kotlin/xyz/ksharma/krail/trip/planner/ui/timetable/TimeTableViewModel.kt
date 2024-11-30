@@ -6,6 +6,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -72,6 +73,8 @@ class TimeTableViewModel(
     private var tripInfo: Trip? = null
     private var dateTimeSelectionItem: DateTimeSelectionItem? = null
 
+    private var fetchTripJob: Job? = null
+
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
             is TimeTableUiEvent.LoadTimeTable -> onLoadTimeTable(event.trip)
@@ -79,24 +82,30 @@ class TimeTableViewModel(
             TimeTableUiEvent.SaveTripButtonClicked -> onSaveTripButtonClicked()
             TimeTableUiEvent.ReverseTripButtonClicked -> onReverseTripButtonClicked()
             TimeTableUiEvent.RetryButtonClicked -> onLoadTimeTable(tripInfo!!)
-            is TimeTableUiEvent.DateTimeSelectionChanged -> onDateTimeSelectionChanged(event.dateTimeSelectionItem)
+            is TimeTableUiEvent.DateTimeSelectionChanged -> {
+                onDateTimeSelectionChanged(item = event.dateTimeSelectionItem)
+            }
         }
     }
 
-    private fun onDateTimeSelectionChanged(dateTimeSelectionItem: DateTimeSelectionItem?) {
-
+    private fun onDateTimeSelectionChanged(item: DateTimeSelectionItem?) {
+        println("DateTimeSelectionChanged: $item")
+        dateTimeSelectionItem = item
+        rateLimiter.triggerEvent()
     }
 
     private fun fetchTrip() {
         println("fetchTrip API Call")
-        viewModelScope.launch(Dispatchers.IO) {
-            // TODO - silent refresh here, UI to display loading but silent one.
+        fetchTripJob?.cancel()
+        fetchTripJob = viewModelScope.launch(Dispatchers.IO) {
             rateLimiter.rateLimitFlow {
-                //    println("rateLimitFlow block")
+                println("rateLimitFlow block obj:$rateLimiter and coroutine: $this")
+                updateUiState { copy(silentLoading = true) }
                 loadTrip()
             }.catch { e ->
                 println("Error while fetching trip: $e")
             }.collectLatest { result ->
+                updateUiState { copy(silentLoading = false) }
                 result.onSuccess { response ->
                     // println("Success API response")
                     updateUiState {
