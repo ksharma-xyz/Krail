@@ -70,7 +70,7 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             dateTimeSelectionItem = dateTimeSelectionItem,
             dateTimeSelectorClicked = {
                 navController.navigate(
-                    route = DateTimeSelectorRoute(),
+                    route = DateTimeSelectorRoute(dateTimeSelectionItem?.toJsonString()),
                     navOptions = NavOptions.Builder().setLaunchSingleTop(singleTop = true).build(),
                 )
             },

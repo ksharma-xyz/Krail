@@ -87,7 +87,7 @@ data object SettingsRoute
 @Serializable
 data class DateTimeSelectorRoute(
     // Noop, need x coz it's data class, need to put keys in companion obj rather than elsewhere.
-    val x: String = "",
+    val dateTimeSelectionItemJson: String? = null,
 ) {
     companion object {
         const val DATE_TIME_TEXT_KEY = "DateTimeSelectionKey"
