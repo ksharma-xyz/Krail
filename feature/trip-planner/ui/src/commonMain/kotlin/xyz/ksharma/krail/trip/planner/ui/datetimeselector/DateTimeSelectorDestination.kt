@@ -11,6 +11,8 @@ internal fun NavGraphBuilder.dateTimeSelectorDestination(navController: NavHostC
     composable<DateTimeSelectorRoute> { backStackEntry ->
         val viewModel: DateTimeSelectorViewModel = koinViewModel<DateTimeSelectorViewModel>()
 
+        // TODO - If arguments have data, then display that data in the Screen else display current date time.
+
         DateTimeSelectorScreen(
             onBackClick = {
                 navController.popBackStack()
@@ -18,7 +20,7 @@ internal fun NavGraphBuilder.dateTimeSelectorDestination(navController: NavHostC
             onDateTimeSelected = { dateTimeSelection ->
                 navController.previousBackStackEntry?.savedStateHandle?.set(
                     key = DateTimeSelectorRoute.DATE_TIME_TEXT_KEY,
-                    value = dateTimeSelection,
+                    value = dateTimeSelection?.toJsonString(),
                 )
                 navController.popBackStack()
             }
