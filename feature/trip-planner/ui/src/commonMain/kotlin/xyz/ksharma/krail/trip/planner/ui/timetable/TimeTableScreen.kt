@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -52,6 +53,8 @@ import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
+import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
+import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
@@ -62,6 +65,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 fun TimeTableScreen(
     timeTableState: TimeTableState,
     expandedJourneyId: String?,
+    dateTimeSelectionText: String,
     onEvent: (TimeTableUiEvent) -> Unit,
     onAlertClick: (String) -> Unit,
     onBackClick: () -> Unit,
@@ -153,12 +157,13 @@ fun TimeTableScreen(
 
             item {
                 Text(
-                    text = "Leaving Now",
-                    style = KrailTheme.typography.bodyLarge,
-                    color = themeColor,
+                    text = dateTimeSelectionText,
+                    style = KrailTheme.typography.titleMedium,
+                    color = themeContentColor(),
                     modifier = Modifier
-                        .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .background(color = themeColor, shape = RoundedCornerShape(50))
+                        .padding(horizontal = 12.dp, vertical = 6.dp)
                         .clickable(
                             role = Role.Button,
                             interactionSource = remember { MutableInteractionSource() },
@@ -362,6 +367,7 @@ private fun PreviewTimeTableScreen() {
                 onEvent = {},
                 onAlertClick = {},
                 onBackClick = {},
+                dateTimeSelectionText = "Leaving now",
             )
         }
     }
@@ -387,6 +393,7 @@ private fun PreviewTimeTableScreenError() {
                 onEvent = {},
                 onAlertClick = {},
                 onBackClick = {},
+                dateTimeSelectionText = "Leaving now",
             )
         }
     }
@@ -408,6 +415,7 @@ private fun PreviewTimeTableScreenNoResults() {
                     isError = false,
                     isLoading = false,
                 ),
+                dateTimeSelectionText = "Leaving now",
                 expandedJourneyId = null,
                 onEvent = {},
                 onAlertClick = {},

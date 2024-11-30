@@ -29,19 +29,6 @@ fun RadioButton(
     selected: Boolean = false,
     onClick: () -> Unit = {},
 ) {
-    val animationProgress by animateFloatAsState(
-        targetValue = if (selected) 1f else 0f,
-        animationSpec = tween(durationMillis = 250)
-    )
-
-    val borderThickness = lerp(start = 0.dp, stop = 4.dp, fraction = animationProgress)
-    val animatedBackgroundColor =
-        androidx.compose.ui.graphics.lerp(
-            start = Color.Transparent,
-            stop = themeColor,
-            fraction = animationProgress,
-        )
-
     Box(
         modifier = modifier
             .height(
@@ -52,11 +39,11 @@ fun RadioButton(
             )
             .clip(shape = RoundedCornerShape(8.dp))
             .background(
-                color = animatedBackgroundColor,
+                color = if (selected) themeColor else Color.Transparent,
                 shape = RoundedCornerShape(8.dp)
             )
             .border(
-                width = borderThickness, // Dynamic border thickness
+                width = 2.dp, // Dynamic border thickness
                 color = themeColor, // Border color
                 shape = RoundedCornerShape(8.dp)
             )
