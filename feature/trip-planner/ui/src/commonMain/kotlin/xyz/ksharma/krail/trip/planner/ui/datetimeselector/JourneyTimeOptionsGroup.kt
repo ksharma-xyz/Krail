@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.trip.planner.ui.components.RadioButton
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
 
 @Composable
 fun JourneyTimeOptionsGroup(
@@ -31,9 +32,4 @@ fun JourneyTimeOptionsGroup(
             )
         }
     }
-}
-
-enum class JourneyTimeOptions(val text: String) {
-    LEAVE("Leave"),
-    ARRIVE("Arrive")
 }

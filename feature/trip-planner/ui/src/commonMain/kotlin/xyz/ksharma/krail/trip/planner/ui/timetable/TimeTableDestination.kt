@@ -12,11 +12,11 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import org.koin.compose.viewmodel.koinViewModel
-import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectionItem
-import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectionItem.Companion.fromJsonString
 import xyz.ksharma.krail.trip.planner.ui.navigation.DateTimeSelectorRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem.Companion.fromJsonString
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
@@ -47,6 +47,7 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
         LaunchedEffect(dateTimeSelectionJson) {
             println("Changed dateTimeSelectionItem: $dateTimeSelectionItem")
             dateTimeSelectionItem = dateTimeSelectionJson?.let { fromJsonString(it) }
+            viewModel.onEvent(TimeTableUiEvent.DateTimeSelectionChanged(dateTimeSelectionItem))
         }
 
         TimeTableScreen(

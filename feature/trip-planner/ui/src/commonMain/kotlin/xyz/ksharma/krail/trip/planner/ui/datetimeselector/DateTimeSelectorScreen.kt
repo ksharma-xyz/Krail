@@ -33,16 +33,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
 import xyz.ksharma.krail.core.datetime.decrementDateByOneDay
-import xyz.ksharma.krail.core.datetime.formatDate
-import xyz.ksharma.krail.core.datetime.formatTime
+import xyz.ksharma.krail.core.datetime.toReadableDate
 import xyz.ksharma.krail.core.datetime.incrementDateByOneDay
 import xyz.ksharma.krail.core.datetime.rememberCurrentDateTime
 import xyz.ksharma.krail.taj.LocalThemeColor
@@ -53,8 +49,8 @@ import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
-import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.ARRIVE
-import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.LEAVE
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
 import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -144,7 +140,7 @@ fun DateTimeSelectorScreen(
 
                 DateSelection(
                     themeColor = themeColor,
-                    date = formatDate(selectedDate),
+                    date = toReadableDate(selectedDate),
                     onNextClicked = {
                         if (selectedDate < maxDate) {
                             selectedDate = incrementDateByOneDay(selectedDate)
@@ -210,46 +206,5 @@ fun DateTimeSelectorScreen(
                 )
             }
         }
-    }
-}
-
-@Serializable
-data class DateTimeSelectionItem(
-    val option: JourneyTimeOptions,
-    val hour: Int,
-    val minute: Int,
-    val date: LocalDate,
-) {
-    fun toDateTimeText(): String = when (option) {
-        LEAVE -> {
-            "Leave: ${formatDate(date)} ${formatTime(hour, minute)}"
-        }
-
-        ARRIVE -> {
-            "Arrive: ${formatDate(date)} ${formatTime(hour, minute)}"
-        }
-    }
-
-    fun toJsonString() = Json.encodeToString(serializer(), this)
-
-    fun toHHMM(): String {
-        val hh = hour.toString().padStart(2, '0')
-        val mm = minute.toString().padStart(2, '0')
-        return "$hh$mm"
-    }
-
-    fun toYYYYMMDD(): String {
-        val yyyy = date.year.toString()
-        val mm = date.monthNumber.toString().padStart(2, '0')
-        val dd = date.dayOfMonth.toString().padStart(2, '0')
-        return "$yyyy$mm$dd"
-    }
-
-    @Suppress("ConstPropertyName")
-    companion object {
-        private const val serialVersionUID: Long = 1L
-
-        fun fromJsonString(json: String) =
-            kotlin.runCatching { Json.decodeFromString(serializer(), json) }.getOrNull()
     }
 }
