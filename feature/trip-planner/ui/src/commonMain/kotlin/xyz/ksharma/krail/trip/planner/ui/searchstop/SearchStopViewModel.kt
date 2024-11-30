@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +20,8 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
     private val _uiState: MutableStateFlow<SearchStopState> = MutableStateFlow(SearchStopState())
     val uiState: StateFlow<SearchStopState> = _uiState
 
+    private var searchJob: Job? = null
+
     fun onEvent(event: SearchStopUiEvent) {
         when (event) {
             is SearchStopUiEvent.SearchTextChanged -> onSearchTextChanged(event.query)
@@ -28,8 +31,9 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
     private fun onSearchTextChanged(query: String) {
         //Timber.d("onSearchTextChanged: $query")
         updateUiState { displayLoading() }
+        searchJob?.cancel()
         // TODO - cancel previous flow before starting new one.
-        viewModelScope.launch {
+        searchJob = viewModelScope.launch {
             delay(300)
             runCatching {
                 val response = tripPlanningService.stopFinder(stopSearchQuery = query)
@@ -40,6 +44,8 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
 
                 updateUiState { displayData(results) }
             }.getOrElse {
+                delay(1500) // buffer for API response before displaying error.
+                // TODO- ideally cache all stops and error will never happen.
                 updateUiState { displayError() }
             }
         }

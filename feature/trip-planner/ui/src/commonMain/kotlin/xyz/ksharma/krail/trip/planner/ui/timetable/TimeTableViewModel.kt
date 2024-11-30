@@ -97,6 +97,7 @@ class TimeTableViewModel(
     private fun fetchTrip() {
         println("fetchTrip API Call")
         fetchTripJob?.cancel()
+        updateUiState { copy(silentLoading = true) }
         fetchTripJob = viewModelScope.launch(Dispatchers.IO) {
             rateLimiter.rateLimitFlow {
                 println("rateLimitFlow block obj:$rateLimiter and coroutine: $this")
