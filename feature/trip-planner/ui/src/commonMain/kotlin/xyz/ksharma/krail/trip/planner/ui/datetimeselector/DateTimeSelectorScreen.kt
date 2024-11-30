@@ -55,8 +55,6 @@ import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.ARRIVE
 import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.LEAVE
-import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
-import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Companion
 import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -233,6 +231,19 @@ data class DateTimeSelectionItem(
     }
 
     fun toJsonString() = Json.encodeToString(serializer(), this)
+
+    fun toHHMM(): String {
+        val hh = hour.toString().padStart(2, '0')
+        val mm = minute.toString().padStart(2, '0')
+        return "$hh$mm"
+    }
+
+    fun toYYYYMMDD(): String {
+        val yyyy = date.year.toString()
+        val mm = date.monthNumber.toString().padStart(2, '0')
+        val dd = date.dayOfMonth.toString().padStart(2, '0')
+        return "$yyyy$mm$dd"
+    }
 
     @Suppress("ConstPropertyName")
     companion object {
