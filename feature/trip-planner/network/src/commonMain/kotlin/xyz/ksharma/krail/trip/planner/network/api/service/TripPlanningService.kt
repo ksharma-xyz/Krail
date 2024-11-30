@@ -11,7 +11,23 @@ internal const val NSW_TRANSPORT_BASE_URL = "https://api.transport.nsw.gov.au"
 
 interface TripPlanningService {
 
-    suspend fun trip(originStopId: String, destinationStopId: String): TripResponse
+    suspend fun trip(
+        originStopId: String,
+        destinationStopId: String,
+        depArr: DepArr = DepArr.DEP,
+
+        /**
+         * YYYYMMDD format.
+         * E.g. 20160901 refers to 1 September 2016.
+         */
+        date: String? = null,
+
+        /**
+         * HHMM 24-hour format.
+         * E.g. 0830 means 8:30am and 2030 means 8:30pm.
+         */
+        time: String? = null,
+    ): TripResponse
 
     suspend fun stopFinder(
         stopSearchQuery: String,

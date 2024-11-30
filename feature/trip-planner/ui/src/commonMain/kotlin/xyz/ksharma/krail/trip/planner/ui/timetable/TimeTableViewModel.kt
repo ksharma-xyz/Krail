@@ -22,7 +22,11 @@ import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeStri
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
+import xyz.ksharma.krail.trip.planner.network.api.service.DepArr
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
+import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectionItem
+import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions
+import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.*
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -67,6 +71,7 @@ class TimeTableViewModel(
     val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
 
     private var tripInfo: Trip? = null
+    private var dateTimeSelectionItem: DateTimeSelectionItem? = null
 
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
@@ -116,6 +121,13 @@ class TimeTableViewModel(
             val tripResponse = tripPlanningService.trip(
                 originStopId = tripInfo!!.fromStopId,
                 destinationStopId = tripInfo!!.toStopId,
+                date = dateTimeSelectionItem?.toYYYYMMDD(),
+                time = dateTimeSelectionItem?.toHHMM(),
+                depArr = when (dateTimeSelectionItem?.option) {
+                    LEAVE -> DepArr.DEP
+                    ARRIVE -> DepArr.ARR
+                    else -> DepArr.DEP
+                }
             )
             Result.success(tripResponse)
         }.getOrElse { error ->

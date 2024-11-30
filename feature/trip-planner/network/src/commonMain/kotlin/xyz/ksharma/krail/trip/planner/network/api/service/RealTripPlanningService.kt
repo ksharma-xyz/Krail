@@ -17,6 +17,9 @@ class RealTripPlanningService(private val httpClient: HttpClient) : TripPlanning
     override suspend fun trip(
         originStopId: String,
         destinationStopId: String,
+        depArr: DepArr,
+        date: String?,
+        time: String?,
     ): TripResponse = withContext(Dispatchers.IO) {
 
         httpClient.get("$NSW_TRANSPORT_BASE_URL/v1/tp/trip") {
@@ -24,7 +27,10 @@ class RealTripPlanningService(private val httpClient: HttpClient) : TripPlanning
                 parameters.append(TripRequestParams.nameOrigin, originStopId)
                 parameters.append(TripRequestParams.nameDestination, destinationStopId)
 
-                parameters.append(TripRequestParams.depArrMacro, "dep")
+                parameters.append(TripRequestParams.depArrMacro, depArr.macro)
+                date?.let { parameters.append(TripRequestParams.itdDate, date) }
+                time?.let { parameters.append(TripRequestParams.itdTime, time) }
+
                 parameters.append(TripRequestParams.typeDestination, "any")
                 parameters.append(TripRequestParams.calcNumberOfTrips, "6")
                 parameters.append(TripRequestParams.typeOrigin, "any")
@@ -56,5 +62,9 @@ class RealTripPlanningService(private val httpClient: HttpClient) : TripPlanning
             }
         }.body()
     }
+}
 
+enum class DepArr(val macro: String) {
+    DEP("dep"),
+    ARR("arr")
 }
