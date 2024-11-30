@@ -31,7 +31,7 @@ fun IconButton(
             painter = painter,
             contentDescription = null,
             colorFilter = ColorFilter.tint(color),
-            modifier = Modifier.size(24.dp),
+            modifier = Modifier.size(32.dp),
         )
     }
 }

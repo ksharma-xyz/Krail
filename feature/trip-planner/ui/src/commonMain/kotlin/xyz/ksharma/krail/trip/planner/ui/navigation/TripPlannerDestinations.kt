@@ -85,4 +85,11 @@ internal data class ServiceAlertRoute(
 data object SettingsRoute
 
 @Serializable
-data object DateTimeSelectorRoute
+data class DateTimeSelectorRoute(
+    // Noop, need x coz it's data class, need to put keys in companion obj rather than elsewhere.
+    val x: String = "",
+) {
+    companion object {
+        const val DATE_TIME_TEXT_KEY = "DateTimeSelectionKey"
+    }
+}

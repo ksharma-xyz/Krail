@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -27,6 +28,19 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
         val isActive by viewModel.isActive.collectAsStateWithLifecycle()
         val expandedJourneyId: String? by viewModel.expandedJourneyId.collectAsStateWithLifecycle()
 
+        // Arguments
+        // Cannot use 'rememberSaveable' here because DateTimeSelectionItem is not Parcelable.
+        // But it's saved in backStackEntry.savedStateHandle as json, so it's able to
+        // handle config changes properly.
+        val dateTimeSelectionText: String =
+            backStackEntry.savedStateHandle.get<String>(key = DateTimeSelectorRoute.DATE_TIME_TEXT_KEY)
+                ?: "Leave: Now"
+
+        // Lookout for new updates
+        LaunchedEffect(dateTimeSelectionText) {
+            println("Changed dateTimeSelectionItem: $dateTimeSelectionText")
+        }
+
         TimeTableScreen(
             timeTableState = timeTableState,
             expandedJourneyId = expandedJourneyId,
@@ -44,9 +58,10 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
                     }
                 }
             },
+            dateTimeSelectionText = dateTimeSelectionText,
             dateTimeSelectorClicked = {
                 navController.navigate(
-                    route = DateTimeSelectorRoute,
+                    route = DateTimeSelectorRoute(),
                     navOptions = NavOptions.Builder().setLaunchSingleTop(singleTop = true).build(),
                 )
             },

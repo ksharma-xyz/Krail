@@ -57,7 +57,6 @@ fun decrementDateByOneDay(date: LocalDate): LocalDate {
     return date.plus(-1, DateTimeUnit.DAY)
 }
 
-@Composable
 fun formatTime(hour: Int, minute: Int): String {
     val displayHour = if (hour == 0 || hour == 12) 12 else hour % 12
     val amPm = if (hour < 12) "AM" else "PM"
