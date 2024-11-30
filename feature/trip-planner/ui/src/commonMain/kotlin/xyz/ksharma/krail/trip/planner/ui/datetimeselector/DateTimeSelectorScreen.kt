@@ -39,9 +39,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import xyz.ksharma.krail.core.datetime.decrementDateByOneDay
-import xyz.ksharma.krail.core.datetime.toReadableDate
 import xyz.ksharma.krail.core.datetime.incrementDateByOneDay
 import xyz.ksharma.krail.core.datetime.rememberCurrentDateTime
+import xyz.ksharma.krail.core.datetime.toReadableDate
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Divider
 import xyz.ksharma.krail.taj.components.Text
@@ -57,6 +57,7 @@ import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateTimeSelectorScreen(
+    dateTimeSelection: DateTimeSelectionItem?,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onDateTimeSelected: (DateTimeSelectionItem?) -> Unit = {},
@@ -66,13 +67,15 @@ fun DateTimeSelectorScreen(
     val themeColor = remember(themeColorHex) { themeColorHex.hexToComposeColor() }
 
     // Journey Time Options
-    var journeyTimeOption by rememberSaveable { mutableStateOf(JourneyTimeOptions.LEAVE) }
+    var journeyTimeOption by rememberSaveable {
+        mutableStateOf(dateTimeSelection?.option ?: JourneyTimeOptions.LEAVE)
+    }
 
     // Time Selection
     val currentDateTime = rememberCurrentDateTime()
     val timePickerState = rememberTimePickerState(
-        initialHour = currentDateTime.hour,
-        initialMinute = currentDateTime.minute,
+        initialHour = dateTimeSelection?.hour ?: currentDateTime.hour,
+        initialMinute = dateTimeSelection?.minute ?: currentDateTime.minute,
         is24Hour = false,
     )
 
@@ -80,13 +83,20 @@ fun DateTimeSelectorScreen(
     val today =
         remember { Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date }
     val maxDate = remember { today.plus(7, DateTimeUnit.DAY) }
-    var selectedDate by remember { mutableStateOf(today) }
+    var selectedDate by remember { mutableStateOf(dateTimeSelection?.date ?: today) }
 
     // Reset
-    var reset by remember { mutableStateOf(true) }
+    // when dateTimeSelection is null then coming to this screen for first time, so reset should be true.
+    var reset by remember { mutableStateOf(dateTimeSelection == null) }
     LaunchedEffect(timePickerState, journeyTimeOption, selectedDate) {
-        // if any of the date / time value changes, then reset is invalid.
-        reset = false
+        val now: LocalDateTime =
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        // If any of the date / time value changes, then reset is invalid.
+        // Should be true - when time and date is same even after updates, coz reset click
+        // triggered this change.
+        reset = now.hour == timePickerState.hour &&
+                now.minute == timePickerState.minute &&
+                selectedDate == now.date
     }
 
     Column(
@@ -113,14 +123,15 @@ fun DateTimeSelectorScreen(
                     .clickable(
                         role = Role.Button,
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = null
+                        indication = null,
                     ) {
-                        reset = true
                         val now: LocalDateTime =
                             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
                         selectedDate = now.date
                         timePickerState.hour = now.time.hour
                         timePickerState.minute = now.time.minute
+                        journeyTimeOption = JourneyTimeOptions.LEAVE
+                        reset = true
                     })
         })
 
