@@ -2,6 +2,9 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -9,6 +12,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import org.koin.compose.viewmodel.koinViewModel
+import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectionItem
+import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectionItem.Companion.fromJsonString
 import xyz.ksharma.krail.trip.planner.ui.navigation.DateTimeSelectorRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.ServiceAlertRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.TimeTableRoute
@@ -32,13 +37,16 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
         // Cannot use 'rememberSaveable' here because DateTimeSelectionItem is not Parcelable.
         // But it's saved in backStackEntry.savedStateHandle as json, so it's able to
         // handle config changes properly.
-        val dateTimeSelectionText: String =
-            backStackEntry.savedStateHandle.get<String>(key = DateTimeSelectorRoute.DATE_TIME_TEXT_KEY)
-                ?: "Leave: Now"
+        val dateTimeSelectionJson: String? =
+            backStackEntry.savedStateHandle.get(key = DateTimeSelectorRoute.DATE_TIME_TEXT_KEY)
+        var dateTimeSelectionItem: DateTimeSelectionItem? by remember {
+            mutableStateOf(dateTimeSelectionJson?.let { fromJsonString(it) })
+        }
 
         // Lookout for new updates
-        LaunchedEffect(dateTimeSelectionText) {
-            println("Changed dateTimeSelectionItem: $dateTimeSelectionText")
+        LaunchedEffect(dateTimeSelectionJson) {
+            println("Changed dateTimeSelectionItem: $dateTimeSelectionItem")
+            dateTimeSelectionItem = dateTimeSelectionJson?.let { fromJsonString(it) }
         }
 
         TimeTableScreen(
@@ -58,7 +66,7 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
                     }
                 }
             },
-            dateTimeSelectionText = dateTimeSelectionText,
+            dateTimeSelectionItem = dateTimeSelectionItem,
             dateTimeSelectorClicked = {
                 navController.navigate(
                     route = DateTimeSelectorRoute(),

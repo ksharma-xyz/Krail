@@ -53,8 +53,8 @@ import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
-import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
+import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectionItem
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
@@ -65,7 +65,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 fun TimeTableScreen(
     timeTableState: TimeTableState,
     expandedJourneyId: String?,
-    dateTimeSelectionText: String,
+    dateTimeSelectionItem: DateTimeSelectionItem?,
     onEvent: (TimeTableUiEvent) -> Unit,
     onAlertClick: (String) -> Unit,
     onBackClick: () -> Unit,
@@ -157,7 +157,7 @@ fun TimeTableScreen(
 
             item {
                 Text(
-                    text = dateTimeSelectionText,
+                    text = dateTimeSelectionItem?.toDateTimeText() ?: "Leave: Now",
                     style = KrailTheme.typography.titleMedium,
                     color = themeContentColor(),
                     modifier = Modifier
@@ -367,7 +367,7 @@ private fun PreviewTimeTableScreen() {
                 onEvent = {},
                 onAlertClick = {},
                 onBackClick = {},
-                dateTimeSelectionText = "Leaving now",
+                dateTimeSelectionItem = null,
             )
         }
     }
@@ -393,7 +393,7 @@ private fun PreviewTimeTableScreenError() {
                 onEvent = {},
                 onAlertClick = {},
                 onBackClick = {},
-                dateTimeSelectionText = "Leaving now",
+                dateTimeSelectionItem = null,
             )
         }
     }
@@ -415,7 +415,7 @@ private fun PreviewTimeTableScreenNoResults() {
                     isError = false,
                     isLoading = false,
                 ),
-                dateTimeSelectionText = "Leaving now",
+                dateTimeSelectionItem = null,
                 expandedJourneyId = null,
                 onEvent = {},
                 onAlertClick = {},

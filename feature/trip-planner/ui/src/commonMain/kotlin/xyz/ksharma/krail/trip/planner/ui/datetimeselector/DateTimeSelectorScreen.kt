@@ -39,6 +39,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 import xyz.ksharma.krail.core.datetime.decrementDateByOneDay
 import xyz.ksharma.krail.core.datetime.formatDate
 import xyz.ksharma.krail.core.datetime.formatTime
@@ -54,6 +55,8 @@ import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.ARRIVE
 import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.LEAVE
+import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
+import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem.Companion
 import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +64,7 @@ import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 fun DateTimeSelectorScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
-    onDateTimeSelected: (String?) -> Unit = {},
+    onDateTimeSelected: (DateTimeSelectionItem?) -> Unit = {},
 ) {
     // Colors
     val themeColorHex by LocalThemeColor.current
@@ -201,7 +204,7 @@ fun DateTimeSelectorScreen(
                                             hour = timePickerState.hour,
                                             minute = timePickerState.minute,
                                             date = selectedDate,
-                                        ).toDateTimeText()
+                                        )
                                     }
                                 )
                             },
@@ -229,8 +232,13 @@ data class DateTimeSelectionItem(
         }
     }
 
+    fun toJsonString() = Json.encodeToString(serializer(), this)
+
     @Suppress("ConstPropertyName")
     companion object {
         private const val serialVersionUID: Long = 1L
+
+        fun fromJsonString(json: String) =
+            kotlin.runCatching { Json.decodeFromString(serializer(), json) }.getOrNull()
     }
 }
