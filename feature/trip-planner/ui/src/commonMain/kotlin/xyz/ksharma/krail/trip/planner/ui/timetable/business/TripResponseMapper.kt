@@ -143,12 +143,14 @@ private fun String.getTimeText() = let {
 
 @Suppress("ComplexCondition")
 private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
+/*
     println(
         "\tFFF Leg: ${this.duration}, " +
             "leg: ${this.origin?.name} TO ${this.destination?.name}" +
             " - isWalk:${this.isWalkingLeg()}, " +
             "PClass-${this.transportation?.product?.productClass}",
     )
+*/
 
     val transportMode =
         transportation?.product?.productClass?.toInt()

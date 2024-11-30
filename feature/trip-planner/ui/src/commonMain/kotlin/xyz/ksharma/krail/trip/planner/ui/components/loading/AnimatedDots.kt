@@ -7,7 +7,6 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
-fun AnimatedDots(color: Color = KrailTheme.colors.onSurface) {
+fun AnimatedDots(modifier: Modifier = Modifier, color: Color = KrailTheme.colors.onSurface) {
     val infiniteTransition = rememberInfiniteTransition()
 
     // Animating the offset for each dot
@@ -45,7 +44,7 @@ fun AnimatedDots(color: Color = KrailTheme.colors.onSurface) {
         )
     )
 
-    Canvas(modifier = Modifier.fillMaxSize()) {
+    Canvas(modifier = modifier) {
         val dotRadius = 10f
         val centerY = size.height / 2
         val centerX = size.width / 2

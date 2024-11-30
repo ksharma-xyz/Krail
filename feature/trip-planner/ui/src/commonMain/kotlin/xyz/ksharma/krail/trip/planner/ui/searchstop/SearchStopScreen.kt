@@ -200,7 +200,7 @@ fun SearchStopScreen(
                         enter = fadeIn(),
                         exit = fadeOut(),
                     ) {
-                        AnimatedDots()
+                        AnimatedDots(modifier = Modifier.fillMaxWidth())
                     }
                 }
             }
@@ -403,46 +403,3 @@ private val searchStopState = SearchStopState(
 )
 
 // endregion
-
-@Composable
-fun AnimatedSquigglyLine() {
-    val infiniteTransition = rememberInfiniteTransition()
-    val offset1 by infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = 100f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1000, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-    val offset2 by infiniteTransition.animateFloat(
-        initialValue = 100f,
-        targetValue = 0f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(1200, easing = LinearEasing),
-            repeatMode = RepeatMode.Reverse
-        )
-    )
-
-    Canvas(modifier = Modifier.fillMaxSize()) {
-        val path = Path().apply {
-            val width = size.width
-            val height = size.height / 2
-            moveTo(0f, height)
-            for (i in 0 until 10) {
-                val startX = (i * width / 10)
-                val endX = ((i + 1) * width / 10)
-                quadraticTo(
-                    startX + offset1, height - offset2, // Control Point
-                    endX, height // End Point
-                )
-            }
-        }
-
-        drawPath(
-            path = path,
-            color = Color.Blue,
-            style = Stroke(width = 4f, cap = StrokeCap.Round)
-        )
-    }
-}
