@@ -24,10 +24,9 @@ import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
 import xyz.ksharma.krail.trip.planner.network.api.service.DepArr
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
-import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectionItem
-import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions
-import xyz.ksharma.krail.trip.planner.ui.datetimeselector.JourneyTimeOptions.*
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
@@ -80,7 +79,12 @@ class TimeTableViewModel(
             TimeTableUiEvent.SaveTripButtonClicked -> onSaveTripButtonClicked()
             TimeTableUiEvent.ReverseTripButtonClicked -> onReverseTripButtonClicked()
             TimeTableUiEvent.RetryButtonClicked -> onLoadTimeTable(tripInfo!!)
+            is TimeTableUiEvent.DateTimeSelectionChanged -> onDateTimeSelectionChanged(event.dateTimeSelectionItem)
         }
+    }
+
+    private fun onDateTimeSelectionChanged(dateTimeSelectionItem: DateTimeSelectionItem?) {
+
     }
 
     private fun fetchTrip() {
@@ -124,8 +128,8 @@ class TimeTableViewModel(
                 date = dateTimeSelectionItem?.toYYYYMMDD(),
                 time = dateTimeSelectionItem?.toHHMM(),
                 depArr = when (dateTimeSelectionItem?.option) {
-                    LEAVE -> DepArr.DEP
-                    ARRIVE -> DepArr.ARR
+                    JourneyTimeOptions.LEAVE -> DepArr.DEP
+                    JourneyTimeOptions.ARRIVE -> DepArr.ARR
                     else -> DepArr.DEP
                 }
             )
