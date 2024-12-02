@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
@@ -78,15 +79,30 @@ fun DateTimeSelectorScreen(
         is24Hour = false,
     )
 
-    // Date selection
-    val today =
-        remember { Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date }
-    val maxDate = remember { today.plus(7, DateTimeUnit.DAY) }
-    var selectedDate by remember { mutableStateOf(dateTimeSelection?.date ?: today) }
+    // region Date selection variables
+    // Cannot use rememberSaveable for LocalDate, so using String
+    val todayDateStr: String =
+        rememberSaveable {
+            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date.toString()
+        }
+    val today = LocalDate.parse(todayDateStr)
+
+    // Maximum Future Date
+    val maxDateStr = rememberSaveable(today) { today.plus(7, DateTimeUnit.DAY).toString() }
+    val maxDate = LocalDate.parse(maxDateStr)
+
+    // Selected Date
+    var selectedDateStr: String by rememberSaveable(dateTimeSelection) {
+        mutableStateOf(
+            dateTimeSelection?.date?.toString() ?: today.toString()
+        )
+    }
+    val selectedDate = LocalDate.parse(selectedDateStr)
+    // endregion Date selection Variables
 
     // Reset
     // when dateTimeSelection is null then coming to this screen for first time, so reset should be true.
-    var reset by remember { mutableStateOf(dateTimeSelection == null) }
+    var reset: Boolean by rememberSaveable { mutableStateOf(dateTimeSelection == null) }
     LaunchedEffect(timePickerState.hour, timePickerState.minute, journeyTimeOption, selectedDate) {
         val now: LocalDateTime =
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
@@ -130,7 +146,7 @@ fun DateTimeSelectorScreen(
                     ) {
                         val now: LocalDateTime =
                             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-                        selectedDate = now.date
+                        selectedDateStr = now.date.toString()
                         timePickerState.hour = now.time.hour
                         timePickerState.minute = now.time.minute
                         journeyTimeOption = JourneyTimeOptions.LEAVE
@@ -158,12 +174,12 @@ fun DateTimeSelectorScreen(
                     date = toReadableDate(selectedDate),
                     onNextClicked = {
                         if (selectedDate < maxDate) {
-                            selectedDate = incrementDateByOneDay(selectedDate)
+                            selectedDateStr = incrementDateByOneDay(selectedDate).toString()
                         }
                     },
                     onPreviousClicked = {
                         if (selectedDate > today) {
-                            selectedDate = decrementDateByOneDay(selectedDate)
+                            selectedDateStr = decrementDateByOneDay(selectedDate).toString()
                         }
                     },
                     modifier = Modifier
