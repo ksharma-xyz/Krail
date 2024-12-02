@@ -6,7 +6,6 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,7 +21,6 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -56,10 +54,10 @@ import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
+import xyz.ksharma.krail.trip.planner.ui.components.SecondaryButton
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.AnimatedDots
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
-import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
@@ -105,7 +103,10 @@ fun TimeTableScreen(
                     }
                 },
                 title = {
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
                         Text(
                             text = "TimeTable",
                             color = KrailTheme.colors.onSurface,
@@ -116,7 +117,10 @@ fun TimeTableScreen(
                             enter = fadeIn(),
                             exit = fadeOut(),
                         ) {
-                            AnimatedDots(color = themeColor, modifier = Modifier.padding(start = 24.dp))
+                            AnimatedDots(
+                                color = themeColor,
+                                modifier = Modifier.padding(start = 24.dp)
+                            )
                         }
                     }
                 },
@@ -172,21 +176,9 @@ fun TimeTableScreen(
             }
 
             item {
-                Text(
+                SecondaryButton(
                     text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
-                    style = KrailTheme.typography.titleMedium,
-                    color = themeContentColor(),
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                        .background(color = themeColor, shape = RoundedCornerShape(50))
-                        .padding(horizontal = 12.dp, vertical = 6.dp)
-                        .clickable(
-                            role = Role.Button,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            dateTimeSelectorClicked()
-                        },
+                    onClick = dateTimeSelectorClicked,
                 )
             }
 
