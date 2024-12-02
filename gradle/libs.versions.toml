@@ -28,11 +28,6 @@ sqlDelight = "2.0.2"
 koin = "4.0.1-Beta1"
 slf4jSimple = "2.0.16"
 
-#SDK
-minSdk = "26"
-compileSdk = "35"
-targetSdk = "35"
-
 [libraries]
 buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfigGradlePlugin" }
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }

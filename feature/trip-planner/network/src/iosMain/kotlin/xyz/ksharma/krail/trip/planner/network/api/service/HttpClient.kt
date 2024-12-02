@@ -4,7 +4,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.engine.darwin.Darwin
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
@@ -23,7 +22,7 @@ actual fun httpClient(): HttpClient {
         }
         install(Logging) {
 //            if(debug) - TODO
-            level = LogLevel.BODY
+//            level = LogLevel.BODY
         }
 
         defaultRequest {
