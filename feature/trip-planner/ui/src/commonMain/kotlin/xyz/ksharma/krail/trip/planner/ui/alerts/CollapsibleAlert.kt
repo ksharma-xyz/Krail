@@ -80,7 +80,7 @@ fun CollapsibleAlert(
             Text(
                 text = serviceAlert.heading,
                 style = KrailTheme.typography.titleSmall,
-                modifier = Modifier.padding(start = 12.dp).alignByBaseline(),
+                modifier = Modifier.padding(horizontal = 12.dp).alignByBaseline(),
                 color = getForegroundColor(backgroundColor),
             )
         }
