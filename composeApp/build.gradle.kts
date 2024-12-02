@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId = "xyz.ksharma.krail"
-        versionCode = 16
-        versionName = "1.0-alpha05"
+        versionCode = 21
+        versionName = "1.0-beta01"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
