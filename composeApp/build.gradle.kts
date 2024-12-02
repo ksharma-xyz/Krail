@@ -74,6 +74,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "KrailApp"
             isStatic = true
+            freeCompilerArgs += listOf("-Xbinary=bundleId=xyz.ksharma.krail")
         }
     }
 

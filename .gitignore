@@ -44,3 +44,11 @@ google-services.json
 
 # Ignore Download Manager files
 *.dm
+
+# XCode
+
+## User settings
+xcuserdata/
+
+
+
