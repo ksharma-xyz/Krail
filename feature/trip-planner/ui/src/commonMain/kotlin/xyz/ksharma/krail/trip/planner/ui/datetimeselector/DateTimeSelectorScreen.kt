@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
@@ -47,8 +46,8 @@ import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.trip.planner.ui.components.SecondaryButton
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
-import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
@@ -134,24 +133,16 @@ fun DateTimeSelectorScreen(
                 )
             }
         }, actions = {
-            Text(text = "Reset",
-                style = KrailTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
-                modifier = Modifier.padding(10.dp)
-                    .background(color = themeBackgroundColor(), shape = RoundedCornerShape(50))
-                    .padding(horizontal = 12.dp, vertical = 6.dp)
-                    .clickable(
-                        role = Role.Button,
-                        interactionSource = remember { MutableInteractionSource() },
-                        indication = null,
-                    ) {
-                        val now: LocalDateTime =
-                            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-                        selectedDateStr = now.date.toString()
-                        timePickerState.hour = now.time.hour
-                        timePickerState.minute = now.time.minute
-                        journeyTimeOption = JourneyTimeOptions.LEAVE
-                        reset = true
-                    })
+            SecondaryButton(text = "Reset",
+                onClick = {
+                    val now: LocalDateTime =
+                        Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+                    selectedDateStr = now.date.toString()
+                    timePickerState.hour = now.time.hour
+                    timePickerState.minute = now.time.minute
+                    journeyTimeOption = JourneyTimeOptions.LEAVE
+                    reset = true
+                })
         })
 
         LazyColumn(
