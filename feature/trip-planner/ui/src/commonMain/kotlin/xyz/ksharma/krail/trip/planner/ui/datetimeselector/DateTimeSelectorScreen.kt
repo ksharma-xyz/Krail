@@ -43,7 +43,6 @@ import xyz.ksharma.krail.core.datetime.incrementDateByOneDay
 import xyz.ksharma.krail.core.datetime.rememberCurrentDateTime
 import xyz.ksharma.krail.core.datetime.toReadableDate
 import xyz.ksharma.krail.taj.LocalThemeColor
-import xyz.ksharma.krail.taj.components.Divider
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -88,7 +87,7 @@ fun DateTimeSelectorScreen(
     // Reset
     // when dateTimeSelection is null then coming to this screen for first time, so reset should be true.
     var reset by remember { mutableStateOf(dateTimeSelection == null) }
-    LaunchedEffect(timePickerState, journeyTimeOption, selectedDate) {
+    LaunchedEffect(timePickerState.hour, timePickerState.minute, journeyTimeOption, selectedDate) {
         val now: LocalDateTime =
             Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
         // If any of the date / time value changes, then reset is invalid.
@@ -96,11 +95,15 @@ fun DateTimeSelectorScreen(
         // triggered this change.
         reset = now.hour == timePickerState.hour &&
                 now.minute == timePickerState.minute &&
-                selectedDate == now.date
+                selectedDate == now.date &&
+                journeyTimeOption == JourneyTimeOptions.LEAVE
     }
 
     Column(
-        modifier = modifier.fillMaxSize().background(color = KrailTheme.colors.surface),
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = KrailTheme.colors.surface)
+            .systemBarsPadding(),
     ) {
         TitleBar(title = { Text(text = "Plan your trip") }, navAction = {
             ActionButton(
@@ -137,7 +140,6 @@ fun DateTimeSelectorScreen(
 
         LazyColumn(
             contentPadding = PaddingValues(vertical = 16.dp),
-            modifier = Modifier.systemBarsPadding(),
         ) {
             item {
                 JourneyTimeOptionsGroup(
@@ -146,13 +148,11 @@ fun DateTimeSelectorScreen(
                     onOptionSelected = {
                         journeyTimeOption = it
                     },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
 
             item {
-                Divider(modifier = Modifier.padding(horizontal = 16.dp))
-
                 DateSelection(
                     themeColor = themeColor,
                     date = toReadableDate(selectedDate),
@@ -166,10 +166,10 @@ fun DateTimeSelectorScreen(
                             selectedDate = decrementDateByOneDay(selectedDate)
                         }
                     },
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 12.dp),
                 )
-
-                Divider(modifier = Modifier.padding(horizontal = 16.dp))
             }
 
             item {
@@ -183,7 +183,7 @@ fun DateTimeSelectorScreen(
             item {
                 Text(
                     text = if (reset) {
-                        "Leave: Now"
+                        "Leave Now"
                     } else {
                         DateTimeSelectionItem(
                             option = journeyTimeOption,

@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.datetimeselector
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerColors
@@ -17,11 +18,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,11 +34,17 @@ fun TimeSelection(
     val themeColor = themeColorHex.hexToComposeColor()
     val themeContentColor = getForegroundColor(themeColor)
 
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        modifier = modifier.padding(top = 12.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
         val density = LocalDensity.current
-        LaunchedEffect(density) {
-            println("Density: $density")
-        }
+        Text(
+            text = "Select Time",
+            style = KrailTheme.typography.title,
+            color = KrailTheme.colors.onSurface,
+        )
+
         CompositionLocalProvider(
             LocalDensity provides Density(
                 (density.density - 0.6f).coerceIn(1.5f, 3f),
@@ -63,7 +70,7 @@ fun TimeSelection(
                     timeSelectorUnselectedContentColor = KrailTheme.colors.onSurface.copy(alpha = 0.8f)
                 ),
                 layoutType = TimePickerLayoutType.Vertical,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(top = 12.dp),
             )
         }
     }
