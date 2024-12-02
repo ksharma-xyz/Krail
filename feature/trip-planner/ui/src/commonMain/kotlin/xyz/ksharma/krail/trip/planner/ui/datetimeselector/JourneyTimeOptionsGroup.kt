@@ -20,7 +20,7 @@ fun JourneyTimeOptionsGroup(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         JourneyTimeOptions.entries.forEach { option ->
             RadioButton(
@@ -28,7 +28,6 @@ fun JourneyTimeOptionsGroup(
                 selected = option == selectedOption,
                 themeColor = themeColor,
                 onClick = { onOptionSelected(option) },
-                modifier = Modifier.padding(horizontal = 8.dp),
             )
         }
     }

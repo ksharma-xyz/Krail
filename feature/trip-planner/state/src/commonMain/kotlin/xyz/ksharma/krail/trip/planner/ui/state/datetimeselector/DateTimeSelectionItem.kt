@@ -15,11 +15,11 @@ data class DateTimeSelectionItem(
 ) {
     fun toDateTimeText(): String = when (option) {
         JourneyTimeOptions.LEAVE -> {
-            "Leave: ${toReadableDate(date)} ${to12HourTimeString(hour, minute)}"
+            "Leave ${toReadableDate(date)} ${to12HourTimeString(hour, minute)}"
         }
 
         JourneyTimeOptions.ARRIVE -> {
-            "Arrive: ${toReadableDate(date)} ${to12HourTimeString(hour, minute)}"
+            "Arrive ${toReadableDate(date)} ${to12HourTimeString(hour, minute)}"
         }
     }
 
