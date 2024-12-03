@@ -57,14 +57,13 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             onBackClick = { navController.popBackStack() },
             onAlertClick = { journeyId ->
                 println("journeyId: $journeyId")
-                viewModel.fetchAlertsForJourney(journeyId) { alerts ->
-                    if (alerts.isNotEmpty()) {
-                        navController.navigate(
-                            route = ServiceAlertRoute(alertsJsonList = alerts.map { it.toJsonString() }),
-                            navOptions = NavOptions.Builder().setLaunchSingleTop(singleTop = true)
-                                .build(),
-                        )
-                    }
+                val alerts = viewModel.fetchAlertsForJourney(journeyId)
+                if (alerts.isNotEmpty()) {
+                    navController.navigate(
+                        route = ServiceAlertRoute(alertsJsonList = alerts.map { it.toJsonString() }),
+                        navOptions = NavOptions.Builder().setLaunchSingleTop(singleTop = true)
+                            .build(),
+                    )
                 }
             },
             dateTimeSelectionItem = dateTimeSelectionItem,

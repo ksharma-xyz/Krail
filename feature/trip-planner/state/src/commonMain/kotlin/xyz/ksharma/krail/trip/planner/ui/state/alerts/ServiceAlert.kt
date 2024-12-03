@@ -12,6 +12,10 @@ data class ServiceAlert(
 
     fun toJsonString() = Json.encodeToString(serializer(), this)
 
+    fun isHtmlContent(): Boolean {
+        return "<[a-z][\\s\\S]*>".toRegex().containsMatchIn(message)
+    }
+
     @Suppress("ConstPropertyName")
     companion object {
         private const val serialVersionUID: Long = 1L

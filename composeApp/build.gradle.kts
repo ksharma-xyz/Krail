@@ -44,7 +44,10 @@ android {
                     keepDebugSymbols += "**/*.so"
                 }
             }
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
 }
@@ -61,7 +64,6 @@ plugins {
 kotlin {
     applyDefaultHierarchyTemplate()
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
@@ -74,7 +76,10 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "KrailApp"
             isStatic = true
-            freeCompilerArgs += listOf("-Xbinary=bundleId=xyz.ksharma.krail")
+            freeCompilerArgs += listOf(
+                "-Xbinary=bundleId=xyz.ksharma.krail",
+                "-Xadd-light-debug=enable", // https://github.com/JetBrains/kotlin-native/pull/4085
+            )
         }
     }
 
