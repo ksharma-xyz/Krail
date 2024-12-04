@@ -49,6 +49,8 @@ import krail.feature.trip_planner.ui.generated.resources.ic_a11y
 import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
+import xyz.ksharma.krail.core.appinfo.LocalAppPlatformProvider
+import xyz.ksharma.krail.core.appinfo.PlatformType
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
@@ -196,6 +198,8 @@ fun ExpandedJourneyCardContent(
     onAlertClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val appInfo = LocalAppPlatformProvider.current
+
     Column(modifier = modifier) {
         FlowRow(
             modifier = Modifier
@@ -228,7 +232,11 @@ fun ExpandedJourneyCardContent(
             },
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            if (totalUniqueServiceAlerts > 0) {
+            // TODO - display alerts only on Android as of now - ComposeNavigation
+            //    to support iOS, we need to store them in db and use some id to fetch them and display.
+            //    Current approach of passing them as json string does not work on iOS devices.
+            //    See - https://youtrack.jetbrains.com/issue/CMP-7180/iOS-App-Crashes-when-navigating-with-html-content-as-string-argument.
+            if (totalUniqueServiceAlerts > 0 && appInfo.type == PlatformType.ANDROID) {
                 Box(
                     modifier = Modifier
                         .padding()

@@ -24,12 +24,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
-import xyz.ksharma.krail.taj.components.Divider
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
-import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
 import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @Composable
@@ -103,17 +101,14 @@ private fun PreviewServiceAlertScreen() {
                 ServiceAlert(
                     heading = "Service Alert 1",
                     message = "This is a service alert 1",
-                    priority = ServiceAlertPriority.HIGH,
                 ),
                 ServiceAlert(
                     heading = "Service Alert 2",
                     message = "This is a service alert 2",
-                    priority = ServiceAlertPriority.MEDIUM,
                 ),
                 ServiceAlert(
                     heading = "Service Alert 3",
                     message = "This is a service alert 3",
-                    priority = ServiceAlertPriority.LOW,
                 ),
             ),
         )

@@ -243,22 +243,22 @@ class TimeTableViewModel(
         _uiState.update(block)
     }
 
-    fun fetchAlertsForJourney(journeyId: String, onResult: (Set<ServiceAlert>) -> Unit) {
+    fun fetchAlertsForJourney(journeyId: String, onResult: (List<ServiceAlert>) -> Unit) {
         viewModelScope.launch {
             val alerts = withContext(Dispatchers.IO) {
                 runCatching {
                     _uiState.value.journeyList.find { it.journeyId == journeyId }?.let { journey ->
                         getAlertsFromJourney(journey)
                     }.orEmpty()
-                }.getOrElse { emptySet() }
+                }.getOrElse { emptyList() }
             }
             onResult(alerts)
         }
     }
 
-    private fun getAlertsFromJourney(journey: TimeTableState.JourneyCardInfo): Set<ServiceAlert> {
+    private fun getAlertsFromJourney(journey: TimeTableState.JourneyCardInfo): List<ServiceAlert> {
         return journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-            .flatMap { it.serviceAlertList.orEmpty() }.toSet()
+            .flatMap { it.serviceAlertList.orEmpty() }
     }
 
     companion object {
