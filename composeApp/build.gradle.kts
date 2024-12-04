@@ -94,6 +94,7 @@ kotlin {
         commonMain.dependencies {
             implementation(projects.taj)
             implementation(projects.sandook)
+            implementation(projects.core.appInfo)
             implementation(projects.feature.tripPlanner.network)
             implementation(projects.feature.tripPlanner.ui)
             implementation(projects.feature.tripPlanner.state)
