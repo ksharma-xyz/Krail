@@ -82,7 +82,7 @@ data class TimeTableState(
                 // Service Alerts for the leg.
                 val serviceAlertList: ImmutableList<ServiceAlert>? = null,
 
-                val tripId: String?= null,
+                val tripId: String,
             ) : Leg()
         }
 

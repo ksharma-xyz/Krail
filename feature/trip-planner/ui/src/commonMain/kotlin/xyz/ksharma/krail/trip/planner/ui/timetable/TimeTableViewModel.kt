@@ -2,7 +2,6 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
@@ -58,9 +57,9 @@ class TimeTableViewModel(
     val isActive: StateFlow<Boolean> = _isActive.onStart {
         while (true) {
             if (_uiState.value.journeyList.isEmpty().not()) {
-                autoRefreshTimeTable()
+                updateTimeText()
             }
-            delay(AUTO_REFRESH_TIME_TABLE_DURATION)
+            delay(REFRESH_TIME_TEXT_DURATION)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -90,7 +89,7 @@ class TimeTableViewModel(
 
     private var fetchTripJob: Job? = null
 
-    val trips: MutableMap<String, TimeTableState.JourneyCardInfo> = mutableMapOf()
+    private val trips: MutableMap<String, TimeTableState.JourneyCardInfo> = mutableMapOf()
 
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
@@ -128,8 +127,9 @@ class TimeTableViewModel(
                     println("Success API response")
 
                     response.buildJourneyList()?.forEach { journeyCardInfo ->
-                        val tripCode = journeyCardInfo.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-                            .firstOrNull()?.tripId
+                        val tripCode =
+                            journeyCardInfo.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+                                .firstOrNull()?.tripId
                         if (tripCode != null) {
                             println("NEW: tripCode: $tripCode - JourneyCardInfo: ${journeyCardInfo.originTime}")
                             trips[tripCode] = journeyCardInfo
@@ -144,15 +144,9 @@ class TimeTableViewModel(
                     updateUiState {
                         copy(
                             isLoading = false,
-                            journeyList = trips.values.map { journeyCardInfo ->
-                                journeyCardInfo.copy(
-                                    timeText = calculateTimeDifferenceFromNow(
-                                        utcDateString = journeyCardInfo.originUtcDateTime,
-                                    ).toGenericFormattedTimeString()
-                                )
-                            }.sortedBy {
-                                it.originUtcDateTime.utcToLocalDateTimeAEST()
-                            }.toImmutableList(),
+                            journeyList = updateJourneyCardInfoTimeText(trips.values.toList())
+                                .sortedBy { it.originUtcDateTime.utcToLocalDateTimeAEST() }
+                                .toImmutableList(),
                             isError = false,
                         )
                     }
@@ -258,30 +252,34 @@ class TimeTableViewModel(
         rateLimiter.triggerEvent()
     }
 
-    private fun autoRefreshTimeTable(){
-        rateLimiter.triggerEvent()
-    }
-
     /**
      * As the clock is progressing, the value [TimeTableState.JourneyCardInfo.timeText] of the
      * journey card should be updated.
      */
     private fun updateTimeText() = viewModelScope.launch {
         val updatedJourneyList = withContext(Dispatchers.IO) {
-            _uiState.value.journeyList.map { journeyCardInfo ->
-                journeyCardInfo.copy(
-                    timeText = calculateTimeDifferenceFromNow(
-                        utcDateString = journeyCardInfo.originUtcDateTime,
-                    ).toGenericFormattedTimeString(),
-                )
-            }.toImmutableList()
+            updateJourneyCardInfoTimeText(_uiState.value.journeyList).toImmutableList()
         }
-
-        updateUiState {
-            copy(journeyList = updatedJourneyList)
-        }
-        // println("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
+        updateUiState { copy(journeyList = updatedJourneyList) }
     }
+
+    /**
+     * Update the [TimeTableState.JourneyCardInfo.timeText] of the journey card.
+     * This will be called when the screen is visible and the time is progressing and also when the
+     * API returned with new data.
+     */
+    private fun updateJourneyCardInfoTimeText(
+        journeyList: List<TimeTableState.JourneyCardInfo>,
+    ): List<TimeTableState.JourneyCardInfo> {
+        return journeyList.map { journeyCardInfo ->
+            journeyCardInfo.copy(
+                timeText = calculateTimeDifferenceFromNow(
+                    utcDateString = journeyCardInfo.originUtcDateTime,
+                ).toGenericFormattedTimeString()
+            )
+        }
+    }
+
 
     private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {
         _uiState.update(block)
@@ -307,7 +305,7 @@ class TimeTableViewModel(
 
     companion object {
         private const val ANR_TIMEOUT = 5000L
-        private val REFRESH_TIME_TEXT_DURATION = 5.seconds
+        private val REFRESH_TIME_TEXT_DURATION = 10.seconds
         private val AUTO_REFRESH_TIME_TABLE_DURATION = 30.seconds
         private val STOP_TIME_TEXT_UPDATES_THRESHOLD = 3.seconds
     }
