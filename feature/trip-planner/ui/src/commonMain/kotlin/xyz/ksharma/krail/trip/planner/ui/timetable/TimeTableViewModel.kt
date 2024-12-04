@@ -3,7 +3,6 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.Job
@@ -18,8 +17,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
@@ -57,9 +54,9 @@ class TimeTableViewModel(
     val isActive: StateFlow<Boolean> = _isActive.onStart {
         while (true) {
             if (_uiState.value.journeyList.isEmpty().not()) {
-                updateTimeText()
+                autoRefreshTimeTable()
             }
-            delay(REFRESH_TIME_TEXT_DURATION)
+            delay(AUTO_REFRESH_TIME_TABLE_DURATION)
         }
     }.stateIn(
         scope = viewModelScope,
@@ -221,22 +218,9 @@ class TimeTableViewModel(
      * As the clock is progressing, the value [TimeTableState.JourneyCardInfo.timeText] of the
      * journey card should be updated.
      */
-    private fun updateTimeText() = viewModelScope.launch {
-        val updatedJourneyList = withContext(Dispatchers.IO) {
-            _uiState.value.journeyList.map { journeyCardInfo ->
-                journeyCardInfo.copy(
-                    timeText = calculateTimeDifferenceFromNow(
-                        utcDateString = journeyCardInfo.originUtcDateTime,
-                    ).toGenericFormattedTimeString(),
-                )
-            }.toImmutableList()
-        }
-
-        updateUiState {
-            copy(journeyList = updatedJourneyList)
-        }
-
-        // println("New Time: ${uiState.value.journeyList.joinToString(", ") { it.timeText }}")
+    private fun autoRefreshTimeTable() {
+        println("autoRefreshTimeTable -- Trigger")
+        rateLimiter.triggerEvent()
     }
 
     private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {
@@ -263,7 +247,7 @@ class TimeTableViewModel(
 
     companion object {
         private const val ANR_TIMEOUT = 5000L
-        private val REFRESH_TIME_TEXT_DURATION = 5.seconds
+        private val AUTO_REFRESH_TIME_TABLE_DURATION = 30.seconds
         private val STOP_TIME_TEXT_UPDATES_THRESHOLD = 3.seconds
     }
 }
