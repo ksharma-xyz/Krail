@@ -7,7 +7,6 @@ import kotlinx.serialization.json.Json
 data class ServiceAlert(
     val heading: String,
     val message: String,
-    val priority: ServiceAlertPriority,
 ) {
 
     fun toJsonString() = Json.encodeToString(serializer(), this)

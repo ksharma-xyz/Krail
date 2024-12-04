@@ -13,7 +13,6 @@ fun TripResponse.Info.toAlert(): ServiceAlert? {
         ServiceAlert(
             heading = heading,
             message = alertContent,
-            priority = alertPriority,
         )
     } else {
         null

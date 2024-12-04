@@ -30,7 +30,6 @@ import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
-import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertPriority
 
 @Composable
 fun CollapsibleAlert(
@@ -141,7 +140,6 @@ private fun PreviewCollapsibleAlertCollapsed() {
                 serviceAlert = ServiceAlert(
                     heading = "Sample Alert",
                     message = "This is a sample alert message.",
-                    priority = ServiceAlertPriority.HIGH,
                 ),
                 index = 1,
                 onClick = {},
@@ -161,7 +159,6 @@ private fun PreviewCollapsibleAlertExpanded() {
                 serviceAlert = ServiceAlert(
                     heading = "Sample Alert",
                     message = "This is a sample alert message.",
-                    priority = ServiceAlertPriority.HIGH,
                 ),
                 collapsed = false,
                 onClick = {},

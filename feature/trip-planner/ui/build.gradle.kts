@@ -24,11 +24,12 @@ kotlin {
     sourceSets {
         commonMain  {
             dependencies {
-                implementation(projects.taj)
-                implementation(projects.feature.tripPlanner.state)
                 implementation(projects.core.dateTime)
-                implementation(projects.sandook)
+                implementation(projects.core.appInfo)
                 implementation(projects.feature.tripPlanner.network)
+                implementation(projects.feature.tripPlanner.state)
+                implementation(projects.sandook)
+                implementation(projects.taj)
 
                 implementation(compose.foundation)
                 implementation(compose.animation)
