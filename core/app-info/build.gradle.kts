@@ -9,6 +9,10 @@ plugins {
 
 android {
     namespace = "xyz.ksharma.krail.core.appinfo"
+
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 kotlin {

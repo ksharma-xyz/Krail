@@ -1,5 +1,5 @@
 package xyz.ksharma.krail.core.appinfo
 
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 
-val LocalPlatformTypeProvider = compositionLocalOf { PlatformType.UNKNOWN }
+val LocalPlatformTypeProvider = staticCompositionLocalOf { getAppPlatform() }

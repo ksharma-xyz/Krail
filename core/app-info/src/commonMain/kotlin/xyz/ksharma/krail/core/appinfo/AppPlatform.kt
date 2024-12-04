@@ -1,8 +1,10 @@
 package xyz.ksharma.krail.core.appinfo
 
-interface Platform {
+interface AppPlatform {
     val name: String
     val type: PlatformType
+
+    fun isDebug(): Boolean
 }
 
 enum class PlatformType {
@@ -11,4 +13,4 @@ enum class PlatformType {
     UNKNOWN,
 }
 
-expect fun getPlatform(): Platform
+expect fun getAppPlatform(): AppPlatform
