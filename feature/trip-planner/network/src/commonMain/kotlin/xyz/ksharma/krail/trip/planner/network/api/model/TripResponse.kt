@@ -355,7 +355,14 @@ data class TripResponse(
 
         @SerialName("operator") val operator: OperatorClass? = null,
 
-        // @SerialName("properties") val properties: TransportationProperties? = null, Not required
+        @SerialName("properties") val properties: TransportationProperties? = null,
+    )
+
+    @Serializable
+    data class TransportationProperties(
+        @SerialName("tripCode") val tripCode: String? = null,
+
+        @SerialName("RealtimeTripId") val realtimeTripId: String? = null,
     )
 
     @Serializable

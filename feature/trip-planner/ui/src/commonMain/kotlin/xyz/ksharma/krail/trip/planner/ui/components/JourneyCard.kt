@@ -565,6 +565,7 @@ private fun PreviewJourneyCardCollapsed() {
                         lineName = "T1",
                     ),
                     totalDuration = "20 mins",
+                    tripId = "T1",
                 ),
                 TimeTableState.JourneyCardInfo.Leg.WalkingLeg(
                     duration = "15 mins",
@@ -577,6 +578,7 @@ private fun PreviewJourneyCardCollapsed() {
                         transportMode = TransportMode.Bus(),
                         lineName = "700",
                     ),
+                    tripId = "700",
                 ),
 
                 ),
@@ -612,6 +614,7 @@ private fun PreviewJourneyCardExpanded() {
                         lineName = "T1",
                     ),
                     totalDuration = "20 mins",
+                    tripId = "T1",
                 ),
                 TimeTableState.JourneyCardInfo.Leg.WalkingLeg(
                     duration = "15 mins",
@@ -624,6 +627,7 @@ private fun PreviewJourneyCardExpanded() {
                         transportMode = TransportMode.Bus(),
                         lineName = "700",
                     ),
+                    tripId = "700",
                 ),
             ),
             cardState = JourneyCardState.EXPANDED,

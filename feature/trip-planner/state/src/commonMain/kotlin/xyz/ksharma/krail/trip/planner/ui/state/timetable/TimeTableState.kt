@@ -49,11 +49,13 @@ data class TimeTableState(
     ) {
         val journeyId: String
             get() = buildString {
-                append(originUtcDateTime)
-                append(destinationTime)
                 append(
-                    transportModeLines.joinToString { it.lineName }
-                        .filter { it.isLetterOrDigit() },
+                    legs.joinToString { leg ->
+                        when (leg) {
+                            is Leg.WalkingLeg -> "W"
+                            is Leg.TransportLeg -> leg.tripId ?: "T"
+                        }
+                    },
                 )
             }
 
@@ -79,6 +81,8 @@ data class TimeTableState(
 
                 // Service Alerts for the leg.
                 val serviceAlertList: ImmutableList<ServiceAlert>? = null,
+
+                val tripId: String,
             ) : Leg()
         }
 
