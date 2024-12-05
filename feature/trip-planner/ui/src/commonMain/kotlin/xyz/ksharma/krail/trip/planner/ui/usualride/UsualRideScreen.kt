@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -38,7 +39,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
@@ -46,7 +46,6 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
-import xyz.ksharma.krail.trip.planner.ui.components.TransportModeIcon
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.transportModeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -68,6 +67,7 @@ private val TransportMode.tagLine: String
 
 @Composable
 fun UsualRideScreen(
+    selectedTransportMode: TransportMode?,
     transportModes: ImmutableSet<TransportMode>,
     transportModeSelected: (Int) -> Unit,
     onBackClick: () -> Unit,
@@ -79,7 +79,9 @@ fun UsualRideScreen(
             .background(color = KrailTheme.colors.surface)
             .statusBarsPadding(),
     ) {
-        var selectedProductClass: Int? by rememberSaveable { mutableStateOf(null) }
+        var selectedProductClass: Int? by rememberSaveable(selectedTransportMode) {
+            mutableStateOf(selectedTransportMode?.productClass)
+        }
         val buttonBackgroundColor by animateColorAsState(
             targetValue = selectedProductClass?.let { productClass ->
                 TransportMode.toTransportModeType(productClass)?.colorCode?.hexToComposeColor()
@@ -200,11 +202,11 @@ private fun TransportModeRadioButton(
             ) { onClick(mode) },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        TransportModeIcon(
-            letter = mode.name.first(),
-            backgroundColor = mode.colorCode.hexToComposeColor(),
-            iconSize = 32.sp,
-            fontSize = 18.sp,
+        Box(
+            modifier = Modifier
+                .size(32.dp)
+                .clip(CircleShape)
+                .background(color = mode.colorCode.hexToComposeColor()),
         )
 
         Column(
@@ -212,12 +214,12 @@ private fun TransportModeRadioButton(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
-                text = mode.name,
+                text = mode.tagLine,
                 style = KrailTheme.typography.titleMedium,
             )
 
             Text(
-                text = mode.tagLine,
+                text = mode.name,
                 style = KrailTheme.typography.body.copy(fontWeight = FontWeight.Normal),
             )
         }
@@ -228,10 +230,12 @@ private fun TransportModeRadioButton(
 private fun PreviewUsualRideScreen() {
     KrailTheme {
         UsualRideScreen(
-            TransportMode.sortedValues(sortOrder = TransportModeSortOrder.PRODUCT_CLASS)
+            selectedTransportMode = null,
+            transportModes = TransportMode.sortedValues(sortOrder = TransportModeSortOrder.PRODUCT_CLASS)
                 .toImmutableSet(),
             transportModeSelected = {},
             onBackClick = {},
-        )
+
+            )
     }
 }
