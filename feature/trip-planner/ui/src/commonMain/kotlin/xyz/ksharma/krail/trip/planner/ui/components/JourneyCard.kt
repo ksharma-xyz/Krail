@@ -100,7 +100,7 @@ fun JourneyCard(
         )
     }
     val pastJourneyColor = KrailTheme.colors.onSurface.copy(alpha = 0.5f)
-    val themeColor = if (!isPastJourney) {
+    val themeColor = if (!isPastJourney) { // TODO - animate
         transportModeList.firstOrNull()?.colorCode?.hexToComposeColor()
             ?: KrailTheme.colors.onSurface
     } else {

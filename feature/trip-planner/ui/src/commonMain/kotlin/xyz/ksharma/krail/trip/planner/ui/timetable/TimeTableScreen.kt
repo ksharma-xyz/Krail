@@ -3,6 +3,8 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -80,13 +82,10 @@ fun TimeTableScreen(
     val themeColor = themeColorHex.hexToComposeColor()
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = KrailTheme.colors.surface),
+        modifier = modifier.fillMaxSize().background(color = KrailTheme.colors.surface),
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             TitleBar(
                 navAction = {
@@ -118,8 +117,7 @@ fun TimeTableScreen(
                             exit = fadeOut(),
                         ) {
                             AnimatedDots(
-                                color = themeColor,
-                                modifier = Modifier.padding(start = 24.dp)
+                                color = themeColor, modifier = Modifier.padding(start = 24.dp)
                             )
                         }
                     }
@@ -167,8 +165,7 @@ fun TimeTableScreen(
                     OriginDestination(
                         trip = trip,
                         timeLineColor = KrailTheme.colors.onSurface,
-                        modifier = Modifier
-                            .fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth()
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                             .background(color = KrailTheme.colors.surface),
                     )
@@ -195,18 +192,14 @@ fun TimeTableScreen(
                             actionText = "Retry",
                             onActionClick = { onEvent(TimeTableUiEvent.RetryButtonClicked) },
                         ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .animateItem(),
+                        modifier = Modifier.fillMaxWidth().animateItem(),
                     )
                 }
             } else if (timeTableState.isLoading) {
                 item {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         LoadingEmojiAnim(
-                            modifier = Modifier
-                                .padding(vertical = 60.dp)
-                                .animateItem(),
+                            modifier = Modifier.padding(vertical = 60.dp).animateItem(),
                         )
 
                         Text(
@@ -214,14 +207,15 @@ fun TimeTableScreen(
                             style = KrailTheme.typography.bodyLarge,
                             textAlign = TextAlign.Center,
                             color = KrailTheme.colors.onSurface,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         )
                     }
                 }
             } else if (timeTableState.journeyList.isNotEmpty()) {
-                items(timeTableState.journeyList) { journey ->
+                items(
+                    items = timeTableState.journeyList,
+                    key = { it.journeyId },
+                ) { journey ->
                     JourneyCardItem(
                         timeToDeparture = journey.timeText,
                         platformNumber = journey.platformNumber,
@@ -249,8 +243,7 @@ fun TimeTableScreen(
                         onAlertClick = {
                             onAlertClick(journey.journeyId)
                         },
-                        modifier = Modifier
-                            .padding(horizontal = 12.dp, vertical = 8.dp),
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                     )
                 }
             } else { // Journey list is empty or null
@@ -258,18 +251,14 @@ fun TimeTableScreen(
                     ErrorMessage(
                         title = "No route found!",
                         message = "Search for another stop or check back later.",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .animateItem(),
+                        modifier = Modifier.fillMaxWidth().animateItem(),
                     )
                 }
             }
 
             item {
                 Spacer(
-                    modifier = Modifier
-                        .height(96.dp)
-                        .systemBarsPadding(),
+                    modifier = Modifier.height(96.dp).systemBarsPadding(),
                 )
             }
         }
@@ -323,11 +312,8 @@ fun ActionButton(
     content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = modifier
-            .size(40.dp)
-            .clip(CircleShape)
-            .clickable(role = Role.Button) { onClick() }
-            .semantics(mergeDescendants = true) {
+        modifier = modifier.size(40.dp).clip(CircleShape)
+            .clickable(role = Role.Button) { onClick() }.semantics(mergeDescendants = true) {
                 this.contentDescription = contentDescription
             },
         contentAlignment = Alignment.Center,
