@@ -52,10 +52,10 @@ data class TimeTableState(
                 append(
                     legs.joinToString { leg ->
                         when (leg) {
-                            is Leg.WalkingLeg -> "W"
+                            is Leg.WalkingLeg -> ""
                             is Leg.TransportLeg -> leg.tripId ?: "T"
                         }
-                    },
+                    }.filter { it.isLetterOrDigit() },
                 )
             }
 
@@ -82,7 +82,7 @@ data class TimeTableState(
                 // Service Alerts for the leg.
                 val serviceAlertList: ImmutableList<ServiceAlert>? = null,
 
-                val tripId: String,
+                val tripId: String? = null,
             ) : Leg()
         }
 

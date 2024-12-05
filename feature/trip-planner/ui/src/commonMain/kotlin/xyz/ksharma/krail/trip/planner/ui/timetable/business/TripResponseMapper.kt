@@ -193,7 +193,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
                         duration?.seconds?.toFormattedDurationTimeString()
                             ?.let { formattedDuration -> toWalkInterchange(formattedDuration) }
                     },
-                    tripId = (transportation?.properties?.tripCode + transportation?.properties?.realtimeTripId),
+                    tripId = transportation?.id + transportation?.properties?.realtimeTripId,
                 )
             } else {
                 null
