@@ -1,9 +1,11 @@
 package xyz.ksharma.krail.trip.planner.ui.usualride
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
@@ -24,13 +26,20 @@ import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
 internal fun NavGraphBuilder.usualRideDestination(navController: NavHostController) {
     composable<UsualRideRoute> {
         val viewModel: UsualRideViewModel = koinViewModel<UsualRideViewModel>()
+        val isUiStateLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+        val state by viewModel.uiState.collectAsStateWithLifecycle()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
         var mode: TransportMode? by remember { mutableStateOf(null) }
         themeContentColor =
             getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
+        LaunchedEffect(state.selectedTransportMode){
+            println("selectedTransportMode: ${state.selectedTransportMode}")
+        }
+
         UsualRideScreen(
+            selectedTransportMode = state.selectedTransportMode,
             transportModes = TransportMode.sortedValues(TransportModeSortOrder.PRODUCT_CLASS)
                 .toImmutableSet(),
             transportModeSelected = { productClass ->
