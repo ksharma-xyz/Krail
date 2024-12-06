@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId = "xyz.ksharma.krail"
-        versionCode = 25
-        versionName = "1.0-beta06"
+        versionCode = 26
+        versionName = "1.0-beta07"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -56,6 +56,9 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlyticsPlugin)
+    alias(libs.plugins.firebase.performancePlugin)
 }
 
 kotlin {
@@ -116,6 +119,9 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
 
             api(libs.di.koinComposeViewmodel)
+            implementation(libs.firebase.gitLiveCrashlytics)
+            implementation(libs.firebase.gitLiveAnalytics)
+            implementation(libs.firebase.gitLivePerformance)
         }
     }
 }

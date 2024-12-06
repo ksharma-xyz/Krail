@@ -47,8 +47,8 @@ google-services.json
 
 # XCode
 
+# Ignore GoogleService-Info.plist
+/iosApp/iosApp/GoogleService-Info.plist
+
 ## User settings
 xcuserdata/
-
-
-
