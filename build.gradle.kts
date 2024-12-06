@@ -10,4 +10,6 @@ plugins {
     alias(libs.plugins.google.services) apply false
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.firebase.crashlyticsPlugin) apply false
+    alias(libs.plugins.firebase.performancePlugin) apply false
 }

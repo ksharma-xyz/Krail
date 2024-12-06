@@ -37,15 +37,15 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      - name: Firebase (Release) - Google Services.json file
+      - name: Firebase Android (Release) - Google Services.json file
         env:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_RELEASE }}
-        run: echo $DATA | base64 -di > composeApp/src/androidMain/google-services.json
+        run: echo $DATA | base64 -di > composeApp/src/release/google-services.json
 
       - name: Firebase (Debug) - Google Services.json file
         env:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
-        run: echo $DATA | base64 -di > composeApp/src/androidDebug/google-services.json
+        run: echo $DATA | base64 -di > composeApp/src/debug/google-services.json
 
 #      - name: Detekt Checks
 #        run: ./gradlew detekt
@@ -89,6 +89,11 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           cache-disabled: true
+
+      - name: Firebase iOS - GoogleService-Info.plist file
+        env:
+          DATA: ${{ secrets.FIREBASE_IOS_GOOGLE_INFO }}
+        run: echo $DATA | base64 -d > iosApp/iosApp/GoogleService-Info.plist
 
       - name: Build iOS App - Debug (Without Code Signing)
         env:
