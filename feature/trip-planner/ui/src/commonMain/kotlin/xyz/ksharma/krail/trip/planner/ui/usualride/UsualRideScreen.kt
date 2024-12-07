@@ -7,7 +7,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -128,7 +127,7 @@ fun UsualRideScreen(
                 item {
                     Text(
                         text = "Select a color",
-                        style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
+                        style = KrailTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
                         modifier = Modifier
                             .padding(horizontal = 24.dp)
                             .padding(bottom = 16.dp),
@@ -189,17 +188,22 @@ private fun TransportModeRadioButton(
     modifier: Modifier = Modifier,
     selected: Boolean = false,
 ) {
+    val backgroundColor by animateColorAsState(
+        targetValue = if (selected) transportModeBackgroundColor(mode) else Color.Transparent,
+        label = "backgroundColor",
+        animationSpec = tween(durationMillis = 300, easing = LinearEasing),
+    )
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 1.dp)
-            .background(color = if (selected) transportModeBackgroundColor(mode) else Color.Transparent)
-            .padding(vertical = 16.dp, horizontal = 24.dp)
+            .background(color = backgroundColor)
             .clickable(
+                role = Role.Button,
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
-                role = Role.Button,
-            ) { onClick(mode) },
+            ) { onClick(mode) }
+            .padding(vertical = 24.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
@@ -209,20 +213,11 @@ private fun TransportModeRadioButton(
                 .background(color = mode.colorCode.hexToComposeColor()),
         )
 
-        Column(
+        Text(
+            text = mode.tagLine,
+            style = KrailTheme.typography.title.copy(fontWeight = FontWeight.Normal),
             modifier = Modifier.padding(start = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            Text(
-                text = mode.tagLine,
-                style = KrailTheme.typography.titleMedium,
-            )
-
-            Text(
-                text = mode.name,
-                style = KrailTheme.typography.body.copy(fontWeight = FontWeight.Normal),
-            )
-        }
+        )
     }
 }
 

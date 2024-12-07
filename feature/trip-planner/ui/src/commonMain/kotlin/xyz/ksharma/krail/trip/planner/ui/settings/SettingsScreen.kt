@@ -82,13 +82,13 @@ fun SettingsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .height(56.dp)
                         .clickable(
                             role = Role.Button,
                             indication = null,
                             interactionSource = remember { MutableInteractionSource() },
                             onClick = { onChangeThemeClick() },
                         )
+                        .padding(vertical = 24.dp)
                         .semantics(mergeDescendants = true) {},
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
@@ -113,8 +113,8 @@ fun SettingsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .height(56.dp)
-                        .semantics(mergeDescendants = true) {},
+                        .semantics(mergeDescendants = true) {}
+                        .padding(vertical = 24.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
