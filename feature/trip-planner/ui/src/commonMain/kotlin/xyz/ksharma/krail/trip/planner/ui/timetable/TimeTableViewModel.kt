@@ -17,15 +17,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
-import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
@@ -98,7 +92,13 @@ class TimeTableViewModel(
 
     private var fetchTripJob: Job? = null
 
-    private val trips: MutableMap<String, TimeTableState.JourneyCardInfo> = mutableMapOf()
+    /**
+     * Cache of trips. Key is [TimeTableState.JourneyCardInfo.journeyId] and value is
+     * [TimeTableState.JourneyCardInfo].
+     *
+     * This list will be displayed in the UI.
+     */
+    private val journeys: MutableMap<String, TimeTableState.JourneyCardInfo> = mutableMapOf()
 
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
@@ -119,7 +119,7 @@ class TimeTableViewModel(
         if (dateTimeSelectionItem != item) {
             updateUiState { copy(isLoading = true) }
             dateTimeSelectionItem = item
-            trips.clear() // Clear cache trips when date time selection changed.
+            journeys.clear() // Clear cache trips when date time selection changed.
             rateLimiter.triggerEvent()
         }
     }
@@ -147,29 +147,34 @@ class TimeTableViewModel(
         }
     }
 
+    // TODO - Write UT for this method
     private suspend fun updateTripsCache(response: TripResponse) = withContext(Dispatchers.IO) {
         // Convert api response to UI Model and add all to cache. Will be unique always because of key
         response.buildJourneyList()?.forEach { journeyCardInfo ->
             println("API TRIP: tripCode: [${journeyCardInfo.journeyId}], Time: ${journeyCardInfo.originTime}")
-            trips[journeyCardInfo.journeyId] = journeyCardInfo
+            journeys[journeyCardInfo.journeyId] = journeyCardInfo
         }
 
-        // Make sure the cache is not growing infinitely. Clean up past trips beyond a threshold.
-        val now = Clock.System.now()
-        val pastTrips = trips.values
-            .filter { Instant.parse(it.originUtcDateTime) < now }
-        if (pastTrips.size > PAST_TRIPS_COUNT_THRESHOLD) {
-            println("Past Trip: ${pastTrips.size} is greater than threshold: $PAST_TRIPS_COUNT_THRESHOLD")
-            val tripIdsToRemove =
-                pastTrips.dropLast(PAST_TRIPS_COUNT_THRESHOLD).map { it.journeyId }
-            tripIdsToRemove.forEach {
-                println("Trip removed from cache: $it")
-                trips.remove(it)
-            }
+        // Make sure the cache is not growing infinitely. Clean up started trips beyond a threshold.
+        val startedJourneyList = journeys.values.filter { it.hasJourneyStarted }
+        if (startedJourneyList.size > MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD) {
+            println("Past Trip: ${startedJourneyList.size} is greater than threshold: $MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD")
+            startedJourneyList
+                .dropLast(MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD)
+                .map { it.journeyId }
+                .forEach {
+                    println("Trip removed from cache: $it")
+                    journeys.remove(it)
+                }
         }
+
+        // Check if past journeys have destination time passed, then remove them from cache.
+        startedJourneyList
+            .filter { it.hasJourneyEnded }
+            .forEach { journeys.remove(it.journeyId) }
 
         println("Trips in cache:")
-        trips.forEach {
+        journeys.forEach {
             println("tripCode: [${it.value.journeyId}], Time: ${it.value.originTime}")
         }
     }
@@ -178,7 +183,7 @@ class TimeTableViewModel(
         updateUiState {
             copy(
                 isLoading = false,
-                journeyList = updateJourneyCardInfoTimeText(trips.values.toList())
+                journeyList = updateJourneyCardInfoTimeText(journeys.values.toList())
                     .sortedBy { it.originUtcDateTime.utcToLocalDateTimeAEST() }
                     .toImmutableList(),
                 isError = false,
@@ -266,7 +271,7 @@ class TimeTableViewModel(
             toStopName = tripInfo!!.fromStopName,
         )
         tripInfo = reverseTrip
-        trips.clear() // Clear cache trips when reverse trip is clicked.
+        journeys.clear() // Clear cache trips when reverse trip is clicked.
 
         val savedTrip = sandook.selectTripById(tripId = reverseTrip.tripId)
         updateUiState {
@@ -335,6 +340,10 @@ class TimeTableViewModel(
         private val REFRESH_TIME_TEXT_DURATION = 10.seconds
         private val AUTO_REFRESH_TIME_TABLE_DURATION = 30.seconds
         private val STOP_TIME_TEXT_UPDATES_THRESHOLD = 3.seconds
-        private const val PAST_TRIPS_COUNT_THRESHOLD = 3
+
+        /**
+         * Maximum number of started journeys to display.
+         */
+        private const val MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD = 3
     }
 }

@@ -354,6 +354,7 @@ private fun PreviewTimeTableScreen() {
                             legs = persistentListOf(),
                             totalUniqueServiceAlerts = 3,
                             originUtcDateTime = "2024-11-01T12:00:00Z",
+                            destinationUtcDateTime = "2024-11-01T12:30:00Z",
                         ),
                     ).toImmutableList(),
                 ),

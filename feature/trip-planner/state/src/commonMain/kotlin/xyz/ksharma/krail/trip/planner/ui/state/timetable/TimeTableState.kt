@@ -2,6 +2,8 @@ package xyz.ksharma.krail.trip.planner.ui.state.timetable
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
@@ -23,11 +25,12 @@ data class TimeTableState(
         //      leg.first.origin.departureTimeEstimated ?: leg.first.origin.departureTimePlanned
         // else leg.first.destination.arrivalTimeEstimated ?: leg.first.destination.arrivalTimePlanned
         val originTime: String, // "11:30pm" stopSequence.arrivalTimeEstimated ?: stopSequence.arrivalTimePlanned
-
         val originUtcDateTime: String, // "2024-09-24T19:00:00Z"
 
         // legs.last.destination.arrivalTimeEstimated ?: legs.last.destination.arrivalTimePlanned
         val destinationTime: String, // "11:40pm"
+        val destinationUtcDateTime: String, // "2024-09-24T19:00:00Z" Use for calculations.
+
 
         // legs.sumBy { it.duration } - seconds
         val travelTime: String, // "(10 min)"
@@ -58,6 +61,18 @@ data class TimeTableState(
                     }.filter { it.isLetterOrDigit() },
                 )
             }
+
+        /**
+         * If the origin time is in the past.
+         */
+        val hasJourneyStarted: Boolean
+            get() = Instant.parse(originUtcDateTime) < Clock.System.now()
+
+        /**
+         * If the destination time is in the past.
+         */
+        val hasJourneyEnded: Boolean
+            get() = Instant.parse(destinationUtcDateTime) < Clock.System.now()
 
         sealed class Leg {
             data class WalkingLeg(

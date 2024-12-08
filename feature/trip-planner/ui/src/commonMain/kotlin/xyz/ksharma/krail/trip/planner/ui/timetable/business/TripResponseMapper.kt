@@ -58,6 +58,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 platformNumber = firstPublicTransportLeg.getPlatformNumber(),
                 originTime = originTimeUTC.fromUTCToDisplayTimeString(),
                 originUtcDateTime = originTimeUTC,
+                destinationUtcDateTime = arrivalTimeUTC,
                 destinationTime = arrivalTimeUTC.fromUTCToDisplayTimeString(),
                 travelTime = calculateTimeDifference(
                     originTimeUTC,
