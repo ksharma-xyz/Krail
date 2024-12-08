@@ -168,6 +168,12 @@ class TimeTableViewModel(
             }
         }
 
+        // Check if past trips have destination time passed, then remove them from cache.
+        val pastTripsWithDestinationTimePassed = pastTrips.filter { pastTrip ->
+            Instant.parse(pastTrip.destinationUtcDateTime) < now
+        }
+        pastTripsWithDestinationTimePassed.forEach { trips.remove(it.journeyId) }
+
         println("Trips in cache:")
         trips.forEach {
             println("tripCode: [${it.value.journeyId}], Time: ${it.value.originTime}")
