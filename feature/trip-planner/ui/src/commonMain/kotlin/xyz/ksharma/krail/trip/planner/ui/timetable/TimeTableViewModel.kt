@@ -17,6 +17,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
@@ -33,6 +35,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.trip.planner.ui.timetable.business.buildJourneyList
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 class TimeTableViewModel(
@@ -170,8 +173,11 @@ class TimeTableViewModel(
 
         // Check if past journeys have destination time passed, then remove them from cache.
         startedJourneyList
-            .filter { it.hasJourneyEnded }
-            .forEach { journeys.remove(it.journeyId) }
+            .filter {  Instant.parse(it.destinationUtcDateTime) < Clock.System.now().plus(10.minutes) }
+            .forEach {
+                println("Trip removed from cache as destination time passed: ${it.journeyId}")
+                journeys.remove(it.journeyId)
+            }
 
         println("Trips in cache:")
         journeys.forEach {
