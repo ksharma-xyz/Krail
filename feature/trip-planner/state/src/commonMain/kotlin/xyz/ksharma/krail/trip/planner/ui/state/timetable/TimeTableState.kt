@@ -2,6 +2,8 @@ package xyz.ksharma.krail.trip.planner.ui.state.timetable
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.datetime.Clock
+import kotlinx.datetime.Instant
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
@@ -59,6 +61,18 @@ data class TimeTableState(
                     }.filter { it.isLetterOrDigit() },
                 )
             }
+
+        /**
+         * If the origin time is in the past.
+         */
+        val hasJourneyStarted: Boolean
+            get() = Instant.parse(originUtcDateTime) < Clock.System.now()
+
+        /**
+         * If the destination time is in the past.
+         */
+        val hasJourneyEnded: Boolean
+            get() = Instant.parse(destinationUtcDateTime) < Clock.System.now()
 
         sealed class Leg {
             data class WalkingLeg(
