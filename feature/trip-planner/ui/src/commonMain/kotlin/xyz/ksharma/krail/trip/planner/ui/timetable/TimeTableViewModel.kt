@@ -19,7 +19,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
@@ -73,7 +77,9 @@ class TimeTableViewModel(
     private val _autoRefreshTimeTable: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val autoRefreshTimeTable: StateFlow<Boolean> = _autoRefreshTimeTable.onStart {
         while (true) {
-            if (_uiState.value.journeyList.isEmpty().not()) {
+            if (_uiState.value.journeyList.isEmpty().not() &&
+                dateTimeSelectionItem?.date.isFuture().not()
+            ) {
                 rateLimiter.triggerEvent()
             }
             delay(AUTO_REFRESH_TIME_TABLE_DURATION)
@@ -109,8 +115,13 @@ class TimeTableViewModel(
 
     private fun onDateTimeSelectionChanged(item: DateTimeSelectionItem?) {
         println("DateTimeSelectionChanged: $item")
-        dateTimeSelectionItem = item
-        rateLimiter.triggerEvent()
+        // Verify if date time selection has actually changed, otherwise, api will be called unnecessarily.
+        if (dateTimeSelectionItem != item) {
+            updateUiState { copy(isLoading = true) }
+            dateTimeSelectionItem = item
+            trips.clear() // Clear cache trips when date time selection changed.
+            rateLimiter.triggerEvent()
+        }
     }
 
     private fun fetchTrip() {
@@ -149,7 +160,8 @@ class TimeTableViewModel(
             .filter { Instant.parse(it.originUtcDateTime) < now }
         if (pastTrips.size > PAST_TRIPS_COUNT_THRESHOLD) {
             println("Past Trip: ${pastTrips.size} is greater than threshold: $PAST_TRIPS_COUNT_THRESHOLD")
-            val tripIdsToRemove = pastTrips.dropLast(PAST_TRIPS_COUNT_THRESHOLD).map { it.journeyId }
+            val tripIdsToRemove =
+                pastTrips.dropLast(PAST_TRIPS_COUNT_THRESHOLD).map { it.journeyId }
             tripIdsToRemove.forEach {
                 println("Trip removed from cache: $it")
                 trips.remove(it)
@@ -295,7 +307,6 @@ class TimeTableViewModel(
             )
         }
     }
-
 
     private inline fun updateUiState(block: TimeTableState.() -> TimeTableState) {
         _uiState.update(block)

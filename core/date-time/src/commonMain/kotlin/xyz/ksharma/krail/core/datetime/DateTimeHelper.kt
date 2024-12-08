@@ -2,6 +2,7 @@ package xyz.ksharma.krail.core.datetime
 
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -91,5 +92,14 @@ object DateTimeHelper {
         val instant1 = Instant.parse(utcDateString1)
         val instant2 = Instant.parse(utcDateString2)
         return (instant1 - instant2).absoluteValue
+    }
+
+    /**
+     * Returns true if the given date is in the future, false otherwise.
+     */
+    fun LocalDate?.isFuture(): Boolean {
+        return this?.let {
+            it > Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+        } ?: false
     }
 }
