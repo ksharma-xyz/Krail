@@ -20,6 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -118,9 +119,10 @@ fun LegView(
                         )
                         .padding(start = 16.dp, top = 12.dp),
                 ) {
-                    if (stops.size > 2) {
+                    val stopsCount by rememberSaveable(stops) { mutableIntStateOf(stops.size - 1) }
+                    if (stopsCount > 1) {
                         StopsRow(
-                            stops = if (stops.size == 1) "${stops.size} stop" else "${stops.size} stops",
+                            stops = "$stopsCount stops",
                             line = transportModeLine,
                         )
                     } else {
