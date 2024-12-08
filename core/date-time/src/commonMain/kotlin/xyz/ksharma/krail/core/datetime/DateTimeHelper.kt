@@ -102,4 +102,7 @@ object DateTimeHelper {
             it > Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
         } ?: false
     }
+
+    fun Instant.isBefore(other: Instant): Boolean = this < other
+    fun Instant.isAfter(other: Instant): Boolean = this > other
 }

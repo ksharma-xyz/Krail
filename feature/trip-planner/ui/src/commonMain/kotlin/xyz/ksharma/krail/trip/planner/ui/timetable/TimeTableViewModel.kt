@@ -20,6 +20,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.isBefore
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
@@ -173,7 +174,10 @@ class TimeTableViewModel(
 
         // Check if past journeys have destination time passed, then remove them from cache.
         startedJourneyList
-            .filter {  Instant.parse(it.destinationUtcDateTime) < Clock.System.now().plus(10.minutes) }
+            .filter {
+                val thresholdTime = Clock.System.now().minus(JOURNEY_ENDED_CACHE_THRESHOLD_TIME)
+                Instant.parse(it.destinationUtcDateTime).isBefore(thresholdTime)
+            }
             .forEach {
                 println("Trip removed from cache as destination time passed: ${it.journeyId}")
                 journeys.remove(it.journeyId)
@@ -351,5 +355,6 @@ class TimeTableViewModel(
          * Maximum number of started journeys to display.
          */
         private const val MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD = 3
+        private val JOURNEY_ENDED_CACHE_THRESHOLD_TIME = 10.minutes
     }
 }
