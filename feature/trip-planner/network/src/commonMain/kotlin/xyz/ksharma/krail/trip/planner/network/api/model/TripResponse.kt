@@ -3,6 +3,9 @@ package xyz.ksharma.krail.trip.planner.network.api.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+/**
+ * Swagger: https://opendata.transport.nsw.gov.au/dataset/trip-planner-apis/resource/917c66c3-8123-4a0f-b1b1-b4220f32585d
+ */
 @Serializable
 data class TripResponse(
     @SerialName("systemMessages") val systemMessages: List<SystemMessages>? = null,
