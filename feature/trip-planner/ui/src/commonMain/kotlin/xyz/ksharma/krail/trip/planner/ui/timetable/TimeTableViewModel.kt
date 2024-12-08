@@ -23,6 +23,7 @@ import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFro
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isBefore
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
+import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
@@ -153,39 +154,47 @@ class TimeTableViewModel(
 
     // TODO - Write UT for this method
     private suspend fun updateTripsCache(response: TripResponse) = withContext(Dispatchers.IO) {
-        // Convert api response to UI Model and add all to cache. Will be unique always because of key
-        response.buildJourneyList()?.forEach { journeyCardInfo ->
-            println("API TRIP: tripCode: [${journeyCardInfo.journeyId}], Time: ${journeyCardInfo.originTime}")
-            journeys[journeyCardInfo.journeyId] = journeyCardInfo
-        }
-
-        // Make sure the cache is not growing infinitely. Clean up started trips beyond a threshold.
-        val startedJourneyList = journeys.values.filter { it.hasJourneyStarted }
-        if (startedJourneyList.size > MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD) {
-            println("Past Trip: ${startedJourneyList.size} is greater than threshold: $MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD")
-            startedJourneyList
-                .dropLast(MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD)
-                .map { it.journeyId }
-                .forEach {
-                    println("Trip removed from cache: $it")
-                    journeys.remove(it)
-                }
-        }
-
-        // Check if past journeys have destination time passed, then remove them from cache.
-        startedJourneyList
+        val newJourneyList = response.buildJourneyList()
+        val startedJourneyList = journeys.values
             .filter {
+                // Find list of journeys that have started.
+                it.hasJourneyStarted
+            }
+            .filterNot {
+                // If a journey has ended then remove it from the cache.
+                // This is to avoid displaying ended journeys.
+                // The threshold time is set to 10 minutes.
                 val thresholdTime = Clock.System.now().minus(JOURNEY_ENDED_CACHE_THRESHOLD_TIME)
                 Instant.parse(it.destinationUtcDateTime).isBefore(thresholdTime)
             }
-            .forEach {
-                println("Trip removed from cache as destination time passed: ${it.journeyId}")
-                journeys.remove(it.journeyId)
+            .filterNot {
+                // Those trips that are started / saved in cache but still part of new api data.
+                newJourneyList?.any { newJourney -> newJourney.journeyId == it.journeyId } == true
             }
+            .sortedBy {
+                // Sort by chronological order, from earliest to latest
+                Instant.parse(it.originUtcDateTime)
+            }
+            .takeLast(MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD)
 
-        println("Trips in cache:")
-        journeys.forEach {
-            println("tripCode: [${it.value.journeyId}], Time: ${it.value.originTime}")
+        // Clear all journeys and re-create using started trips(cache) and new api data.
+        journeys.clear()
+        newJourneyList?.associateBy { it.journeyId }?.let { journeys.putAll(it) }
+        journeys.putAll(startedJourneyList.associateBy { it.journeyId })
+
+        startedJourneyList.forEach {
+            println(
+                "TripsCache - Started tripCode:[${it.journeyId}], Time: ${
+                    it.originUtcDateTime.utcToLocalDateTimeAEST().toHHMM()
+                }"
+            )
+        }
+        newJourneyList?.forEach {
+            println(
+                "TripsCache - New tripCode:[${it.journeyId}], Time: ${
+                    it.originUtcDateTime.utcToLocalDateTimeAEST().toHHMM()
+                }"
+            )
         }
     }
 
@@ -354,7 +363,13 @@ class TimeTableViewModel(
         /**
          * Maximum number of started journeys to display.
          */
-        private const val MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD = 3
+        // TODO - UT - at-least these many should remain in past all the time once initial
+        //  past trips are starting to show.
+        private const val MAX_STARTED_JOURNEY_DISPLAY_THRESHOLD = 2
+
+        /**
+         * How long to keep displaying a past journey after it has ended.
+         */
         private val JOURNEY_ENDED_CACHE_THRESHOLD_TIME = 10.minutes
     }
 }
