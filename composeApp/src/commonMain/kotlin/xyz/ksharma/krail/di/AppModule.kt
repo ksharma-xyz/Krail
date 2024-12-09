@@ -5,11 +5,11 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.includes
 import org.koin.dsl.koinConfiguration
 import org.koin.dsl.module
+import xyz.ksharma.krail.core.appinfo.di.appInfoModule
 import xyz.ksharma.krail.sandook.di.sandookModule
 import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.trip.planner.network.api.di.networkModule
 import xyz.ksharma.krail.trip.planner.ui.di.viewModelsModule
-import xyz.ksharma.krail.version.appVersionModule
 
 val koinConfig = koinConfiguration {
     includes(nativeConfig())
@@ -18,7 +18,7 @@ val koinConfig = koinConfiguration {
         viewModelsModule,
         sandookModule,
         splashModule,
-        appVersionModule,
+        appInfoModule,
     )
 }
 
