@@ -125,7 +125,7 @@ fun SearchStopScreen(
             // "No match found" message from being displayed.
             val currentQueryTime = Clock.System.now().toEpochMilliseconds()
             lastQueryTime = currentQueryTime
-            delay(1000)
+            delay(1000) // TODO - remove this logic
             if (lastQueryTime == currentQueryTime && searchStopState.stops.isEmpty()) {
                 displayNoMatchFound = true
             }
@@ -237,6 +237,7 @@ fun SearchStopScreen(
                     Divider()
                 }
             } else if (displayNoMatchFound && textFieldText.isNotBlank() && searchStopState.isLoading.not()) {
+                // TODO -  drive logic from VM
                 item(key = "no_match") {
                     ErrorMessage(
                         title = "No match found!",

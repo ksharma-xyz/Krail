@@ -34,32 +34,33 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
     }
 
     private fun onSearchTextChanged(query: String) {
-        //Timber.d("onSearchTextChanged: $query")
-        updateUiState { displayLoading() }
+        // Display local results immediately
+        val localResults = processLocalStopResults(query)
+        updateUiState { displayData(localResults) }
+
+        // Fetch network results and merge them with local results
         searchJob?.cancel()
-        // TODO - cancel previous flow before starting new one.
         searchJob = viewModelScope.launch(Dispatchers.IO) {
             runCatching {
                 val response = tripPlanningService.stopFinder(stopSearchQuery = query)
                 println("response VM: $response")
 
-                val results = processStopResults(query, response.toStopResults())
-                println("results: $results")
+                val networkResults = response.toStopResults()
+                val mergedResults = mergeResults(localResults, networkResults)
+                mergedResults.forEach {
+                    println("stopId: ${it.stopId}, stopName: ${it.stopName}, transportModeType: ${it.transportModeType}")
+                }
 
-                updateUiState { displayData(results) }
+                updateUiState { displayData(mergedResults) }
             }.getOrElse {
                 delay(1500) // buffer for API response before displaying error.
-                // TODO- ideally cache all stops and error will never happen.
                 updateUiState { displayError() }
             }
         }
     }
 
-    private fun processStopResults(
-        query: String,
-        stopResults: List<SearchStopState.StopResult>,
-    ): List<SearchStopState.StopResult> {
-        val additionalResults = mutableListOf<SearchStopState.StopResult>()
+    private fun processLocalStopResults(query: String): List<SearchStopState.StopResult> {
+        val resultMap = LinkedHashMap<String, SearchStopState.StopResult>()
 
         // Filter metroStops and trainStops based on the query
         val matchingMetroStops = metroStops.filter { it.value.contains(query, ignoreCase = true) }
@@ -67,34 +68,54 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
 
         // Create StopResult objects for matching metro stops
         matchingMetroStops.forEach { (id, name) ->
-            additionalResults.add(
-                SearchStopState.StopResult(
+            val existingResult = resultMap[id]
+            if (existingResult != null) {
+                val combinedModes = (existingResult.transportModeType + TransportMode.Metro()).toPersistentList()
+                resultMap[id] = existingResult.copy(transportModeType = combinedModes)
+            } else {
+                resultMap[id] = SearchStopState.StopResult(
                     stopName = name,
                     stopId = id,
                     transportModeType = persistentListOf(TransportMode.Metro())
                 )
-            )
+            }
         }
 
         // Create StopResult objects for matching train stops
         matchingTrainStops.forEach { (id, name) ->
-            additionalResults.add(
-                SearchStopState.StopResult(
+            val existingResult = resultMap[id]
+            if (existingResult != null) {
+                val combinedModes = (existingResult.transportModeType + TransportMode.Train()).toPersistentList()
+                resultMap[id] = existingResult.copy(transportModeType = combinedModes)
+            } else {
+                resultMap[id] = SearchStopState.StopResult(
                     stopName = name,
                     stopId = id,
                     transportModeType = persistentListOf(TransportMode.Train())
                 )
-            )
+            }
         }
 
-        // Merge network results with additional results
-        val combinedResults = (stopResults + additionalResults).groupBy { it.stopId }
-            .map { (id, results) ->
-                val combinedModes = results.flatMap { it.transportModeType }.toPersistentList()
-                results.first().copy(transportModeType = combinedModes)
-            }
+        return resultMap.values.toList()
+    }
 
-        return combinedResults
+    private fun mergeResults(
+        localResults: List<SearchStopState.StopResult>,
+        networkResults: List<SearchStopState.StopResult>
+    ): List<SearchStopState.StopResult> {
+        val resultMap = LinkedHashMap<String, SearchStopState.StopResult>()
+
+        (localResults + networkResults).forEach { result ->
+            val existingResult = resultMap[result.stopId]
+            if (existingResult != null) {
+                val combinedModes = (existingResult.transportModeType + result.transportModeType).toPersistentList()
+                resultMap[result.stopId] = existingResult.copy(transportModeType = combinedModes)
+            } else {
+                resultMap[result.stopId] = result
+            }
+        }
+
+        return resultMap.values.toList()
     }
 
     private fun SearchStopState.displayData(stopsResult: List<SearchStopState.StopResult>) = copy(
