@@ -1,0 +1,62 @@
+{
+  "version": "10.6.21.17",
+  "locations": [
+    {
+      "id": "200060",
+      "isGlobalId": true,
+      "name": "Central, Sydney",
+      "disassembledName": "Central",
+      "coord": [
+        -33.884024,
+        151.206203
+      ],
+      "type": "stop",
+      "matchQuality": 100000,
+      "isBest": true,
+      "productClasses": [
+        1,
+        2,
+        4,
+        5,
+        7,
+        11
+      ],
+      "parent": {
+        "id": "placeID:95301001:1",
+        "name": "Sydney",
+        "type": "locality"
+      },
+      "assignedStops": [
+        {
+          "id": "200060",
+          "isGlobalId": true,
+          "name": "Central Station",
+          "type": "stop",
+          "coord": [
+            -33.884024,
+            151.206203
+          ],
+          "parent": {
+            "name": "Sydney",
+            "type": "locality"
+          },
+          "productClasses": [
+            1,
+            2,
+            4,
+            5,
+            7,
+            11
+          ],
+          "connectingMode": 100,
+          "properties": {
+            "stopId": "10101100"
+          }
+        }
+      ],
+      "properties": {
+        "stopId": "10101100"
+      }
+    }
+  ]
+}
