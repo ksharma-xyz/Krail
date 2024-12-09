@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
-import xyz.ksharma.krail.version.AppVersionProvider
 
-class SettingsViewModel(private val appVersionProvider: AppVersionProvider) : ViewModel() {
+class SettingsViewModel(private val appInfoProvider: AppInfoProvider) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SettingsState> = MutableStateFlow(SettingsState())
     val uiState: StateFlow<SettingsState> = _uiState
@@ -19,7 +19,7 @@ class SettingsViewModel(private val appVersionProvider: AppVersionProvider) : Vi
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsState())
 
     private fun fetchAppVersion() {
-        val appVersion = appVersionProvider.getAppVersion()
+        val appVersion = appInfoProvider.getAppInfo().version
         _uiState.value = _uiState.value.copy(appVersion = appVersion)
     }
 }

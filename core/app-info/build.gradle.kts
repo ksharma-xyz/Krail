@@ -32,6 +32,7 @@ kotlin {
     sourceSets {
         androidMain {
             dependencies {
+                api(libs.di.koinAndroid)
             }
         }
 
@@ -40,6 +41,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
 
                 implementation(compose.runtime)
+                api(libs.di.koinComposeViewmodel)
             }
         }
 
