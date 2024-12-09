@@ -243,7 +243,8 @@ fun TimeTableScreen(
                         onAlertClick = {
                             onAlertClick(journey.journeyId)
                         },
-                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
+                            .animateItem(),
                     )
                 }
             } else { // Journey list is empty or null
