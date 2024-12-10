@@ -17,7 +17,7 @@ object StopResultMapper {
      * @return A list of [StopResult] objects representing the filtered stops.
      */
     fun StopFinderResponse.toStopResults(
-        selectedModes: Set<TransportMode> = TransportMode.values(),
+        selectedModes: Set<TransportMode> = TransportMode.values().minus(TransportMode.Bus()),
     ): List<SearchStopState.StopResult> {
         println("selectedModes: " + selectedModes)
 

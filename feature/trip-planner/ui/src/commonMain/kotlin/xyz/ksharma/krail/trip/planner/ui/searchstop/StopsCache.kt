@@ -4,7 +4,6 @@ val lightRailStops = mapOf(
     // Inner West
     "2000253" to "Paddy's Markets Light Rail",
     "2000255" to "Capitol Square Light Rail",
-    "2000257" to "Central Grand Concourse Light Rail",
     "2000262" to "Convention Centre Light Rail",
     "2000264" to "Exhibition Centre Light Rail",
     "200935" to "Wentworth Park Light Rail",
