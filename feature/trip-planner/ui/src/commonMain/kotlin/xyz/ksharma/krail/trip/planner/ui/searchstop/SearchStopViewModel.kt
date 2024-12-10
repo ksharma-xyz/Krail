@@ -18,7 +18,6 @@ import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResul
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
-import kotlin.collections.addAll
 
 class SearchStopViewModel(private val tripPlanningService: TripPlanningService) : ViewModel() {
 
@@ -41,14 +40,18 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
         // Fetch network results and merge them with local results
         searchJob?.cancel()
         searchJob = viewModelScope.launch(Dispatchers.IO) {
+            println("NEW Stop Search")
             runCatching {
                 val response = tripPlanningService.stopFinder(stopSearchQuery = query)
                 println("response VM: $response")
 
                 val networkResults = response.toStopResults()
+                networkResults.forEach {
+                    println("Network: stopId: ${it.stopId}, stopName: ${it.stopName}, transportModeType: ${it.transportModeType}")
+                }
                 val mergedResults = mergeResults(localResults, networkResults)
                 mergedResults.forEach {
-                    println("stopId: ${it.stopId}, stopName: ${it.stopName}, transportModeType: ${it.transportModeType}")
+                    println("Merged: stopId: ${it.stopId}, stopName: ${it.stopName}, transportModeType: ${it.transportModeType}")
                 }
 
                 updateUiState { displayData(mergedResults) }
@@ -542,4 +545,46 @@ val trainStops = mapOf(
     "216120" to "Yennora Station",
     "257540" to "Yerrinbool Station",
     "278630" to "Zig Zag Station"
+)
+
+val ferryStops = mapOf(
+    "20461" to "Abbotsford Wharf",
+    "20414" to "Balmain East Wharf",
+    "20413" to "Balmain Wharf",
+    "2000441" to "Barangaroo Wharf",
+    "20412" to "Birchgrove Wharf",
+    "203771" to "Blackwattle Bay Wharf",
+    "21371" to "Cabarita Wharf",
+    "20462" to "Chiswick Wharf",
+    "200020" to "Circular Quay Wharf",
+    "2110112" to "Clarke Road",
+    "20009" to "Cockatoo Island Wharf",
+    "20901" to "Cremorne Point Wharf",
+    "20271" to "Darling Point Wharf",
+    "20281" to "Double Bay Wharf",
+    "20471" to "Drummoyne Wharf",
+    "20007" to "Garden Island Wharf",
+    "20651" to "Greenwich Point Wharf",
+    "2065145" to "Greenwich Wharf",
+    "211158" to "Huntleys Point Wharf",
+    "20614" to "Kirribilli Wharf",
+    "21122" to "Kissing Point Wharf",
+    "20892" to "Kurraba Point Wharf",
+    "20951" to "Manly Wharf",
+    "20601" to "McMahons Point Wharf",
+    "21141" to "Meadowbank Wharf",
+    "20611" to "Milsons Point Wharf",
+    "20881" to "Mosman Bay Wharf",
+    "20891" to "Neutral Bay Wharf",
+    "20603" to "North Sydney Wharf",
+    "20902" to "Old Cremorne Wharf",
+    "21501" to "Parramatta Wharf",
+    "200910" to "Pyrmont Bay Wharf",
+    "20291" to "Rose Bay Wharf",
+    "21151" to "Rydalmere Wharf",
+    "20882" to "South Mosman Wharf",
+    "21271" to "Sydney Olympic Park Wharf",
+    "20883" to "Taronga Zoo Wharf",
+    "20301" to "Watsons Bay Wharf",
+    "21101" to "Woolwich Wharf"
 )
