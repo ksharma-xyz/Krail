@@ -114,6 +114,7 @@ fun TripResponse.Leg?.getPlatformNumber(): String? {
 private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index, leg ->
 
     // log origin's disassembledName
+/*
     println("Origin #$index: ${leg.origin?.disassembledName}")
     println(
         "TransportMode #$index: ${leg.transportation?.product?.productClass}, " +
@@ -121,6 +122,7 @@ private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index,
             "stops: ${leg.stopSequence?.size}, " +
             "duration: ${leg.duration}",
     )
+*/
 }
 
 private fun List<TripResponse.Leg>.getTransportModeLines() = mapNotNull { leg ->
