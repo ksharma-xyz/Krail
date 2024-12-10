@@ -22,7 +22,6 @@ object StopResultMapper {
         println("selectedModes: " + selectedModes)
 
         return locations.orEmpty()
-            .filter { it.isGlobalId == true }
             .mapNotNull { location ->
                 val stopName =
                     location.disassembledName ?: return@mapNotNull null // Skip if stop name is null

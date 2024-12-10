@@ -35,10 +35,14 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
     private fun onSearchTextChanged(query: String) {
         // Display local results immediately
         val localResults = processLocalStopResults(query)
-        updateUiState { displayData(localResults) }
+        if(localResults.isEmpty()) {
+            // handle empty
+        } else {
+            updateUiState { displayData(localResults) }
+        }
 
         // Fetch network results and merge them with local results
-        searchJob?.cancel()
+/*
         searchJob = viewModelScope.launch(Dispatchers.IO) {
             println("NEW Stop Search")
             runCatching {
@@ -60,14 +64,16 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
                 updateUiState { displayError() }
             }
         }
+*/
     }
 
     private fun processLocalStopResults(query: String): List<SearchStopState.StopResult> {
         val resultMap = LinkedHashMap<String, SearchStopState.StopResult>()
 
-        // Filter metroStops and trainStops based on the query
+        // Filter metroStops, trainStops, and ferryStops based on the query
         val matchingMetroStops = metroStops.filter { it.value.contains(query, ignoreCase = true) }
         val matchingTrainStops = trainStops.filter { it.value.contains(query, ignoreCase = true) }
+        val matchingFerryStops = ferryStops.filter { it.value.contains(query, ignoreCase = true) }
 
         // Create StopResult objects for matching metro stops
         matchingMetroStops.forEach { (id, name) ->
@@ -99,7 +105,27 @@ class SearchStopViewModel(private val tripPlanningService: TripPlanningService) 
             }
         }
 
-        return resultMap.values.toList()
+        // Create StopResult objects for matching ferry stops
+        matchingFerryStops.forEach { (id, name) ->
+            val existingResult = resultMap[id]
+            if (existingResult != null) {
+                val combinedModes = (existingResult.transportModeType + TransportMode.Ferry()).toPersistentList()
+                resultMap[id] = existingResult.copy(transportModeType = combinedModes)
+            } else {
+                resultMap[id] = SearchStopState.StopResult(
+                    stopName = name,
+                    stopId = id,
+                    transportModeType = persistentListOf(TransportMode.Ferry())
+                )
+            }
+        }
+
+        // Sort results: exact matches first, then starts with query, then contains query
+        return resultMap.values.sortedWith(compareBy(
+            { !it.stopName.equals(query, ignoreCase = true) },
+            { !it.stopName.startsWith(query, ignoreCase = true) },
+            { it.stopName }
+        ))
     }
 
     private fun mergeResults(
