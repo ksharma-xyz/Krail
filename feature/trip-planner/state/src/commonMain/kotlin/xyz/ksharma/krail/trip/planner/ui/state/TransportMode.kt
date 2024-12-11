@@ -50,7 +50,7 @@ sealed class TransportMode {
         override val name: String = "Bus",
         override val colorCode: String = "#00B5EF",
         override val productClass: Int = 5,
-        override val priority: Int = 4444,
+        override val priority: Int = 5555,
     ) : TransportMode()
 
     @Serializable
@@ -58,7 +58,7 @@ sealed class TransportMode {
         override val name: String = "Light Rail",
         override val colorCode: String = "#EE343F",
         override val productClass: Int = 4,
-        override val priority: Int = 5555,
+        override val priority: Int = 4444,
     ) : TransportMode()
 
     @Serializable
