@@ -101,6 +101,7 @@ kotlin {
             implementation(projects.feature.tripPlanner.network)
             implementation(projects.feature.tripPlanner.ui)
             implementation(projects.feature.tripPlanner.state)
+            implementation(projects.gtfsStatic)
 
             implementation(libs.navigation.compose)
 

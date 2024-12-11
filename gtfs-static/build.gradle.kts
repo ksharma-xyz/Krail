@@ -1,6 +1,3 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-import com.codingfeline.buildkonfig.compiler.FieldSpec
-
 android {
     namespace = "xyz.ksharma.krail.gtfs_static"
 
@@ -18,7 +15,6 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -71,24 +67,5 @@ kotlin {
                 implementation(libs.test.kotlinxCoroutineTest)
             }
         }
-    }
-}
-
-// READ API KEY
-val localProperties = gradleLocalProperties(rootProject.rootDir, providers)
-val nswTransportApiKey: String = localProperties.getProperty("NSW_TRANSPORT_API_KEY")
-    ?: System.getenv("NSW_TRANSPORT_API_KEY")
-require(nswTransportApiKey.isNotEmpty()) {
-    "Register API key and put in local.properties as `NSW_TRANSPORT_API_KEY`"
-}
-buildkonfig {
-    packageName = "xyz.ksharma.krail.trip.planner.network"
-
-    require(nswTransportApiKey.isNotEmpty()) {
-        "Register API key and put in local.properties as `NSW_TRANSPORT_API_KEY`"
-    }
-
-    defaultConfigs {
-        buildConfigField(FieldSpec.Type.STRING, "NSW_TRANSPORT_API_KEY", nswTransportApiKey)
     }
 }

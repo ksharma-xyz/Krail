@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.gtfs_static.di
+package xyz.ksharma.krail.gtfs_static
 
 /**
  * All other transport modes:
