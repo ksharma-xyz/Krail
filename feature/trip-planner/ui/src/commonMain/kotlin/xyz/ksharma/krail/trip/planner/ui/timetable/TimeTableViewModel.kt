@@ -30,6 +30,7 @@ import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
 import xyz.ksharma.krail.trip.planner.network.api.service.DepArr
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
+import xyz.ksharma.krail.trip.planner.ui.alerts.cache.ServiceAlertsCache
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
@@ -44,6 +45,7 @@ class TimeTableViewModel(
     private val tripPlanningService: TripPlanningService,
     private val rateLimiter: RateLimiter,
     private val sandook: Sandook,
+    private val alertsCache: ServiceAlertsCache,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
@@ -350,8 +352,10 @@ class TimeTableViewModel(
     }
 
     private fun getAlertsFromJourney(journey: TimeTableState.JourneyCardInfo): List<ServiceAlert> {
-        return journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+        val alerts = journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
             .flatMap { it.serviceAlertList.orEmpty() }
+        alertsCache.setAlerts(alerts)
+        return alerts
     }
 
     companion object {
