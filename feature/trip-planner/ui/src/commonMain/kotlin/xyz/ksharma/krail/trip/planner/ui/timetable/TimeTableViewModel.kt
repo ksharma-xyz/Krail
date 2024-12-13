@@ -127,6 +127,7 @@ class TimeTableViewModel(
             updateUiState { copy(isLoading = true) }
             dateTimeSelectionItem = item
             journeys.clear() // Clear cache trips when date time selection changed.
+            alertsCache.clearAlerts()
             rateLimiter.triggerEvent()
         }
     }
@@ -293,6 +294,7 @@ class TimeTableViewModel(
         )
         tripInfo = reverseTrip
         journeys.clear() // Clear cache trips when reverse trip is clicked.
+        alertsCache.clearAlerts() // Clear alerts cache when reverse trip is clicked.
 
         val savedTrip = sandook.selectTripById(tripId = reverseTrip.tripId)
         updateUiState {
@@ -352,10 +354,18 @@ class TimeTableViewModel(
     }
 
     private fun getAlertsFromJourney(journey: TimeTableState.JourneyCardInfo): List<ServiceAlert> {
-        val alerts = journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-            .flatMap { it.serviceAlertList.orEmpty() }
-        alertsCache.setAlerts(alerts)
+        val alerts =
+            journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+                .flatMap { it.serviceAlertList.orEmpty() }
+        alertsCache.setAlerts(journeyId = journey.journeyId, alerts = alerts)
         return alerts
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        // TODO - ideally AlertsCache should be scoped to TimeTableDestination and object must be deleted itself.
+        //   so we do not need to manually clear.
+        alertsCache.clearAlerts()
     }
 
     companion object {

@@ -13,6 +13,10 @@ interface ServiceAlertsCache {
 
 class RealServiceAlertsCache : ServiceAlertsCache {
 
+    init {
+        println("RealServiceAlertsCache created $this")
+    }
+
     private val serviceAlerts: MutableMap<String, List<ServiceAlert>> = mutableMapOf()
 
     override fun getAlerts(journeyId: String): List<ServiceAlert>? {

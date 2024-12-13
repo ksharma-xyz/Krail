@@ -236,7 +236,7 @@ fun ExpandedJourneyCardContent(
             //    to support iOS, we need to store them in db and use some id to fetch them and display.
             //    Current approach of passing them as json string does not work on iOS devices.
             //    See - https://youtrack.jetbrains.com/issue/CMP-7180/iOS-App-Crashes-when-navigating-with-html-content-as-string-argument.
-            if (totalUniqueServiceAlerts > 0 && appPlatformType == AppPlatformType.ANDROID) {
+            if (totalUniqueServiceAlerts > 0) {
                 Box(
                     modifier = Modifier
                         .padding()

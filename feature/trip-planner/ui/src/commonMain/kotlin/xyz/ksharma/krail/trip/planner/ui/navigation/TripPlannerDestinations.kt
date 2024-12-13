@@ -1,6 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.navigation
 
-import androidx.navigation.NavGraphBuilder
+import    androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigation
 import kotlinx.serialization.Serializable
@@ -78,7 +78,7 @@ data object ThemeSelectionRoute
 
 @Serializable
 internal data class ServiceAlertRoute(
-    val alertsJsonList: List<String>,
+    val journeyId: String,
 )
 
 @Serializable
