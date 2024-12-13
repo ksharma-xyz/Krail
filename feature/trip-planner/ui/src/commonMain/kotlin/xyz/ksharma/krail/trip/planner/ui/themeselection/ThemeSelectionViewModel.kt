@@ -1,9 +1,10 @@
-package xyz.ksharma.krail.trip.planner.ui.usualride
+package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -13,29 +14,35 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
-import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
-import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideState
+import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
+import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionState
 
-class UsualRideViewModel(private val sandook: Sandook) : ViewModel() {
+class ThemeSelectionViewModel(private val sandook: Sandook) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<UsualRideState> = MutableStateFlow(UsualRideState())
-    val uiState: StateFlow<UsualRideState> = _uiState
+    private val _uiState: MutableStateFlow<ThemeSelectionState> = MutableStateFlow(ThemeSelectionState())
+    val uiState: StateFlow<ThemeSelectionState> = _uiState
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
         .onStart { getThemeTransportMode() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
-    fun onEvent(event: UsualRideEvent) {
+    private var transportSelectionJob: Job? = null
+
+    fun onEvent(event: ThemeSelectionEvent) {
         when (event) {
-            is UsualRideEvent.TransportModeSelected -> onTransportModeSelected(event.productClass)
+            is ThemeSelectionEvent.TransportModeSelected -> onTransportModeSelected(event.productClass)
         }
     }
 
-   private fun onTransportModeSelected(productClass: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun onTransportModeSelected(productClass: Int) {
+        transportSelectionJob?.cancel()
+        transportSelectionJob = viewModelScope.launch(Dispatchers.IO) {
             sandook.clearTheme() // Only one entry should exist at a time
             sandook.insertOrReplaceTheme(productClass.toLong())
+            updateUiState {
+                copy(themeSelected = true)
+            }
         }
     }
 
@@ -50,7 +57,7 @@ class UsualRideViewModel(private val sandook: Sandook) : ViewModel() {
         }
     }
 
-    private inline fun updateUiState(block: UsualRideState.() -> UsualRideState) {
+    private inline fun updateUiState(block: ThemeSelectionState.() -> ThemeSelectionState) {
         _uiState.update(block)
     }
 

@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.trip.planner.ui.usualride
+package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -18,27 +18,40 @@ import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
-import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
+import xyz.ksharma.krail.trip.planner.ui.navigation.ThemeSelectionRoute
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
-import xyz.ksharma.krail.trip.planner.ui.state.usualride.UsualRideEvent
+import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
 
-internal fun NavGraphBuilder.usualRideDestination(navController: NavHostController) {
-    composable<UsualRideRoute> {
-        val viewModel: UsualRideViewModel = koinViewModel<UsualRideViewModel>()
+internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostController) {
+    composable<ThemeSelectionRoute> {
+        val viewModel: ThemeSelectionViewModel = koinViewModel<ThemeSelectionViewModel>()
         val isUiStateLoading by viewModel.isLoading.collectAsStateWithLifecycle()
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
-        var mode: TransportMode? by remember { mutableStateOf(null) }
+        var mode: TransportMode? by remember(state.selectedTransportMode) {
+            mutableStateOf(state.selectedTransportMode)
+        }
         themeContentColor =
             getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
-        LaunchedEffect(state.selectedTransportMode){
+        LaunchedEffect(state.selectedTransportMode) {
             println("selectedTransportMode: ${state.selectedTransportMode}")
         }
+        LaunchedEffect(state.themeSelected) {
+            if(state.themeSelected) {
+                navController.navigate(
+                    route = SavedTripsRoute,
+                    navOptions = NavOptions.Builder()
+                        .setLaunchSingleTop(true)
+                        .setPopUpTo<SavedTripsRoute>(inclusive = false)
+                        .build(),
+                )
+            }
+        }
 
-        UsualRideScreen(
+        ThemeSelectionScreen(
             selectedTransportMode = state.selectedTransportMode,
             transportModes = TransportMode.sortedValues(TransportModeSortOrder.PRODUCT_CLASS)
                 .toImmutableSet(),
@@ -47,16 +60,8 @@ internal fun NavGraphBuilder.usualRideDestination(navController: NavHostControll
                 check(mode != null) {
                     "Transport mode not found for product class $productClass"
                 }
-                viewModel.onEvent(UsualRideEvent.TransportModeSelected(productClass))
+                viewModel.onEvent(ThemeSelectionEvent.TransportModeSelected(productClass))
                 mode?.colorCode?.let { themeColor = it }
-
-                navController.navigate(
-                    route = SavedTripsRoute,
-                    navOptions = NavOptions.Builder()
-                        .setLaunchSingleTop(true)
-                        .setPopUpTo<SavedTripsRoute>(inclusive = false)
-                        .build(),
-                )
             },
             onBackClick = { navController.popBackStack() }
         )

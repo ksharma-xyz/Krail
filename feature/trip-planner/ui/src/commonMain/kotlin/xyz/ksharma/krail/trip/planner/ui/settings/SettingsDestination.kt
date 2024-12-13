@@ -8,7 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.trip.planner.ui.navigation.SettingsRoute
-import xyz.ksharma.krail.trip.planner.ui.navigation.UsualRideRoute
+import xyz.ksharma.krail.trip.planner.ui.navigation.ThemeSelectionRoute
 
 internal fun NavGraphBuilder.settingsDestination(navController: NavHostController) {
     composable<SettingsRoute> {
@@ -20,7 +20,7 @@ internal fun NavGraphBuilder.settingsDestination(navController: NavHostControlle
             appVersion = settingsState.appVersion,
             onChangeThemeClick = {
                 navController.navigate(
-                    route = UsualRideRoute,
+                    route = ThemeSelectionRoute,
                     navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                 )
             },

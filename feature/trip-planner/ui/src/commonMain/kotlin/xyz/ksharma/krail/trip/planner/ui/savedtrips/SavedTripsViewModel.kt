@@ -25,10 +25,7 @@ class SavedTripsViewModel(
     val uiState: StateFlow<SavedTripsState> = _uiState
 
     private fun loadSavedTrips() {
-
         viewModelScope.launch(context = Dispatchers.IO) {
-            nswGtfsService.getSydneyTrains()
-
             updateUiState { copy(isLoading = true) }
             val trips = mutableSetOf<Trip>()
 

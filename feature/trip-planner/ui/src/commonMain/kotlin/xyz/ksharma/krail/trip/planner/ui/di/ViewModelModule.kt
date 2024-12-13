@@ -6,12 +6,12 @@ import xyz.ksharma.krail.trip.planner.ui.savedtrips.SavedTripsViewModel
 import xyz.ksharma.krail.trip.planner.ui.searchstop.SearchStopViewModel
 import xyz.ksharma.krail.trip.planner.ui.settings.SettingsViewModel
 import xyz.ksharma.krail.trip.planner.ui.timetable.TimeTableViewModel
-import xyz.ksharma.krail.trip.planner.ui.usualride.UsualRideViewModel
+import xyz.ksharma.krail.trip.planner.ui.themeselection.ThemeSelectionViewModel
 
 val viewModelsModule = module {
     viewModelOf(::SavedTripsViewModel)
     viewModelOf(::SearchStopViewModel)
     viewModelOf(::TimeTableViewModel)
-    viewModelOf(::UsualRideViewModel)
+    viewModelOf(::ThemeSelectionViewModel)
     viewModelOf(::SettingsViewModel)
 }

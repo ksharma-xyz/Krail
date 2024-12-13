@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.trip.planner.ui.usualride
+package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
@@ -65,7 +65,7 @@ private val TransportMode.tagLine: String
     }
 
 @Composable
-fun UsualRideScreen(
+fun ThemeSelectionScreen(
     selectedTransportMode: TransportMode?,
     transportModes: ImmutableSet<TransportMode>,
     transportModeSelected: (Int) -> Unit,
@@ -197,7 +197,8 @@ private fun TransportModeRadioButton(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(color = backgroundColor)
+            .padding(horizontal = 12.dp)
+            .background(color = backgroundColor, shape = RoundedCornerShape(24.dp))
             .clickable(
                 role = Role.Button,
                 indication = null,
@@ -224,7 +225,7 @@ private fun TransportModeRadioButton(
 @Composable
 private fun PreviewUsualRideScreen() {
     KrailTheme {
-        UsualRideScreen(
+        ThemeSelectionScreen(
             selectedTransportMode = null,
             transportModes = TransportMode.sortedValues(sortOrder = TransportModeSortOrder.PRODUCT_CLASS)
                 .toImmutableSet(),
