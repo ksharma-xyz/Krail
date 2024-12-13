@@ -198,7 +198,7 @@ private fun TransportModeRadioButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .background(color = backgroundColor, shape = RoundedCornerShape(24.dp))
+            .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
             .clickable(
                 role = Role.Button,
                 indication = null,
