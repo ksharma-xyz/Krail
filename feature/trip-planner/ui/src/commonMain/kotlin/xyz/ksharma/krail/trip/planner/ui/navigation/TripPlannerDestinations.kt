@@ -9,9 +9,8 @@ import xyz.ksharma.krail.trip.planner.ui.datetimeselector.dateTimeSelectorDestin
 import xyz.ksharma.krail.trip.planner.ui.savedtrips.savedTripsDestination
 import xyz.ksharma.krail.trip.planner.ui.searchstop.searchStopDestination
 import xyz.ksharma.krail.trip.planner.ui.settings.settingsDestination
-import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.timetable.timeTableDestination
-import xyz.ksharma.krail.trip.planner.ui.usualride.usualRideDestination
+import xyz.ksharma.krail.trip.planner.ui.themeselection.themeSelectionDestination
 
 /**
  * Nested navigation graph for the trip planner feature.
@@ -28,7 +27,7 @@ fun NavGraphBuilder.tripPlannerDestinations(
 
         timeTableDestination(navController)
 
-        usualRideDestination(navController)
+        themeSelectionDestination(navController)
 
         alertsDestination(navController)
 
@@ -75,7 +74,7 @@ internal data class SearchStopRoute(val fieldTypeKey: String) {
 }
 
 @Serializable
-data object UsualRideRoute
+data object ThemeSelectionRoute
 
 @Serializable
 internal data class ServiceAlertRoute(
