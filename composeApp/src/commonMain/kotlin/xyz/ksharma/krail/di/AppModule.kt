@@ -11,6 +11,7 @@ import xyz.ksharma.krail.gtfs_static.di.gtfsModule
 import xyz.ksharma.krail.sandook.di.sandookModule
 import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.trip.planner.network.api.di.networkModule
+import xyz.ksharma.krail.trip.planner.ui.di.alertsCacheModule
 import xyz.ksharma.krail.trip.planner.ui.di.viewModelsModule
 
 val koinConfig = koinConfiguration {
@@ -23,6 +24,7 @@ val koinConfig = koinConfiguration {
         appInfoModule,
         gtfsModule,
         fileStorageModule,
+        alertsCacheModule,
     )
 }
 

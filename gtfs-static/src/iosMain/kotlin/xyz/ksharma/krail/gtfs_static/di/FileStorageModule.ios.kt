@@ -5,7 +5,5 @@ import xyz.ksharma.krail.gtfs_static.FileStorage
 import xyz.ksharma.krail.gtfs_static.IosFileStorage
 
 actual val fileStorageModule = module {
-    single<FileStorage> {
-        IosFileStorage()
-    }
+    single<FileStorage> { IosFileStorage() }
 }

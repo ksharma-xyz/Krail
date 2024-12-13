@@ -30,6 +30,7 @@ import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
 import xyz.ksharma.krail.trip.planner.network.api.service.DepArr
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
+import xyz.ksharma.krail.trip.planner.ui.alerts.cache.ServiceAlertsCache
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
@@ -44,6 +45,7 @@ class TimeTableViewModel(
     private val tripPlanningService: TripPlanningService,
     private val rateLimiter: RateLimiter,
     private val sandook: Sandook,
+    private val alertsCache: ServiceAlertsCache,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
@@ -125,6 +127,7 @@ class TimeTableViewModel(
             updateUiState { copy(isLoading = true) }
             dateTimeSelectionItem = item
             journeys.clear() // Clear cache trips when date time selection changed.
+            alertsCache.clearAlerts()
             rateLimiter.triggerEvent()
         }
     }
@@ -291,6 +294,7 @@ class TimeTableViewModel(
         )
         tripInfo = reverseTrip
         journeys.clear() // Clear cache trips when reverse trip is clicked.
+        alertsCache.clearAlerts() // Clear alerts cache when reverse trip is clicked.
 
         val savedTrip = sandook.selectTripById(tripId = reverseTrip.tripId)
         updateUiState {
@@ -350,8 +354,18 @@ class TimeTableViewModel(
     }
 
     private fun getAlertsFromJourney(journey: TimeTableState.JourneyCardInfo): List<ServiceAlert> {
-        return journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
-            .flatMap { it.serviceAlertList.orEmpty() }
+        val alerts =
+            journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
+                .flatMap { it.serviceAlertList.orEmpty() }
+        alertsCache.setAlerts(journeyId = journey.journeyId, alerts = alerts)
+        return alerts
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        // TODO - ideally AlertsCache should be scoped to TimeTableDestination and object must be deleted itself.
+        //   so we do not need to manually clear.
+        alertsCache.clearAlerts()
     }
 
     companion object {
