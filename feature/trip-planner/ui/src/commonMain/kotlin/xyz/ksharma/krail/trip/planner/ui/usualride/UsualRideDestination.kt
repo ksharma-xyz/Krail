@@ -11,6 +11,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.coroutines.delay
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
@@ -30,12 +31,25 @@ internal fun NavGraphBuilder.usualRideDestination(navController: NavHostControll
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
-        var mode: TransportMode? by remember { mutableStateOf(null) }
+        var mode: TransportMode? by remember(state.selectedTransportMode) {
+            mutableStateOf(state.selectedTransportMode)
+        }
         themeContentColor =
             getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
-        LaunchedEffect(state.selectedTransportMode){
+        LaunchedEffect(state.selectedTransportMode) {
             println("selectedTransportMode: ${state.selectedTransportMode}")
+        }
+        LaunchedEffect(state.themeSelected) {
+            if(state.themeSelected) {
+                navController.navigate(
+                    route = SavedTripsRoute,
+                    navOptions = NavOptions.Builder()
+                        .setLaunchSingleTop(true)
+                        .setPopUpTo<SavedTripsRoute>(inclusive = false)
+                        .build(),
+                )
+            }
         }
 
         UsualRideScreen(
@@ -49,14 +63,6 @@ internal fun NavGraphBuilder.usualRideDestination(navController: NavHostControll
                 }
                 viewModel.onEvent(UsualRideEvent.TransportModeSelected(productClass))
                 mode?.colorCode?.let { themeColor = it }
-
-                navController.navigate(
-                    route = SavedTripsRoute,
-                    navOptions = NavOptions.Builder()
-                        .setLaunchSingleTop(true)
-                        .setPopUpTo<SavedTripsRoute>(inclusive = false)
-                        .build(),
-                )
             },
             onBackClick = { navController.popBackStack() }
         )

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -26,14 +27,17 @@ class UsualRideViewModel(private val sandook: Sandook) : ViewModel() {
         .onStart { getThemeTransportMode() }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
+    private var transportSelectionJob: Job? = null
+
     fun onEvent(event: UsualRideEvent) {
         when (event) {
             is UsualRideEvent.TransportModeSelected -> onTransportModeSelected(event.productClass)
         }
     }
 
-   private fun onTransportModeSelected(productClass: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
+    private fun onTransportModeSelected(productClass: Int) {
+        transportSelectionJob?.cancel()
+        transportSelectionJob = viewModelScope.launch(Dispatchers.IO) {
             sandook.clearTheme() // Only one entry should exist at a time
             sandook.insertOrReplaceTheme(productClass.toLong())
         }
@@ -45,7 +49,10 @@ class UsualRideViewModel(private val sandook: Sandook) : ViewModel() {
             val productClass = sandook.getProductClass()?.toInt()
             val mode = productClass?.let { TransportMode.toTransportModeType(it) }
             updateUiState {
-                copy(selectedTransportMode = mode)
+                copy(
+                    selectedTransportMode = mode,
+                    themeSelected = true,
+                )
             }
         }
     }
