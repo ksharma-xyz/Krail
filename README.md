@@ -1,18 +1,12 @@
-## Build Status
-
-[![Krail App CI](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml/badge.svg)](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml)
-
-## Download
-
-[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1280px-Google_Play_Store_badge_EN.svg.png" alt="Download Krail App - Google Play Store" width="200"/>](https://play.google.com/store/apps/details?id=xyz.ksharma.krail)
-
-# Krail
+# KRAIL <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Kotlin_Icon.png/1200px-Kotlin_Icon.png" height="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Android_robot_head.svg/1100px-Android_robot_head.svg.png" height="30">  <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/IOS_logo.svg" height="30">
 
 Making travel simple and fun.
 
 Krail is a Compose Multiplatform application designed to provide a seamless user experience across
 Android and iOS platforms. This project leverages modern libraries and frameworks to ensure a robust
 and scalable architecture.
+
+[![Krail App CI](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml/badge.svg)](https://github.com/ksharma-xyz/Krail/actions/workflows/build.yml)
 
 ## Architecture
 
@@ -67,6 +61,12 @@ To build the project, follow these steps:
 ## Contributing
 
 Welcoming contributions from the community. Please create a new issue or pick up an existing one.
+
+## Download
+
+[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1280px-Google_Play_Store_badge_EN.svg.png" alt="Download Krail App on Google Play Store" width="150"/>](https://play.google.com/store/apps/details?id=xyz.ksharma.krail)
+
+[<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk7OywFCuNaXPnmdgEAmthr_XrNbzxmt6oUQ&s" alt="iOS Krail App on Apple App Store" width="150"/>](https://apps.apple.com/us/app/krail-app/id6738934832)
 
 ## License
 
