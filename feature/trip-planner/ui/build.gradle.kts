@@ -24,26 +24,27 @@ kotlin {
     sourceSets {
         commonMain  {
             dependencies {
-                implementation(projects.core.dateTime)
                 implementation(projects.core.appInfo)
+                implementation(projects.core.analytics)
+                implementation(projects.core.dateTime)
                 implementation(projects.feature.tripPlanner.network)
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.sandook)
                 implementation(projects.taj)
 
-                implementation(compose.foundation)
-                implementation(compose.animation)
-                implementation(compose.ui)
-                implementation(compose.material3)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+                implementation(compose.animation)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.ui)
 
-                implementation(libs.kotlinx.datetime)
-                implementation(libs.kotlinx.collections.immutable)
-                implementation(libs.kotlinx.serialization.json)
-                implementation(libs.navigation.compose)
-                implementation(libs.lifecycle.viewmodel.compose)
                 api(libs.di.koinComposeViewmodel)
+                implementation(libs.kotlinx.collections.immutable)
+                implementation(libs.kotlinx.datetime)
+                implementation(libs.kotlinx.serialization.json)
+                implementation(libs.lifecycle.viewmodel.compose)
+                implementation(libs.navigation.compose)
             }
         }
         commonTest {
