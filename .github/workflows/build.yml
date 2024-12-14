@@ -5,9 +5,15 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 
 jobs:
   android:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: ubuntu-latest
     environment: Firebase
     timeout-minutes: 60
@@ -61,6 +67,7 @@ jobs:
         run: ./gradlew :composeApp:assembleRelease test
 
   iOS:
+    if: ${{ github.event.pull_request.draft == false }}
     runs-on: macos-14
     environment: Firebase
     timeout-minutes: 60
