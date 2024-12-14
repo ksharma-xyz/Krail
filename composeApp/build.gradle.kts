@@ -64,7 +64,6 @@ plugins {
 kotlin {
     applyDefaultHierarchyTemplate()
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_17)
         }
@@ -95,6 +94,7 @@ kotlin {
         }
 
         commonMain.dependencies {
+            implementation(projects.core.analytics)
             implementation(projects.taj)
             implementation(projects.sandook)
             implementation(projects.core.appInfo)
