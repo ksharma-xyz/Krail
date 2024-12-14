@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import xyz.ksharma.krail.gtfs_static.NswGtfsService
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SavedTrip
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
@@ -18,7 +17,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
 class SavedTripsViewModel(
     private val sandook: Sandook,
-    private val nswGtfsService: NswGtfsService,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())

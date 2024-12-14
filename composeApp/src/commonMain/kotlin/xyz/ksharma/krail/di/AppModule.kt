@@ -6,8 +6,6 @@ import org.koin.dsl.includes
 import org.koin.dsl.koinConfiguration
 import org.koin.dsl.module
 import xyz.ksharma.krail.core.appinfo.di.appInfoModule
-import xyz.ksharma.krail.gtfs_static.di.fileStorageModule
-import xyz.ksharma.krail.gtfs_static.di.gtfsModule
 import xyz.ksharma.krail.sandook.di.sandookModule
 import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.trip.planner.network.api.di.networkModule
@@ -22,8 +20,6 @@ val koinConfig = koinConfiguration {
         sandookModule,
         splashModule,
         appInfoModule,
-        gtfsModule,
-        fileStorageModule,
         alertsCacheModule,
     )
 }

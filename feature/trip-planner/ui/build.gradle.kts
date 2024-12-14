@@ -30,7 +30,6 @@ kotlin {
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.sandook)
                 implementation(projects.taj)
-                implementation(projects.gtfsStatic)
 
                 implementation(compose.foundation)
                 implementation(compose.animation)
