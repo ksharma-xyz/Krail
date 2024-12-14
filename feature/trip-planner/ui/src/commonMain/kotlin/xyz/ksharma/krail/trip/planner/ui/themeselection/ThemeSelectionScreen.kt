@@ -18,7 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -134,14 +134,10 @@ fun ThemeSelectionScreen(
                     )
                 }
 
-                itemsIndexed(
-                    items = transportModes.toImmutableList(),
-                    key = { _, item -> item.productClass },
-                ) { index, mode ->
-                    ThemeSelectionRadioButton(
+                items(items = transportModes.toImmutableList(), key = { it.productClass }) { mode ->
+                    TransportModeRadioButton(
                         mode = mode,
                         selected = selectedProductClass == mode.productClass,
-                        isEvenPosition = index % 2 == 0,
                         onClick = { clickedMode ->
                             selectedProductClass = clickedMode.productClass
                         },
@@ -186,9 +182,8 @@ fun ThemeSelectionScreen(
 }
 
 @Composable
-private fun ThemeSelectionRadioButton(
+private fun TransportModeRadioButton(
     mode: TransportMode,
-    isEvenPosition: Boolean,
     onClick: (TransportMode) -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
@@ -198,42 +193,25 @@ private fun ThemeSelectionRadioButton(
         label = "backgroundColor",
         animationSpec = tween(durationMillis = 300, easing = LinearEasing),
     )
-    val cornerRadius by remember { mutableStateOf(36.dp) }
 
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(
-                start = if (isEvenPosition) 12.dp else 0.dp,
-                end = if (isEvenPosition) 0.dp else 12.dp,
-            )
-            .background(
-                color = backgroundColor, shape = RoundedCornerShape(
-                    topStart = if (isEvenPosition) cornerRadius else 0.dp,
-                    topEnd = if (isEvenPosition) 0.dp else cornerRadius,
-                    bottomStart = if (isEvenPosition) cornerRadius else 0.dp,
-                    bottomEnd = if (isEvenPosition) 0.dp else cornerRadius,
-                )
-            )
+            .padding(horizontal = 12.dp)
+            .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
             .clickable(
                 role = Role.Button,
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() },
             ) { onClick(mode) }
-            .padding(vertical = 24.dp)
-            .padding(
-                start = if (isEvenPosition) 0.dp else 12.dp,
-                end = if (isEvenPosition) 0.dp else 12.dp,
-            ),
+            .padding(vertical = 24.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
             modifier = Modifier
-                .padding(start = 12.dp)
                 .size(32.dp)
                 .clip(CircleShape)
-                .background(color = mode.colorCode.hexToComposeColor())
-                ,
+                .background(color = mode.colorCode.hexToComposeColor()),
         )
 
         Text(
