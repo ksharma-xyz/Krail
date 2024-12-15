@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.sandook
 
+import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
+
 interface Sandook {
 
     // region Theme
@@ -21,4 +23,13 @@ interface Sandook {
     fun selectTripById(tripId: String): SavedTrip?
     fun clearSavedTrips()
     // endregion
+
+    // region ServiceAlert
+    fun insertOrReplaceServiceAlert(
+        journeyId: String, serviceAlerts: List<ServiceAlert>
+    )
+    fun deleteServiceAlert(journeyId: String)
+    fun selectAllServiceAlerts(): List<ServiceAlertsTable>
+    fun selectServiceAlertById(journeyId: String): List<SelectServiceAlertsByJourneyId>?
+    fun clearAllServiceAlerts()
 }

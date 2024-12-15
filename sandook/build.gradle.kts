@@ -37,7 +37,8 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlinx.serialization.json)
-                
+                implementation(projects.feature.tripPlanner.state)
+
                 implementation(compose.runtime)
                 implementation(libs.kotlinx.datetime)
                 implementation(libs.db.sqlRuntime)

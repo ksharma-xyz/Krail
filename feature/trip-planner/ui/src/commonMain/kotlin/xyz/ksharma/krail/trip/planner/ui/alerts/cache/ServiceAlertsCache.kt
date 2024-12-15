@@ -24,11 +24,13 @@ class RealServiceAlertsCache : ServiceAlertsCache {
     }
 
     override fun setAlerts(journeyId: String, alerts: List<ServiceAlert>) {
+        println("RealServiceAlertsCache.setAlerts: $journeyId, ${alerts.size}")
         serviceAlerts.clear()
         serviceAlerts[journeyId] = alerts
     }
 
     override fun clearAlerts() {
+        println("RealServiceAlertsCache.clearAlerts")
         serviceAlerts.clear()
     }
 }

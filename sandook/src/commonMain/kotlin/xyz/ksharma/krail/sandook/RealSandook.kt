@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.sandook
 
+import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
+
 internal class RealSandook(factory: SandookDriverFactory) : Sandook {
 
     private val sandook = KrailSandook(factory.createDriver())
@@ -40,7 +42,9 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
     override fun deleteTrip(tripId: String) {
         query.deleteTrip(tripId)
     }
+    // endregion
 
+    // region ServiceAlert
     override fun selectAllTrips(): List<SavedTrip> {
         return query.selectAllTrips().executeAsList()
     }
@@ -51,6 +55,32 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
 
     override fun clearSavedTrips() {
         query.clearSavedTrips()
+    }
+
+    override fun insertOrReplaceServiceAlert(journeyId: String, serviceAlerts: List<ServiceAlert>) {
+        serviceAlerts.forEach { serviceAlert ->
+            query.insertOrReplaceServiceAlert(
+                journeyId,
+                serviceAlert.heading,
+                serviceAlert.message,
+            )
+        }
+    }
+
+    override fun deleteServiceAlert(journeyId: String) {
+        serviceAlertQuery.clearServiceAlertByJourneyId(journeyId)
+    }
+
+    override fun selectAllServiceAlerts(): List<ServiceAlertsTable> {
+        return serviceAlertQuery.selectAllServiceAlerts().executeAsList()
+    }
+
+    override fun selectServiceAlertById(journeyId: String): List<SelectServiceAlertsByJourneyId> {
+        return serviceAlertQuery.selectServiceAlertsByJourneyId(journeyId).executeAsList()
+    }
+
+    override fun clearAllServiceAlerts() {
+        serviceAlertQuery.clearAllServiceAlerts()
     }
     // endregion
 }

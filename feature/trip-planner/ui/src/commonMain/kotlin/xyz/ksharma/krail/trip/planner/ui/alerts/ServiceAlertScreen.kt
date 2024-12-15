@@ -21,7 +21,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableSet
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.collections.immutable.toImmutableList
 import xyz.ksharma.krail.taj.components.Text
@@ -32,7 +34,7 @@ import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @Composable
 fun ServiceAlertScreen(
-    serviceAlerts: ImmutableSet<ServiceAlert>,
+    serviceAlerts: ImmutableList<ServiceAlert>,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
 ) {
@@ -97,7 +99,7 @@ fun ServiceAlertScreen(
 private fun PreviewServiceAlertScreen() {
     KrailTheme {
         ServiceAlertScreen(
-            serviceAlerts = persistentSetOf(
+            serviceAlerts = persistentListOf(
                 ServiceAlert(
                     heading = "Service Alert 1",
                     message = "This is a service alert 1",
