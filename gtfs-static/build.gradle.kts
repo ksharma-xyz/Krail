@@ -48,7 +48,6 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.kotlinx.datetime)
                 implementation(compose.runtime)
-                implementation(libs.slf4j.simple) // Logging
 
                 api(libs.di.koinComposeViewmodel)
             }

@@ -1,5 +1,4 @@
 [versions]
-firebaseAnalyticsIos = "1.10.0"
 java = "17"
 # AGP - Android API level mapping https://developer.android.com/build/releases/gradle-plugin#api-level-support
 agp = "8.7.3" # Android Gradle Plugin
@@ -26,9 +25,7 @@ buildkonfigGradlePlugin = "0.15.2"
 kermit = "2.0.5"
 sqlDelight = "2.0.2"
 koin = "4.0.1-Beta1"
-slf4jSimple = "2.0.16"
 firebaseGitLive = "2.1.0"
-firebaseBom = "33.7.0"
 
 [libraries]
 buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfigGradlePlugin" }
@@ -63,7 +60,6 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
 #Test
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 test-composeUiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 test-composeUiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -92,8 +88,6 @@ db-sqlRuntime = { module = "app.cash.sqldelight:runtime", version.ref = "sqlDeli
 firebase-gitLiveCrashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebaseGitLive" }
 firebase-gitLiveAnalytics = { module = "dev.gitlive:firebase-analytics", version.ref = "firebaseGitLive" }
 firebase-gitLivePerformance = { module = "dev.gitlive:firebase-perf", version.ref = "firebaseGitLive" }
-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

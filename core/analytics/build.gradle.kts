@@ -5,7 +5,6 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.google.services)
 }
 
 android {
@@ -30,8 +29,6 @@ kotlin {
         androidMain {
             dependencies {
                 api(libs.di.koinAndroid)
-                implementation(project.dependencies.platform(libs.firebase.bom))
-                implementation(libs.firebase.analytics)
             }
         }
 
