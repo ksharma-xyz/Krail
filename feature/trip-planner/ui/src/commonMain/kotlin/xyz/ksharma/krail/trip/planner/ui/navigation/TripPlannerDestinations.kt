@@ -78,7 +78,7 @@ data object ThemeSelectionRoute
 
 @Serializable
 internal data class ServiceAlertRoute(
-    val journeyId: String,
+    val alertsJsonList: List<String>,
 )
 
 @Serializable
