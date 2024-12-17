@@ -91,6 +91,7 @@ fun JourneyCard(
     totalUniqueServiceAlerts: Int,
     modifier: Modifier = Modifier,
     onAlertClick: () -> Unit = {},
+    onLegClick: (Boolean) -> Unit = {},
 ) {
     val onSurface: Color = KrailTheme.colors.onSurface
     val borderColors = remember(transportModeList) { transportModeList.toColors(onSurface) }
@@ -173,6 +174,7 @@ fun JourneyCard(
                     legList = legList,
                     totalUniqueServiceAlerts = totalUniqueServiceAlerts,
                     onAlertClick = onAlertClick,
+                    onLegClick = onLegClick,
                     modifier = Modifier.clickable(
                         role = Role.Button,
                         onClick = onClick,
@@ -196,6 +198,7 @@ fun ExpandedJourneyCardContent(
     legList: ImmutableList<TimeTableState.JourneyCardInfo.Leg>,
     totalUniqueServiceAlerts: Int,
     onAlertClick: () -> Unit,
+    onLegClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appPlatformType: AppPlatformType = LocalAppPlatformProvider.current
@@ -319,6 +322,7 @@ fun ExpandedJourneyCardContent(
                                     lastLeg = legList[(index - 1).coerceAtLeast(0)]
                                 ) else 0.dp
                             ),
+                            onClick = onLegClick,
                         )
                     }
 
@@ -535,6 +539,7 @@ private fun PreviewJourneyCard() {
             totalWalkTime = null,
             totalUniqueServiceAlerts = 0,
             onClick = {},
+            onLegClick = {},
         )
     }
 }
