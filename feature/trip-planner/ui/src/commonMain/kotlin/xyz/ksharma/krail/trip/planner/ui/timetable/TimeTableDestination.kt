@@ -70,10 +70,14 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             },
             dateTimeSelectionItem = dateTimeSelectionItem,
             dateTimeSelectorClicked = {
+                viewModel.onEvent(TimeTableUiEvent.AnalyticsDateTimeSelectorClicked)
                 navController.navigate(
                     route = DateTimeSelectorRoute(dateTimeSelectionItem?.toJsonString()),
                     navOptions = NavOptions.Builder().setLaunchSingleTop(singleTop = true).build(),
                 )
+            },
+            onJourneyLegClick = { journeyId ->
+                viewModel.onEvent(TimeTableUiEvent.JourneyLegClicked(journeyId))
             },
         )
     }

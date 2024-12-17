@@ -44,6 +44,12 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
 
     // endregion
 
+    // region PlanTripScreen / DateTimeSelection Screen
+
+    data object ResetTimeClickEvent : AnalyticsEvent("reset_time_click")
+
+    // endregion
+
     // region TimeTable Screen
 
     data class ReverseTimeTableClickEvent(val fromStopId: String, val toStopId: String) :
@@ -64,13 +70,14 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
             properties = mapOf("fromStopId" to fromStopId, "toStopId" to toStopId),
         )
 
-    data class DateTimeSelectEvent(val dayOfWeek: String, val time: String, val type: String) :
-        AnalyticsEvent(
-            name = "date_time_select",
-            properties = mapOf("dayOfWeek" to dayOfWeek, "time" to time, "type" to type),
-        )
-
-    data object ResetTimeClickEvent : AnalyticsEvent("reset_time_click")
+    data class DateTimeSelectEvent(
+        val dayOfWeek: String,
+        val time: String,
+        val journeyOption: String,
+    ) : AnalyticsEvent(
+        name = "date_time_select",
+        properties = mapOf("dayOfWeek" to dayOfWeek, "time" to time, "option" to journeyOption),
+    )
 
     data class JourneyCardExpandEvent(val hasStarted: Boolean) :
         AnalyticsEvent(
@@ -78,9 +85,15 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
             properties = mapOf("hasStarted" to hasStarted),
         )
 
-    data object JourneyCardCollapseEvent : AnalyticsEvent(name = "journey_card_collapse")
+    data class JourneyCardCollapseEvent(val hasStarted: Boolean) : AnalyticsEvent(
+        name = "journey_card_collapse",
+        properties = mapOf("hasStarted" to hasStarted),
+    )
 
-    data object JourneyLegClickEvent : AnalyticsEvent(name = "journey_leg_click")
+    data class JourneyLegClickEvent(val expanded: Boolean) : AnalyticsEvent(
+        name = "journey_leg_click",
+        properties = mapOf("expanded" to expanded),
+    )
 
     data class JourneyAlertClickEvent(val fromStopId: String, val toStopId: String) :
         AnalyticsEvent(

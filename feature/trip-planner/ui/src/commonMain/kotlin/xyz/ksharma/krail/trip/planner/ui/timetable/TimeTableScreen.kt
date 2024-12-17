@@ -3,8 +3,6 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -75,6 +73,7 @@ fun TimeTableScreen(
     onEvent: (TimeTableUiEvent) -> Unit,
     onAlertClick: (String) -> Unit,
     onBackClick: () -> Unit,
+    onJourneyLegClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     dateTimeSelectorClicked: () -> Unit = {},
 ) {
@@ -243,6 +242,7 @@ fun TimeTableScreen(
                         onAlertClick = {
                             onAlertClick(journey.journeyId)
                         },
+                        onLegClick = onJourneyLegClick,
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)
                             .animateItem(),
                     )
@@ -282,6 +282,7 @@ private fun JourneyCardItem(
     totalUniqueServiceAlerts: Int,
     modifier: Modifier = Modifier,
     transportModeLineList: ImmutableList<TransportModeLine>? = null,
+    onLegClick: (Boolean) -> Unit,
 ) {
     if (!transportModeLineList.isNullOrEmpty() && legList.isNotEmpty()) {
         JourneyCard(
@@ -300,6 +301,7 @@ private fun JourneyCardItem(
             onClick = onClick,
             onAlertClick = onAlertClick,
             totalUniqueServiceAlerts = totalUniqueServiceAlerts,
+            onLegClick = onLegClick,
             modifier = modifier,
         )
     }
@@ -364,6 +366,7 @@ private fun PreviewTimeTableScreen() {
                 onAlertClick = {},
                 onBackClick = {},
                 dateTimeSelectionItem = null,
+                onJourneyLegClick = {},
             )
         }
     }
@@ -390,6 +393,7 @@ private fun PreviewTimeTableScreenError() {
                 onAlertClick = {},
                 onBackClick = {},
                 dateTimeSelectionItem = null,
+                onJourneyLegClick = {},
             )
         }
     }
@@ -416,6 +420,7 @@ private fun PreviewTimeTableScreenNoResults() {
                 onEvent = {},
                 onAlertClick = {},
                 onBackClick = {},
+                onJourneyLegClick = {},
             )
         }
     }
