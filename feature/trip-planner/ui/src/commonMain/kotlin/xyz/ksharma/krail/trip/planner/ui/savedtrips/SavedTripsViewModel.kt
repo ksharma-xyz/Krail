@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
+import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SavedTrip
@@ -60,6 +61,27 @@ class SavedTripsViewModel(
         when (event) {
             is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.trip)
             SavedTripUiEvent.LoadSavedTrips -> loadSavedTrips()
+            is SavedTripUiEvent.AnalyticsSavedTripCardClick -> {
+                analytics.trackSavedTripCardClick(
+                    fromStopId = event.fromStopId,
+                    toStopId = event.toStopId,
+                )
+            }
+
+            SavedTripUiEvent.AnalyticsReverseSavedTrip -> {
+                analytics.track(AnalyticsEvent.ReverseStopClickEvent)
+            }
+
+            is SavedTripUiEvent.AnalyticsLoadTimeTableClick -> {
+                analytics.trackLoadTimeTableClick(
+                    fromStopId = event.fromStopId,
+                    toStopId = event.toStopId,
+                )
+            }
+
+            SavedTripUiEvent.AnalyticsSettingsButtonClick -> {
+                analytics.track(AnalyticsEvent.SettingsClickEvent)
+            }
         }
     }
 
@@ -68,6 +90,10 @@ class SavedTripsViewModel(
         viewModelScope.launch(context = Dispatchers.IO) {
             sandook.deleteTrip(tripId = savedTrip.tripId)
             loadSavedTrips()
+            analytics.trackDeleteSavedTrip(
+                fromStopId = savedTrip.fromStopId,
+                toStopId = savedTrip.toStopId,
+            )
         }
     }
 
