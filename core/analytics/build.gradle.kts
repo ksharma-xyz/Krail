@@ -37,7 +37,6 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 implementation(compose.runtime)
                 api(libs.di.koinComposeViewmodel)
-                implementation(libs.slf4j.simple)
                 implementation(libs.firebase.gitLiveAnalytics)
             }
         }

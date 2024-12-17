@@ -25,7 +25,6 @@ buildkonfigGradlePlugin = "0.15.2"
 kermit = "2.0.5"
 sqlDelight = "2.0.2"
 koin = "4.0.1-Beta1"
-slf4jSimple = "2.0.16"
 firebaseGitLive = "2.1.0"
 
 [libraries]
@@ -61,7 +60,6 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
 
 #Test
-slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4jSimple" }
 test-composeUiTestManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 test-composeUiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
