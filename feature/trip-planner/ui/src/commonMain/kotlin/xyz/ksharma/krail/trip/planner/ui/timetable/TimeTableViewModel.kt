@@ -19,6 +19,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import xyz.ksharma.krail.core.analytics.Analytics
+import xyz.ksharma.krail.core.analytics.AnalyticsScreen
+import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isBefore
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
@@ -46,6 +49,7 @@ class TimeTableViewModel(
     private val rateLimiter: RateLimiter,
     private val sandook: Sandook,
     private val alertsCache: ServiceAlertsCache,
+    private val analytics: Analytics,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
@@ -59,6 +63,7 @@ class TimeTableViewModel(
         .onStart {
             println("onStart: Fetching Trip")
             fetchTrip()
+            analytics.trackScreenViewEvent(screen = AnalyticsScreen.TimeTable)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
     private val _isActive: MutableStateFlow<Boolean> = MutableStateFlow(false)

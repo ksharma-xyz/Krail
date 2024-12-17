@@ -12,19 +12,29 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import xyz.ksharma.krail.core.analytics.Analytics
+import xyz.ksharma.krail.core.analytics.AnalyticsScreen
+import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionState
 
-class ThemeSelectionViewModel(private val sandook: Sandook) : ViewModel() {
+class ThemeSelectionViewModel(
+    private val sandook: Sandook,
+    private val analytics: Analytics,
+) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<ThemeSelectionState> = MutableStateFlow(ThemeSelectionState())
+    private val _uiState: MutableStateFlow<ThemeSelectionState> =
+        MutableStateFlow(ThemeSelectionState())
     val uiState: StateFlow<ThemeSelectionState> = _uiState
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
-        .onStart { getThemeTransportMode() }
+        .onStart {
+            getThemeTransportMode()
+            analytics.trackScreenViewEvent(screen = AnalyticsScreen.ThemeSelection)
+        }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
 
     private var transportSelectionJob: Job? = null
