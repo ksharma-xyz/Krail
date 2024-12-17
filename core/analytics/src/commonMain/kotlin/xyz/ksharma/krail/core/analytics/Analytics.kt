@@ -1,8 +1,10 @@
 package xyz.ksharma.krail.core.analytics
 
+import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
+
 interface Analytics {
 
-    fun track(eventName: String, properties: Map<String, Any>? = null)
+    fun track(event: AnalyticsEvent, properties: Map<String, Any>?)
 
     fun setUserId(userId: String)
 

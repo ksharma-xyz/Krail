@@ -19,10 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import xyz.ksharma.krail.core.analytics.Analytics
-import xyz.ksharma.krail.core.analytics.event.AnalyticsAction
-import xyz.ksharma.krail.core.analytics.event.SavedTripEvent
-import xyz.ksharma.krail.core.analytics.event.SavedTripEvent.Companion.Component.SAVED_TRIP_BUTTON
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isBefore
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
@@ -50,7 +46,6 @@ class TimeTableViewModel(
     private val rateLimiter: RateLimiter,
     private val sandook: Sandook,
     private val alertsCache: ServiceAlertsCache,
-    private val analytics: Analytics,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
@@ -248,7 +243,6 @@ class TimeTableViewModel(
             tripInfo?.let { trip ->
                 println("Toggle Save Trip: $trip")
                 val savedTrip = sandook.selectTripById(tripId = trip.tripId)
-                analytics.trackSavedTripButtonClickEvent(saved = savedTrip != null, tripInfo = trip)
                 if (savedTrip != null) {
                     // Trip is already saved, so delete it
                     sandook.deleteTrip(tripId = trip.tripId)
