@@ -1,10 +1,12 @@
 package xyz.ksharma.krail.core.analytics.event
 
+import xyz.ksharma.krail.core.analytics.AnalyticsScreen
+
 sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? = null) {
 
-    data class ScreenViewEvent(val screenName: String) : AnalyticsEvent(
+    data class ScreenViewEvent(val screen: AnalyticsScreen) : AnalyticsEvent(
         name = "screen_view",
-        properties = mapOf("name" to screenName)
+        properties = mapOf("name" to screen.name)
     )
 
     data class SavedTripCardClickEvent(val fromStopId: Int, val toStopId: Int) : AnalyticsEvent(

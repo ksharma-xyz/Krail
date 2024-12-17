@@ -7,6 +7,7 @@ import xyz.ksharma.krail.trip.planner.ui.searchstop.SearchStopViewModel
 import xyz.ksharma.krail.trip.planner.ui.settings.SettingsViewModel
 import xyz.ksharma.krail.trip.planner.ui.timetable.TimeTableViewModel
 import xyz.ksharma.krail.trip.planner.ui.alerts.ServiceAlertsViewModel
+import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectorViewModel
 import xyz.ksharma.krail.trip.planner.ui.themeselection.ThemeSelectionViewModel
 
 val viewModelsModule = module {
@@ -16,4 +17,5 @@ val viewModelsModule = module {
     viewModelOf(::ThemeSelectionViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::ServiceAlertsViewModel)
+    viewModelOf(::DateTimeSelectorViewModel)
 }
