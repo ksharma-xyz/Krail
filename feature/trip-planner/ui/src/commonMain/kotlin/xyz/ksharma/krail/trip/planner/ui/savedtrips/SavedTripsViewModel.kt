@@ -83,6 +83,14 @@ class SavedTripsViewModel(
             SavedTripUiEvent.AnalyticsSettingsButtonClick -> {
                 analytics.track(AnalyticsEvent.SettingsClickEvent)
             }
+
+            SavedTripUiEvent.AnalyticsFromButtonClick -> {
+                analytics.track(AnalyticsEvent.FromFieldClickEvent)
+            }
+
+            SavedTripUiEvent.AnalyticsToButtonClick -> {
+                analytics.track(AnalyticsEvent.ToFieldClickEvent)
+            }
         }
     }
 

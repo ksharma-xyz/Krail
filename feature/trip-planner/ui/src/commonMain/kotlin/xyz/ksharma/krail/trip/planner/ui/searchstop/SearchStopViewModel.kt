@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
+import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
 import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
@@ -39,6 +40,10 @@ class SearchStopViewModel(
     fun onEvent(event: SearchStopUiEvent) {
         when (event) {
             is SearchStopUiEvent.SearchTextChanged -> onSearchTextChanged(event.query)
+
+            is SearchStopUiEvent.StopSelected -> {
+                analytics.track(AnalyticsEvent.StopSelectedEvent(stopId = event.stopItem.stopId))
+            }
         }
     }
 
