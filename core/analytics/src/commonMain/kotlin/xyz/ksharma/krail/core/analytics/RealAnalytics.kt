@@ -11,7 +11,7 @@ class RealAnalytics(
 
     override fun track(event: AnalyticsEvent) {
         // Only track prod builds analytics events
-        if (appInfoProvider.getAppInfo().isDebug().not()) {
+        if (appInfoProvider.getAppInfo().isDebug.not()) {
             firebaseAnalytics.logEvent(event.name, event.properties)
         }
     }

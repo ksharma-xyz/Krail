@@ -13,7 +13,6 @@ import kotlinx.coroutines.launch
 import xyz.ksharma.krail.DEFAULT_THEME_TRANSPORT_MODE
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
-import xyz.ksharma.krail.core.appinfo.AppInfo
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -38,9 +37,9 @@ class SplashViewModel(
     private fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
         analytics.track(
             AnalyticsEvent.AppStart(
-                deviceType = type.name,
+                deviceType = devicePlatformType.name,
                 osVersion = osVersion,
-                appVersion = version,
+                appVersion = appVersion,
                 fontSize = fontSize,
                 isDarkTheme = isDarkTheme,
                 deviceModel = deviceModel,
