@@ -9,6 +9,7 @@ import androidx.navigation.toRoute
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.trip.planner.ui.navigation.DateTimeSelectorRoute
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectorEvent
 
 internal fun NavGraphBuilder.dateTimeSelectorDestination(navController: NavHostController) {
     composable<DateTimeSelectorRoute> { backStackEntry ->
@@ -29,7 +30,10 @@ internal fun NavGraphBuilder.dateTimeSelectorDestination(navController: NavHostC
                     value = dateTimeSelection?.toJsonString(),
                 )
                 navController.popBackStack()
-            }
+            },
+            onResetClick = {
+                viewModel.onEvent(DateTimeSelectorEvent.ResetDateTimeClick)
+            },
         )
     }
 }
