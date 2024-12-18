@@ -10,7 +10,7 @@ val analyticsModule = module {
     single<Analytics> {
         RealAnalytics(
             firebaseAnalytics = Firebase.analytics,
-            //appInfo = get(),
+            appInfoProvider = get(),
         )
     }
 }
