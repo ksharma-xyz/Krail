@@ -58,10 +58,12 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
             fromStopItem = fromStopItem,
             toStopItem = toStopItem,
             fromButtonClick = {
+                viewModel.onEvent(SavedTripUiEvent.AnalyticsFromButtonClick)
                 //              Timber.d("fromButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.FROM)}")
                 navController.navigate(SearchStopRoute(fieldTypeKey = SearchStopFieldType.FROM.key))
             },
             toButtonClick = {
+                viewModel.onEvent(SavedTripUiEvent.AnalyticsToButtonClick)
                 //              Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
                 navController.navigate(
                     route = SearchStopRoute(fieldTypeKey = SearchStopFieldType.TO.key),
