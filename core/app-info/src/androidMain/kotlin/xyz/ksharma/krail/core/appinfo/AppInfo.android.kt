@@ -2,10 +2,9 @@ package xyz.ksharma.krail.core.appinfo
 
 import android.content.Context
 import android.os.Build
+import android.content.res.Configuration
 
 class AndroidAppInfo(private val context: Context) : AppInfo {
-
-    override val name: String = "Android ${Build.VERSION.SDK_INT}"
 
     override val type: AppPlatformType = AppPlatformType.ANDROID
 
@@ -17,6 +16,31 @@ class AndroidAppInfo(private val context: Context) : AppInfo {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             return packageInfo.versionName ?: "Unknown"
         }
+    override val osVersion: String
+        get() = Build.VERSION.SDK_INT.toString()
+
+    override val fontSize: String
+        get() {
+            val configuration = context.resources.configuration
+            return configuration.fontScale.toString()
+        }
+
+    override val isDarkTheme: Boolean
+        get() {
+            val uiMode = context.resources.configuration.uiMode
+            return (uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+        }
+
+    override val deviceModel: String
+        get() = Build.MODEL
+
+    override val deviceManufacturer: String
+        get() = Build.BRAND
+
+    override fun toString() =
+        "AndroidAppInfo(type=$type, isDebug=${isDebug()}, version=$version, osVersion=$osVersion, " +
+                "fontSize=$fontSize, isDarkTheme=$isDarkTheme, deviceModel=$deviceModel, " +
+                "deviceManufacturer=$deviceManufacturer)"
 }
 
 class AndroidAppInfoProvider(private val context: Context) : AppInfoProvider {
