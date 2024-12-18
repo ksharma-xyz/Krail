@@ -110,5 +110,14 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
             properties = mapOf("fromScreen" to fromScreen),
         )
 
+    data class AppStart(
+        val deviceType: String,
+        val appVersion: String,
+        val osVersion: String,
+        val deviceModel: String,
+        val fontSize: String,
+        val isDarkTheme: Boolean,
+    ) : AnalyticsEvent(name = "app_start", properties = mapOf("app_start" to "app_start"))
+
     // endregion
 }

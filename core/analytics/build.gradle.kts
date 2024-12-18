@@ -38,6 +38,8 @@ kotlin {
                 implementation(compose.runtime)
                 api(libs.di.koinComposeViewmodel)
                 implementation(libs.firebase.gitLiveAnalytics)
+
+                implementation(projects.core.appInfo)
             }
         }
 
