@@ -31,6 +31,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -138,20 +139,20 @@ fun SearchStopScreen(
             .imePadding(),
     ) {
 
-        val transportModes = listOf(
-            TransportMode.Bus(),
-            TransportMode.Train(),
-            TransportMode.Metro(),
-            TransportMode.Ferry(),
-            TransportMode.LightRail()
-        )
+        var runPlaceholderAnimation by rememberSaveable { mutableStateOf(true) }
+        var currentModeIndex by rememberSaveable { mutableStateOf(0) }
+        var placeholderText by rememberSaveable { mutableStateOf("Search here") }
+        var isDeleting by rememberSaveable { mutableStateOf(false) }
 
-        var currentModeIndex by remember { mutableStateOf(0) }
-        var placeholderText by remember { mutableStateOf("Search here") }
-        var isDeleting by remember { mutableStateOf(false) }
-
-        LaunchedEffect(placeholderText, isDeleting) {
-            val targetText = when {
+        LaunchedEffect(placeholderText, isDeleting, runPlaceholderAnimation) {
+            println("runPlaceholderAnimation: $runPlaceholderAnimation")
+            if(runPlaceholderAnimation.not()) {
+                currentModeIndex = 0
+                placeholderText = "Search here"
+                isDeleting = false
+                return@LaunchedEffect
+            }
+            val targetPlaceholderText = when {
                 isDeleting -> "Search"
                 else -> when (currentModeIndex) {
                     0 -> "Search bus stop id"
@@ -162,13 +163,12 @@ fun SearchStopScreen(
                     else -> "Search here"
                 }
             }
-
-            if (placeholderText != targetText) {
-                delay(60) // Typing speed
+            if (placeholderText != targetPlaceholderText) {
+                delay(100) // Typing speed
                 placeholderText = if (isDeleting) {
                     placeholderText.dropLast(1)
                 } else {
-                    targetText.take(placeholderText.length + 1)
+                    targetPlaceholderText.take(placeholderText.length + 1)
                 }
             } else {
                 if (isDeleting) {
@@ -176,7 +176,7 @@ fun SearchStopScreen(
                 } else {
                     delay(500) // Pause before starting delete animation
                     isDeleting = true
-                    currentModeIndex = (currentModeIndex + 1) % transportModes.size
+                    currentModeIndex = (currentModeIndex + 1) %  TransportMode.values().size
                 }
             }
         }
@@ -218,6 +218,8 @@ fun SearchStopScreen(
             }
         ) { value ->
             //Timber.d("value: $value")
+            println("value: $value")
+            if(value.isNotBlank()) runPlaceholderAnimation = false
             textFieldText = value.toString()
         }
 
