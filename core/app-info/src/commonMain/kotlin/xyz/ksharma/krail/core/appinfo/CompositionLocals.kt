@@ -4,4 +4,4 @@ import androidx.compose.runtime.staticCompositionLocalOf
 
 val LocalAppPlatformProvider = staticCompositionLocalOf { getAppPlatformType() }
 
-expect fun getAppPlatformType(): AppPlatformType
+expect fun getAppPlatformType(): DevicePlatformType
