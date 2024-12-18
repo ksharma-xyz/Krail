@@ -1,15 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,11 +39,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.persistentListOf
@@ -66,6 +55,7 @@ import kotlinx.coroutines.flow.mapLatest
 import kotlinx.datetime.Clock
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Divider
+import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TextField
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
@@ -147,8 +137,52 @@ fun SearchStopScreen(
             )
             .imePadding(),
     ) {
+
+        val transportModes = listOf(
+            TransportMode.Bus(),
+            TransportMode.Train(),
+            TransportMode.Metro(),
+            TransportMode.Ferry(),
+            TransportMode.LightRail()
+        )
+
+        var currentModeIndex by remember { mutableStateOf(0) }
+        var placeholderText by remember { mutableStateOf("Search here") }
+        var isDeleting by remember { mutableStateOf(false) }
+
+        LaunchedEffect(placeholderText, isDeleting) {
+            val targetText = when {
+                isDeleting -> "Search"
+                else -> when (currentModeIndex) {
+                    0 -> "Search bus stop id"
+                    1 -> "Search train station"
+                    2 -> "Search metro station"
+                    3 -> "Search ferry wharf"
+                    4 -> "Search light rail stop"
+                    else -> "Search here"
+                }
+            }
+
+            if (placeholderText != targetText) {
+                delay(60) // Typing speed
+                placeholderText = if (isDeleting) {
+                    placeholderText.dropLast(1)
+                } else {
+                    targetText.take(placeholderText.length + 1)
+                }
+            } else {
+                if (isDeleting) {
+                    isDeleting = false
+                } else {
+                    delay(500) // Pause before starting delete animation
+                    isDeleting = true
+                    currentModeIndex = (currentModeIndex + 1) % transportModes.size
+                }
+            }
+        }
+
         TextField(
-            placeholder = "Search here",
+            placeholder = placeholderText,
             modifier = Modifier
                 .fillMaxWidth()
                 .statusBarsPadding()
@@ -403,3 +437,66 @@ private val searchStopState = SearchStopState(
 )
 
 // endregion
+
+
+@Composable
+fun AnimatedPlaceholderTextField(modifier: Modifier) {
+    val transportModes = listOf(
+        TransportMode.Bus(),
+        TransportMode.Train(),
+        TransportMode.Metro(),
+        TransportMode.Ferry(),
+        TransportMode.LightRail()
+    )
+
+    var currentModeIndex by remember { mutableStateOf(0) }
+    var currentText by remember { mutableStateOf("Search here") }
+    var isDeleting by remember { mutableStateOf(false) }
+
+    LaunchedEffect(currentText, isDeleting) {
+        val targetText = when {
+            isDeleting -> "Search"
+            else -> when (currentModeIndex) {
+                0 -> "Search bus stop id"
+                1 -> "Search train station"
+                2 -> "Search metro station"
+                3 -> "Search ferry wharf"
+                4 -> "Search light rail stop"
+                else -> "Search here"
+            }
+        }
+
+        if (currentText != targetText) {
+            delay(100) // Typing speed
+            currentText = if (isDeleting) {
+                currentText.dropLast(1)
+            } else {
+                targetText.take(currentText.length + 1)
+            }
+        } else {
+            if (isDeleting) {
+                isDeleting = false
+            } else {
+                delay(1500) // Pause before starting delete animation
+                isDeleting = true
+                currentModeIndex = (currentModeIndex + 1) % transportModes.size
+            }
+        }
+    }
+
+    Column(
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = "Mode: ${transportModes[currentModeIndex].name}",
+            color = transportModes[currentModeIndex].colorCode.hexToComposeColor(),
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        TextField(
+            placeholder = currentText,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
