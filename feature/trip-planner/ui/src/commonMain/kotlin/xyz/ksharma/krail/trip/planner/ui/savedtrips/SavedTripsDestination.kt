@@ -58,18 +58,18 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
             fromStopItem = fromStopItem,
             toStopItem = toStopItem,
             fromButtonClick = {
-  //              Timber.d("fromButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.FROM)}")
+                //              Timber.d("fromButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.FROM)}")
                 navController.navigate(SearchStopRoute(fieldTypeKey = SearchStopFieldType.FROM.key))
             },
             toButtonClick = {
-  //              Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
+                //              Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
                 navController.navigate(
                     route = SearchStopRoute(fieldTypeKey = SearchStopFieldType.TO.key),
                     navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                 )
             },
             onReverseButtonClick = {
-  //              Timber.d("onReverseButtonClick:")
+                //              Timber.d("onReverseButtonClick:")
                 val bufferStop = fromStopItem
                 backStackEntry.savedStateHandle[SearchStopFieldType.FROM.key] =
                     toStopItem?.toJsonString()
@@ -78,9 +78,15 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
 
                 fromStopItem = toStopItem
                 toStopItem = bufferStop
+                viewModel.onEvent(SavedTripUiEvent.AnalyticsReverseSavedTrip)
             },
-            onSearchButtonClick = { fromStop, toStop ->
-                if (fromStop != null && toStop != null) {
+            onSavedTripCardClick = { fromStop, toStop ->
+                if (fromStop?.stopId != null && toStop?.stopId != null) {
+                    val fromStopId = fromStop.stopId
+                    val toStopId = toStop.stopId
+                    viewModel.onEvent(
+                        SavedTripUiEvent.AnalyticsSavedTripCardClick(fromStopId, toStopId)
+                    )
                     navController.navigate(
                         route = TimeTableRoute(
                             fromStopId = fromStop.stopId,
@@ -90,22 +96,35 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                         ),
                         navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                     )
-                } else if (fromStopItem != null && toStopItem != null) {
+                } else {
+                    // TODO - show message - to select both stops
+                    // Timber.e("Select both stops")
+                }
+            },
+            onSearchButtonClick = { fromStop, toStop ->
+                if (fromStop != null && toStop != null) {
+                    viewModel.onEvent(
+                        SavedTripUiEvent.AnalyticsLoadTimeTableClick(
+                            fromStopId = fromStop.stopId,
+                            toStopId = toStop.stopId,
+                        )
+                    )
                     navController.navigate(
                         route = TimeTableRoute(
-                            fromStopId = fromStopItem?.stopId!!,
-                            fromStopName = fromStopItem?.stopName!!,
-                            toStopId = toStopItem?.stopId!!,
-                            toStopName = toStopItem?.stopName!!,
+                            fromStopId = fromStop.stopId,
+                            fromStopName = fromStop.stopName,
+                            toStopId = toStop.stopId,
+                            toStopName = toStop.stopName,
                         ),
                         navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                     )
                 } else {
                     // TODO - show message - to select both stops
- //                   Timber.e("Select both stops")
+                    // Timber.e("Select both stops")
                 }
             },
             onSettingsButtonClick = {
+                viewModel.onEvent(SavedTripUiEvent.AnalyticsSettingsButtonClick)
                 navController.navigate(
                     route = SettingsRoute,
                     navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
