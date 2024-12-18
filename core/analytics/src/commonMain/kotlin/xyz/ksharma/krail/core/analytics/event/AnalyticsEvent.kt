@@ -33,6 +33,19 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
 
     data object SettingsClickEvent : AnalyticsEvent(name = "settings_click")
 
+    data object FromFieldClickEvent : AnalyticsEvent(name = "from_field_click")
+
+    data object ToFieldClickEvent : AnalyticsEvent(name = "to_field_click")
+
+    // endregion
+
+    // region SearchStop
+
+    data class StopSelectedEvent(val stopId: String) : AnalyticsEvent(
+        name = "stop_selected",
+        properties = mapOf("stopId" to stopId),
+    )
+
     // endregion
 
     // region Theme
