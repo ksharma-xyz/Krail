@@ -140,35 +140,51 @@ fun SearchStopScreen(
     ) {
 
         var runPlaceholderAnimation by rememberSaveable { mutableStateOf(true) }
-        var currentModeIndex by rememberSaveable { mutableStateOf(0) }
+        var currentModePriority by rememberSaveable { mutableStateOf(TransportMode.Train().priority) } // Start with Train's priority
         var placeholderText by rememberSaveable { mutableStateOf("Search here") }
         var isDeleting by rememberSaveable { mutableStateOf(false) }
 
+        val transportModes = remember {
+            TransportMode.values().sortedBy { it.priority }
+        }
+
+        // Map priorities to corresponding placeholder texts
+        val priorityToTextMapping = remember {
+            transportModes.associateBy(
+                keySelector = { it.priority },
+                valueTransform = { mode ->
+                    when (mode) {
+                        is TransportMode.Bus -> "Search bus stop id"
+                        is TransportMode.Train -> "Search train station"
+                        is TransportMode.Metro -> "Search metro station"
+                        is TransportMode.Ferry -> "Search ferry wharf"
+                        is TransportMode.LightRail -> "Search light rail stop"
+                        else -> "Search here"
+                    }
+                }
+            )
+        }
+
         LaunchedEffect(placeholderText, isDeleting, runPlaceholderAnimation) {
-            println("runPlaceholderAnimation: $runPlaceholderAnimation")
-            if(runPlaceholderAnimation.not()) {
-                currentModeIndex = 0
+            if (!runPlaceholderAnimation) {
+                // Reset to initial state if animation is stopped
+                currentModePriority = TransportMode.Train().priority
                 placeholderText = "Search here"
                 isDeleting = false
                 return@LaunchedEffect
             }
-            val targetPlaceholderText = when {
-                isDeleting -> "Search"
-                else -> when (currentModeIndex) {
-                    0 -> "Search bus stop id"
-                    1 -> "Search train station"
-                    2 -> "Search metro station"
-                    3 -> "Search ferry wharf"
-                    4 -> "Search light rail stop"
-                    else -> "Search here"
-                }
+
+            val targetText = when {
+                isDeleting -> "Search " // Clear text all at once during deletion
+                else -> priorityToTextMapping[currentModePriority] ?: "Search here"
             }
-            if (placeholderText != targetPlaceholderText) {
+
+            if (placeholderText != targetText) {
                 delay(100) // Typing speed
                 placeholderText = if (isDeleting) {
-                    placeholderText.dropLast(1)
+                    "Search " // Clear text immediately
                 } else {
-                    targetPlaceholderText.take(placeholderText.length + 1)
+                    targetText.take(placeholderText.length + 1) // Add characters one by one
                 }
             } else {
                 if (isDeleting) {
@@ -176,7 +192,11 @@ fun SearchStopScreen(
                 } else {
                     delay(500) // Pause before starting delete animation
                     isDeleting = true
-                    currentModeIndex = (currentModeIndex + 1) %  TransportMode.values().size
+
+                    // Move to the next transport mode based on priority
+                    val currentIndex = transportModes.indexOfFirst { it.priority == currentModePriority }
+                    val nextIndex = (currentIndex + 1) % transportModes.size
+                    currentModePriority = transportModes[nextIndex].priority
                 }
             }
         }
