@@ -5,8 +5,8 @@ import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 
 class RealAnalytics(private val firebaseAnalytics: FirebaseAnalytics) : Analytics {
 
-    override fun track(event: AnalyticsEvent, properties: Map<String, Any>?) {
-        firebaseAnalytics.logEvent(event.name, properties)
+    override fun track(event: AnalyticsEvent) {
+        firebaseAnalytics.logEvent(event.name, event.properties)
     }
 
     override fun setUserId(userId: String) {

@@ -21,6 +21,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
+import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.calculateTimeDifferenceFromNow
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.isBefore
@@ -115,12 +116,30 @@ class TimeTableViewModel(
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
             is TimeTableUiEvent.LoadTimeTable -> onLoadTimeTable(event.trip)
+
             is TimeTableUiEvent.JourneyCardClicked -> onJourneyCardClicked(event.journeyId)
+
             TimeTableUiEvent.SaveTripButtonClicked -> onSaveTripButtonClicked()
+
             TimeTableUiEvent.ReverseTripButtonClicked -> onReverseTripButtonClicked()
+
             TimeTableUiEvent.RetryButtonClicked -> onLoadTimeTable(tripInfo!!)
+
             is TimeTableUiEvent.DateTimeSelectionChanged -> {
                 onDateTimeSelectionChanged(item = event.dateTimeSelectionItem)
+            }
+
+            TimeTableUiEvent.AnalyticsDateTimeSelectorClicked -> {
+                analytics.track(
+                    AnalyticsEvent.PlanTripClickEvent(
+                        fromStopId = tripInfo?.fromStopId ?: "NA",
+                        toStopId = tripInfo?.toStopId ?: "NA",
+                    )
+                )
+            }
+
+            is TimeTableUiEvent.JourneyLegClicked -> {
+                analytics.track(AnalyticsEvent.JourneyLegClickEvent(expanded = event.expanded))
             }
         }
     }
@@ -134,6 +153,14 @@ class TimeTableViewModel(
             journeys.clear() // Clear cache trips when date time selection changed.
             alertsCache.clearAlerts()
             rateLimiter.triggerEvent()
+
+            analytics.track(
+                AnalyticsEvent.DateTimeSelectEvent(
+                    dayOfWeek = item?.date?.dayOfWeek?.name ?: "NA",
+                    time = item?.toHHMM() ?: "NA",
+                    journeyOption = item?.option?.name ?: "NA",
+                )
+            )
         }
     }
 
@@ -245,6 +272,13 @@ class TimeTableViewModel(
     private fun onSaveTripButtonClicked() {
         println("Save Trip Button Clicked")
         viewModelScope.launch(Dispatchers.IO) {
+            analytics.track(
+                AnalyticsEvent.SaveTripClickEvent(
+                    fromStopId = tripInfo?.fromStopId ?: "NA",
+                    toStopId = tripInfo?.toStopId ?: "NA",
+                ),
+            )
+
             tripInfo?.let { trip ->
                 println("Toggle Save Trip: $trip")
                 val savedTrip = sandook.selectTripById(tripId = trip.tripId)
@@ -269,7 +303,14 @@ class TimeTableViewModel(
 
     private fun onJourneyCardClicked(journeyId: String) {
         println("Journey Card Clicked(JourneyId): $journeyId")
+        val hasJourneyStarted = journeys[journeyId]?.hasJourneyStarted ?: false
+        val expandedJourneyId = _expandedJourneyId.value
         _expandedJourneyId.update { if (it == journeyId) null else journeyId }
+        if (expandedJourneyId == journeyId) {
+            analytics.trackJourneyCardCollapseEvent(hasStarted = hasJourneyStarted)
+        } else {
+            analytics.trackJourneyCardExpandEvent(hasStarted = hasJourneyStarted)
+        }
     }
 
     private fun onLoadTimeTable(trip: Trip) {
@@ -300,6 +341,13 @@ class TimeTableViewModel(
         tripInfo = reverseTrip
         journeys.clear() // Clear cache trips when reverse trip is clicked.
         alertsCache.clearAlerts() // Clear alerts cache when reverse trip is clicked.
+
+        analytics.track(
+            AnalyticsEvent.ReverseTimeTableClickEvent(
+                fromStopId = tripInfo!!.fromStopId,
+                toStopId = tripInfo!!.toStopId,
+            )
+        )
 
         val savedTrip = sandook.selectTripById(tripId = reverseTrip.tripId)
         updateUiState {
@@ -353,6 +401,14 @@ class TimeTableViewModel(
                         getAlertsFromJourney(journey)
                     }.orEmpty()
                 }.getOrElse { emptyList() }
+            }
+            if (alerts.isNotEmpty()) {
+                analytics.track(
+                    AnalyticsEvent.JourneyAlertClickEvent(
+                        fromStopId = tripInfo?.fromStopId ?: "NA",
+                        toStopId = tripInfo?.toStopId ?: "NA",
+                    ),
+                )
             }
             onResult(alerts)
         }

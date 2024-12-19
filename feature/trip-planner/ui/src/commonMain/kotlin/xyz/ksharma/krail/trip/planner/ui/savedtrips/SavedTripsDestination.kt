@@ -101,20 +101,23 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                     // Timber.e("Select both stops")
                 }
             },
-            onSearchButtonClick = { fromStop, toStop ->
-                if (fromStop != null && toStop != null) {
+            onSearchButtonClick = {
+                if (fromStopItem != null && toStopItem != null) {
+                    val fromStopId = fromStopItem!!.stopId
+                    val toStopId = toStopItem!!.stopId
+
                     viewModel.onEvent(
                         SavedTripUiEvent.AnalyticsLoadTimeTableClick(
-                            fromStopId = fromStop.stopId,
-                            toStopId = toStop.stopId,
+                            fromStopId = fromStopId,
+                            toStopId = toStopId,
                         )
                     )
                     navController.navigate(
                         route = TimeTableRoute(
-                            fromStopId = fromStop.stopId,
-                            fromStopName = fromStop.stopName,
-                            toStopId = toStop.stopId,
-                            toStopName = toStop.stopName,
+                            fromStopId = fromStopId,
+                            fromStopName = fromStopItem!!.stopName,
+                            toStopId = toStopId,
+                            toStopName = toStopItem!!.stopName,
                         ),
                         navOptions = NavOptions.Builder().setLaunchSingleTop(true).build(),
                     )
