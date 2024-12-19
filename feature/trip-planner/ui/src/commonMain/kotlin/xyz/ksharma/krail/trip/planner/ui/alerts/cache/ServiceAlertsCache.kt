@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.alerts.cache
 
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
 interface ServiceAlertsCache {
@@ -14,7 +15,7 @@ interface ServiceAlertsCache {
 class RealServiceAlertsCache : ServiceAlertsCache {
 
     init {
-        println("RealServiceAlertsCache created $this")
+        log("RealServiceAlertsCache created $this")
     }
 
     private val serviceAlerts: MutableMap<String, List<ServiceAlert>> = mutableMapOf()

@@ -17,6 +17,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
+import xyz.ksharma.krail.core.log.log
 
 @Suppress("ComplexCondition")
 internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.JourneyCardInfo>? =
@@ -69,7 +70,7 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
                 legs = legsList,
                 totalUniqueServiceAlerts = legs.flatMap { leg -> leg.infos.orEmpty() }.toSet().size,
             ).also {
-                println("\tJourneyId: ${it.journeyId}")
+                log("\tJourneyId: ${it.journeyId}")
             }
         } else {
             null
@@ -114,8 +115,8 @@ fun TripResponse.Leg?.getPlatformNumber(): String? {
 private fun List<TripResponse.Leg>.logTransportModes() = forEachIndexed { index, leg ->
 
     // log origin's disassembledName
-    println("Origin #$index: ${leg.origin?.disassembledName}")
-    println(
+    log("Origin #$index: ${leg.origin?.disassembledName}")
+    log(
         "TransportMode #$index: ${leg.transportation?.product?.productClass}, " +
             "name: ${leg.transportation?.product?.name}, " +
             "stops: ${leg.stopSequence?.size}, " +
@@ -138,14 +139,14 @@ private fun List<TripResponse.Leg>.getTransportModeLines() = mapNotNull { leg ->
 private fun List<TripResponse.Leg>.getLegsList() = mapNotNull { it.toUiModel() }.toImmutableList()
 
 private fun String.getTimeText() = let {
-   // println("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
+   // log("originTime: $it :- ${calculateTimeDifferenceFromNow(utcDateString = it)}")
     calculateTimeDifferenceFromNow(utcDateString = it).toGenericFormattedTimeString()
 }
 
 @Suppress("ComplexCondition")
 private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
 /*
-    println(
+    log(
         "\tFFF Leg: ${this.duration}, " +
             "leg: ${this.origin?.name} TO ${this.destination?.name}" +
             " - isWalk:${this.isWalkingLeg()}, " +
@@ -164,9 +165,9 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
     val stops = stopSequence?.mapNotNull { it.toUiModel() }?.toImmutableList()
     val alerts = infos?.mapNotNull { it.toAlert() }?.toImmutableList()
     alerts?.forEach {
-        //println("\t Alert: ${it.heading.take(5)}, ${it.message.take(5)}, ${it.priority}")
+        //log("\t Alert: ${it.heading.take(5)}, ${it.message.take(5)}, ${it.priority}")
     }
-   // println("Alert---")
+   // log("Alert---")
 
     return when {
         // Walking Leg - Always check before public transport leg
@@ -177,7 +178,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
         }
 
         else -> { // Public Transport Leg
-//            println("FFF PTLeg: $displayDuration, leg: ${this.destination?.name} ")
+//            log("FFF PTLeg: $displayDuration, leg: ${this.destination?.name} ")
             if (transportMode != null && lineName != null && displayText != null &&
                 numberOfStops != null && stops != null && displayDuration != null
             ) {
@@ -253,19 +254,19 @@ private fun TripResponse.StopSequence.toUiModel(): TimeTableState.JourneyCardInf
 }
 
 internal fun TripResponse.logForUnderstandingData() {
-    println("Journeys: ${journeys?.size}")
+    log("Journeys: ${journeys?.size}")
     journeys?.mapIndexed { jindex, j ->
-        println("JOURNEY #${jindex + 1}")
+        log("JOURNEY #${jindex + 1}")
         j.legs?.forEachIndexed { index, leg ->
 
             val transportationProductClass =
                 leg.transportation?.product?.productClass
 
-            println(
+            log(
                 " LEG#${index + 1} -- Duration: ${leg.duration} -- " +
                     "productClass:${transportationProductClass?.toInt()}",
             )
-            println(
+            log(
                 "\t\t ORG: ${
                     leg.origin?.departureTimeEstimated?.utcToAEST()
                         ?.formatTo12HourTime()
