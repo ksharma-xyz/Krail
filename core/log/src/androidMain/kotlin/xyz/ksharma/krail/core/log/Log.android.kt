@@ -5,11 +5,11 @@ import android.util.Log
 private const val MAX_TAG_LENGTH: Int = 23
 
 actual fun log(message: String, throwable: Throwable?) {
-    Log.d(getTag(), message)
+    if (BuildConfig.DEBUG) Log.d(getTag(), message)
 }
 
 actual fun logError(message: String, throwable: Throwable?) {
-    Log.e(getTag(), message, throwable)
+    if (BuildConfig.DEBUG) Log.e(getTag(), message, throwable)
 }
 
 private fun getTag(): String {
