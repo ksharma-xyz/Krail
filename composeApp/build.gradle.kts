@@ -97,6 +97,7 @@ kotlin {
             implementation(projects.taj)
             implementation(projects.sandook)
             implementation(projects.core.appInfo)
+            implementation(projects.core.log)
             implementation(projects.feature.tripPlanner.network)
             implementation(projects.feature.tripPlanner.ui)
             implementation(projects.feature.tripPlanner.state)

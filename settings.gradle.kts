@@ -36,6 +36,7 @@ include(":taj") // Design System
 include(":core:analytics")
 include(":core:app-info")
 include(":core:date-time")
+include(":core:log")
 include(":feature:trip-planner:ui")
 include(":feature:trip-planner:state")
 include(":feature:trip-planner:network")
