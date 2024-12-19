@@ -45,7 +45,7 @@ fun SavedTripsScreen(
     toButtonClick: () -> Unit = {},
     onReverseButtonClick: () -> Unit = {},
     onSavedTripCardClick: (StopItem?, StopItem?) -> Unit = { _, _ -> },
-    onSearchButtonClick: (StopItem?, StopItem?) -> Unit = { _, _ -> },
+    onSearchButtonClick: () -> Unit = {},
     onSettingsButtonClick: () -> Unit = {},
     onEvent: (SavedTripUiEvent) -> Unit = {},
 ) {
@@ -126,16 +126,6 @@ fun SavedTripsScreen(
                                         stopName = trip.toStopName,
                                     ),
                                 )
-                                onSearchButtonClick(
-                                    StopItem(
-                                        stopId = trip.fromStopId,
-                                        stopName = trip.fromStopName,
-                                    ),
-                                    StopItem(
-                                        stopId = trip.toStopId,
-                                        stopName = trip.toStopName,
-                                    ),
-                                )
                             },
                             primaryTransportMode = null, // TODO
                             modifier = Modifier
@@ -155,7 +145,7 @@ fun SavedTripsScreen(
             fromButtonClick = fromButtonClick,
             toButtonClick = toButtonClick,
             onReverseButtonClick = onReverseButtonClick,
-            onSearchButtonClick = { onSearchButtonClick(null, null) },
+            onSearchButtonClick = { onSearchButtonClick() },
         )
     }
 }

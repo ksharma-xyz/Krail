@@ -59,6 +59,7 @@ fun LegView(
     displayDuration: Boolean,
     modifier: Modifier = Modifier,
     displayAllStops: Boolean = false,
+    onClick: (Boolean) -> Unit = {},
 ) {
     val circleRadius = 8.dp
     val strokeWidth = 4.dp
@@ -83,7 +84,10 @@ fun LegView(
                 .clickable(
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null,
-                    onClick = { showIntermediateStops = !showIntermediateStops },
+                    onClick = {
+                        showIntermediateStops = !showIntermediateStops
+                        onClick(showIntermediateStops)
+                    },
                     role = Role.Button,
                 )
                 .padding(vertical = 12.dp, horizontal = 12.dp),
