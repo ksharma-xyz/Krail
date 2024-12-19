@@ -90,10 +90,8 @@ fun SearchStopScreen(
         keyboard?.show()
     }
 
-    val trimmedText by remember(textFieldText) { derivedStateOf { textFieldText.trim() } }
-
-    LaunchedEffect(trimmedText) {
-        snapshotFlow { trimmedText }
+    LaunchedEffect(textFieldText) {
+        snapshotFlow { textFieldText.trim() }
             .distinctUntilChanged()
             .debounce(250)
             .filter { it.isNotBlank() }
