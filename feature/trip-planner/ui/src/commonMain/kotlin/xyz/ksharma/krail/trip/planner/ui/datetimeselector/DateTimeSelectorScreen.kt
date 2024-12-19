@@ -60,6 +60,7 @@ fun DateTimeSelectorScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onDateTimeSelected: (DateTimeSelectionItem?) -> Unit = {},
+    onResetClick: () -> Unit = {},
 ) {
     // Colors
     val themeColorHex by LocalThemeColor.current
@@ -142,6 +143,7 @@ fun DateTimeSelectorScreen(
                     timePickerState.minute = now.time.minute
                     journeyTimeOption = JourneyTimeOptions.LEAVE
                     reset = true
+                    onResetClick()
                 })
         })
 
