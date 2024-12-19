@@ -9,11 +9,12 @@ import platform.Foundation.NSFileManager
 import platform.Foundation.NSUserDomainMask
 import platform.Foundation.dataWithBytes
 import platform.Foundation.writeToFile
+import xyz.ksharma.krail.core.log.log
 
 class IosFileStorage : FileStorage {
     @OptIn(ExperimentalForeignApi::class)
     override suspend fun saveFile(fileName: String, data: ByteArray) {
-        println("Saving file: $fileName")
+        log("Saving file: $fileName")
         val fileManager = NSFileManager.defaultManager
         val directory = fileManager.URLForDirectory(
             directory = NSDocumentDirectory,
@@ -28,6 +29,6 @@ class IosFileStorage : FileStorage {
             NSData.dataWithBytes(pinned.addressOf(0), data.size.toULong())
                 .writeToFile(filePath, true)
         }
-        println("File saved: $filePath")
+        log("File saved: $filePath")
     }
 }

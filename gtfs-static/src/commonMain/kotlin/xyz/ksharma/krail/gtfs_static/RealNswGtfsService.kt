@@ -7,6 +7,7 @@ import io.ktor.client.statement.readRawBytes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.withContext
+import xyz.ksharma.krail.core.log.log
 
 class RealNswGtfsService(
     private val httpClient: HttpClient,
@@ -18,10 +19,10 @@ class RealNswGtfsService(
             httpClient.get("$NSW_TRANSPORT_BASE_URL/$GTFS_SCHEDULE_V1/sydneytrains")
 
         if (response.status.value == 200) {
-            println("Downloading file: ")
+            log("Downloading file: ")
             val data = response.readRawBytes()
             fileStorage.saveFile("sydneytrains.zip", data)
-            println("File downloaded")
+            log("File downloaded")
         } else {
             throw Exception("Failed to download file: ${response.status}")
         }

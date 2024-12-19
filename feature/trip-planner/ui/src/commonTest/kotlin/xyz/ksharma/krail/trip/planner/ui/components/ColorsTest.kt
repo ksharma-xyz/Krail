@@ -2,6 +2,7 @@ package xyz.ksharma.krail.trip.planner.ui.components
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
+import xyz.ksharma.krail.core.log.log
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -31,7 +32,7 @@ fun getForegroundColor(backgroundColor: Color, isDarkMode: Boolean): Color {
     val whiteContrast = whiteColor.contrastRatio(backgroundColor)
     val blackContrast = blackColor.contrastRatio(backgroundColor)
 
-    println("Background: ${backgroundColor.toHex()}, White Contrast: $whiteContrast, Black Contrast: $blackContrast")
+//    log("Background: ${backgroundColor.toHex()}, White Contrast: $whiteContrast, Black Contrast: $blackContrast")
 
     return if (whiteContrast >= 4.0f) whiteColor else blackColor
 }

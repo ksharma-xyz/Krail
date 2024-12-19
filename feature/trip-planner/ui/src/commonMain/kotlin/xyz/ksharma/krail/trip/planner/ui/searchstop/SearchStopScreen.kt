@@ -68,6 +68,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
+import xyz.ksharma.krail.core.log.log
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @Composable
@@ -97,7 +98,7 @@ fun SearchStopScreen(
             .debounce(250)
             .filter { it.isNotBlank() }
             .mapLatest { text ->
-                // Timber.d("Query - $text")
+                // log(("Query - $text")
                 onEvent(SearchStopUiEvent.SearchTextChanged(text))
             }.collectLatest {}
     }
@@ -237,8 +238,8 @@ fun SearchStopScreen(
                 }
             }
         ) { value ->
-            //Timber.d("value: $value")
-            println("value: $value")
+            //log(("value: $value")
+            log("value: $value")
             if(value.isNotBlank()) runPlaceholderAnimation = false
             textFieldText = value.toString()
         }

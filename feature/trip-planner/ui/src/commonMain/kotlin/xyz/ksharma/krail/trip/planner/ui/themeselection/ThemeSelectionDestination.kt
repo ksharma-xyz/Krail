@@ -22,6 +22,7 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.ThemeSelectionRoute
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
+import xyz.ksharma.krail.core.log.log
 
 internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostController) {
     composable<ThemeSelectionRoute> {
@@ -37,7 +38,7 @@ internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostCon
             getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
         LaunchedEffect(state.selectedTransportMode) {
-            println("selectedTransportMode: ${state.selectedTransportMode}")
+            log("selectedTransportMode: ${state.selectedTransportMode}")
         }
         LaunchedEffect(state.themeSelected) {
             if(state.themeSelected) {

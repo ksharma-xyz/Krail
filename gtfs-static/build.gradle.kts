@@ -49,6 +49,8 @@ kotlin {
                 implementation(libs.kotlinx.datetime)
                 implementation(compose.runtime)
 
+                implementation(projects.core.log)
+
                 api(libs.di.koinComposeViewmodel)
             }
         }

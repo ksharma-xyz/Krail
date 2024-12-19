@@ -21,6 +21,7 @@ import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResul
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
+import xyz.ksharma.krail.core.log.log
 
 class SearchStopViewModel(
     private val tripPlanningService: TripPlanningService,
@@ -42,7 +43,7 @@ class SearchStopViewModel(
     }
 
     private fun onSearchTextChanged(query: String) {
-        //Timber.d("onSearchTextChanged: $query")
+        //log(("onSearchTextChanged: $query")
         updateUiState { displayLoading() }
         searchJob?.cancel()
         // TODO - cancel previous flow before starting new one.
@@ -50,10 +51,10 @@ class SearchStopViewModel(
             delay(300)
             runCatching {
                 val response = tripPlanningService.stopFinder(stopSearchQuery = query)
-                println("response VM: $response")
+                log("response VM: $response")
 
                 val results = response.toStopResults()
-                println("results: $results")
+                log("results: $results")
 
                 updateUiState { displayData(results) }
             }.getOrElse {
