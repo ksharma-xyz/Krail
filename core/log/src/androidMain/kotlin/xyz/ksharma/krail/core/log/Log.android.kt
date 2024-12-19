@@ -2,6 +2,8 @@ package xyz.ksharma.krail.core.log
 
 import android.util.Log
 
+private const val MAX_TAG_LENGTH: Int = 23
+
 actual fun log(message: String, throwable: Throwable?) {
     Log.d(getTag(), message)
 }
@@ -11,7 +13,6 @@ actual fun logError(message: String, throwable: Throwable?) {
 }
 
 private fun getTag(): String {
-    val maxTagLength = 23
     val stackTrace = Throwable().stackTrace
 
     val callerElement = stackTrace.firstOrNull { element ->
@@ -20,33 +21,19 @@ private fun getTag(): String {
                 !element.className.startsWith("kotlinx.coroutines.") &&
                 !element.methodName.contains("\$default")
     }
+    val tag = runCatching { callerElement?.toStringTag() ?: "Unknown" }.getOrElse { "Unknown" }
+    return tag
+}
 
-    if (callerElement != null) {
-        val className = callerElement.className.substringAfterLast('.')
-            .substringBefore('$') // Remove inner class markers
-        val methodName =
-            callerElement.methodName.substringBefore('$') // Remove Kotlin synthetic suffixes
-        var refinedTag = "$className.$methodName"
+private fun StackTraceElement.toStringTag(): String {
+    val maxTagLength = MAX_TAG_LENGTH
+    val callerClassName = className.substringAfterLast('.')
+        .substringBefore('$')
+    val methodName = className.substringAfterLast('.').split("$")[1]
 
-        // Truncate or hash the tag if it exceeds the max length
-        if (refinedTag.length > maxTagLength) {
-            refinedTag = if (className.length > maxTagLength) {
-                // Hash if even the class name is too long
-                className.hashCode().toString()
-            } else {
-                // Truncate to maxTagLength
-                refinedTag.take(maxTagLength)
-            }
-        }
-/*
-
-        println("Resolved Caller Element: $callerElement")
-        println("Refined Tag: $refinedTag")
-
-*/
-        return refinedTag
+    return if (callerClassName.length + methodName.length + 1 <= maxTagLength) {
+        "$callerClassName.$methodName"
+    } else {
+        callerClassName.take(maxTagLength)
     }
-
-//    println("Caller not found, returning default tag.")
-    return "Unknown"
 }
