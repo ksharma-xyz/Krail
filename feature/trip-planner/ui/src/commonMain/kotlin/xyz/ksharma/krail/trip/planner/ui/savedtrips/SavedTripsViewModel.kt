@@ -16,6 +16,7 @@ import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SavedTrip
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
@@ -39,18 +40,18 @@ class SavedTripsViewModel(
             val trips = mutableSetOf<Trip>()
 
             val savedTrips = sandook.selectAllTrips()
-            println("SavedTrips: $savedTrips")
+            log("SavedTrips: $savedTrips")
             savedTrips.forEachIndexed { index, savedTrip ->
                 val trip = savedTrip.toTrip()
-                println("Trip: #$index $trip")
+                log("Trip: #$index $trip")
                 trips.add(savedTrip.toTrip())
             }
 
             trips.addAll(savedTrips.map { savedTrip -> savedTrip.toTrip() })
 
-            println("SavedTrips: ${trips.size} number")
+           log("SavedTrips: ${trips.size} number")
             trips.forEachIndexed { index, trip ->
-                println("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
+                log("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
             }
 
             updateUiState { copy(savedTrips = trips.toImmutableList(), isLoading = false) }
@@ -86,7 +87,7 @@ class SavedTripsViewModel(
     }
 
     private fun onDeleteSavedTrip(savedTrip: Trip) {
-        println("onDeleteSavedTrip: $savedTrip")
+       log("onDeleteSavedTrip: $savedTrip")
         viewModelScope.launch(context = Dispatchers.IO) {
             sandook.deleteTrip(tripId = savedTrip.tripId)
             loadSavedTrips()
