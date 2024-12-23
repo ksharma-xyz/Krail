@@ -17,4 +17,6 @@ sealed interface SavedTripUiEvent {
     data object AnalyticsReverseSavedTrip : SavedTripUiEvent
 
     data object AnalyticsSettingsButtonClick : SavedTripUiEvent
+    data object AnalyticsFromButtonClick : SavedTripUiEvent
+    data object AnalyticsToButtonClick : SavedTripUiEvent
 }
