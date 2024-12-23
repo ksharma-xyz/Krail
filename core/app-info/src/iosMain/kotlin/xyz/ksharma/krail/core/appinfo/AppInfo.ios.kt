@@ -9,12 +9,13 @@ import kotlin.experimental.ExperimentalNativeApi
 
 class IOSAppInfo : AppInfo {
 
-    override val type: AppPlatformType = AppPlatformType.IOS
+    override val devicePlatformType: DevicePlatformType = DevicePlatformType.IOS
 
     @OptIn(ExperimentalNativeApi::class)
-    override fun isDebug(): Boolean = Platform.isDebugBinary
+    override val isDebug: Boolean
+        get() = Platform.isDebugBinary
 
-    override val version: String
+    override val appVersion: String
         get() {
             val shortVersion =
                 NSBundle.mainBundle.infoDictionary?.get("CFBundleShortVersionString") as? String
@@ -30,7 +31,8 @@ class IOSAppInfo : AppInfo {
     override val fontSize: String
         get() {
             val contentSizeCategory = UIApplication.sharedApplication.preferredContentSizeCategory
-            return contentSizeCategory.toString()
+            return contentSizeCategory?.substring(startIndex = "UICTContentSizeCategory".length)
+                ?: contentSizeCategory.toString()
         }
 
     override val isDarkTheme: Boolean
@@ -39,6 +41,10 @@ class IOSAppInfo : AppInfo {
             return userInterfaceStyle == UIUserInterfaceStyle.UIUserInterfaceStyleDark
         }
 
+    /**
+     * TODO - what a hack! This is not the device model.
+     *    There needs to be a better way to do it without using 3rd party libraries.
+     */
     override val deviceModel: String
         get() = UIDevice.currentDevice.model
 
@@ -46,11 +52,10 @@ class IOSAppInfo : AppInfo {
         get() = "Apple"
 
     override fun toString() =
-        "AndroidAppInfo(type=$type, isDebug=${isDebug()}, version=$version, osVersion=$osVersion, " +
+        "AndroidAppInfo(type=$devicePlatformType, isDebug=${isDebug}, version=$appVersion, osVersion=$osVersion, " +
                 "fontSize=$fontSize, isDarkTheme=$isDarkTheme, deviceModel=$deviceModel, " +
                 "deviceManufacturer=$deviceManufacturer)"
 }
-
 
 class IosAppInfoProvider : AppInfoProvider {
     override fun getAppInfo(): AppInfo {
@@ -58,4 +63,4 @@ class IosAppInfoProvider : AppInfoProvider {
     }
 }
 
-actual fun getAppPlatformType() = AppPlatformType.IOS
+actual fun getAppPlatformType() = DevicePlatformType.IOS

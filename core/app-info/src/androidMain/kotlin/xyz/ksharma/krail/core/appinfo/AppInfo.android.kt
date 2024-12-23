@@ -6,12 +6,13 @@ import android.content.res.Configuration
 
 class AndroidAppInfo(private val context: Context) : AppInfo {
 
-    override val type: AppPlatformType = AppPlatformType.ANDROID
+    override val devicePlatformType: DevicePlatformType = DevicePlatformType.ANDROID
 
-    override fun isDebug(): Boolean =
-        context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0
+    override val isDebug: Boolean
+        get() =
+            context.applicationInfo.flags and android.content.pm.ApplicationInfo.FLAG_DEBUGGABLE != 0
 
-    override val version: String
+    override val appVersion: String
         get() {
             val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
             return packageInfo.versionName ?: "Unknown"
@@ -38,7 +39,7 @@ class AndroidAppInfo(private val context: Context) : AppInfo {
         get() = Build.BRAND
 
     override fun toString() =
-        "AndroidAppInfo(type=$type, isDebug=${isDebug()}, version=$version, osVersion=$osVersion, " +
+        "AndroidAppInfo(type=$devicePlatformType, isDebug=${isDebug}, version=$appVersion, osVersion=$osVersion, " +
                 "fontSize=$fontSize, isDarkTheme=$isDarkTheme, deviceModel=$deviceModel, " +
                 "deviceManufacturer=$deviceManufacturer)"
 }
@@ -49,4 +50,4 @@ class AndroidAppInfoProvider(private val context: Context) : AppInfoProvider {
     }
 }
 
-actual fun getAppPlatformType() = AppPlatformType.ANDROID
+actual fun getAppPlatformType() = DevicePlatformType.ANDROID

@@ -49,7 +49,7 @@ import krail.feature.trip_planner.ui.generated.resources.ic_a11y
 import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
-import xyz.ksharma.krail.core.appinfo.AppPlatformType
+import xyz.ksharma.krail.core.appinfo.DevicePlatformType
 import xyz.ksharma.krail.core.appinfo.LocalAppPlatformProvider
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.SeparatorIcon
@@ -201,7 +201,7 @@ fun ExpandedJourneyCardContent(
     onLegClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val appPlatformType: AppPlatformType = LocalAppPlatformProvider.current
+    val devicePlatformType: DevicePlatformType = LocalAppPlatformProvider.current
 
     Column(modifier = modifier) {
         FlowRow(

@@ -26,7 +26,7 @@ class SettingsViewModel(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsState())
 
     private fun fetchAppVersion() {
-        val appVersion = appInfoProvider.getAppInfo().version
+        val appVersion = appInfoProvider.getAppInfo().appVersion
         _uiState.value = _uiState.value.copy(appVersion = appVersion)
     }
 }
