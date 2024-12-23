@@ -10,6 +10,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import xyz.ksharma.krail.core.log.log
 import androidx.navigation.toRoute
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.trip.planner.ui.navigation.DateTimeSelectorRoute
@@ -46,7 +47,7 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
 
         // Lookout for new updates
         LaunchedEffect(dateTimeSelectionJson) {
-            println("Changed dateTimeSelectionItem: $dateTimeSelectionItem")
+            log("Changed dateTimeSelectionItem: $dateTimeSelectionItem")
             dateTimeSelectionItem = dateTimeSelectionJson?.let { fromJsonString(it) }
             viewModel.onEvent(TimeTableUiEvent.DateTimeSelectionChanged(dateTimeSelectionItem))
         }
@@ -57,7 +58,7 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             onEvent = { viewModel.onEvent(it) },
             onBackClick = { navController.popBackStack() },
             onAlertClick = { journeyId ->
-                println("AlertClicked for journeyId: $journeyId")
+                log("AlertClicked for journeyId: $journeyId")
                 viewModel.fetchAlertsForJourney(journeyId) { alerts ->
                     if (alerts.isNotEmpty()) {
                         navController.navigate(

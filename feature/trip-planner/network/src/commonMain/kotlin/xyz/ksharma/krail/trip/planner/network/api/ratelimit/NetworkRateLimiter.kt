@@ -35,14 +35,14 @@ class NetworkRateLimiter : RateLimiter {
             .debounce {
                 // First time the block should be executed immediately and subsequent must be rate limited.
                 val interval = if (isFirstTime.value) rateLimitInterval else 0.milliseconds
-                // Timber.d("state: ${isFirstTime.value} and interval: $interval")
+                // log(("state: ${isFirstTime.value} and interval: $interval")
                 interval
             }
             .flatMapLatest {
-                //Timber.d("flatmapLatest: Triggered")
+                //log(("flatmapLatest: Triggered")
                 isFirstTime.update { true } // Mark the first trigger
                 flow {
-                    //   Timber.d("Inside flow -emitting block")
+                    //   log(("Inside flow -emitting block")
                     emit(block())
                 }
             }
