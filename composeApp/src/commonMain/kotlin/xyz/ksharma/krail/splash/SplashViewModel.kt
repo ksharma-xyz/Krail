@@ -11,21 +11,43 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import xyz.ksharma.krail.DEFAULT_THEME_TRANSPORT_MODE
+import xyz.ksharma.krail.core.analytics.Analytics
+import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
+import xyz.ksharma.krail.core.appinfo.AppInfo
+import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 class SplashViewModel(
     private val sandook: Sandook,
+    private val analytics: Analytics,
+    private val appInfoProvider: AppInfoProvider,
 ) : ViewModel() {
 
-    private val _uiState: MutableStateFlow<TransportMode> = MutableStateFlow(DEFAULT_THEME_TRANSPORT_MODE)
+    private val _uiState: MutableStateFlow<TransportMode> =
+        MutableStateFlow(DEFAULT_THEME_TRANSPORT_MODE)
     val uiState: MutableStateFlow<TransportMode> = _uiState
 
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
         .onStart {
             getThemeTransportMode()
+            trackAppStartEvent()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
+
+    private fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
+        analytics.track(
+            AnalyticsEvent.AppStart(
+                deviceType = type.name,
+                osVersion = osVersion,
+                appVersion = version,
+                fontSize = fontSize,
+                isDarkTheme = isDarkTheme,
+                deviceModel = deviceModel,
+            )
+        )
+        println("App start event tracked: appinfo: $this")
+    }
 
     private fun getThemeTransportMode() {
         viewModelScope.launch(Dispatchers.IO) {
