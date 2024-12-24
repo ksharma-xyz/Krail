@@ -2,11 +2,18 @@ package xyz.ksharma.krail.core.analytics
 
 import dev.gitlive.firebase.analytics.FirebaseAnalytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
+import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 
-class RealAnalytics(private val firebaseAnalytics: FirebaseAnalytics) : Analytics {
+class RealAnalytics(
+    private val firebaseAnalytics: FirebaseAnalytics,
+    private val appInfoProvider: AppInfoProvider,
+) : Analytics {
 
     override fun track(event: AnalyticsEvent) {
-        firebaseAnalytics.logEvent(event.name, event.properties)
+        // Only track prod builds analytics events
+        if (appInfoProvider.getAppInfo().isDebug.not()) {
+            firebaseAnalytics.logEvent(event.name, event.properties)
+        }
     }
 
     override fun setUserId(userId: String) {

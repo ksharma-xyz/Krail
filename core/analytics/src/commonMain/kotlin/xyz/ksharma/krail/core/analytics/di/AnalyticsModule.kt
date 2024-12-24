@@ -9,7 +9,8 @@ import xyz.ksharma.krail.core.analytics.RealAnalytics
 val analyticsModule = module {
     single<Analytics> {
         RealAnalytics(
-            firebaseAnalytics = Firebase.analytics
+            firebaseAnalytics = Firebase.analytics,
+            appInfoProvider = get(),
         )
     }
 }

@@ -45,12 +45,12 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
 
         LaunchedEffect(fromArg) {
             fromArg?.let { fromStopItem = fromJsonString(it) }
-//            Timber.d("Change fromStopItem: $fromStopItem")
+//            log(("Change fromStopItem: $fromStopItem")
         }
 
         LaunchedEffect(toArg) {
             toArg?.let { toStopItem = fromJsonString(it) }
-//            Timber.d("Change toStopItem: $toStopItem")
+//            log(("Change toStopItem: $toStopItem")
         }
 
         SavedTripsScreen(
@@ -58,10 +58,12 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
             fromStopItem = fromStopItem,
             toStopItem = toStopItem,
             fromButtonClick = {
+                viewModel.onEvent(SavedTripUiEvent.AnalyticsFromButtonClick)
                 //              Timber.d("fromButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.FROM)}")
                 navController.navigate(SearchStopRoute(fieldTypeKey = SearchStopFieldType.FROM.key))
             },
             toButtonClick = {
+                viewModel.onEvent(SavedTripUiEvent.AnalyticsToButtonClick)
                 //              Timber.d("toButtonClick - nav: ${SearchStopRoute(fieldType = SearchStopFieldType.TO)}")
                 navController.navigate(
                     route = SearchStopRoute(fieldTypeKey = SearchStopFieldType.TO.key),
@@ -69,7 +71,7 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                 )
             },
             onReverseButtonClick = {
-                //              Timber.d("onReverseButtonClick:")
+                //              log(("onReverseButtonClick:")
                 val bufferStop = fromStopItem
                 backStackEntry.savedStateHandle[SearchStopFieldType.FROM.key] =
                     toStopItem?.toJsonString()
@@ -98,7 +100,7 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                     )
                 } else {
                     // TODO - show message - to select both stops
-                    // Timber.e("Select both stops")
+                    // logError(("Select both stops")
                 }
             },
             onSearchButtonClick = {
@@ -123,7 +125,7 @@ internal fun NavGraphBuilder.savedTripsDestination(navController: NavHostControl
                     )
                 } else {
                     // TODO - show message - to select both stops
-                    // Timber.e("Select both stops")
+                    // logError(("Select both stops")
                 }
             },
             onSettingsButtonClick = {

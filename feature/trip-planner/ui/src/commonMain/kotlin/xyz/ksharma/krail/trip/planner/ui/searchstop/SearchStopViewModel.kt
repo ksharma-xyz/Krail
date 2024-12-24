@@ -15,12 +15,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
+import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
 import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
+import xyz.ksharma.krail.core.log.log
 
 class SearchStopViewModel(
     private val tripPlanningService: TripPlanningService,
@@ -38,11 +40,15 @@ class SearchStopViewModel(
     fun onEvent(event: SearchStopUiEvent) {
         when (event) {
             is SearchStopUiEvent.SearchTextChanged -> onSearchTextChanged(event.query)
+
+            is SearchStopUiEvent.StopSelected -> {
+                analytics.track(AnalyticsEvent.StopSelectedEvent(stopId = event.stopItem.stopId))
+            }
         }
     }
 
     private fun onSearchTextChanged(query: String) {
-        //Timber.d("onSearchTextChanged: $query")
+        //log(("onSearchTextChanged: $query")
         updateUiState { displayLoading() }
         searchJob?.cancel()
         // TODO - cancel previous flow before starting new one.
@@ -50,10 +56,10 @@ class SearchStopViewModel(
             delay(300)
             runCatching {
                 val response = tripPlanningService.stopFinder(stopSearchQuery = query)
-                println("response VM: $response")
+                log("response VM: $response")
 
                 val results = response.toStopResults()
-                println("results: $results")
+                log("results: $results")
 
                 updateUiState { displayData(results) }
             }.getOrElse {

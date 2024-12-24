@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.toPersistentList
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
+import xyz.ksharma.krail.core.log.log
 
 object StopResultMapper {
 
@@ -19,7 +20,7 @@ object StopResultMapper {
     fun StopFinderResponse.toStopResults(
         selectedModes: Set<TransportMode> = TransportMode.values(),
     ): List<SearchStopState.StopResult> {
-        println( "selectedModes: " + selectedModes)
+        log( "selectedModes: " + selectedModes)
 
         return locations.orEmpty().mapNotNull { location ->
             val stopName = location.disassembledName ?: return@mapNotNull null // Skip if stop name is null
@@ -27,7 +28,7 @@ object StopResultMapper {
             val modes = location.productClasses.orEmpty()
                 .mapNotNull { productClass -> TransportMode.toTransportModeType(productClass) }
 
-            println("productClasses [${location.name}]: ${location.productClasses}")
+            log("productClasses [${location.name}]: ${location.productClasses}")
 
             // Filter based on selected mode types
             if (selectedModes.isNotEmpty() && !modes.any { it in selectedModes }) {

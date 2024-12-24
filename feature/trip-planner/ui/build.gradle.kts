@@ -27,6 +27,7 @@ kotlin {
                 implementation(projects.core.appInfo)
                 implementation(projects.core.analytics)
                 implementation(projects.core.dateTime)
+                implementation(projects.core.log)
                 implementation(projects.feature.tripPlanner.network)
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.sandook)

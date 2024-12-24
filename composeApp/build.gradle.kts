@@ -5,7 +5,7 @@ android {
 
     defaultConfig {
         applicationId = "xyz.ksharma.krail"
-        versionCode = 29
+        versionCode = 30
         versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -97,6 +97,7 @@ kotlin {
             implementation(projects.taj)
             implementation(projects.sandook)
             implementation(projects.core.appInfo)
+            implementation(projects.core.log)
             implementation(projects.feature.tripPlanner.network)
             implementation(projects.feature.tripPlanner.ui)
             implementation(projects.feature.tripPlanner.state)

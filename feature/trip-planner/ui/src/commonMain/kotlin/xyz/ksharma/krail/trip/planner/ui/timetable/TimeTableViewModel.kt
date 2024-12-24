@@ -29,6 +29,7 @@ import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
@@ -62,7 +63,7 @@ class TimeTableViewModel(
         // to background and come back up again, the API call will be made.
         // Probably good to have data up to date.
         .onStart {
-            println("onStart: Fetching Trip")
+            log("onStart: Fetching Trip")
             fetchTrip()
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.TimeTable)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
@@ -145,7 +146,7 @@ class TimeTableViewModel(
     }
 
     private fun onDateTimeSelectionChanged(item: DateTimeSelectionItem?) {
-        println("DateTimeSelectionChanged: $item")
+        log("DateTimeSelectionChanged: $item")
         // Verify if date time selection has actually changed, otherwise, api will be called unnecessarily.
         if (dateTimeSelectionItem != item) {
             updateUiState { copy(isLoading = true) }
@@ -165,16 +166,16 @@ class TimeTableViewModel(
     }
 
     private fun fetchTrip() {
-        println("fetchTrip API Call")
+        log("fetchTrip API Call")
         fetchTripJob?.cancel()
         updateUiState { copy(silentLoading = true) }
         fetchTripJob = viewModelScope.launch(Dispatchers.IO) {
             rateLimiter.rateLimitFlow {
-                println("rateLimitFlow block obj:$rateLimiter and coroutine: $this")
+                log("rateLimitFlow block obj:$rateLimiter and coroutine: $this")
                 updateUiState { copy(silentLoading = true) }
                 loadTrip()
             }.catch { e ->
-                println("Error while fetching trip: $e")
+                log("Error while fetching trip: $e")
             }.collectLatest { result ->
                 updateUiState { copy(silentLoading = false) }
                 result.onSuccess { response ->
@@ -218,14 +219,14 @@ class TimeTableViewModel(
         journeys.putAll(startedJourneyList.associateBy { it.journeyId })
 
         startedJourneyList.forEach {
-            println(
+            log(
                 "TripsCache - Started tripCode:[${it.journeyId}], Time: ${
                     it.originUtcDateTime.utcToLocalDateTimeAEST().toHHMM()
                 }"
             )
         }
         newJourneyList?.forEach {
-            println(
+            log(
                 "TripsCache - New tripCode:[${it.journeyId}], Time: ${
                     it.originUtcDateTime.utcToLocalDateTimeAEST().toHHMM()
                 }"
@@ -246,7 +247,7 @@ class TimeTableViewModel(
     }
 
     private suspend fun loadTrip(): Result<TripResponse> = withContext(Dispatchers.IO) {
-        println("loadTrip API Call")
+        log("loadTrip API Call")
         require(
             tripInfo != null && tripInfo!!.fromStopId.isNotEmpty() && tripInfo!!.toStopId.isNotEmpty(),
         ) { "Trip Info is null or empty" }
@@ -270,7 +271,7 @@ class TimeTableViewModel(
     }
 
     private fun onSaveTripButtonClicked() {
-        println("Save Trip Button Clicked")
+        log("Save Trip Button Clicked")
         viewModelScope.launch(Dispatchers.IO) {
             analytics.track(
                 AnalyticsEvent.SaveTripClickEvent(
@@ -280,12 +281,12 @@ class TimeTableViewModel(
             )
 
             tripInfo?.let { trip ->
-                println("Toggle Save Trip: $trip")
+                log("Toggle Save Trip: $trip")
                 val savedTrip = sandook.selectTripById(tripId = trip.tripId)
                 if (savedTrip != null) {
                     // Trip is already saved, so delete it
                     sandook.deleteTrip(tripId = trip.tripId)
-                    println("Deleted Trip (Pref): $savedTrip")
+                    log("Deleted Trip (Pref): $savedTrip")
                     updateUiState { copy(isTripSaved = false) }
                 } else {
                     // Trip is not saved, so save it
@@ -294,7 +295,7 @@ class TimeTableViewModel(
                         fromStopId = trip.fromStopId, fromStopName = trip.fromStopName,
                         toStopId = trip.toStopId, toStopName = trip.toStopName
                     )
-                    println("Saved Trip (Pref): $trip")
+                    log("Saved Trip (Pref): $trip")
                     updateUiState { copy(isTripSaved = true) }
                 }
             }
@@ -302,9 +303,9 @@ class TimeTableViewModel(
     }
 
     private fun onJourneyCardClicked(journeyId: String) {
-        println("Journey Card Clicked(JourneyId): $journeyId")
         val hasJourneyStarted = journeys[journeyId]?.hasJourneyStarted ?: false
         val expandedJourneyId = _expandedJourneyId.value
+        log("Journey Card Clicked(JourneyId): $journeyId")
         _expandedJourneyId.update { if (it == journeyId) null else journeyId }
         if (expandedJourneyId == journeyId) {
             analytics.trackJourneyCardCollapseEvent(hasStarted = hasJourneyStarted)
@@ -314,10 +315,10 @@ class TimeTableViewModel(
     }
 
     private fun onLoadTimeTable(trip: Trip) {
-        println("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
+        log("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
         tripInfo = trip
         val savedTrip = sandook.selectTripById(tripId = trip.tripId)
-        println("Saved Trip[${trip.tripId}]: $savedTrip")
+        log("Saved Trip[${trip.tripId}]: $savedTrip")
         updateUiState {
             copy(
                 isLoading = true,
@@ -330,7 +331,7 @@ class TimeTableViewModel(
     }
 
     private fun onReverseTripButtonClicked() {
-        println("Reverse Trip Button Clicked -- Trigger")
+        log("Reverse Trip Button Clicked -- Trigger")
         require(tripInfo != null) { "Trip Info is null" }
         val reverseTrip = Trip(
             fromStopId = tripInfo!!.toStopId,

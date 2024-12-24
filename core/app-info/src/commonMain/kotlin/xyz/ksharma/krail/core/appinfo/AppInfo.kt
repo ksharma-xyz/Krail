@@ -1,16 +1,30 @@
 package xyz.ksharma.krail.core.appinfo
 
+/**
+ * Inject [AppInfoProvider] to get instance of [AppInfo].
+ */
 interface AppInfo {
-    val name: String
+    val devicePlatformType: DevicePlatformType
 
-    val type: AppPlatformType
+    val isDebug: Boolean
 
-    fun isDebug(): Boolean
+    /**
+     * App version.
+     */
+    val appVersion: String
 
-    val version: String
+    val osVersion: String
+
+    val fontSize: String
+
+    val isDarkTheme: Boolean
+
+    val deviceModel: String
+
+    val deviceManufacturer: String
 }
 
-enum class AppPlatformType {
+enum class DevicePlatformType {
     ANDROID,
     IOS,
     UNKNOWN,
