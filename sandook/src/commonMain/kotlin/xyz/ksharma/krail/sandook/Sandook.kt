@@ -14,11 +14,22 @@ interface Sandook {
         fromStopId: String,
         fromStopName: String,
         toStopId: String,
-        toStopName: String
+        toStopName: String,
     )
+
     fun deleteTrip(tripId: String)
     fun selectAllTrips(): List<SavedTrip>
     fun selectTripById(tripId: String): SavedTrip?
     fun clearSavedTrips()
+    // endregion
+
+    // region Alerts
+
+    fun getAlerts(journeyId: String): List<SelectServiceAlertsByJourneyId>
+
+    fun clearAlerts()
+
+    fun insertAlerts(journeyId: String, alerts: List<SelectServiceAlertsByJourneyId>)
+
     // endregion
 }

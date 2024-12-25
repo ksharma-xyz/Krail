@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS ServiceAlertsTable (
 );
 
 -- Insert or Replace into ServiceAlerts Table --
-insertOrReplaceServiceAlert:
+insertServiceAlert:
 INSERT INTO ServiceAlertsTable(journeyId, heading, message)
 VALUES (?, ?, ?);
 

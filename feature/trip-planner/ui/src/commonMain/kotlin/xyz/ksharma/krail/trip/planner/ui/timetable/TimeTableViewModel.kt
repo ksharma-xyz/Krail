@@ -31,11 +31,11 @@ import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
+import xyz.ksharma.krail.sandook.SelectServiceAlertsByJourneyId
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.ratelimit.RateLimiter
 import xyz.ksharma.krail.trip.planner.network.api.service.DepArr
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
-import xyz.ksharma.krail.trip.planner.ui.alerts.cache.ServiceAlertsCache
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
@@ -50,7 +50,7 @@ class TimeTableViewModel(
     private val tripPlanningService: TripPlanningService,
     private val rateLimiter: RateLimiter,
     private val sandook: Sandook,
-    private val alertsCache: ServiceAlertsCache,
+//    private val alertsCache: ServiceAlertsCache,
     private val analytics: Analytics,
 ) : ViewModel() {
 
@@ -152,7 +152,9 @@ class TimeTableViewModel(
             updateUiState { copy(isLoading = true) }
             dateTimeSelectionItem = item
             journeys.clear() // Clear cache trips when date time selection changed.
-            alertsCache.clearAlerts()
+//            alertsCache.clearAlerts()
+
+            sandook.clearAlerts()
             rateLimiter.triggerEvent()
 
             analytics.track(
@@ -341,7 +343,8 @@ class TimeTableViewModel(
         )
         tripInfo = reverseTrip
         journeys.clear() // Clear cache trips when reverse trip is clicked.
-        alertsCache.clearAlerts() // Clear alerts cache when reverse trip is clicked.
+//        alertsCache.clearAlerts() // Clear alerts cache when reverse trip is clicked.
+        sandook.clearAlerts()
 
         analytics.track(
             AnalyticsEvent.ReverseTimeTableClickEvent(
@@ -419,7 +422,12 @@ class TimeTableViewModel(
         val alerts =
             journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
                 .flatMap { it.serviceAlertList.orEmpty() }
-        alertsCache.setAlerts(journeyId = journey.journeyId, alerts = alerts)
+//        alertsCache.setAlerts(journeyId = journey.journeyId, alerts = alerts)
+
+        sandook.insertAlerts(
+            journeyId = journey.journeyId,
+            alerts = alerts.map { it.toSelectServiceAlertsByJourneyId(journey.journeyId) },
+        )
         return alerts
     }
 
@@ -427,7 +435,9 @@ class TimeTableViewModel(
         super.onCleared()
         // TODO - ideally AlertsCache should be scoped to TimeTableDestination and object must be deleted itself.
         //   so we do not need to manually clear.
-        alertsCache.clearAlerts()
+
+//        alertsCache.clearAlerts()
+        sandook.clearAlerts()
     }
 
     companion object {
@@ -449,3 +459,10 @@ class TimeTableViewModel(
         private val JOURNEY_ENDED_CACHE_THRESHOLD_TIME = 10.minutes
     }
 }
+
+private fun ServiceAlert.toSelectServiceAlertsByJourneyId(journeyId: String) =
+    SelectServiceAlertsByJourneyId(
+        journeyId = journeyId,
+        heading = heading,
+        message = message,
+    )

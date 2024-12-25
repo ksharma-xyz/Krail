@@ -5,6 +5,9 @@ import app.cash.sqldelight.driver.native.NativeSqliteDriver
 
 class IosSandookDriverFactory : SandookDriverFactory {
     override fun createDriver(): SqlDriver {
-        return NativeSqliteDriver(KrailSandook.Schema, name = "krailSandook.db")
+        return NativeSqliteDriver(
+            schema = KrailSandook.Schema,
+            name = "krailSandook.db",
+        )
     }
 }

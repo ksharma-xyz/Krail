@@ -10,14 +10,15 @@ import kotlinx.coroutines.flow.stateIn
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
-import xyz.ksharma.krail.trip.planner.ui.alerts.cache.ServiceAlertsCache
+import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.sandook.Sandook
+import xyz.ksharma.krail.sandook.SelectServiceAlertsByJourneyId
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlertState
-import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
 
 class ServiceAlertsViewModel(
-    private val alertsCache: ServiceAlertsCache,
     private val analytics: Analytics,
+    private val sandook: Sandook,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<ServiceAlertState> =
@@ -27,13 +28,14 @@ class ServiceAlertsViewModel(
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.ServiceAlerts)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), ServiceAlertState())
 
-    fun fetchAlerts(journeyId: String): List<ServiceAlert>? {
-        // get alerts here and save to ui state.
-        val alerts = alertsCache.getAlerts(journeyId)
+    fun fetchAlerts(journeyId: String): List<ServiceAlert> {
+        val alerts = sandook.getAlerts(journeyId).map { it.toServiceAlert() }
+        log("alerts: $alerts")
         return alerts
     }
-
-    override fun onCleared() {
-        super.onCleared()
-    }
 }
+
+private fun SelectServiceAlertsByJourneyId.toServiceAlert() = ServiceAlert(
+    heading = heading,
+    message = message,
+)
