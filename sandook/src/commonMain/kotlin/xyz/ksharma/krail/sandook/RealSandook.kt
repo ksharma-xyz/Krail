@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.sandook
 
+import xyz.ksharma.krail.core.log.log
+
 internal class RealSandook(factory: SandookDriverFactory) : Sandook {
 
     private val sandook = KrailSandook(factory.createDriver())
@@ -52,5 +54,29 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
     override fun clearSavedTrips() {
         query.clearSavedTrips()
     }
+    // endregion
+
+    // region Alerts
+
+    override fun getAlerts(journeyId: String): List<SelectServiceAlertsByJourneyId> {
+        val alerts = query.selectServiceAlertsByJourneyId(journeyId).executeAsList()
+        log("Alerts: $alerts")
+        return alerts
+    }
+
+    override fun clearAlerts() {
+        query.clearAllServiceAlerts()
+    }
+
+    override fun insertAlerts(journeyId: String, alerts: List<SelectServiceAlertsByJourneyId>) {
+        alerts.forEach {
+            query.insertServiceAlert(
+                journeyId = journeyId,
+                heading = it.heading,
+                message = it.message,
+            )
+        }
+    }
+
     // endregion
 }
