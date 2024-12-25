@@ -40,3 +40,33 @@ WHERE tripId = ?;
 
 clearSavedTrips:
 DELETE FROM SavedTrip;
+
+-- Service Alerts Table --
+CREATE TABLE IF NOT EXISTS ServiceAlertsTable (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	journeyId TEXT NOT NULL,
+	heading TEXT NOT NULL,
+	message TEXT NOT NULL
+);
+
+-- Insert or Replace into ServiceAlerts Table --
+insertOrReplaceServiceAlert:
+INSERT INTO ServiceAlertsTable(journeyId, heading, message)
+VALUES (?, ?, ?);
+
+-- Clear all records from ServiceAlerts Table --
+clearAllServiceAlerts:
+DELETE FROM ServiceAlertsTable;
+
+-- Clear records by journeyId from ServiceAlerts Table --
+clearServiceAlertByJourneyId:
+DELETE FROM ServiceAlertsTable WHERE journeyId = ?;
+
+-- Select all records from ServiceAlerts Table --
+selectAllServiceAlerts:
+SELECT * FROM ServiceAlertsTable;
+
+-- Select ServiceAlert by journeyId from ServiceAlerts Table --
+selectServiceAlertsByJourneyId:
+SELECT journeyId, heading, message FROM ServiceAlertsTable
+WHERE journeyId = ?;
