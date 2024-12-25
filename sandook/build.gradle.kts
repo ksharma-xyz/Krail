@@ -36,6 +36,7 @@ kotlin {
 
         commonMain {
             dependencies {
+                implementation(projects.core.log)
                 implementation(libs.kotlinx.serialization.json)
                 
                 implementation(compose.runtime)
