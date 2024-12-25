@@ -21,6 +21,10 @@ kotlin {
     applyDefaultHierarchyTemplate()
 
     androidTarget()
+    iosArm64()
+    iosSimulatorArm64()
+
+/*
     listOf(
         iosX64(),
         iosArm64(),
@@ -30,6 +34,7 @@ kotlin {
             baseName = "gtfsStatic"
         }
     }
+*/
 
     sourceSets {
         androidMain.dependencies {

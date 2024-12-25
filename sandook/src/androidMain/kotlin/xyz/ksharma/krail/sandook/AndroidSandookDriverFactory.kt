@@ -9,7 +9,7 @@ class AndroidSandookDriverFactory(private val context: Context) : SandookDriverF
         return AndroidSqliteDriver(
             schema = KrailSandook.Schema,
             context = context,
-            name = "krailSandook.db"
+            name = "krailSandook.db",
         )
     }
 }
