@@ -56,6 +56,7 @@ sqldelight {
     databases {
         create("KrailSandook") {
             packageName.set("xyz.ksharma.krail.sandook")
+            verifyMigrations.set(true)
         }
     }
 }
