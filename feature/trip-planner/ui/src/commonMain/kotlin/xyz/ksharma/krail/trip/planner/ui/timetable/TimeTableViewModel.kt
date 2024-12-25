@@ -50,7 +50,6 @@ class TimeTableViewModel(
     private val tripPlanningService: TripPlanningService,
     private val rateLimiter: RateLimiter,
     private val sandook: Sandook,
-//    private val alertsCache: ServiceAlertsCache,
     private val analytics: Analytics,
 ) : ViewModel() {
 
@@ -152,8 +151,6 @@ class TimeTableViewModel(
             updateUiState { copy(isLoading = true) }
             dateTimeSelectionItem = item
             journeys.clear() // Clear cache trips when date time selection changed.
-//            alertsCache.clearAlerts()
-
             sandook.clearAlerts()
             rateLimiter.triggerEvent()
 
@@ -343,8 +340,7 @@ class TimeTableViewModel(
         )
         tripInfo = reverseTrip
         journeys.clear() // Clear cache trips when reverse trip is clicked.
-//        alertsCache.clearAlerts() // Clear alerts cache when reverse trip is clicked.
-        sandook.clearAlerts()
+        sandook.clearAlerts() // Clear alerts cache when reverse trip is clicked.
 
         analytics.track(
             AnalyticsEvent.ReverseTimeTableClickEvent(
@@ -422,7 +418,6 @@ class TimeTableViewModel(
         val alerts =
             journey.legs.filterIsInstance<TimeTableState.JourneyCardInfo.Leg.TransportLeg>()
                 .flatMap { it.serviceAlertList.orEmpty() }
-//        alertsCache.setAlerts(journeyId = journey.journeyId, alerts = alerts)
 
         sandook.insertAlerts(
             journeyId = journey.journeyId,
@@ -433,10 +428,6 @@ class TimeTableViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        // TODO - ideally AlertsCache should be scoped to TimeTableDestination and object must be deleted itself.
-        //   so we do not need to manually clear.
-
-//        alertsCache.clearAlerts()
         sandook.clearAlerts()
     }
 

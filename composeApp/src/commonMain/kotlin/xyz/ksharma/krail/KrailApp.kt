@@ -10,7 +10,6 @@ import xyz.ksharma.krail.di.splashModule
 import xyz.ksharma.krail.sandook.di.sandookModule
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.network.api.di.networkModule
-import xyz.ksharma.krail.trip.planner.ui.di.alertsCacheModule
 import xyz.ksharma.krail.trip.planner.ui.di.viewModelsModule
 
 @Composable
@@ -24,7 +23,6 @@ fun KrailApp() {
                 sandookModule,
                 splashModule,
                 appInfoModule,
-                alertsCacheModule,
                 analyticsModule,
             )
         },
