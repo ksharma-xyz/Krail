@@ -45,7 +45,6 @@ class SplashViewModel(
                 deviceModel = deviceModel,
             )
         )
-        println("App start event tracked: appinfo: $this")
     }
 
     private fun getThemeTransportMode() {
