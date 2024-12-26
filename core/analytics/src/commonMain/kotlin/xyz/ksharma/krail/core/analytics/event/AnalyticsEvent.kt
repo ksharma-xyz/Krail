@@ -89,7 +89,11 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
         val journeyOption: String,
     ) : AnalyticsEvent(
         name = "date_time_select",
-        properties = mapOf("dayOfWeek" to dayOfWeek, "time" to time, "option" to journeyOption),
+        properties = mapOf(
+            "dayOfWeek" to dayOfWeek,
+            "time" to time,
+            "journeyOption" to journeyOption,
+        ),
     )
 
     data class JourneyCardExpandEvent(val hasStarted: Boolean) :
@@ -130,7 +134,17 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
         val deviceModel: String,
         val fontSize: String,
         val isDarkTheme: Boolean,
-    ) : AnalyticsEvent(name = "app_start", properties = mapOf("app_start" to "app_start"))
+    ) : AnalyticsEvent(
+        name = "app_start",
+        properties = mapOf(
+            "deviceType" to deviceType,
+            "appVersion" to appVersion,
+            "osVersion" to osVersion,
+            "deviceModel" to deviceModel,
+            "fontSize" to fontSize,
+            "isDarkTheme" to isDarkTheme,
+        )
+    )
 
     // endregion
 }

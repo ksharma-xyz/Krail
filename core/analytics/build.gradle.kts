@@ -40,6 +40,7 @@ kotlin {
                 implementation(libs.firebase.gitLiveAnalytics)
 
                 implementation(projects.core.appInfo)
+                implementation(projects.core.log)
             }
         }
 

@@ -13,6 +13,8 @@ class RealAnalytics(
         // Only track prod builds analytics events
         if (appInfoProvider.getAppInfo().isDebug.not()) {
             firebaseAnalytics.logEvent(event.name, event.properties)
+        } else {
+            log("ANALYTICS EVENT: $event")
         }
     }
 
