@@ -19,6 +19,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
+import kotlinx.datetime.toLocalDateTime
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
@@ -156,9 +158,12 @@ class TimeTableViewModel(
 
             analytics.track(
                 AnalyticsEvent.DateTimeSelectEvent(
-                    dayOfWeek = item?.date?.dayOfWeek?.name ?: "NA",
-                    time = item?.toHHMM() ?: "NA",
-                    journeyOption = item?.option?.name ?: "NA",
+                    dayOfWeek = item?.date?.dayOfWeek?.name ?: Clock.System.now()
+                        .toLocalDateTime(currentSystemDefault()).dayOfWeek.name,
+                    time = item?.toHHMM() ?: Clock.System.now()
+                        .toLocalDateTime(currentSystemDefault()).toHHMM(),
+                    journeyOption = item?.option?.name ?: JourneyTimeOptions.LEAVE.name,
+                    isReset = item == null,
                 )
             )
         }

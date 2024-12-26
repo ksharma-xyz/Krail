@@ -21,19 +21,16 @@ private fun getTag(): String {
                 !element.className.startsWith("kotlinx.coroutines.") &&
                 !element.methodName.contains("\$default")
     }
-    val tag = runCatching { callerElement?.toStringTag() ?: "Unknown" }.getOrElse { "Unknown" }
+    val tag = runCatching { callerElement?.toStringTag() ?: "NULL_CALLER" }.getOrElse {
+        println("Error while getting tag: $it")
+        "ERROR_Unknown"
+    }
     return tag
 }
 
-private fun StackTraceElement.toStringTag(): String {
+internal fun StackTraceElement.toStringTag(): String {
     val maxTagLength = MAX_TAG_LENGTH
     val callerClassName = className.substringAfterLast('.')
         .substringBefore('$')
-    val methodName = className.substringAfterLast('.').split("$")[1]
-
-    return if (callerClassName.length + methodName.length + 1 <= maxTagLength) {
-        "$callerClassName.$methodName"
-    } else {
-        callerClassName.take(maxTagLength)
-    }
+    return callerClassName.take(maxTagLength)
 }

@@ -87,12 +87,15 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
         val dayOfWeek: String,
         val time: String,
         val journeyOption: String,
+        // User clicked on reset button and then selected the time
+        val isReset: Boolean = false,
     ) : AnalyticsEvent(
         name = "date_time_select",
         properties = mapOf(
             "dayOfWeek" to dayOfWeek,
             "time" to time,
             "journeyOption" to journeyOption,
+            "isReset" to isReset,
         ),
     )
 

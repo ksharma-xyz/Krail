@@ -3,6 +3,7 @@ package xyz.ksharma.krail.core.analytics
 import dev.gitlive.firebase.analytics.FirebaseAnalytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
+import xyz.ksharma.krail.core.log.log
 
 class RealAnalytics(
     private val firebaseAnalytics: FirebaseAnalytics,
