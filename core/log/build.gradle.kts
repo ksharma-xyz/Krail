@@ -31,6 +31,12 @@ kotlin {
             }
         }
 
+        androidUnitTest {
+            dependencies {
+                implementation(libs.test.kotlin)
+            }
+        }
+
         commonMain {
             dependencies {
                 implementation(compose.runtime)
