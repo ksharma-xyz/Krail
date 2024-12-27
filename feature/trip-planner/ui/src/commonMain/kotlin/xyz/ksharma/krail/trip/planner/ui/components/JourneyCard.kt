@@ -201,8 +201,6 @@ fun ExpandedJourneyCardContent(
     onLegClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val devicePlatformType: DevicePlatformType = LocalAppPlatformProvider.current
-
     Column(modifier = modifier) {
         FlowRow(
             modifier = Modifier
