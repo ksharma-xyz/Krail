@@ -49,7 +49,7 @@ class SavedTripsViewModel(
 
             trips.addAll(savedTrips.map { savedTrip -> savedTrip.toTrip() })
 
-           log("SavedTrips: ${trips.size} number")
+            log("SavedTrips: ${trips.size} number")
             trips.forEachIndexed { index, trip ->
                 log("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
             }
@@ -95,7 +95,7 @@ class SavedTripsViewModel(
     }
 
     private fun onDeleteSavedTrip(savedTrip: Trip) {
-       log("onDeleteSavedTrip: $savedTrip")
+        log("onDeleteSavedTrip: $savedTrip")
         viewModelScope.launch(context = Dispatchers.IO) {
             sandook.deleteTrip(tripId = savedTrip.tripId)
             loadSavedTrips()

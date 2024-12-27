@@ -14,6 +14,8 @@ import xyz.ksharma.krail.DEFAULT_THEME_TRANSPORT_MODE
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
+import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.core.remote_config.RemoteConfig
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
@@ -21,6 +23,7 @@ class SplashViewModel(
     private val sandook: Sandook,
     private val analytics: Analytics,
     private val appInfoProvider: AppInfoProvider,
+    private val remoteConfig: RemoteConfig,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TransportMode> =
@@ -32,6 +35,7 @@ class SplashViewModel(
         .onStart {
             getThemeTransportMode()
             trackAppStartEvent()
+            remoteConfig.setup() // App Start Event
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
     private fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {

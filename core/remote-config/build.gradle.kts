@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "xyz.ksharma.krail.core.analytics"
+    namespace = "xyz.ksharma.krail.core.remote_config"
 }
 
 kotlin {
@@ -34,14 +34,13 @@ kotlin {
 
         commonMain {
             dependencies {
+                implementation(projects.core.log)
+                implementation(projects.core.appInfo)
+
                 implementation(libs.kotlinx.serialization.json)
                 implementation(compose.runtime)
                 api(libs.di.koinComposeViewmodel)
-                implementation(libs.firebase.gitLiveAnalytics)
                 implementation(libs.firebase.gitLiveRemoteConfig)
-
-                implementation(projects.core.appInfo)
-                implementation(projects.core.log)
             }
         }
 

@@ -46,6 +46,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
 }
 
 plugins {
@@ -98,6 +102,7 @@ kotlin {
             implementation(projects.sandook)
             implementation(projects.core.appInfo)
             implementation(projects.core.log)
+            implementation(projects.core.remoteConfig)
             implementation(projects.feature.tripPlanner.network)
             implementation(projects.feature.tripPlanner.ui)
             implementation(projects.feature.tripPlanner.state)
@@ -128,4 +133,7 @@ kotlin {
 
 dependencies {
     implementation(projects.sandook)
+    // Required when using Firebase GitLive RemoteConfig.
+    // https://developer.android.com/studio/write/java8-support#library-desugaring
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 }
