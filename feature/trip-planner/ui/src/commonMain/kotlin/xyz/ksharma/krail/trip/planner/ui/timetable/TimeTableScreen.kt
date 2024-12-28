@@ -1,6 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -45,6 +47,8 @@ import krail.feature.trip_planner.ui.generated.resources.ic_reverse
 import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
 import org.jetbrains.compose.resources.painterResource
+import xyz.ksharma.krail.taj.LocalNavAnimatedVisibilityScope
+import xyz.ksharma.krail.taj.LocalSharedTransitionScope
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
@@ -65,6 +69,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TimeTableScreen(
     timeTableState: TimeTableState,
@@ -79,6 +84,11 @@ fun TimeTableScreen(
 ) {
     val themeColorHex by LocalThemeColor.current
     val themeColor = themeColorHex.hexToComposeColor()
+
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No SharedElementScope found")
+    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No AnimatedVisibility found")
 
     Column(
         modifier = modifier.fillMaxSize().background(color = KrailTheme.colors.surface),
@@ -172,10 +182,18 @@ fun TimeTableScreen(
             }
 
             item {
-                SecondaryButton(
-                    text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
-                    onClick = dateTimeSelectorClicked,
-                )
+                with(sharedTransitionScope) {
+                    SecondaryButton(
+                        text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
+                        onClick = dateTimeSelectorClicked,
+                        modifier = Modifier
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState(key = "planTripButtonKey"),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                            ),
+                    )
+                }
             }
 
             item {
