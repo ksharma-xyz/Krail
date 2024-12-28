@@ -1,10 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionLayout
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -54,8 +50,6 @@ import krail.feature.trip_planner.ui.generated.resources.ic_a11y
 import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
-import xyz.ksharma.krail.core.appinfo.DevicePlatformType
-import xyz.ksharma.krail.core.appinfo.LocalAppPlatformProvider
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
@@ -79,7 +73,6 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
  * @param onClick The action to perform when the card is clicked.
  * @param modifier The modifier to apply to the card.
  */
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun JourneyCard(
     timeToDeparture: String,
@@ -151,61 +144,50 @@ fun JourneyCard(
                 .animateContentSize(),
         ) {
 
-            SharedTransitionLayout {
-                AnimatedContent(
-                    cardState,
-                    label = "journey_card_transition"
-                ) { targetCardState ->
-                    when (targetCardState) {
-                        JourneyCardState.DEFAULT -> DefaultJourneyCardContent(
-                            timeToDeparture = timeToDeparture,
-                            originTime = originTime,
-                            destinationTime = destinationTime,
-                            totalTravelTime = totalTravelTime,
-                            isWheelchairAccessible = isWheelchairAccessible,
-                            themeColor = themeColor,
-                            transportModeList = transportModeList,
-                            platformNumber = platformNumber,
-                            totalWalkTime = totalWalkTime,
-                            animatedVisibilityScope = this@AnimatedContent,
-                            sharedTransitionScope = this@SharedTransitionLayout,
-                            modifier = Modifier
-                                .semantics(mergeDescendants = true) { }
-                                .clickable(
-                                    role = Role.Button,
-                                    onClick = onClick,
-                                    interactionSource = remember { MutableInteractionSource() },
-                                    indication = null,
-                                ),
-                        )
+            when (cardState) {
+                JourneyCardState.DEFAULT -> DefaultJourneyCardContent(
+                    timeToDeparture = timeToDeparture,
+                    originTime = originTime,
+                    destinationTime = destinationTime,
+                    totalTravelTime = totalTravelTime,
+                    isWheelchairAccessible = isWheelchairAccessible,
+                    themeColor = themeColor,
+                    transportModeList = transportModeList,
+                    platformNumber = platformNumber,
+                    totalWalkTime = totalWalkTime,
+                    modifier = Modifier
+                        .semantics(mergeDescendants = true) { }
+                        .clickable(
+                            role = Role.Button,
+                            onClick = onClick,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ),
+                )
 
-                        JourneyCardState.EXPANDED -> ExpandedJourneyCardContent(
-                            displayAllStops = false,
-                            timeToDeparture = timeToDeparture,
-                            themeColor = themeColor,
-                            platformText = platformText,
-                            totalTravelTime = totalTravelTime,
-                            legList = legList,
-                            totalUniqueServiceAlerts = totalUniqueServiceAlerts,
-                            onAlertClick = onAlertClick,
-                            onLegClick = onLegClick,
-                            animatedVisibilityScope = this@AnimatedContent,
-                            sharedTransitionScope = this@SharedTransitionLayout,
-                            modifier = Modifier.clickable(
-                                role = Role.Button,
-                                onClick = onClick,
-                                interactionSource = remember { MutableInteractionSource() },
-                                indication = null,
-                            ),
-                        )
-                    }
-                }
+                JourneyCardState.EXPANDED -> ExpandedJourneyCardContent(
+                    displayAllStops = false,
+                    timeToDeparture = timeToDeparture,
+                    themeColor = themeColor,
+                    platformText = platformText,
+                    totalTravelTime = totalTravelTime,
+                    legList = legList,
+                    totalUniqueServiceAlerts = totalUniqueServiceAlerts,
+                    onAlertClick = onAlertClick,
+                    onLegClick = onLegClick,
+                    modifier = Modifier.clickable(
+                        role = Role.Button,
+                        onClick = onClick,
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null,
+                    ),
+                )
             }
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ExpandedJourneyCardContent(
     displayAllStops: Boolean,
@@ -217,10 +199,8 @@ fun ExpandedJourneyCardContent(
     totalUniqueServiceAlerts: Int,
     onAlertClick: () -> Unit,
     onLegClick: (Boolean) -> Unit,
-    animatedVisibilityScope: AnimatedContentScope,
-    sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier,
-) = with(sharedTransitionScope) {
+) {
     Column(modifier = modifier) {
         FlowRow(
             modifier = Modifier
@@ -232,11 +212,6 @@ fun ExpandedJourneyCardContent(
                 text = timeToDeparture,
                 style = KrailTheme.typography.titleLarge,
                 color = themeColor,
-                modifier = Modifier.sharedBounds(
-                    sharedContentState = rememberSharedContentState(key = "timeToDepartureKey"),
-                    animatedVisibilityScope = animatedVisibilityScope,
-                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                ),
             )
 
             platformText?.let { text ->
@@ -295,12 +270,7 @@ fun ExpandedJourneyCardContent(
                 painter = painterResource(Res.drawable.ic_clock),
                 text = totalTravelTime,
                 textStyle = KrailTheme.typography.bodyLarge,
-                modifier = Modifier.align(Alignment.CenterVertically)
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(key = "totalJourneyTimeKey"),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                    ),
+                modifier = Modifier.align(Alignment.CenterVertically),
             )
         }
 
@@ -388,10 +358,8 @@ fun DefaultJourneyCardContent(
     transportModeList: ImmutableList<TransportMode>,
     platformNumber: String?,
     totalWalkTime: String?,
-    animatedVisibilityScope: AnimatedContentScope,
-    sharedTransitionScope: SharedTransitionScope,
     modifier: Modifier = Modifier,
-) = with(sharedTransitionScope) {
+) {
     Column(modifier = modifier) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -408,12 +376,7 @@ fun DefaultJourneyCardContent(
                     color = themeColor,
                     modifier = Modifier
                         .padding(end = 8.dp)
-                        .align(Alignment.CenterVertically)
-                        .sharedBounds(
-                            sharedContentState = rememberSharedContentState(key = "timeToDepartureKey"),
-                            animatedVisibilityScope = animatedVisibilityScope,
-                            resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                        ),
+                        .align(Alignment.CenterVertically),
                 )
                 DisplayWithDensityCheck {
                     Row(
@@ -482,12 +445,7 @@ fun DefaultJourneyCardContent(
                 text = totalTravelTime,
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
-                    .padding(end = 10.dp)
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(key = "totalJourneyTimeKey"),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                    ),
+                    .padding(end = 10.dp),
             )
             totalWalkTime?.let {
                 TextWithIcon(
