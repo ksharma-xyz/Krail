@@ -54,8 +54,6 @@ import krail.feature.trip_planner.ui.generated.resources.ic_a11y
 import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
-import xyz.ksharma.krail.core.appinfo.DevicePlatformType
-import xyz.ksharma.krail.core.appinfo.LocalAppPlatformProvider
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
@@ -295,12 +293,7 @@ fun ExpandedJourneyCardContent(
                 painter = painterResource(Res.drawable.ic_clock),
                 text = totalTravelTime,
                 textStyle = KrailTheme.typography.bodyLarge,
-                modifier = Modifier.align(Alignment.CenterVertically)
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(key = "totalJourneyTimeKey"),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                    ),
+                modifier = Modifier.align(Alignment.CenterVertically),
             )
         }
 
@@ -483,11 +476,6 @@ fun DefaultJourneyCardContent(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(end = 10.dp)
-                    .sharedBounds(
-                        sharedContentState = rememberSharedContentState(key = "totalJourneyTimeKey"),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-                    ),
             )
             totalWalkTime?.let {
                 TextWithIcon(
