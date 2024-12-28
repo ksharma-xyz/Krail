@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.trip.planner.ui.datetimeselector
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +44,8 @@ import xyz.ksharma.krail.core.datetime.decrementDateByOneDay
 import xyz.ksharma.krail.core.datetime.incrementDateByOneDay
 import xyz.ksharma.krail.core.datetime.rememberCurrentDateTime
 import xyz.ksharma.krail.core.datetime.toReadableDate
+import xyz.ksharma.krail.taj.LocalNavAnimatedVisibilityScope
+import xyz.ksharma.krail.taj.LocalSharedTransitionScope
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
@@ -53,7 +57,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectio
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
 import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun DateTimeSelectorScreen(
     dateTimeSelection: DateTimeSelectionItem?,
@@ -62,6 +66,11 @@ fun DateTimeSelectorScreen(
     onDateTimeSelected: (DateTimeSelectionItem?) -> Unit = {},
     onResetClick: () -> Unit = {},
 ) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No SharedElementScope found")
+    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No AnimatedVisibility found")
+
     // Colors
     val themeColorHex by LocalThemeColor.current
     val themeColor = remember(themeColorHex) { themeColorHex.hexToComposeColor() }
@@ -190,44 +199,52 @@ fun DateTimeSelectorScreen(
             }
 
             item {
-                Text(
-                    text = if (reset) {
-                        "Leave Now"
-                    } else {
-                        DateTimeSelectionItem(
-                            option = journeyTimeOption,
-                            hour = timePickerState.hour,
-                            minute = timePickerState.minute,
-                            date = selectedDate,
-                        ).toDateTimeText()
-                    },
-                    textAlign = TextAlign.Center,
-                    color = themeContentColor(),
-                    style = KrailTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 16.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(color = themeColor)
-                        .clickable(
-                            role = Role.Button,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = {
-                                onDateTimeSelected(
-                                    if (reset) null
-                                    else {
-                                        DateTimeSelectionItem(
-                                            option = journeyTimeOption,
-                                            hour = timePickerState.hour,
-                                            minute = timePickerState.minute,
-                                            date = selectedDate,
-                                        )
-                                    }
-                                )
-                            },
-                        ).padding(vertical = 10.dp, horizontal = 12.dp)
-                )
+                with(sharedTransitionScope) {
+                    Text(
+                        text = if (reset) {
+                            "Leave Now"
+                        } else {
+                            DateTimeSelectionItem(
+                                option = journeyTimeOption,
+                                hour = timePickerState.hour,
+                                minute = timePickerState.minute,
+                                date = selectedDate,
+                            ).toDateTimeText()
+                        },
+                        textAlign = TextAlign.Center,
+                        color = themeContentColor(),
+                        style = KrailTheme.typography.titleMedium,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .sharedBounds(
+                                sharedContentState = rememberSharedContentState(key = "planTripButtonKey"),
+                                animatedVisibilityScope = animatedVisibilityScope,
+                                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                            )
+                            .padding(horizontal = 24.dp, vertical = 16.dp)
+                            .clip(RoundedCornerShape(50))
+                            .background(color = themeColor)
+                            .clickable(
+                                role = Role.Button,
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null,
+                                onClick = {
+                                    onDateTimeSelected(
+                                        if (reset) null
+                                        else {
+                                            DateTimeSelectionItem(
+                                                option = journeyTimeOption,
+                                                hour = timePickerState.hour,
+                                                minute = timePickerState.minute,
+                                                date = selectedDate,
+                                            )
+                                        }
+                                    )
+                                },
+                            )
+                            .padding(vertical = 10.dp, horizontal = 12.dp),
+                    )
+                }
             }
         }
     }
