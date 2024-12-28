@@ -1,7 +1,7 @@
 package xyz.ksharma.krail.di
 
-import org.koin.core.KoinApplication
+import org.koin.dsl.koinConfiguration
 
-actual fun nativeConfig(): KoinApplication.() -> Unit = {
+actual fun nativeConfig() = koinConfiguration {
     printLogger()
 }
