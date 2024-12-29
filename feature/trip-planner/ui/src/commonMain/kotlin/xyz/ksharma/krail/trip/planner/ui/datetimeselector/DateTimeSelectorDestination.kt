@@ -4,15 +4,15 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.trip.planner.ui.navigation.DateTimeSelectorRoute
-import xyz.ksharma.krail.trip.planner.ui.navigation.animComposable
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectorEvent
 
 internal fun NavGraphBuilder.dateTimeSelectorDestination(navController: NavHostController) {
-    animComposable<DateTimeSelectorRoute> { backStackEntry ->
+    composable<DateTimeSelectorRoute> { backStackEntry ->
         val route: DateTimeSelectorRoute = backStackEntry.toRoute()
         val viewModel: DateTimeSelectorViewModel = koinViewModel<DateTimeSelectorViewModel>()
         val uiState by viewModel.uiState.collectAsStateWithLifecycle()

@@ -1,22 +1,16 @@
 package xyz.ksharma.krail.trip.planner.ui.navigation
 
-import androidx.compose.animation.AnimatedContentScope
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavGraphBuilder
+import    androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import kotlinx.serialization.Serializable
-import xyz.ksharma.krail.taj.LocalNavAnimatedVisibilityScope
 import xyz.ksharma.krail.trip.planner.ui.alerts.alertsDestination
 import xyz.ksharma.krail.trip.planner.ui.datetimeselector.dateTimeSelectorDestination
 import xyz.ksharma.krail.trip.planner.ui.savedtrips.savedTripsDestination
 import xyz.ksharma.krail.trip.planner.ui.searchstop.searchStopDestination
 import xyz.ksharma.krail.trip.planner.ui.settings.settingsDestination
-import xyz.ksharma.krail.trip.planner.ui.themeselection.themeSelectionDestination
 import xyz.ksharma.krail.trip.planner.ui.timetable.timeTableDestination
+import xyz.ksharma.krail.trip.planner.ui.themeselection.themeSelectionDestination
 
 /**
  * Nested navigation graph for the trip planner feature.
@@ -97,18 +91,5 @@ data class DateTimeSelectorRoute(
 ) {
     companion object {
         const val DATE_TIME_TEXT_KEY = "DateTimeSelectionKey"
-    }
-}
-
-/**
- * Use this when shared element transitions are required, otherwise keep using [composable] directly.
- */
-inline fun <reified T : Any> NavGraphBuilder.animComposable(
-    noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
-) {
-    composable<T> { backStackEntry ->
-        CompositionLocalProvider(LocalNavAnimatedVisibilityScope provides this) {
-            content(backStackEntry)
-        }
     }
 }

@@ -1,8 +1,5 @@
 package xyz.ksharma.krail.taj
 
-import androidx.compose.animation.AnimatedVisibilityScope
-import androidx.compose.animation.ExperimentalSharedTransitionApi
-import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
@@ -18,7 +15,3 @@ val LocalThemeContentColor = compositionLocalOf { mutableStateOf(unspecifiedColo
 
 internal val LocalContentColor = compositionLocalOf { Color.Unspecified }
 val LocalOnContentColor = compositionLocalOf { Color.Unspecified }
-
-val LocalNavAnimatedVisibilityScope = compositionLocalOf<AnimatedVisibilityScope?> { null }
-@OptIn(ExperimentalSharedTransitionApi::class)
-val LocalSharedTransitionScope = compositionLocalOf<SharedTransitionScope?> { null }
