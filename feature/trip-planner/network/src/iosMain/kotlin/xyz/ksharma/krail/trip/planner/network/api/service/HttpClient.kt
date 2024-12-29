@@ -26,7 +26,7 @@ actual fun httpClient(): HttpClient {
         }
 
         defaultRequest {
-            headers.append(HttpHeaders.Authorization, "apikey ${BuildKonfig.NSW_TRANSPORT_API_KEY}")
+            headers.append(HttpHeaders.Authorization, "apikey ${BuildKonfig.IOS_NSW_TRANSPORT_API_KEY}")
         }
     }
 }

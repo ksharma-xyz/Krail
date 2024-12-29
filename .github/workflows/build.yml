@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment variables
         run: |
-          echo "NSW_TRANSPORT_API_KEY=${{ secrets.NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+          echo "ANDROID_NSW_TRANSPORT_API_KEY=${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
 
       - name: set up JDK
         uses: actions/setup-java@v4
@@ -58,12 +58,12 @@ jobs:
 
       - name: Build Debug
         env:
-          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
+          ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
         run: ./gradlew :composeApp:assembleDebug test
 
       - name: Build Release
         env:
-          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
+          ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
         run: ./gradlew :composeApp:assembleRelease test
 
   iOS:
@@ -76,7 +76,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup environment variables
         run: |
-          echo "NSW_TRANSPORT_API_KEY=${{ secrets.NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+          echo "IOS_NSW_TRANSPORT_API_KEY=${{ secrets.IOS_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -104,7 +104,7 @@ jobs:
 
       - name: Build iOS App - Debug (Without Code Signing)
         env:
-          NSW_TRANSPORT_API_KEY: ${{ secrets.NSW_TRANSPORT_API_KEY }}
+          IOS_NSW_TRANSPORT_API_KEY: ${{ secrets.IOS_NSW_TRANSPORT_API_KEY }}
         run: |
           xcodebuild -project iosApp/iosApp.xcodeproj \
                      -scheme iosApp \

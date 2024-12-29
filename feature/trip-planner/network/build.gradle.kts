@@ -75,19 +75,26 @@ kotlin {
 
 // READ API KEY
 val localProperties = gradleLocalProperties(rootProject.rootDir, providers)
-val nswTransportApiKey: String = localProperties.getProperty("NSW_TRANSPORT_API_KEY")
-    ?: System.getenv("NSW_TRANSPORT_API_KEY")
-require(nswTransportApiKey.isNotEmpty()) {
-    "Register API key and put in local.properties as `NSW_TRANSPORT_API_KEY`"
+val androidNswTransportApiKey: String = localProperties.getProperty("ANDROID_NSW_TRANSPORT_API_KEY")
+    ?: System.getenv("ANDROID_NSW_TRANSPORT_API_KEY")
+require(androidNswTransportApiKey.isNotEmpty()) {
+    "Register API key and put in local.properties as `ANDROID_NSW_TRANSPORT_API_KEY`"
+}
+
+val iosNswTransportApiKey: String = localProperties.getProperty("IOS_NSW_TRANSPORT_API_KEY")
+    ?: System.getenv("IOS_NSW_TRANSPORT_API_KEY")
+require(iosNswTransportApiKey.isNotEmpty()) {
+    "Register API key and put in local.properties as `IOS_NSW_TRANSPORT_API_KEY`"
 }
 buildkonfig {
     packageName = "xyz.ksharma.krail.trip.planner.network"
 
-    require(nswTransportApiKey.isNotEmpty()) {
-        "Register API key and put in local.properties as `NSW_TRANSPORT_API_KEY`"
+    require(androidNswTransportApiKey.isNotEmpty() && iosNswTransportApiKey.isNotEmpty()) {
+        "Register API key and put in local.properties"
     }
 
     defaultConfigs {
-        buildConfigField(FieldSpec.Type.STRING, "NSW_TRANSPORT_API_KEY", nswTransportApiKey)
+        buildConfigField(FieldSpec.Type.STRING, "ANDROID_NSW_TRANSPORT_API_KEY", androidNswTransportApiKey)
+        buildConfigField(FieldSpec.Type.STRING, "IOS_NSW_TRANSPORT_API_KEY", iosNswTransportApiKey)
     }
 }
