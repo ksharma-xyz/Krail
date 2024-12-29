@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -49,8 +50,6 @@ import krail.feature.trip_planner.ui.generated.resources.ic_a11y
 import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
-import xyz.ksharma.krail.core.appinfo.DevicePlatformType
-import xyz.ksharma.krail.core.appinfo.LocalAppPlatformProvider
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
@@ -144,6 +143,7 @@ fun JourneyCard(
                 )
                 .animateContentSize(),
         ) {
+
             when (cardState) {
                 JourneyCardState.DEFAULT -> DefaultJourneyCardContent(
                     timeToDeparture = timeToDeparture,
@@ -219,6 +219,7 @@ fun ExpandedJourneyCardContent(
                     text = text,
                     style = KrailTheme.typography.titleLarge,
                     color = themeColor,
+                    modifier = Modifier,
                 )
             }
         }
@@ -345,7 +346,7 @@ fun getPaddingValue(lastLeg: TimeTableState.JourneyCardInfo.Leg): Dp {
     ) 16.dp else 0.dp
 }
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun DefaultJourneyCardContent(
     timeToDeparture: String,
@@ -413,6 +414,7 @@ fun DefaultJourneyCardContent(
                         text = platform,
                         textAlign = TextAlign.Center,
                         style = KrailTheme.typography.labelLarge,
+                        modifier = Modifier,
                     )
                 }
             }

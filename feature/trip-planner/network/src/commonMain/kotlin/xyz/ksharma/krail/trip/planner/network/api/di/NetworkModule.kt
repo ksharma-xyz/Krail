@@ -12,6 +12,6 @@ import xyz.ksharma.krail.trip.planner.network.api.service.httpClient
 
 val networkModule = module {
     singleOf(::NetworkRateLimiter) { bind<RateLimiter>() }
-    single<HttpClient> { httpClient() }
+    single<HttpClient> { httpClient(appInfoProvider = get()) }
     singleOf(::RealTripPlanningService) { bind<TripPlanningService>() }
 }
