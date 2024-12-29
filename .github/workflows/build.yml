@@ -23,6 +23,7 @@ jobs:
       - name: Setup environment variables
         run: |
           echo "ANDROID_NSW_TRANSPORT_API_KEY=${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+          echo "IOS_NSW_TRANSPORT_API_KEY=${{ secrets.IOS_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
 
       - name: set up JDK
         uses: actions/setup-java@v4
@@ -77,6 +78,7 @@ jobs:
       - name: Setup environment variables
         run: |
           echo "IOS_NSW_TRANSPORT_API_KEY=${{ secrets.IOS_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+          echo "ANDROID_NSW_TRANSPORT_API_KEY=${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
 
       - name: Checkout code
         uses: actions/checkout@v4
