@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.trip.planner.ui.savedtrips
 
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -33,8 +35,12 @@ import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_settings
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.LocalNavAnimatedVisibilityScope
+import xyz.ksharma.krail.taj.LocalOnContentColor
+import xyz.ksharma.krail.taj.LocalSharedTransitionScope
 import xyz.ksharma.krail.taj.components.RoundIconButton
 
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun SavedTripsScreen(
     savedTripsState: SavedTripsState,
@@ -49,6 +55,11 @@ fun SavedTripsScreen(
     onSettingsButtonClick: () -> Unit = {},
     onEvent: (SavedTripUiEvent) -> Unit = {},
 ) {
+    val sharedTransitionScope = LocalSharedTransitionScope.current
+        ?: throw IllegalStateException("No SharedElementScope found")
+    val animatedVisibilityScope = LocalNavAnimatedVisibilityScope.current
+        ?: throw IllegalStateException("No AnimatedVisibility found")
+
     val themeContentColor by LocalThemeContentColor.current
     // TODO -  handle colors of status bar
     /*    DisposableEffect(themeContentColor) {
@@ -112,25 +123,32 @@ fun SavedTripsScreen(
                         key = { it.fromStopId + it.toStopId },
                     ) { trip ->
 
-                        SavedTripCard(
-                            trip = trip,
-                            onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
-                            onCardClick = {
-                                onSavedTripCardClick(
-                                    StopItem(
-                                        stopId = trip.fromStopId,
-                                        stopName = trip.fromStopName,
+                        with(sharedTransitionScope) {
+                            SavedTripCard(
+                                trip = trip,
+                                onStarClick = { onEvent(SavedTripUiEvent.DeleteSavedTrip(trip)) },
+                                onCardClick = {
+                                    onSavedTripCardClick(
+                                        StopItem(
+                                            stopId = trip.fromStopId,
+                                            stopName = trip.fromStopName,
+                                        ),
+                                        StopItem(
+                                            stopId = trip.toStopId,
+                                            stopName = trip.toStopName,
+                                        ),
+                                    )
+                                },
+                                primaryTransportMode = null, // TODO
+                                modifier = Modifier
+                                    .padding(horizontal = 16.dp)
+                                    .sharedBounds(
+                                        sharedContentState = rememberSharedContentState(key = "savedTripCard_${trip.fromStopId}_${trip.toStopId}"),
+                                        animatedVisibilityScope = animatedVisibilityScope,
+                                        resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
                                     ),
-                                    StopItem(
-                                        stopId = trip.toStopId,
-                                        stopName = trip.toStopName,
-                                    ),
-                                )
-                            },
-                            primaryTransportMode = null, // TODO
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp),
-                        )
+                            )
+                        }
 
                         Spacer(modifier = Modifier.height(12.dp))
                     }

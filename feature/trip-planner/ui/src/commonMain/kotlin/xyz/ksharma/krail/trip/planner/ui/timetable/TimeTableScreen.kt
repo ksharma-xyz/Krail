@@ -164,14 +164,21 @@ fun TimeTableScreen(
 
         LazyColumn(contentPadding = PaddingValues(bottom = 16.dp)) {
             item(key = "Origin-Destination") {
-                timeTableState.trip?.let { trip ->
-                    OriginDestination(
-                        trip = trip,
-                        timeLineColor = KrailTheme.colors.onSurface,
-                        modifier = Modifier.fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .background(color = KrailTheme.colors.surface),
-                    )
+                with(sharedTransitionScope) {
+                    timeTableState.trip?.let { trip ->
+                        OriginDestination(
+                            trip = trip,
+                            timeLineColor = KrailTheme.colors.onSurface,
+                            modifier = Modifier.fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                                .background(color = KrailTheme.colors.surface)
+                                .sharedBounds(
+                                    sharedContentState = rememberSharedContentState(key = "savedTripCard_${trip.fromStopId}_${trip.toStopId}"),
+                                    animatedVisibilityScope = animatedVisibilityScope,
+                                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds(),
+                                ),
+                        )
+                    }
                 }
             }
 
