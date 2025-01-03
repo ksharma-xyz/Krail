@@ -53,6 +53,10 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(libs.test.kotlin)
+                implementation(libs.test.kotlinxCoroutineTest)
+                implementation(libs.test.turbine)
+
+                implementation(projects.sandook)
             }
         }
     }
@@ -60,4 +64,7 @@ kotlin {
 
 android {
     namespace = "xyz.ksharma.krail.trip.planner.ui"
+}
+dependencies {
+    testImplementation(project(":sandook"))
 }

@@ -13,12 +13,10 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.qualifier.named
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
-import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SavedTrip
@@ -35,6 +33,7 @@ class SavedTripsViewModel(
     private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
     val uiState: StateFlow<SavedTripsState> = _uiState
         .onStart {
+            println("SavedTripsViewModel.onStart")
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.SavedTrips)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SavedTripsState())
 
