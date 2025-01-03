@@ -4,16 +4,15 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
 
 internal class RealRemoteConfig(
     private val appInfoProvider: AppInfoProvider,
     private val coroutineScope: CoroutineScope,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.Default,
+    private val defaultDispatcher: CoroutineDispatcher = DispatchersComponent().defaultDispatcher,
 ) : RemoteConfig {
 
     private val remoteConfig = Firebase.remoteConfig

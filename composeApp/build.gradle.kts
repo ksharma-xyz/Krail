@@ -98,14 +98,15 @@ kotlin {
 
         commonMain.dependencies {
             implementation(projects.core.analytics)
-            implementation(projects.taj)
-            implementation(projects.sandook)
             implementation(projects.core.appInfo)
+            implementation(projects.core.di)
             implementation(projects.core.log)
             implementation(projects.core.remoteConfig)
             implementation(projects.feature.tripPlanner.network)
-            implementation(projects.feature.tripPlanner.ui)
             implementation(projects.feature.tripPlanner.state)
+            implementation(projects.feature.tripPlanner.ui)
+            implementation(projects.sandook)
+            implementation(projects.taj)
 
             implementation(libs.navigation.compose)
 
