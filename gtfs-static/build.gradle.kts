@@ -24,18 +24,6 @@ kotlin {
     iosArm64()
     iosSimulatorArm64()
 
-/*
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    ).forEach {
-        it.binaries.framework {
-            baseName = "gtfsStatic"
-        }
-    }
-*/
-
     sourceSets {
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
@@ -55,6 +43,7 @@ kotlin {
                 implementation(compose.runtime)
 
                 implementation(projects.core.log)
+                implementation(projects.core.di)
 
                 api(libs.di.koinComposeViewmodel)
             }

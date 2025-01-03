@@ -3,8 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.timetable
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +30,7 @@ import xyz.ksharma.krail.core.datetime.DateTimeHelper.isFuture
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeString
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SelectServiceAlertsByJourneyId
@@ -53,6 +53,7 @@ class TimeTableViewModel(
     private val rateLimiter: RateLimiter,
     private val sandook: Sandook,
     private val analytics: Analytics,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
@@ -173,7 +174,7 @@ class TimeTableViewModel(
         log("fetchTrip API Call")
         fetchTripJob?.cancel()
         updateUiState { copy(silentLoading = true) }
-        fetchTripJob = viewModelScope.launch(Dispatchers.IO) {
+        fetchTripJob = viewModelScope.launch(ioDispatcher) {
             rateLimiter.rateLimitFlow {
                 log("rateLimitFlow block obj:$rateLimiter and coroutine: $this")
                 updateUiState { copy(silentLoading = true) }
@@ -193,7 +194,7 @@ class TimeTableViewModel(
     }
 
     // TODO - Write UT for this method
-    private suspend fun updateTripsCache(response: TripResponse) = withContext(Dispatchers.IO) {
+    private suspend fun updateTripsCache(response: TripResponse) = withContext(ioDispatcher) {
         val newJourneyList = response.buildJourneyList()
         val startedJourneyList = journeys.values
             .filter {
@@ -250,7 +251,7 @@ class TimeTableViewModel(
         }
     }
 
-    private suspend fun loadTrip(): Result<TripResponse> = withContext(Dispatchers.IO) {
+    private suspend fun loadTrip(): Result<TripResponse> = withContext(ioDispatcher) {
         log("loadTrip API Call")
         require(
             tripInfo != null && tripInfo!!.fromStopId.isNotEmpty() && tripInfo!!.toStopId.isNotEmpty(),
@@ -276,7 +277,7 @@ class TimeTableViewModel(
 
     private fun onSaveTripButtonClicked() {
         log("Save Trip Button Clicked")
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             analytics.track(
                 AnalyticsEvent.SaveTripClickEvent(
                     fromStopId = tripInfo?.fromStopId ?: "NA",
@@ -371,7 +372,7 @@ class TimeTableViewModel(
      * journey card should be updated.
      */
     private fun updateTimeText() = viewModelScope.launch {
-        val updatedJourneyList = withContext(Dispatchers.IO) {
+        val updatedJourneyList = withContext(ioDispatcher) {
             updateJourneyCardInfoTimeText(_uiState.value.journeyList).toImmutableList()
         }
         updateUiState { copy(journeyList = updatedJourneyList) }
@@ -400,7 +401,7 @@ class TimeTableViewModel(
 
     fun fetchAlertsForJourney(journeyId: String, onResult: (List<ServiceAlert>) -> Unit) {
         viewModelScope.launch {
-            val alerts = withContext(Dispatchers.IO) {
+            val alerts = withContext(ioDispatcher) {
                 runCatching {
                     _uiState.value.journeyList.find { it.journeyId == journeyId }?.let { journey ->
                         getAlertsFromJourney(journey)

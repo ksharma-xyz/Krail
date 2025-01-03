@@ -2,8 +2,7 @@ package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
-import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -24,6 +22,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionState
 class ThemeSelectionViewModel(
     private val sandook: Sandook,
     private val analytics: Analytics,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<ThemeSelectionState> =
@@ -48,7 +47,7 @@ class ThemeSelectionViewModel(
 
     private fun onTransportModeSelected(productClass: Int) {
         transportSelectionJob?.cancel()
-        transportSelectionJob = viewModelScope.launch(Dispatchers.IO) {
+        transportSelectionJob = viewModelScope.launch(ioDispatcher) {
             sandook.clearTheme() // Only one entry should exist at a time
             sandook.insertOrReplaceTheme(productClass.toLong())
             updateUiState {
@@ -59,7 +58,7 @@ class ThemeSelectionViewModel(
     }
 
     private fun getThemeTransportMode() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             // First app launch there will be no product class, so use default transport mode theme.
             val productClass = sandook.getProductClass()?.toInt()
             val mode = productClass?.let { TransportMode.toTransportModeType(it) }
