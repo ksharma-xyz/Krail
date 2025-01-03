@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.core.analytics.di
+package xyz.ksharma.krail.core.di
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -9,9 +9,9 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import org.koin.core.component.inject
-import xyz.ksharma.krail.core.analytics.di.DispatchersComponent.Companion.DefaultDispatcher
-import xyz.ksharma.krail.core.analytics.di.DispatchersComponent.Companion.IODispatcher
-import xyz.ksharma.krail.core.analytics.di.DispatchersComponent.Companion.MainDispatcher
+import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.DefaultDispatcher
+import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.IODispatcher
+import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.MainDispatcher
 
 open class DispatchersComponent : KoinComponent {
 
@@ -28,7 +28,7 @@ open class DispatchersComponent : KoinComponent {
     }
 }
 
-val coroutineModule = module {
+val coroutineDispatchersModule = module {
 
     single(named(DefaultDispatcher)) {
         Dispatchers.Default
@@ -43,6 +43,6 @@ val coroutineModule = module {
     }
 
     single {
-        CoroutineScope(SupervisorJob() + Dispatchers.Default)
+        CoroutineScope(context = SupervisorJob() + Dispatchers.Default)
     }
 }

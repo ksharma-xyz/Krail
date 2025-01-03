@@ -5,12 +5,9 @@ import dev.gitlive.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.koin.core.component.inject
-import org.koin.core.qualifier.named
-import xyz.ksharma.krail.core.analytics.di.DispatchersComponent
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
 
 internal class RealRemoteConfig(
     private val appInfoProvider: AppInfoProvider,
