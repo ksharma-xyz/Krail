@@ -2,8 +2,7 @@ package xyz.ksharma.krail.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +13,7 @@ import xyz.ksharma.krail.DEFAULT_THEME_TRANSPORT_MODE
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
-import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.remote_config.RemoteConfig
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -24,6 +23,7 @@ class SplashViewModel(
     private val analytics: Analytics,
     private val appInfoProvider: AppInfoProvider,
     private val remoteConfig: RemoteConfig,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<TransportMode> =
@@ -52,7 +52,7 @@ class SplashViewModel(
     }
 
     private fun getThemeTransportMode() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             // First app launch there will be no product class, so use default transport mode theme.
             val productClass =
                 sandook.getProductClass()?.toInt() ?: DEFAULT_THEME_TRANSPORT_MODE.productClass

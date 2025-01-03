@@ -44,6 +44,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.core.appInfo)
+                implementation(projects.core.di)
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.client.core)

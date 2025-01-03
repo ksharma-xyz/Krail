@@ -1,7 +1,10 @@
 package xyz.ksharma.krail.trip.planner.ui.di
 
+import org.koin.core.module.dsl.viewModel
 import org.koin.core.module.dsl.viewModelOf
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.IODispatcher
 import xyz.ksharma.krail.trip.planner.ui.savedtrips.SavedTripsViewModel
 import xyz.ksharma.krail.trip.planner.ui.searchstop.SearchStopViewModel
 import xyz.ksharma.krail.trip.planner.ui.settings.SettingsViewModel
@@ -11,11 +14,34 @@ import xyz.ksharma.krail.trip.planner.ui.datetimeselector.DateTimeSelectorViewMo
 import xyz.ksharma.krail.trip.planner.ui.themeselection.ThemeSelectionViewModel
 
 val viewModelsModule = module {
-    viewModelOf(::SavedTripsViewModel)
     viewModelOf(::SearchStopViewModel)
-    viewModelOf(::TimeTableViewModel)
-    viewModelOf(::ThemeSelectionViewModel)
     viewModelOf(::SettingsViewModel)
     viewModelOf(::ServiceAlertsViewModel)
     viewModelOf(::DateTimeSelectorViewModel)
+
+    viewModel {
+        SavedTripsViewModel(
+            sandook = get(),
+            analytics = get(),
+            ioDispatcher = get(named(IODispatcher)),
+        )
+    }
+
+    viewModel {
+        TimeTableViewModel(
+            tripPlanningService = get(),
+            rateLimiter = get(),
+            sandook = get(),
+            analytics = get(),
+            ioDispatcher = get(named(IODispatcher)),
+        )
+    }
+
+    viewModel {
+        ThemeSelectionViewModel(
+            sandook = get(),
+            analytics = get(),
+            ioDispatcher = get(named(IODispatcher)),
+        )
+    }
 }

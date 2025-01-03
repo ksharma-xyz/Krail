@@ -4,17 +4,18 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readRawBytes
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.log.log
 
 class RealNswGtfsService(
     private val httpClient: HttpClient,
     private val fileStorage: FileStorage,
+    private val ioDispatcher: CoroutineDispatcher = DispatchersComponent().ioDispatcher,
 ) : NswGtfsService {
 
-    override suspend fun getSydneyTrains() = withContext(Dispatchers.IO) {
+    override suspend fun getSydneyTrains() = withContext(ioDispatcher) {
         val response: HttpResponse =
             httpClient.get("$NSW_TRANSPORT_BASE_URL/$GTFS_SCHEDULE_V1/sydneytrains")
 

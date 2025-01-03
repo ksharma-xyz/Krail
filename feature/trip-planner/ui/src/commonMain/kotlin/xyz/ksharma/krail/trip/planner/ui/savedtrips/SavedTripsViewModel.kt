@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.savedtrips
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,10 +13,12 @@ import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.core.qualifier.named
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SavedTrip
@@ -26,6 +29,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 class SavedTripsViewModel(
     private val sandook: Sandook,
     private val analytics: Analytics,
+    private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
@@ -35,7 +39,7 @@ class SavedTripsViewModel(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SavedTripsState())
 
     private fun loadSavedTrips() {
-        viewModelScope.launch(context = Dispatchers.IO) {
+        viewModelScope.launch(ioDispatcher) {
             updateUiState { copy(isLoading = true) }
             val trips = mutableSetOf<Trip>()
 

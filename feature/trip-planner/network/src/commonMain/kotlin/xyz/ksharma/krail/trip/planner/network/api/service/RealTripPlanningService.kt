@@ -3,16 +3,19 @@ package xyz.ksharma.krail.trip.planner.network.api.service
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.StopType
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.service.stop_finder.StopFinderRequestParams
 import xyz.ksharma.krail.trip.planner.network.api.service.trip.TripRequestParams
 
-class RealTripPlanningService(private val httpClient: HttpClient) : TripPlanningService {
+class RealTripPlanningService(
+    private val httpClient: HttpClient,
+    private val ioDispatcher: CoroutineDispatcher,
+) : TripPlanningService {
 
     override suspend fun trip(
         originStopId: String,
@@ -20,7 +23,7 @@ class RealTripPlanningService(private val httpClient: HttpClient) : TripPlanning
         depArr: DepArr,
         date: String?,
         time: String?,
-    ): TripResponse = withContext(Dispatchers.IO) {
+    ): TripResponse = withContext(ioDispatcher) {
 
         httpClient.get("$NSW_TRANSPORT_BASE_URL/v1/tp/trip") {
             url {
@@ -49,7 +52,7 @@ class RealTripPlanningService(private val httpClient: HttpClient) : TripPlanning
     override suspend fun stopFinder(
         stopSearchQuery: String,
         stopType: StopType,
-    ): StopFinderResponse = withContext(Dispatchers.IO) {
+    ): StopFinderResponse = withContext(ioDispatcher) {
         httpClient.get("${NSW_TRANSPORT_BASE_URL}/v1/tp/stop_finder") {
             url {
                 parameters.append(StopFinderRequestParams.nameSf, stopSearchQuery)
