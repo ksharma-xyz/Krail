@@ -8,11 +8,13 @@ class KrailApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        instance = this
+//        instance = this
         Firebase.initialize(context = this)
     }
 
+/*
     companion object {
         var instance: Application? = null
     }
+*/
 }
