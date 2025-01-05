@@ -60,12 +60,12 @@ jobs:
       - name: Build Debug
         env:
           ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
-        run: ./gradlew :composeApp:assembleDebug test
+        run: ./gradlew :composeApp:assembleDebug testDebug
 
       - name: Build Release
         env:
           ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
-        run: ./gradlew :composeApp:assembleRelease test
+        run: ./gradlew :composeApp:assembleRelease testRelease
 
   iOS:
     if: ${{ github.event.pull_request.draft == false }}
