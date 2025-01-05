@@ -43,6 +43,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(projects.core.analytics)
+                implementation(projects.core.log)
                 implementation(projects.sandook)
                 implementation(projects.feature.tripPlanner.ui)
                 implementation(projects.feature.tripPlanner.state)
