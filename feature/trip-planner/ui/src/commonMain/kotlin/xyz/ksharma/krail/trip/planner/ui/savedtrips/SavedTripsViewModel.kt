@@ -33,7 +33,6 @@ class SavedTripsViewModel(
     private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
     val uiState: StateFlow<SavedTripsState> = _uiState
         .onStart {
-            println("SavedTripsViewModel.onStart")
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.SavedTrips)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SavedTripsState())
 
