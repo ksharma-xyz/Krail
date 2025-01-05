@@ -6,6 +6,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -50,11 +51,10 @@ class SavedTripsViewModelTest {
         assertFalse((analytics as FakeAnalytics).wasScreenViewEventTracked("view_screen"))
 
         viewModel.uiState.test {
-            println("viewModel.uiState.test")
             val item = awaitItem()
             assertEquals(item, SavedTripsState())
 
-            delay(1) // Required for onStart to be called. - TODO is there a better way?
+            advanceUntilIdle()
             assertTrue(analytics.wasScreenViewEventTracked("view_screen"))
 
             cancelAndConsumeRemainingEvents()
