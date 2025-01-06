@@ -25,4 +25,9 @@ class FakeAnalytics : Analytics {
     override fun setUserProperty(name: String, value: String) {
         println("Setting user property $name to $value")
     }
+
+    fun clear() {
+        trackedEvents.clear()
+        fakeUserId = null
+    }
 }
