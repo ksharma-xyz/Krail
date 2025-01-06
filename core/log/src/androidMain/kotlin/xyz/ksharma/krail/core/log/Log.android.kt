@@ -1,15 +1,13 @@
 package xyz.ksharma.krail.core.log
 
-import android.util.Log
-
 private const val MAX_TAG_LENGTH: Int = 23
 
 actual fun log(message: String, throwable: Throwable?) {
-    if (BuildConfig.DEBUG) Log.d(getTag(), message)
+    if (BuildConfig.DEBUG) println("${getTag()}, $message")
 }
 
 actual fun logError(message: String, throwable: Throwable?) {
-    if (BuildConfig.DEBUG) Log.e(getTag(), message, throwable)
+    if (BuildConfig.DEBUG) println("${getTag()}, $message, $throwable")
 }
 
 private fun getTag(): String {
