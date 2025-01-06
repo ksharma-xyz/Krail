@@ -63,7 +63,9 @@ class SavedTripsViewModel(
     fun onEvent(event: SavedTripUiEvent) {
         when (event) {
             is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.trip)
+
             SavedTripUiEvent.LoadSavedTrips -> loadSavedTrips()
+
             is SavedTripUiEvent.AnalyticsSavedTripCardClick -> {
                 analytics.trackSavedTripCardClick(
                     fromStopId = event.fromStopId,

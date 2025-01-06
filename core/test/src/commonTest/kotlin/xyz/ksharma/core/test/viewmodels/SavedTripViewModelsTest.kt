@@ -16,6 +16,7 @@ import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.ui.savedtrips.SavedTripsViewModel
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripsState
+import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -46,7 +47,7 @@ class SavedTripsViewModelTest {
     }
 
     @Test
-    fun `analytics event should be tracked when observer is active`() = runTest {
+    fun `GIVEN initial state WHEN observer is active THEN analytics event should be tracked`() = runTest {
         // Ensure analytics events have not been tracked before observation
         assertFalse((analytics as FakeAnalytics).wasScreenViewEventTracked("view_screen"))
 
@@ -62,8 +63,14 @@ class SavedTripsViewModelTest {
     }
 
     @Test
-    fun `analytics event should not be tracked when no observer is active`() = runTest {
-        assertFalse((analytics as FakeAnalytics).wasScreenViewEventTracked("view_screen"))
+    fun `GIVEN no observer is active WHEN checking analytics THEN event should not be tracked`() = runTest {
+        // GIVEN no observer is active
+
+        // WHEN checking analytics
+        val eventTracked = (analytics as FakeAnalytics).wasScreenViewEventTracked("view_screen")
+
+        // THEN event should not be tracked
+        assertFalse(eventTracked)
     }
 
     @Test
@@ -92,6 +99,41 @@ class SavedTripsViewModelTest {
                 assertFalse(item.isLoading)
                 assertTrue(item.savedTrips.isNotEmpty())
 
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
+    fun `GIVEN a saved trip WHEN DeleteSavedTrip event is triggered THEN the trip should be deleted and UiState should update`() =
+        runTest {
+            // GIVEN a saved trip
+            val trip = Trip(
+                fromStopId = "FROM_STOP_ID_1",
+                fromStopName = "STOP_NAME_1",
+                toStopId = "TO_ID_1",
+                toStopName = "STOP_NAME_2",
+            )
+            sandook.insertOrReplaceTrip(
+                tripId = trip.tripId,
+                fromStopId = trip.fromStopId,
+                fromStopName = trip.fromStopName,
+                toStopId = trip.toStopId,
+                toStopName = trip.toStopName,
+            )
+
+            // Ensure initial state
+            viewModel.uiState.test {
+                skipItems(1)
+
+                // WHEN the DeleteSavedTrip event is triggered
+                viewModel.onEvent(
+                    SavedTripUiEvent.DeleteSavedTrip(trip = trip)
+                )
+
+                // THEN verify that the trip is deleted and the state is updated
+                val item = awaitItem()
+                assertFalse(item.isLoading)
+                assertTrue(item.savedTrips.isEmpty())
                 cancelAndIgnoreRemainingEvents()
             }
         }
