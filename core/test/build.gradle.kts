@@ -43,6 +43,7 @@ kotlin {
         commonTest {
             dependencies {
                 implementation(projects.core.analytics)
+                implementation(projects.core.dateTime)
                 implementation(projects.core.log)
                 implementation(projects.sandook)
                 implementation(projects.feature.tripPlanner.ui)
@@ -53,6 +54,7 @@ kotlin {
                 implementation(libs.test.kotlinxCoroutineTest)
                 implementation(libs.test.turbine)
                 implementation(libs.kotlinx.collections.immutable)
+                implementation(libs.kotlinx.datetime)
             }
         }
 
