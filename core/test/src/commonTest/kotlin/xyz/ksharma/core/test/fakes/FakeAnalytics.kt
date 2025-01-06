@@ -8,7 +8,7 @@ class FakeAnalytics : Analytics {
     private val trackedEvents = mutableListOf<String>()
     private var fakeUserId: String? = null
 
-    fun wasScreenViewEventTracked(event: String): Boolean {
+    fun isEventTracked(event: String): Boolean {
         println("trackedEvents: $trackedEvents")
         return trackedEvents.contains(event)
     }
