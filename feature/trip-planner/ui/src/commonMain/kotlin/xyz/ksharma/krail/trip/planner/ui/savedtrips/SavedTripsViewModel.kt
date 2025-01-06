@@ -36,30 +36,6 @@ class SavedTripsViewModel(
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.SavedTrips)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SavedTripsState())
 
-    private fun loadSavedTrips() {
-        viewModelScope.launch(ioDispatcher) {
-            updateUiState { copy(isLoading = true) }
-            val trips = mutableSetOf<Trip>()
-
-            val savedTrips = sandook.selectAllTrips()
-            log("SavedTrips: $savedTrips")
-            savedTrips.forEachIndexed { index, savedTrip ->
-                val trip = savedTrip.toTrip()
-                log("Trip: #$index $trip")
-                trips.add(savedTrip.toTrip())
-            }
-
-            trips.addAll(savedTrips.map { savedTrip -> savedTrip.toTrip() })
-
-            log("SavedTrips: ${trips.size} number")
-            trips.forEachIndexed { index, trip ->
-                log("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
-            }
-
-            updateUiState { copy(savedTrips = trips.toImmutableList(), isLoading = false) }
-        }
-    }
-
     fun onEvent(event: SavedTripUiEvent) {
         when (event) {
             is SavedTripUiEvent.DeleteSavedTrip -> onDeleteSavedTrip(event.trip)
@@ -95,6 +71,30 @@ class SavedTripsViewModel(
             SavedTripUiEvent.AnalyticsToButtonClick -> {
                 analytics.track(AnalyticsEvent.ToFieldClickEvent)
             }
+        }
+    }
+
+    private fun loadSavedTrips() {
+        viewModelScope.launch(ioDispatcher) {
+            updateUiState { copy(isLoading = true) }
+            val trips = mutableSetOf<Trip>()
+
+            val savedTrips = sandook.selectAllTrips()
+            log("SavedTrips: $savedTrips")
+            savedTrips.forEachIndexed { index, savedTrip ->
+                val trip = savedTrip.toTrip()
+                log("Trip: #$index $trip")
+                trips.add(savedTrip.toTrip())
+            }
+
+            trips.addAll(savedTrips.map { savedTrip -> savedTrip.toTrip() })
+
+            log("SavedTrips: ${trips.size} number")
+            trips.forEachIndexed { index, trip ->
+                log("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
+            }
+
+            updateUiState { copy(savedTrips = trips.toImmutableList(), isLoading = false) }
         }
     }
 
