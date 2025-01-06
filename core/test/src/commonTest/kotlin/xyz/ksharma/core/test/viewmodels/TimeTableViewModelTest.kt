@@ -26,6 +26,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState.JourneyC
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.trip.planner.ui.timetable.TimeTableViewModel
+import xyz.ksharma.krail.trip.planner.ui.timetable.TimeTableViewModel.Companion.JOURNEY_ENDED_CACHE_THRESHOLD_TIME
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -262,30 +263,65 @@ class TimeTableViewModelTest {
             assertTrue(viewmodelJourneysList[0].originUtcDateTime < viewmodelJourneysList[1].originUtcDateTime)
         }
 
+    @Test
+    fun `GIVEN started journeys in cache WHEN updateTripsCache is called THEN journeys that have completed with threshold time must be cleared`() =
+        runTest {
+            // GIVEN Trip Response
+            val tripResponse = TripResponse()
+            viewModel.journeys.putAll(
+                buildStartedJourneysList(
+                    numberOfStartedJourneys = 3,
+                    distortSortOrder = true,
+                    completedJourneyCount = 2,
+                )
+            )
+            tripResponse.journeys?.forEachIndexed { index, item ->
+                println("tripResponse Journey #$index: ${item.legs?.get(0)?.origin?.arrivalTimeEstimated?.formatTo12HourTime()}")
+            }
+
+            // WHEN
+            viewModel.updateTripsCache(tripResponse)
+
+            // THEN
+            val viewmodelJourneysList = viewModel.journeys.values.toList()
+            // Only 1 started journey should be displayed as other two are completed with threshold time.
+            assertEquals(1, viewmodelJourneysList.size)
+        }
+
     // endregion
 
     /**
      * Builds a list of started journeys, i.e. journeys that have origin time in past.
      *
      * @param numberOfStartedJourneys The number of started journeys to create.
+     * Have origin utc date time in past.
      *
      * @param distortSortOrder If true, the order of the journeys will be shuffled,means time will no longer be in ascending or descending.
      *
+     * @param completedJourneyCount The number of journeys that have destinationUtcDateTime in the past.
+     *  Also factoring in the threshold time for journey completion i.e [JOURNEY_ENDED_CACHE_THRESHOLD_TIME].
      * @return A map of journey IDs to JourneyCardInfo objects.
      */
     private fun buildStartedJourneysList(
         numberOfStartedJourneys: Int,
         distortSortOrder: Boolean = false,
+        completedJourneyCount: Int = 0,
     ): Map<String, TimeTableState.JourneyCardInfo> {
         val startedJourneys = mutableMapOf<String, TimeTableState.JourneyCardInfo>()
+        val now = Clock.System.now()
+
         for (i in 1..numberOfStartedJourneys) {
-
             // Calculate the origin time for each journey, decreasing by 5 minutes for each subsequent journey
-            val originTime = Clock.System.now().minus(5.minutes * i)
+            val originTime = now.minus(5.minutes * i)
+            val destinationTime = if (i <= completedJourneyCount) {
+                now.minus(JOURNEY_ENDED_CACHE_THRESHOLD_TIME + 1.minutes)
+            } else {
+                now.plus(10.minutes) // Journey Completes at a Future time
+            }
 
-            startedJourneys["startedJourney$i"] = TimeTableState.JourneyCardInfo(
+            startedJourneys["journey$i"] = TimeTableState.JourneyCardInfo(
                 originUtcDateTime = originTime.toString(),
-                destinationUtcDateTime = originTime.plus(1.hours).toString(),
+                destinationUtcDateTime = destinationTime.toString(),
                 timeText = "1",
                 platformText = "1",
                 platformNumber = "1",
@@ -307,7 +343,6 @@ class TimeTableViewModelTest {
                         ),
                         tripId = "id_$i",
                     )
-
                 ),
                 totalUniqueServiceAlerts = 1,
             )
