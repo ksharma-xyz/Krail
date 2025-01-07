@@ -47,6 +47,7 @@ kotlin {
                 implementation(projects.sandook)
                 implementation(projects.feature.tripPlanner.ui)
                 implementation(projects.feature.tripPlanner.state)
+                implementation(projects.feature.tripPlanner.network)
 
                 implementation(libs.test.kotlin)
                 implementation(libs.test.kotlinxCoroutineTest)
