@@ -104,7 +104,8 @@ class TimeTableViewModel(
     val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
 
     private var tripInfo: Trip? = null
-    private var dateTimeSelectionItem: DateTimeSelectionItem? = null
+    @VisibleForTesting
+    var dateTimeSelectionItem: DateTimeSelectionItem? = null
 
     private var fetchTripJob: Job? = null
 
@@ -152,6 +153,7 @@ class TimeTableViewModel(
         log("DateTimeSelectionChanged: $item")
         // Verify if date time selection has actually changed, otherwise, api will be called unnecessarily.
         if (dateTimeSelectionItem != item) {
+            println("Loading True")
             updateUiState { copy(isLoading = true) }
             dateTimeSelectionItem = item
             journeys.clear() // Clear cache trips when date time selection changed.
