@@ -456,7 +456,8 @@ class TimeTableViewModel(
         /**
          * How long to keep displaying a past journey after it has ended.
          */
-        private val JOURNEY_ENDED_CACHE_THRESHOLD_TIME = 10.minutes
+        @VisibleForTesting
+        val JOURNEY_ENDED_CACHE_THRESHOLD_TIME = 10.minutes
     }
 }
 
