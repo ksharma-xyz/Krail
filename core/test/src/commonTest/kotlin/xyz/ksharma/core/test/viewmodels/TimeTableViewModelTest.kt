@@ -32,6 +32,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
+import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
 import kotlin.time.Duration.Companion.minutes
@@ -397,6 +398,51 @@ class TimeTableViewModelTest {
                 }
                 assertTrue(analytics.isEventTracked("save_trip_click"))
                 analytics.clear()
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    // endregion
+
+    // region Test for reverse trip
+    @Test
+    fun `GIVEN trip info WHEN ReverseTripButtonClicked is triggered THEN trip should be reversed`() =
+        runTest {
+            // GIVEN
+            val initialTrip = Trip(
+                fromStopId = "stop1",
+                fromStopName = "Stop 1",
+                toStopId = "stop2",
+                toStopName = "Stop 2"
+            )
+
+            viewModel.uiState.test {
+                awaitItem().run {
+                    assertNull(trip) // trip is null initially
+                }
+
+                viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(initialTrip))
+
+                awaitItem().run {
+                    assertNotNull(trip)
+                    assertEquals("stop1", trip?.fromStopId)
+                    assertEquals("Stop 1", trip?.fromStopName)
+                    assertEquals("stop2", trip?.toStopId)
+                    assertEquals("Stop 2", trip?.toStopName)
+                }
+
+                // WHEN ReverseTripButtonClicked is triggered
+                viewModel.onEvent(TimeTableUiEvent.ReverseTripButtonClicked)
+
+                // THEN trip should be reversed
+                awaitItem().run {
+                    assertNotNull(trip)
+                    assertEquals("stop2", trip?.fromStopId)
+                    assertEquals("Stop 2", trip?.fromStopName)
+                    assertEquals("stop1", trip?.toStopId)
+                    assertEquals("Stop 1", trip?.toStopName)
+                }
 
                 cancelAndIgnoreRemainingEvents()
             }
