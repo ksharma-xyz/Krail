@@ -10,6 +10,8 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.Clock
+import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
+import kotlinx.datetime.toLocalDateTime
 import xyz.ksharma.core.test.fakes.FakeAnalytics
 import xyz.ksharma.core.test.fakes.FakeRateLimiter
 import xyz.ksharma.core.test.fakes.FakeSandook
@@ -21,6 +23,8 @@ import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
+import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState.JourneyCardInfo.Stop
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
@@ -511,6 +515,64 @@ class TimeTableViewModelTest {
 
                 cancelAndConsumeRemainingEvents()
             }
+        }
+
+    // endregion
+
+    // region Test for DateTimeSelectionChanged
+
+    @Test
+    fun `GIVEN different dateTimeSelectionItem WHEN onDateTimeSelectionChanged is called THEN uiState is updated and analytics event is tracked`() =
+        runTest {
+            // GIVEN
+            val dateTimeSelectionItem = DateTimeSelectionItem(
+                date = Clock.System.now().toLocalDateTime(currentSystemDefault()).date,
+                option = JourneyTimeOptions.LEAVE,
+                hour = 12,
+                minute = 0,
+            )
+            tripPlanningService.isSuccess = true
+            val analytics: FakeAnalytics = fakeAnalytics as FakeAnalytics
+
+            viewModel.onEvent(
+                TimeTableUiEvent.DateTimeSelectionChanged(
+                    dateTimeSelectionItem = dateTimeSelectionItem, // different because by default is null.
+                ),
+            )
+            assertTrue(analytics.isEventTracked("date_time_select"))
+        }
+
+    @Test
+    fun `GIVEN same dateTimeSelectionItem WHEN onDateTimeSelectionUnchanged is called THEN no action is taken`() =
+        runTest {
+            // GIVEN
+            val dateTimeSelectionItem = DateTimeSelectionItem(
+                date = Clock.System.now().toLocalDateTime(currentSystemDefault()).date,
+                option = JourneyTimeOptions.LEAVE,
+                hour = 12,
+                minute = 0,
+            )
+            tripPlanningService.isSuccess = true
+            val analytics: FakeAnalytics = fakeAnalytics as FakeAnalytics
+
+            // WHEN
+            viewModel.onEvent(
+                TimeTableUiEvent.DateTimeSelectionChanged(
+                    dateTimeSelectionItem = dateTimeSelectionItem, // different because by default is null.
+                ),
+            )
+            // THEN
+            assertTrue(analytics.isEventTracked("date_time_select"))
+            analytics.clear()
+
+            // WHEN same dateTimeSelectionItem is called, no action should be taken.
+            viewModel.onEvent(
+                TimeTableUiEvent.DateTimeSelectionChanged(
+                    dateTimeSelectionItem = dateTimeSelectionItem,
+                ),
+            )
+            // THEN
+            assertFalse(analytics.isEventTracked("date_time_select"))
         }
 
     // endregion
