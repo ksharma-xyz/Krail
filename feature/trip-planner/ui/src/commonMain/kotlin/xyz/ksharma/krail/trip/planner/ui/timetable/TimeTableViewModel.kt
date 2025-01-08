@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
@@ -169,7 +170,8 @@ class TimeTableViewModel(
         }
     }
 
-    private fun fetchTrip() {
+    @VisibleForTesting
+    fun fetchTrip() {
         log("fetchTrip API Call")
         fetchTripJob?.cancel()
         updateUiState { copy(silentLoading = true) }
@@ -181,6 +183,7 @@ class TimeTableViewModel(
             }.catch { e ->
                 log("Error while fetching trip: $e")
             }.collectLatest { result ->
+                println("result Success: $result")
                 updateUiState { copy(silentLoading = false) }
                 result.onSuccess { response ->
                     updateTripsCache(response)
@@ -239,12 +242,17 @@ class TimeTableViewModel(
     }
 
     private fun updateUiStateWithFilteredTrips() {
+        println("updateUiStateWithFilteredTrips")
+
+        val journeyList = updateJourneyCardInfoTimeText(journeys.values.toList())
+            .sortedBy { it.originUtcDateTime.utcToLocalDateTimeAEST() }
+            .toImmutableList()
+
+        println("updateUiStateWithFilteredTrips: ${journeyList.size}")
         updateUiState {
             copy(
                 isLoading = false,
-                journeyList = updateJourneyCardInfoTimeText(journeys.values.toList())
-                    .sortedBy { it.originUtcDateTime.utcToLocalDateTimeAEST() }
-                    .toImmutableList(),
+                journeyList = journeyList,
                 isError = false,
             )
         }
@@ -268,6 +276,8 @@ class TimeTableViewModel(
                     else -> DepArr.DEP
                 }
             )
+            println("tripResponse: $tripResponse")
+
             Result.success(tripResponse)
         }.getOrElse { error ->
             Result.failure(error)
