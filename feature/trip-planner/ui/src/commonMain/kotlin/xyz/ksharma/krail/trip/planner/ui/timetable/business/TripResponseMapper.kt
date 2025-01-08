@@ -178,11 +178,9 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
         }
 
         else -> { // Public Transport Leg
-//            log("FFF PTLeg: $displayDuration, leg: ${this.destination?.name} ")
             if (transportMode != null && lineName != null && displayText != null &&
                 numberOfStops != null && stops != null && displayDuration != null
             ) {
-                println("Adding Transport Leg")
                 TimeTableState.JourneyCardInfo.Leg.TransportLeg(
                     transportModeLine = TransportModeLine(
                         transportMode = transportMode,
@@ -199,7 +197,7 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
                     tripId = transportation?.id + transportation?.properties?.realtimeTripId,
                 )
             } else {
-                println("Something is null - NOT adding Transport LEG: " +
+                log("Something is null - NOT adding Transport LEG: " +
                     "TransportMode: $transportMode, lineName: $lineName, displayText: $displayText, " +
                         "numberOfStops: $numberOfStops, stops: $stops, displayDuration: $displayDuration",
                 )

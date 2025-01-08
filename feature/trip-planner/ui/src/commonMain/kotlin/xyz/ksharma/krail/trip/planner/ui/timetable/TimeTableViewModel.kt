@@ -155,7 +155,6 @@ class TimeTableViewModel(
         log("DateTimeSelectionChanged: $item")
         // Verify if date time selection has actually changed, otherwise, api will be called unnecessarily.
         if (dateTimeSelectionItem != item) {
-            println("Loading True")
             updateUiState { copy(isLoading = true) }
             dateTimeSelectionItem = item
             journeys.clear() // Clear cache trips when date time selection changed.
@@ -449,7 +448,8 @@ class TimeTableViewModel(
 
     companion object {
         private const val ANR_TIMEOUT = 5000L
-        private val REFRESH_TIME_TEXT_DURATION = 10.seconds
+        @VisibleForTesting
+        val REFRESH_TIME_TEXT_DURATION = 10.seconds
         private val AUTO_REFRESH_TIME_TABLE_DURATION = 30.seconds
         private val STOP_TIME_TEXT_UPDATES_THRESHOLD = 3.seconds
 
