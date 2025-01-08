@@ -114,7 +114,8 @@ class TimeTableViewModel(
      *
      * This list will be displayed in the UI.
      */
-    private val journeys: MutableMap<String, TimeTableState.JourneyCardInfo> = mutableMapOf()
+    @VisibleForTesting
+    val journeys: MutableMap<String, TimeTableState.JourneyCardInfo> = mutableMapOf()
 
     fun onEvent(event: TimeTableUiEvent) {
         when (event) {
@@ -183,7 +184,6 @@ class TimeTableViewModel(
             }.catch { e ->
                 log("Error while fetching trip: $e")
             }.collectLatest { result ->
-                println("result Success: $result")
                 updateUiState { copy(silentLoading = false) }
                 result.onSuccess { response ->
                     updateTripsCache(response)
@@ -195,8 +195,8 @@ class TimeTableViewModel(
         }
     }
 
-    // TODO - Write UT for this method
-    private suspend fun updateTripsCache(response: TripResponse) = withContext(ioDispatcher) {
+    @VisibleForTesting
+    suspend fun updateTripsCache(response: TripResponse) = withContext(ioDispatcher) {
         val newJourneyList = response.buildJourneyList()
         val startedJourneyList = journeys.values
             .filter {
@@ -242,13 +242,9 @@ class TimeTableViewModel(
     }
 
     private fun updateUiStateWithFilteredTrips() {
-        println("updateUiStateWithFilteredTrips")
-
         val journeyList = updateJourneyCardInfoTimeText(journeys.values.toList())
             .sortedBy { it.originUtcDateTime.utcToLocalDateTimeAEST() }
             .toImmutableList()
-
-        println("updateUiStateWithFilteredTrips: ${journeyList.size}")
         updateUiState {
             copy(
                 isLoading = false,
@@ -276,8 +272,6 @@ class TimeTableViewModel(
                     else -> DepArr.DEP
                 }
             )
-            println("tripResponse: $tripResponse")
-
             Result.success(tripResponse)
         }.getOrElse { error ->
             Result.failure(error)
