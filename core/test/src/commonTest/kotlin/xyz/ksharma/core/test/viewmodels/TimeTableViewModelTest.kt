@@ -172,14 +172,6 @@ class TimeTableViewModelTest {
 
                 // need to skip two items, because silentLoading will be toggled, as we manually call fetchTrip()
                 skipItems(2)
-                /*
-                                awaitItem().run {
-                                   assertTrue(silentLoading)
-                                }
-                                awaitItem().run {
-                                    assertFalse(silentLoading)
-                                }
-                */
 
                 awaitItem().run {
                     assertFalse(isLoading)
@@ -450,4 +442,76 @@ class TimeTableViewModelTest {
 
     // endregion
 
+    // region Test for Retry Button Clicked
+
+    @Test
+    fun `GIVEN trip info WHEN RetryButtonClicked is triggered THEN trip should be reloaded`() =
+        runTest {
+            // GIVEN
+            val tripInfo = Trip(
+                fromStopId = "stop1",
+                fromStopName = "Stop 1",
+                toStopId = "stop2",
+                toStopName = "Stop 2"
+            )
+
+            viewModel.uiState.test {
+                skipItems(1) // initial state
+
+                viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(tripInfo))
+                // WHEN RetryButtonClicked is triggered
+                viewModel.onEvent(TimeTableUiEvent.RetryButtonClicked)
+
+                awaitItem().run {
+                    assertTrue(isLoading)
+                    assertEquals(tripInfo, trip)
+                    assertTrue(journeyList.isEmpty())
+                }
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+    // endregion
+
+    // region Test for JourneyCardClicked
+
+    @Test
+    fun `GIVEN a trip with journey list WHEN JourneyCardClicked is triggered THEN analytics event for collapse or expand is triggered`() =
+        runTest {
+            // GIVEN
+            val trip = Trip(
+                fromStopId = "FROM_STOP_ID_1",
+                fromStopName = "STOP_NAME_1",
+                toStopId = "TO_STOP_ID_1",
+                toStopName = "STOP_NAME_2"
+            )
+            val analytics: FakeAnalytics = fakeAnalytics as FakeAnalytics
+
+            // THEN journey details should be loaded
+            viewModel.uiState.test {
+
+                skipItems(1)
+
+                viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(trip))
+                viewModel.fetchTrip()
+                skipItems(4) // silent loading toggle
+
+                // WHEN JourneyCardClicked is triggered
+                viewModel.onEvent(TimeTableUiEvent.JourneyCardClicked("TransportationId0null"))
+                // THEN
+                assertTrue(analytics.isEventTracked("journey_card_expand"))
+                fakeAnalytics.clear()
+
+                // WHEN JourneyCardClicked is triggered again
+                viewModel.onEvent(TimeTableUiEvent.JourneyCardClicked("TransportationId0null"))
+                // THEN
+                assertTrue(analytics.isEventTracked("journey_card_collapse"))
+                fakeAnalytics.clear()
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+    // endregion
 }
