@@ -34,14 +34,13 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertNull
 import kotlin.test.assertTrue
-import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TimeTableViewModelTest {
 
     private val sandook: Sandook = FakeSandook()
-    private val analytics: Analytics = FakeAnalytics()
+    private val fakeAnalytics: Analytics = FakeAnalytics()
     private val tripPlanningService = FakeTripPlanningService()
     private val rateLimiter = FakeRateLimiter()
     private lateinit var viewModel: TimeTableViewModel
@@ -55,7 +54,7 @@ class TimeTableViewModelTest {
             tripPlanningService = tripPlanningService,
             rateLimiter = rateLimiter,
             sandook = sandook,
-            analytics = analytics,
+            analytics = fakeAnalytics,
             ioDispatcher = testDispatcher,
         )
     }
@@ -69,14 +68,14 @@ class TimeTableViewModelTest {
     fun `GIVEN initial state WHEN observer is active THEN fetchTrip and trackScreenViewEvent should be called`() =
         runTest {
             // Ensure analytics events have not been tracked before observation
-            assertFalse((analytics as FakeAnalytics).isEventTracked("view_screen"))
+            assertFalse((fakeAnalytics as FakeAnalytics).isEventTracked("view_screen"))
 
             viewModel.isLoading.test {
                 val isLoadingState = awaitItem()
                 assertEquals(isLoadingState, true)
 
                 advanceUntilIdle()
-                assertTrue(analytics.isEventTracked("view_screen"))
+                assertTrue(fakeAnalytics.isEventTracked("view_screen"))
 
                 cancelAndConsumeRemainingEvents()
             }
@@ -353,4 +352,56 @@ class TimeTableViewModelTest {
             startedJourneys.toList().shuffled().toMap()
         } else startedJourneys
     }
+
+    // region Test for saveTrip
+
+    @Test
+    fun `GIVEN trip info WHEN SaveTripButtonClicked is triggered THEN trip should be saved or deleted`() =
+        runTest {
+            // GIVEN
+            val trip = Trip(
+                fromStopId = "stop1",
+                fromStopName = "Stop 1",
+                toStopId = "stop2",
+                toStopName = "Stop 2"
+            )
+            val analytics = fakeAnalytics as FakeAnalytics
+
+            viewModel.uiState.test {
+
+                awaitItem().run {
+                    assertFalse(isTripSaved)
+                }
+
+                // GIVEN
+                viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(trip))
+
+                // WHEN
+                viewModel.onEvent(TimeTableUiEvent.SaveTripButtonClicked)
+
+                // THEN
+                advanceUntilIdle()
+                assertTrue(analytics.isEventTracked("save_trip_click"))
+                analytics.clear()
+                skipItems(1)
+                awaitItem().run {
+                    assertTrue(isTripSaved)
+                }
+
+                // WHEN
+                viewModel.onEvent(TimeTableUiEvent.SaveTripButtonClicked)
+
+                // THEN
+                awaitItem().run {
+                    assertFalse(isTripSaved)
+                }
+                assertTrue(analytics.isEventTracked("save_trip_click"))
+                analytics.clear()
+
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    // endregion
+
 }
