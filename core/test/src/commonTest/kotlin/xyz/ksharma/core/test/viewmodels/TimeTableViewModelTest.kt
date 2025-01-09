@@ -576,4 +576,41 @@ class TimeTableViewModelTest {
         }
 
     // endregion
+
+    // region Test for Analytics
+    @Test
+    fun `GIVEN trip info WHEN AnalyticsDateTimeSelectorClicked is triggered THEN analytics event should be tracked`() =
+        runTest {
+            // GIVEN
+            val trip = Trip(
+                fromStopId = "stop1",
+                fromStopName = "Stop 1",
+                toStopId = "stop2",
+                toStopName = "Stop 2"
+            )
+            viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(trip))
+            val analytics: FakeAnalytics = fakeAnalytics as FakeAnalytics
+
+            // WHEN AnalyticsDateTimeSelectorClicked is triggered
+            viewModel.onEvent(TimeTableUiEvent.AnalyticsDateTimeSelectorClicked)
+
+            // THEN analytics event should be tracked
+            assertTrue(analytics.isEventTracked("plan_trip_click"))
+        }
+
+    @Test
+    fun `GIVEN expanded state WHEN JourneyLegClicked is triggered THEN analytics event should be tracked`() =
+        runTest {
+            // GIVEN
+            val expanded = true
+            val analytics: FakeAnalytics = fakeAnalytics as FakeAnalytics
+
+            // WHEN JourneyLegClicked is triggered
+            viewModel.onEvent(TimeTableUiEvent.JourneyLegClicked(expanded))
+
+            // THEN analytics event should be tracked
+            assertTrue(analytics.isEventTracked("journey_leg_click"))
+        }
+
+    // endregion
 }
