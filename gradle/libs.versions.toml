@@ -2,12 +2,11 @@
 desugar_jdk_libs = "2.1.4"
 java = "17"
 # AGP - Android API level mapping https://developer.android.com/build/releases/gradle-plugin#api-level-support
+# AGP compatability https://developer.android.com/build/releases/gradle-plugin
 agp = "8.8.0" # Android Gradle Plugin
 kotlin = "2.1.0"
 core-ktx = "1.13.0"
 junit = "4.13.2"
-androidx-test = "1.6.1"
-androidx-test-ext-junit = "1.2.1"
 android-lifecycle = "2.8.7"
 activity-compose = "1.9.3"
 kotlinxCollectionsImmutable = "0.3.8"
@@ -16,7 +15,6 @@ lifecycleViewmodelCompose = "2.8.4"
 navigationCompose = "2.8.0-alpha10"
 kotlinxSerializationJson = "1.8.0"
 ksp = "2.1.0-1.0.29" # ksp to kotlin version mapping https://github.com/google/ksp/releases
-paparazzi = "1.3.5"
 compose-multiplatform = "1.7.3"
 ktor = "3.0.3"
 androidx-lifecycle = "2.8.4"
@@ -64,12 +62,8 @@ test-composeUiTestManifest = { group = "androidx.compose.ui", name = "ui-test-ma
 test-composeUiTestJunit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 test-junit = { group = "junit", name = "junit", version.ref = "junit" }
 test-kotlin = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
-test-androidxTestExtJunit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
-test-googleTruth = { group = "com.google.truth", name = "truth", version = "1.4.4" }
 test-turbine = { group = "app.cash.turbine", name = "turbine", version = "1.2.0" }
-test-mockitoKotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version = "5.4.0" }
 test-kotlinxCoroutineTest = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.10.1" }
-test-androidxCoreKtx = { group = "androidx.test", name = "core-ktx", version.ref = "androidx-test" }
 
 #BuildLogic
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
@@ -95,7 +89,6 @@ desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref 
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-cash-paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfigGradlePlugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
