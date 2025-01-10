@@ -123,14 +123,6 @@ class TimeTableViewModelTest {
 
                 // need to skip two items, because silentLoading will be toggled, as we manually call fetchTrip()
                 skipItems(2)
-                /*
-                                awaitItem().run {
-                                   assertTrue(silentLoading)
-                                }
-                                awaitItem().run {
-                                    assertFalse(silentLoading)
-                                }
-                */
 
                 awaitItem().run {
                     assertFalse(isLoading)
