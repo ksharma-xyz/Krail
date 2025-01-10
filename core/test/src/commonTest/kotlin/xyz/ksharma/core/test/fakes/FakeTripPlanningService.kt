@@ -26,7 +26,7 @@ class FakeTripPlanningService : TripPlanningService {
         stopType: StopType,
     ): StopFinderResponse {
         // Return a fake StopFinderResponse
-        return StopFinderResponse(
-        )
+        return if (isSuccess) FakeStopFinderResponseBuilder.buildStopFinderResponse()
+        else throw IllegalStateException("Failed to fetch stops")
     }
 }
