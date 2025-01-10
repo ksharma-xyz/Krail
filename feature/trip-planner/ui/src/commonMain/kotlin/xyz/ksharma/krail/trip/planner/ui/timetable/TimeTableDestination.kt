@@ -4,6 +4,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -26,13 +27,14 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
         val viewModel: TimeTableViewModel = koinViewModel<TimeTableViewModel>()
         val timeTableState by viewModel.uiState.collectAsStateWithLifecycle()
         val route: TimeTableRoute = backStackEntry.toRoute()
-        val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-        if (isLoading) {
-            viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(trip = route.toTrip()))
+        var isFirstTime by rememberSaveable { mutableStateOf(true) }
+        LaunchedEffect(Unit) {
+            if (isFirstTime) {
+                isFirstTime = false
+                viewModel.onEvent(TimeTableUiEvent.LoadTimeTable(trip = route.toTrip()))
+            }
         }
-        // Subscribe to the isActive state flow - for updating the TimeText periodically.
-        val isActive by viewModel.isActive.collectAsStateWithLifecycle()
-        val autoRefreshTimeTable by viewModel.autoRefreshTimeTable.collectAsStateWithLifecycle()
+
         val expandedJourneyId: String? by viewModel.expandedJourneyId.collectAsStateWithLifecycle()
 
         // Arguments

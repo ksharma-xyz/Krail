@@ -57,6 +57,6 @@ class NetworkRateLimiter : RateLimiter {
     override fun triggerEvent() = triggerFlow.tryEmit(Unit)
 
     companion object {
-        private val rateLimitInterval = 1.seconds
+        private val rateLimitInterval = 10.seconds
     }
 }

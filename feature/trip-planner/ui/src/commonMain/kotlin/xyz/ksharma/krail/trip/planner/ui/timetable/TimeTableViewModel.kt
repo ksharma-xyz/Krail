@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -19,7 +20,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
+import kotlinx.datetime.atTime
+import kotlinx.datetime.minus
+import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
@@ -56,54 +61,40 @@ class TimeTableViewModel(
     private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
+    // Job references for periodic tasks
+    private var updateTimeTextJob: Job? = null
+    private var triggerRateLimiterJob: Job? = null
+
+    // To keep track of clock alignment
+    private var lastUpdateTimeTextTimestamp: Long = Clock.System.now().toEpochMilliseconds()
+    private var lastRateLimiterTimestamp: Long = Clock.System.now().toEpochMilliseconds()
+
+    // TODO -
+    //   1. API Call happening twice when we go to background and come back to foreground.
+    //   2. Periodic API Call should not happen when date is of tomorrow / 3 hours buffer, only time text should change.
+    //   3. Rate Limit logic can be improved / simplified.
+
     private val _uiState: MutableStateFlow<TimeTableState> = MutableStateFlow(TimeTableState())
     val uiState: StateFlow<TimeTableState> = _uiState
-
-    private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-        // Will start fetching the trip as soon as the screen is visible, which means if android-app goes
-        // to background and come back up again, the API call will be made.
-        // Probably good to have data up to date.
         .onStart {
+            // Will start fetching the trip as soon as the screen is visible, which means if android-app goes
+            // to background and come back up again, the API call will be made.
+            // Probably good to have data up to date.
             log("onStart: Fetching Trip")
             fetchTrip()
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.TimeTable)
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
-
-    private val _isActive: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isActive: StateFlow<Boolean> = _isActive.onStart {
-        while (true) {
-            if (_uiState.value.journeyList.isEmpty().not()) {
-                updateTimeText()
-            }
-            delay(REFRESH_TIME_TEXT_DURATION)
+            startPeriodicTasks()
+        }.onCompletion {
+            log("Updating - onCompletion: Stopping Periodic Tasks")
+            stopPeriodicTasks()
         }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STOP_TIME_TEXT_UPDATES_THRESHOLD.inWholeMilliseconds),
-        initialValue = true,
-    )
-
-    private val _autoRefreshTimeTable: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val autoRefreshTimeTable: StateFlow<Boolean> = _autoRefreshTimeTable.onStart {
-        while (true) {
-            if (_uiState.value.journeyList.isEmpty().not() &&
-                dateTimeSelectionItem?.date.isFuture().not()
-            ) {
-                rateLimiter.triggerEvent()
-            }
-            delay(AUTO_REFRESH_TIME_TABLE_DURATION)
-        }
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(STOP_TIME_TEXT_UPDATES_THRESHOLD.inWholeMilliseconds),
-        initialValue = true,
-    )
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), TimeTableState())
 
     private val _expandedJourneyId: MutableStateFlow<String?> = MutableStateFlow(null)
     val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
 
     private var tripInfo: Trip? = null
+
     @VisibleForTesting
     var dateTimeSelectionItem: DateTimeSelectionItem? = null
 
@@ -180,7 +171,7 @@ class TimeTableViewModel(
         updateUiState { copy(silentLoading = true) }
         fetchTripJob = viewModelScope.launch(ioDispatcher) {
             rateLimiter.rateLimitFlow {
-                log("rateLimitFlow block obj:$rateLimiter and coroutine: $this")
+                log("Updating rateLimitFlow block obj:$rateLimiter and coroutine: $this")
                 updateUiState { copy(silentLoading = true) }
                 loadTrip()
             }.catch { e ->
@@ -257,7 +248,7 @@ class TimeTableViewModel(
     }
 
     private suspend fun loadTrip(): Result<TripResponse> = withContext(ioDispatcher) {
-        log("loadTrip API Call")
+        log("Updating - loadTrip API Call")
         require(
             tripInfo != null && tripInfo!!.fromStopId.isNotEmpty() && tripInfo!!.toStopId.isNotEmpty(),
         ) { "Trip Info is null or empty" }
@@ -274,8 +265,10 @@ class TimeTableViewModel(
                     else -> DepArr.DEP
                 }
             )
+            log("Updating - Trip API Response SUCCESS")
             Result.success(tripResponse)
         }.getOrElse { error ->
+            log("Updating - Trip API Response FAIL")
             Result.failure(error)
         }
     }
@@ -325,7 +318,7 @@ class TimeTableViewModel(
     }
 
     private fun onLoadTimeTable(trip: Trip) {
-        log("onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
+        log("Updating - onLoadTimeTable -- Trigger fromStopItem: ${trip.fromStopId}, toStopItem: ${trip.toStopId}")
         tripInfo = trip
         val savedTrip = sandook.selectTripById(tripId = trip.tripId)
         log("Saved Trip[${trip.tripId}]: $savedTrip")
@@ -376,7 +369,8 @@ class TimeTableViewModel(
      * As the clock is progressing, the value [TimeTableState.JourneyCardInfo.timeText] of the
      * journey card should be updated.
      */
-    private fun updateTimeText() = viewModelScope.launch {
+    private suspend fun updateTimeText() {
+        println("Updating Time Text")
         val updatedJourneyList = withContext(ioDispatcher) {
             updateJourneyCardInfoTimeText(_uiState.value.journeyList).toImmutableList()
         }
@@ -440,13 +434,65 @@ class TimeTableViewModel(
     override fun onCleared() {
         super.onCleared()
         sandook.clearAlerts()
+        stopPeriodicTasks()
+    }
+
+    private fun startPeriodicTasks() {
+        // Cancel any existing jobs
+        updateTimeTextJob?.cancel()
+        triggerRateLimiterJob?.cancel()
+
+        // Start the 10-second periodic task
+        updateTimeTextJob = viewModelScope.launch {
+            while (true) {
+                val currentTime = Clock.System.now().toEpochMilliseconds()
+                val elapsedTime = currentTime - lastUpdateTimeTextTimestamp
+                if (elapsedTime >= REFRESH_TIME_TEXT_DURATION.inWholeMilliseconds) {
+                    if (_uiState.value.journeyList.isNotEmpty()) {
+                        updateTimeText()
+                    }
+                    lastUpdateTimeTextTimestamp = currentTime
+                }
+                delay(REFRESH_TIME_TEXT_DURATION)
+            }
+        }
+
+        // Start the 30-second periodic task
+        triggerRateLimiterJob = viewModelScope.launch {
+            while (true) {
+                val currentTime = Clock.System.now().toEpochMilliseconds()
+                val elapsedTime = currentTime - lastRateLimiterTimestamp
+                if (elapsedTime >= AUTO_REFRESH_TIME_TABLE_DURATION.inWholeMilliseconds) {
+                    log("Updating 30 seconds elapsed")
+                    if (_uiState.value.journeyList.isNotEmpty() && !dateTimeSelectionItem?.date.isFuture()) {
+                        log("Updating - LoadTrip() call")
+                        rateLimiter.triggerEvent()
+                    } else {
+                        log(
+                            "Updating - This is false : ${_uiState.value.journeyList.isNotEmpty()} && ${
+                                !dateTimeSelectionItem?.date.isFuture()
+                            }"
+                        )
+                    }
+                    lastRateLimiterTimestamp = currentTime
+                } else {
+//                    log("Waiting on Time")
+                }
+                delay(AUTO_REFRESH_TIME_TABLE_DURATION)
+            }
+        }
+    }
+
+    private fun stopPeriodicTasks() {
+        // Cancel the periodic tasks
+        updateTimeTextJob?.cancel()
+        triggerRateLimiterJob?.cancel()
     }
 
     companion object {
-        private const val ANR_TIMEOUT = 5000L
+        private const val ANR_TIMEOUT = 4000L
         private val REFRESH_TIME_TEXT_DURATION = 10.seconds
-        private val AUTO_REFRESH_TIME_TABLE_DURATION = 30.seconds
-        private val STOP_TIME_TEXT_UPDATES_THRESHOLD = 3.seconds
+        private val AUTO_REFRESH_TIME_TABLE_DURATION = 20.seconds
 
         /**
          * Maximum number of started journeys to display.
