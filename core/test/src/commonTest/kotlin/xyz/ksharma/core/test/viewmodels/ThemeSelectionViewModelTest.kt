@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import xyz.ksharma.core.test.fakes.FakeAnalytics
 import xyz.ksharma.core.test.fakes.FakeSandook
-import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertAnalyticsEventTracked
+import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertScreenViewEventTracked
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
@@ -60,7 +60,10 @@ class ThemeSelectionViewModelTest {
                 }
 
                 advanceUntilIdle()
-                assertAnalyticsEventTracked(fakeAnalytics, "view_screen", "ThemeSelection")
+                assertScreenViewEventTracked(
+                    fakeAnalytics,
+                    expectedScreenName = AnalyticsScreen.ThemeSelection.name,
+                )
 
                 cancelAndIgnoreRemainingEvents()
             }

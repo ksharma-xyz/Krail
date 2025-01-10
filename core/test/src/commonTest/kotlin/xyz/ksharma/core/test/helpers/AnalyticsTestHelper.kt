@@ -9,14 +9,13 @@ import kotlin.test.assertTrue
 
 object AnalyticsTestHelper {
 
-    fun assertAnalyticsEventTracked(
+    fun assertScreenViewEventTracked(
         fakeAnalytics: Analytics,
-        expectedEventName: String,
         expectedScreenName: String,
     ) {
         assertIs<FakeAnalytics>(fakeAnalytics)
-        assertTrue(fakeAnalytics.isEventTracked(expectedEventName))
-        val event = fakeAnalytics.getTrackedEvent(expectedEventName)
+        assertTrue(fakeAnalytics.isEventTracked("view_screen"))
+        val event = fakeAnalytics.getTrackedEvent("view_screen")
         assertIs<AnalyticsEvent.ScreenViewEvent>(event)
         assertEquals(expectedScreenName, event.screen.name)
     }
