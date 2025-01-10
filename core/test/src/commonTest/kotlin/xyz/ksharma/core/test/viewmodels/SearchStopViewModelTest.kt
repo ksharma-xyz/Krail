@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import xyz.ksharma.core.test.fakes.FakeAnalytics
 import xyz.ksharma.core.test.fakes.FakeTripPlanningService
+import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertAnalyticsEventTracked
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.trip.planner.ui.searchstop.SearchStopViewModel
@@ -60,11 +61,7 @@ class SearchStopViewModelTest {
                 }
 
                 advanceUntilIdle()
-                assertTrue(fakeAnalytics is FakeAnalytics)
-                assertTrue(fakeAnalytics.isEventTracked("view_screen"))
-                val event = fakeAnalytics.getTrackedEvent("view_screen")
-                assertIs<AnalyticsEvent.ScreenViewEvent>(event)
-                assertEquals("SearchStop", event.screen.name)
+                assertAnalyticsEventTracked(fakeAnalytics, "view_screen", "SearchStop")
             }
         }
 

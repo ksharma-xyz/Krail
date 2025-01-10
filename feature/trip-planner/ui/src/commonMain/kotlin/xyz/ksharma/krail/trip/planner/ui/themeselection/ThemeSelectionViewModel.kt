@@ -28,14 +28,10 @@ class ThemeSelectionViewModel(
     private val _uiState: MutableStateFlow<ThemeSelectionState> =
         MutableStateFlow(ThemeSelectionState())
     val uiState: StateFlow<ThemeSelectionState> = _uiState
-
-    private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
         .onStart {
             getThemeTransportMode()
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.ThemeSelection)
-        }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), true)
+        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), ThemeSelectionState())
 
     private var transportSelectionJob: Job? = null
 
@@ -61,7 +57,8 @@ class ThemeSelectionViewModel(
         viewModelScope.launch(ioDispatcher) {
             // First app launch there will be no product class, so use default transport mode theme.
             val productClass = sandook.getProductClass()?.toInt()
-            val mode = productClass?.let { TransportMode.toTransportModeType(it) }
+            val mode =
+                productClass?.let { TransportMode.toTransportModeType(it) } ?: TransportMode.Train()
             updateUiState {
                 copy(selectedTransportMode = mode)
             }

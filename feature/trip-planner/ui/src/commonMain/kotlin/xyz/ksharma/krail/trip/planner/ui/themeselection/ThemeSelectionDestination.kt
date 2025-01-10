@@ -27,7 +27,6 @@ import xyz.ksharma.krail.core.log.log
 internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostController) {
     composable<ThemeSelectionRoute> {
         val viewModel: ThemeSelectionViewModel = koinViewModel<ThemeSelectionViewModel>()
-        val isUiStateLoading by viewModel.isLoading.collectAsStateWithLifecycle()
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
