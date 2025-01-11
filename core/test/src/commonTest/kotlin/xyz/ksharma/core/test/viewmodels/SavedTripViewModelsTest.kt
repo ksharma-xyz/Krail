@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import xyz.ksharma.core.test.fakes.FakeAnalytics
 import xyz.ksharma.core.test.fakes.FakeSandook
+import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertAnalyticsEventTracked
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.sandook.Sandook
@@ -55,7 +56,7 @@ class SavedTripsViewModelTest {
                 assertEquals(item, SavedTripsState())
 
                 advanceUntilIdle()
-                assertTrue(analytics.isEventTracked("view_screen"))
+                assertAnalyticsEventTracked(analytics, "view_screen", "SavedTrips")
 
                 cancelAndConsumeRemainingEvents()
             }

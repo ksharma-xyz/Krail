@@ -17,6 +17,7 @@ import xyz.ksharma.core.test.fakes.FakeRateLimiter
 import xyz.ksharma.core.test.fakes.FakeSandook
 import xyz.ksharma.core.test.fakes.FakeTripPlanningService
 import xyz.ksharma.core.test.fakes.FakeTripResponseBuilder.buildTripResponse
+import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertAnalyticsEventTracked
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.formatTo12HourTime
 import xyz.ksharma.krail.sandook.Sandook
@@ -80,7 +81,7 @@ class TimeTableViewModelTest {
                 assertEquals(isLoadingState, true)
 
                 advanceUntilIdle()
-                assertTrue(fakeAnalytics.isEventTracked("view_screen"))
+                assertAnalyticsEventTracked(fakeAnalytics, "view_screen", "TimeTable")
 
                 cancelAndConsumeRemainingEvents()
             }
