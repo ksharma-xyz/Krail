@@ -35,7 +35,7 @@ class ServiceAlertsViewModel(
     }
 }
 
-private fun SelectServiceAlertsByJourneyId.toServiceAlert() = ServiceAlert(
+fun SelectServiceAlertsByJourneyId.toServiceAlert() = ServiceAlert(
     heading = heading,
     message = message,
 )
