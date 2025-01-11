@@ -1,5 +1,7 @@
 package xyz.ksharma.krail
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -58,6 +60,8 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
             navController = navController,
             startDestination = SplashScreen,
             modifier = modifier.fillMaxSize(),
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
         ) {
             tripPlannerDestinations(navController = navController)
 
