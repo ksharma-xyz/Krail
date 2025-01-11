@@ -10,7 +10,8 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import xyz.ksharma.core.test.fakes.FakeAnalytics
 import xyz.ksharma.core.test.fakes.FakeSandook
-import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertAnalyticsEventTracked
+import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertScreenViewEventTracked
+import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.sandook.SelectServiceAlertsByJourneyId
 import xyz.ksharma.krail.trip.planner.ui.alerts.ServiceAlertsViewModel
 import xyz.ksharma.krail.trip.planner.ui.alerts.toServiceAlert
@@ -52,7 +53,10 @@ class ServiceAlertsViewModelTest {
                 }
 
                 advanceUntilIdle()
-                assertAnalyticsEventTracked(fakeAnalytics, "view_screen", "ServiceAlerts")
+                assertScreenViewEventTracked(
+                    fakeAnalytics,
+                    expectedScreenName = AnalyticsScreen.ServiceAlerts.name,
+                )
 
                 cancelAndIgnoreRemainingEvents()
             }
