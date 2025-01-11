@@ -26,7 +26,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -76,7 +75,7 @@ fun SearchStopScreen(
     searchStopState: SearchStopState,
     modifier: Modifier = Modifier,
     searchQuery: String = "",
-    onBackClick: () -> Unit = {},
+    goBack: () -> Unit = {},
     onStopSelect: (StopItem) -> Unit = {},
     onEvent: (SearchStopUiEvent) -> Unit = {},
 ) {
@@ -84,6 +83,18 @@ fun SearchStopScreen(
     var textFieldText: String by remember { mutableStateOf(searchQuery) }
     val keyboard = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
+    var backClicked by rememberSaveable { mutableStateOf(false) }
+    var selectedStop: StopItem? by remember { mutableStateOf(null) }
+
+    LaunchedEffect(selectedStop) {
+        selectedStop?.let { onStopSelect(it) }
+    }
+
+    LaunchedEffect(backClicked) {
+        if (backClicked) {
+            goBack()
+        }
+    }
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
@@ -193,7 +204,8 @@ fun SearchStopScreen(
                     isDeleting = true
 
                     // Move to the next transport mode based on priority
-                    val currentIndex = transportModes.indexOfFirst { it.priority == currentModePriority }
+                    val currentIndex =
+                        transportModes.indexOfFirst { it.priority == currentModePriority }
                     val nextIndex = (currentIndex + 1) % transportModes.size
                     currentModePriority = transportModes[nextIndex].priority
                 }
@@ -223,7 +235,7 @@ fun SearchStopScreen(
                         ) {
                             keyboard?.hide()
                             focusRequester.freeFocus()
-                            onBackClick()
+                            backClicked = true
                         },
                     contentAlignment = Alignment.Center,
                 ) {
@@ -238,7 +250,7 @@ fun SearchStopScreen(
         ) { value ->
             //log(("value: $value")
             log("value: $value")
-            if(value.isNotBlank()) runPlaceholderAnimation = false
+            if (value.isNotBlank()) runPlaceholderAnimation = false
             textFieldText = value.toString()
         }
 
@@ -283,7 +295,7 @@ fun SearchStopScreen(
                         onClick = { stopItem ->
                             keyboard?.hide()
                             focusRequester.freeFocus()
-                            onStopSelect(stopItem)
+                            selectedStop = stopItem
                         },
                         modifier = Modifier
                             .fillMaxWidth(),
