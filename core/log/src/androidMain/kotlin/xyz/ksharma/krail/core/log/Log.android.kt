@@ -2,7 +2,7 @@ package xyz.ksharma.krail.core.log
 
 private const val MAX_TAG_LENGTH: Int = 23
 
-actual fun log(message: String, throwable: Throwable?) {
+actual fun log(message: String) {
     if (BuildConfig.DEBUG) println("${getTag()}, $message")
 }
 
