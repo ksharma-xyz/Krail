@@ -35,6 +35,7 @@ include(":composeApp")
 include(":taj") // Design System
 include(":core:analytics")
 include(":core:app-info")
+include(":core:coroutines-ext")
 include(":core:date-time")
 include(":core:di")
 include(":core:log")

@@ -4,9 +4,9 @@ import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.remoteconfig.remoteConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
+import xyz.ksharma.krail.core.di.DispatchersComponent
+import xyz.ksharma.krail.coroutines.ext.launchWithExceptionHandler
 import kotlin.time.Duration.Companion.minutes
 
 internal class RealRemoteConfig(
@@ -22,7 +22,7 @@ internal class RealRemoteConfig(
     }
 
     override fun setup() {
-        coroutineScope.launch(defaultDispatcher) {
+        coroutineScope.launchWithExceptionHandler<RealRemoteConfig>(defaultDispatcher) {
             remoteConfig.fetchAndActivate()
             setDebugFetchInterval()
             setDefaultConfig()

@@ -4,7 +4,7 @@ import platform.Foundation.NSLog
 import kotlin.experimental.ExperimentalNativeApi
 
 @OptIn(ExperimentalNativeApi::class)
-actual fun log(message: String, throwable: Throwable?) {
+actual fun log(message: String) {
     if (Platform.isDebugBinary) NSLog("DEBUG: $message")
 }
 
