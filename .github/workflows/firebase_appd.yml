@@ -57,6 +57,9 @@ jobs:
           ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
         run: ./gradlew :composeApp:assembleDebug testDebug
 
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
       - name: Authenticate Firebase CLI
         env:
           DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
