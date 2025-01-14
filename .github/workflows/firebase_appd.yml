@@ -57,20 +57,13 @@ jobs:
           ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
         run: ./gradlew :composeApp:assembleDebug testDebug
 
-      - name: Install Firebase CLI
-        run: npm install -g firebase-tools
-
-      - name: Authenticate Firebase CLI
+      - name: Distribute Android App to Firebase
         env:
-          DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+            DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+            APP_ID: ${{ secrets.FIREBASE_ANDROID_DEBUG_APP_ID }}
+            GOOGLE_APPLICATION_CREDENTIALS_CONTENT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-          echo $DATA | base64 -di > firebase-service-account.json
-          export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
-
-      - name: Upload Debug APK to Firebase
-        run: |
-          npx firebase appdistribution:distribute \
-          composeApp/build/outputs/bundle/debug/composeApp-debug.aab \
-          --app ${{ secrets.FIREBASE_ANDROID_DEBUG_APP_ID }} \
-          --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT }} \
-          --groups testers Friends
+            echo $DATA | base64 -di > firebase-service-account.json
+            export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
+            echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENT" > "$GOOGLE_APPLICATION_CREDENTIALS"
+            firebase appdistribution:distribute composeApp/build/outputs/apk/debug/composeApp-debug.apk --app ${APP_ID} --groups "Friends"
