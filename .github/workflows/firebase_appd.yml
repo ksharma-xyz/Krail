@@ -51,22 +51,22 @@ jobs:
           DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
         run: echo $DATA | base64 -di > composeApp/src/debug/google-services.json
 
-      - name: Build Android Debug
-        env:
-          ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
-        run: ./gradlew :composeApp:assembleDebug
+#      - name: Build Android Debug
+#        env:
+#          ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
+#        run: ./gradlew :composeApp:assembleDebug
 
-      - name: Distribute Android Debug App to Firebase
-        env:
-          DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-        run: |
-          echo $DATA | base64 -di > firebase-service-account.json
-          export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
-          firebase --version # Optional: Verify Firebase CLI installation
-          firebase appdistribution:distribute \
-            composeApp/build/outputs/apk/debug/composeApp-debug.apk \
-            --app ${{ secrets.FIREBASE_ANDROID_DEBUG_APP_ID }} \
-            --groups "Friends"
+#      - name: Distribute Android Debug App to Firebase
+#        env:
+#          DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+#        run: |
+#          echo $DATA | base64 -di > firebase-service-account.json
+#          export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
+#          firebase --version # Optional: Verify Firebase CLI installation
+#          firebase appdistribution:distribute \
+#            composeApp/build/outputs/apk/debug/composeApp-debug.apk \
+#            --app ${{ secrets.FIREBASE_ANDROID_DEBUG_APP_ID }} \
+#            --groups "Friends"
 
       - name: Firebase Android (Release) - Google Services.json file
         env:
@@ -95,6 +95,6 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
           firebase --version # Optional: Verify Firebase CLI installation
            firebase appdistribution:distribute \
-            composeApp/release/composeApp-release.aab \
+            composeApp/build/outputs/bundle/release/composeApp-release.aab \
             --app ${{ secrets.FIREBASE_ANDROID_PROD_APP_ID }} \
             --groups "Friends"
