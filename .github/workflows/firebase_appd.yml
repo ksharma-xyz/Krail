@@ -1,0 +1,73 @@
+name: Firebase App Distribution
+
+on:
+  pull_request:
+    branches: [ test/* ]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  android:
+    if: ${{ github.event.pull_request.draft == false }}
+    runs-on: ubuntu-latest
+    environment: Firebase
+    timeout-minutes: 60
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup environment variables
+        run: |
+          echo "ANDROID_NSW_TRANSPORT_API_KEY=${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+          echo "IOS_NSW_TRANSPORT_API_KEY=${{ secrets.IOS_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
+
+      - name: set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 21
+
+      - name: Cache Gradle and wrapper
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Firebase Android (Release) - Google Services.json file
+        env:
+          DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_RELEASE }}
+        run: echo $DATA | base64 -di > composeApp/src/release/google-services.json
+
+      - name: Firebase (Debug) - Google Services.json file
+        env:
+          DATA: ${{ secrets.FIREBASE_GOOGLE_SERVICES_JSON_DEBUG }}
+        run: echo $DATA | base64 -di > composeApp/src/debug/google-services.json
+
+      - name: Build Debug
+        env:
+          ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
+        run: ./gradlew :composeApp:assembleDebug testDebug
+
+      - name: Authenticate Firebase CLI
+        env:
+          DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          echo $DATA | base64 -di > firebase-service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
+
+      - name: Upload Debug APK to Firebase
+        run: |
+          npx firebase appdistribution:distribute \
+          composeApp/build/outputs/bundle/debug/composeApp-debug.aab \
+          --app ${{ secrets.FIREBASE_ANDROID_DEBUG_APP_ID }} \
+          --token ${{ secrets.FIREBASE_SERVICE_ACCOUNT }} \
+          --groups testers Friends
