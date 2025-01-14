@@ -76,7 +76,7 @@ jobs:
       - name: Build Android Release
         env:
           ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
-        run: ./gradlew :composeApp:assembleRelease
+        run: ./gradlew :composeApp:bundleRelease
 
       - name: Sign Android Release AAB
         uses: r0adkll/sign-android-release@v1.0.4
@@ -95,6 +95,6 @@ jobs:
           export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
           firebase --version # Optional: Verify Firebase CLI installation
            firebase appdistribution:distribute \
-            composeApp/build/outputs/bundle/release/composeApp-release.aab \
+            composeApp/release/composeApp-release.aab \
             --app ${{ secrets.FIREBASE_ANDROID_PROD_APP_ID }} \
             --groups "Friends"
