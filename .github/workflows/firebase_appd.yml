@@ -61,13 +61,14 @@ jobs:
           ANDROID_NSW_TRANSPORT_API_KEY: ${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}
         run: ./gradlew :composeApp:assembleDebug testDebug
 
-      - name: Distribute Android App to Firebase
+      - name: Authenticate Firebase CLI
         env:
-            DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-            APP_ID: ${{ secrets.FIREBASE_ANDROID_DEBUG_APP_ID }}
-            GOOGLE_APPLICATION_CREDENTIALS_CONTENT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          DATA: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
         run: |
-            echo $DATA | base64 -di > firebase-service-account.json
-            export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
-            echo "$GOOGLE_APPLICATION_CREDENTIALS_CONTENT" > "$GOOGLE_APPLICATION_CREDENTIALS"
-            firebase appdistribution:distribute composeApp/build/outputs/apk/debug/composeApp-debug.apk --app ${APP_ID} --groups "Friends"
+          echo $DATA | base64 -di > firebase-service-account.json
+          export GOOGLE_APPLICATION_CREDENTIALS=firebase-service-account.json
+          firebase --version # Optional: Verify Firebase CLI installation
+          firebase appdistribution:distribute \
+            composeApp/build/outputs/apk/debug/composeApp-debug.apk \
+            --app ${{ secrets.FIREBASE_ANDROID_DEBUG_APP_ID }} \
+            --groups "Friends"
