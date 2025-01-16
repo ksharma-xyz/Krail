@@ -1,6 +1,7 @@
 package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -36,11 +37,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toImmutableSet
+import xyz.ksharma.krail.taj.components.Button
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -86,11 +87,6 @@ fun ThemeSelectionScreen(
                 TransportMode.toTransportModeType(productClass)?.colorCode?.hexToComposeColor()
             } ?: KrailTheme.colors.surface,
             label = "buttonBackgroundColor",
-            animationSpec = tween(durationMillis = 300, easing = LinearEasing),
-        )
-        val buttonTextColor by animateColorAsState(
-            targetValue = getForegroundColor(buttonBackgroundColor),
-            label = "buttonTextColor",
             animationSpec = tween(durationMillis = 300, easing = LinearEasing),
         )
 
@@ -152,29 +148,15 @@ fun ThemeSelectionScreen(
                     .navigationBarsPadding()
                     .padding(bottom = 10.dp)
             ) {
-                Text(
-                    text = "Let's #KRAIL",
-                    textAlign = TextAlign.Center,
-                    color = buttonTextColor,
-                    style = if (selectedProductClass != null) {
-                        KrailTheme.typography.titleMedium
-                    } else {
-                        KrailTheme.typography.bodyLarge
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                        .padding(horizontal = 24.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(color = buttonBackgroundColor)
-                        .clickable(
-                            role = Role.Button,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) {
-                            selectedProductClass?.let { productClass ->
-                                transportModeSelected(productClass)
-                            }
+                Button(
+                    label = "Let's #KRAIL",
+                    themeColor = buttonBackgroundColor,
+                    onClick = {
+                        selectedProductClass?.let { productClass ->
+                            transportModeSelected(productClass)
                         }
-                        .padding(vertical = 10.dp),
+                    },
+                    modifier = Modifier.padding(vertical = 10.dp),
                 )
             }
         }
