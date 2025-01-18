@@ -71,7 +71,7 @@ internal fun transportModeBackgroundColor(transportMode: TransportMode): Color {
     }
 }
 
-@Composable
+@Composable // TODO - remove and move to taj
 internal fun themeBackgroundColor(): Color {
     val themeColor by LocalThemeColor.current
     return if (isSystemInDarkTheme()) {
