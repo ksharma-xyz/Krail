@@ -95,6 +95,7 @@ fun Button(
 fun SubtleButton(
     label: String,
     modifier: Modifier = Modifier,
+    size: ButtonSize = ButtonSize.DEFAULT,
     enabled: Boolean = true,
     onClick: () -> Unit = {},
 ) {
@@ -114,9 +115,12 @@ fun SubtleButton(
 
         Text(
             text = label,
-            style = KrailTheme.typography.titleSmall.copy(fontWeight = FontWeight.Normal),
+            style = when (size) {
+                ButtonSize.DEFAULT -> KrailTheme.typography.bodyLarge
+                ButtonSize.COMPACT -> KrailTheme.typography.bodyMedium
+            },
             color = LocalOnContentColor.current.copy(alpha = contentAlpha),
-            modifier = modifier.padding(10.dp)
+            modifier = modifier
                 .clickable(
                     role = Role.Button,
                     interactionSource = remember { MutableInteractionSource() },
@@ -127,9 +131,62 @@ fun SubtleButton(
                     color = themeBackgroundColor(),
                     shape = RoundedCornerShape(50),
                 )
-                .padding(horizontal = 12.dp, vertical = 6.dp)
+                .padding(
+                    horizontal = 12.dp, vertical = when (size) {
+                        ButtonSize.DEFAULT -> 6.dp
+                        ButtonSize.COMPACT -> 4.dp
+                    }
+                )
         )
     }
+}
+
+@Composable
+fun AlertButton(
+    label: String,
+    modifier: Modifier = Modifier,
+    size: ButtonSize = ButtonSize.COMPACT,
+    enabled: Boolean = true,
+    onClick: () -> Unit = {},
+) {
+    val contentAlphaProvider =
+        rememberSaveable(enabled) { if (enabled) EnabledContentAlpha else DisabledContentAlpha }
+
+    val backgroundColor = KrailTheme.colors.alert
+    val contentColor by remember(backgroundColor) { mutableStateOf(backgroundColor) }
+
+    CompositionLocalProvider(
+        LocalContentAlpha provides contentAlphaProvider,
+        LocalTextStyle provides KrailTheme.typography.titleSmall,
+        LocalContentColor provides contentColor,
+        LocalOnContentColor provides getForegroundColor(contentColor),
+    ) {
+        val contentAlpha = LocalContentAlpha.current
+
+        Text(
+            text = label,
+            style = LocalTextStyle.current,
+            color = LocalOnContentColor.current.copy(alpha = contentAlpha),
+            modifier = modifier
+                .clickable(
+                    role = Role.Button,
+                    interactionSource = remember { MutableInteractionSource() },
+                    indication = null,
+                    onClick = onClick,
+                )
+                .background(
+                    color = contentColor,
+                    shape = RoundedCornerShape(50),
+                )
+                .padding(
+                    horizontal = 12.dp, vertical = 2.dp
+                )
+        )
+    }
+}
+
+enum class ButtonSize {
+    DEFAULT, COMPACT
 }
 
 /** TODO
@@ -138,6 +195,9 @@ fun SubtleButton(
  *      - CtaButton - text only
  *      - Button - text with background color
  *      - SubtleButton - text with light background color
+ *
+ *      State
+ *      - AlertButton - text with alert background color
  *
  *      Sizing
  *      - Compact - a small button with minimal padding horizontally
