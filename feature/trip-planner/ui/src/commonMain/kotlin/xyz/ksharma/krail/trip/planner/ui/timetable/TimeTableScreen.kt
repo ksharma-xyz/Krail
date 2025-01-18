@@ -106,7 +106,7 @@ fun TimeTableScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "TimeTable",
+                            text = "Timetable",
                             color = KrailTheme.colors.onSurface,
                         )
 
