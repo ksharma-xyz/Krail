@@ -1,25 +1,20 @@
 package xyz.ksharma.krail.trip.planner.ui.alerts
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentSetOf
@@ -28,7 +23,6 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
-import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @Composable
 fun ServiceAlertScreen(
@@ -46,19 +40,7 @@ fun ServiceAlertScreen(
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             TitleBar(
-                navAction = {
-                    ActionButton(
-                        onClick = onBackClick,
-                        contentDescription = "Back",
-                    ) {
-                        Image(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
-                },
+                onNavActionClick = onBackClick,
                 title = { Text(text = "Service Alerts") },
             )
         }
