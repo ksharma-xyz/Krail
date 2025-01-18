@@ -64,9 +64,7 @@ Welcoming contributions from the community. Please create a new issue or pick up
 
 ## Download
 
-[<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/1280px-Google_Play_Store_badge_EN.svg.png" alt="Download Krail App on Google Play Store" width="150"/>](https://play.google.com/store/apps/details?id=xyz.ksharma.krail)
-
-[<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQk7OywFCuNaXPnmdgEAmthr_XrNbzxmt6oUQ&s" alt="iOS Krail App on Apple App Store" width="150"/>](https://apps.apple.com/us/app/krail-app/id6738934832)
+[<img src="https://i.imgur.com/M1RNcYP.png" alt="Download Krail App on Google Play Store" height="64"/>](https://play.google.com/store/apps/details?id=xyz.ksharma.krail)  [<img src="https://i.imgur.com/w8Ec7J4.png" alt="iOS Krail App on Apple App Store" height="64"/>](https://apps.apple.com/us/app/krail-app/id6738934832)
 
 ## License
 
