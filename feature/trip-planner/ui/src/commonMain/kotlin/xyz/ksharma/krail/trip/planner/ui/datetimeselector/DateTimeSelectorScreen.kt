@@ -41,7 +41,6 @@ import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
-import xyz.ksharma.krail.trip.planner.ui.components.SecondaryButton
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
@@ -118,17 +117,28 @@ fun DateTimeSelectorScreen(
         TitleBar(title = { Text(text = "Plan your trip") },
             onNavActionClick = onBackClick,
             actions = {
-                SecondaryButton(text = "Reset",
-                    onClick = {
-                        val now: LocalDateTime =
-                            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-                        selectedDateStr = now.date.toString()
-                        timePickerState.hour = now.time.hour
-                        timePickerState.minute = now.time.minute
-                        journeyTimeOption = JourneyTimeOptions.LEAVE
-                        reset = true
-                        onResetClick()
-                    })
+                Text(
+                    text = "Reset",
+                    style = KrailTheme.typography.bodyLarge,
+                    modifier = modifier
+                        .clickable(
+                            role = Role.Button,
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                            onClick = {
+                                val now: LocalDateTime =
+                                    Clock.System.now()
+                                        .toLocalDateTime(TimeZone.currentSystemDefault())
+                                selectedDateStr = now.date.toString()
+                                timePickerState.hour = now.time.hour
+                                timePickerState.minute = now.time.minute
+                                journeyTimeOption = JourneyTimeOptions.LEAVE
+                                reset = true
+                                onResetClick()
+                            },
+                        )
+                        .padding(horizontal = 16.dp, vertical = 10.dp)
+                )
             })
 
         LazyColumn(
