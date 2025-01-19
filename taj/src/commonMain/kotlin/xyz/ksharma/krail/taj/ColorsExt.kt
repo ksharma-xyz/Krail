@@ -1,5 +1,8 @@
 package xyz.ksharma.krail.taj
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 
 fun String.hexToComposeColor(): Color {
@@ -44,4 +47,14 @@ private fun String.isValidHexColorCode(): Boolean {
     // Regular expression to match #RRGGBB or #RRGGBBAA hex color codes
     val hexColorRegex = Regex("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{8})\$")
     return hexColorRegex.matches(this)
+}
+
+@Composable
+internal fun themeBackgroundColor(): Color {
+    val themeColor by LocalThemeColor.current
+    return if (isSystemInDarkTheme()) {
+        themeColor.hexToComposeColor().copy(alpha = 0.45f)
+    } else {
+        themeColor.hexToComposeColor().copy(alpha = 0.15f)
+    }
 }

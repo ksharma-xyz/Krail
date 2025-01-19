@@ -46,6 +46,7 @@ import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.SubtleButton
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -160,8 +161,8 @@ fun TimeTableScreen(
             }
 
             item {
-                SecondaryButton(
-                    text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
+                SubtleButton(
+                    label = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
                     onClick = dateTimeSelectorClicked,
                 )
             }
