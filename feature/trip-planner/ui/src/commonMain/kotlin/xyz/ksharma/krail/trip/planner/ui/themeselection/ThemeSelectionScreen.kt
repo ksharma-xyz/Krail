@@ -92,19 +92,7 @@ fun ThemeSelectionScreen(
 
         Column {
             TitleBar(
-                navAction = {
-                    ActionButton(
-                        onClick = onBackClick,
-                        contentDescription = "Back",
-                    ) {
-                        Image(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = null,
-                            colorFilter = ColorFilter.tint(KrailTheme.colors.onSurface),
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
-                },
+                onNavActionClick= onBackClick,
                 title = {},
                 modifier = Modifier.fillMaxWidth(),
             )
