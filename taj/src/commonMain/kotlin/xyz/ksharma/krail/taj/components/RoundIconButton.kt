@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import xyz.ksharma.krail.taj.LocalContainerColor
 import xyz.ksharma.krail.taj.LocalContentColor
-import xyz.ksharma.krail.taj.LocalOnContentColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.tokens.ButtonTokens.RoundButtonSize
 
@@ -35,14 +35,14 @@ fun RoundIconButton(
     content: @Composable () -> Unit = {},
 ) {
     CompositionLocalProvider(
-        LocalContentColor provides KrailTheme.colors.surface,
-        LocalOnContentColor provides KrailTheme.colors.onSurface,
+        LocalContainerColor provides KrailTheme.colors.surface,
+        LocalContentColor provides KrailTheme.colors.onSurface,
     ) {
         Box(
             modifier = modifier
                 .size(RoundButtonSize) // TODO - token "SearchButtonHeight"
                 .clip(CircleShape)
-                .background(color = color ?: LocalContentColor.current)
+                .background(color = color ?: LocalContainerColor.current)
                 .clickable(
                     role = Role.Button,
                     onClickLabel = onClickLabel,

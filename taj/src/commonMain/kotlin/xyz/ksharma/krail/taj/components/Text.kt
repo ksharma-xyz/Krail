@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.AnnotatedString
@@ -56,24 +55,19 @@ fun Text(
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     val contentAlpha = LocalContentAlpha.current
-    CompositionLocalProvider(
-        LocalTextColor provides KrailTheme.colors.onSurface, // default color for text
-        LocalTextStyle provides KrailTheme.typography.body, // default style for text
-    ) {
-        BasicText(
-            text = text,
-            style = style.merge(
-                color = color?.copy(alpha = contentAlpha)
-                    ?: LocalTextColor.current.copy(alpha = contentAlpha),
-                textAlign = textAlign,
-                fontFamily = fontFamily,
-            ),
-            maxLines = maxLines,
-            overflow = overflow,
-            modifier = modifier,
-            onTextLayout = onTextLayout,
-        )
-    }
+    BasicText(
+        text = text,
+        style = style.merge(
+            color = color?.copy(alpha = contentAlpha)
+                ?: LocalTextColor.current.copy(alpha = contentAlpha),
+            textAlign = textAlign,
+            fontFamily = fontFamily,
+        ),
+        maxLines = maxLines,
+        overflow = overflow,
+        modifier = modifier,
+        onTextLayout = onTextLayout,
+    )
 }
 
 // region Previews

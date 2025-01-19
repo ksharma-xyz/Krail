@@ -32,7 +32,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_settings
 import org.jetbrains.compose.resources.painterResource
-import xyz.ksharma.krail.taj.LocalOnContentColor
+import xyz.ksharma.krail.taj.LocalContentColor
 import xyz.ksharma.krail.taj.components.RoundIconButton
 
 @Composable
@@ -81,7 +81,7 @@ fun SavedTripsScreen(
                         Image(
                             painter = painterResource(Res.drawable.ic_settings),
                             contentDescription = "Settings",
-                            colorFilter = ColorFilter.tint(LocalOnContentColor.current),
+                            colorFilter = ColorFilter.tint(LocalContentColor.current),
                             modifier = Modifier.size(24.dp),
                         )
                     }

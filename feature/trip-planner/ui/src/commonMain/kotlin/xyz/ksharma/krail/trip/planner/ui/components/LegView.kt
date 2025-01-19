@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -42,10 +41,14 @@ import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_a11y
 import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.components.Button
+import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.toAdaptiveDecorativeIconSize
+import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableState
@@ -128,6 +131,10 @@ fun LegView(
                         StopsRow(
                             stops = "$stopsCount stops",
                             line = transportModeLine,
+                            onClick = {
+                                showIntermediateStops = !showIntermediateStops
+                                onClick(showIntermediateStops)
+                            },
                         )
                     } else {
                         TransportModeInfo(
@@ -275,27 +282,33 @@ private fun StopInfo(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun StopsRow(stops: String, line: TransportModeLine, modifier: Modifier = Modifier) {
+private fun StopsRow(
+    stops: String,
+    line: TransportModeLine,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+) {
     FlowRow(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
-        Box(
-            modifier = Modifier
-                .background(
-                    color = line.transportMode.colorCode.hexToComposeColor(),
-                    shape = RoundedCornerShape(50),
-                )
-                .padding(horizontal = 20.dp, vertical = 2.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = stops,
-                style = KrailTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                color = Color.White,
-            )
+        val buttonContainerColor by remember {
+            mutableStateOf(line.transportMode.colorCode.hexToComposeColor())
         }
+        Button(
+            colors = ButtonColors(
+                containerColor = buttonContainerColor,
+                contentColor = Color.White,
+                disabledContainerColor = buttonContainerColor.copy(alpha = DisabledContentAlpha),
+                disabledContentColor = Color.White.copy(alpha = DisabledContentAlpha),
+            ),
+            onClick = onClick,
+            dimensions = ButtonDefaults.smallButtonSize(),
+        ) {
+            Text(text = stops)
+        }
+
         TransportModeInfo(
             letter = line.transportMode.name.first(),
             backgroundColor = line.transportMode.colorCode.hexToComposeColor(),
@@ -308,6 +321,7 @@ private fun StopsRow(stops: String, line: TransportModeLine, modifier: Modifier 
 
 // region Previews
 
+@Preview
 @Composable
 private fun PreviewLegView() {
     KrailTheme {
@@ -341,6 +355,7 @@ private fun PreviewLegView() {
     }
 }
 
+@Preview
 @Composable
 private fun PreviewLegViewTwoStops() {
     KrailTheme {
@@ -369,6 +384,7 @@ private fun PreviewLegViewTwoStops() {
     }
 }
 
+@Preview
 @Composable
 private fun PreviewLegViewMetro() {
     KrailTheme {
@@ -397,6 +413,7 @@ private fun PreviewLegViewMetro() {
     }
 }
 
+@Preview
 @Composable
 private fun PreviewLegViewFerry() {
     KrailTheme {
@@ -425,6 +442,7 @@ private fun PreviewLegViewFerry() {
     }
 }
 
+@Preview
 @Composable
 private fun PreviewLegViewLightRail() {
     KrailTheme {
@@ -453,6 +471,7 @@ private fun PreviewLegViewLightRail() {
     }
 }
 
+@Preview
 @Composable
 private fun PreviewStopsRow() {
     KrailTheme {
@@ -462,10 +481,12 @@ private fun PreviewStopsRow() {
                 transportMode = TransportMode.Bus(),
                 lineName = "700",
             ),
+            onClick = {},
         )
     }
 }
 
+@Preview
 @Composable
 private fun PreviewProminentStopInfo() {
     KrailTheme {
@@ -479,6 +500,7 @@ private fun PreviewProminentStopInfo() {
     }
 }
 
+@Preview
 @Composable
 private fun PreviewRouteSummary() {
     KrailTheme {

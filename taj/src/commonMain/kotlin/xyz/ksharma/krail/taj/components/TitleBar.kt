@@ -25,7 +25,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.LocalContainerColor
 import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -69,7 +69,7 @@ fun TitleBar(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 CompositionLocalProvider(
-                    LocalContentColor provides KrailTheme.colors.onSurface,
+                    LocalContainerColor provides KrailTheme.colors.onSurface,
                 ) {
                     actions()
                 }

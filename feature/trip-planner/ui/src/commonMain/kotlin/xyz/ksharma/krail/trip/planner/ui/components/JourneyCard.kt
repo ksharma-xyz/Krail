@@ -51,7 +51,7 @@ import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.AlertButton
-import xyz.ksharma.krail.taj.components.ButtonSize
+import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -236,14 +236,17 @@ fun ExpandedJourneyCardContent(
         ) {
             if (totalUniqueServiceAlerts > 0) {
                 AlertButton(
-                    label = if (totalUniqueServiceAlerts > 1) {
-                        "$totalUniqueServiceAlerts Alerts"
-                    } else {
-                        "$totalUniqueServiceAlerts Alert"
-                    },
-                    size = ButtonSize.COMPACT,
+                    dimensions = ButtonDefaults.smallButtonSize(),
                     onClick = onAlertClick,
-                )
+                ) {
+                    Text(
+                        text = if (totalUniqueServiceAlerts > 1) {
+                            "$totalUniqueServiceAlerts Alerts"
+                        } else {
+                            "$totalUniqueServiceAlerts Alert"
+                        },
+                    )
+                }
             }
 
             TextWithIcon(

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -21,13 +22,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.Button
+import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.toAdaptiveSize
+import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.alerts.ServiceAlert
 
@@ -107,21 +111,28 @@ fun CollapsibleAlert(
                 )
             }
         } else {
-            Box(
-                modifier = Modifier
-                    .padding(start = 12.dp + 24.dp.toAdaptiveSize(), bottom = 12.dp)
-                    .background(
-                        color = getForegroundColor(backgroundColor),
-                        shape = RoundedCornerShape(50),
-                    )
-                    .padding(horizontal = 16.dp, vertical = 2.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "Read More",
-                    style = KrailTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                    color = getForegroundColor(getForegroundColor(backgroundColor)),
+
+            val buttonBackgroundColor by remember {
+                mutableStateOf(getForegroundColor(backgroundColor))
+            }
+            val buttonContentColor by remember(buttonBackgroundColor) {
+                mutableStateOf(getForegroundColor(buttonBackgroundColor))
+            }
+            Button(
+                colors = ButtonColors(
+                    containerColor = buttonBackgroundColor,
+                    contentColor = buttonContentColor,
+                    disabledContainerColor = buttonBackgroundColor.copy(alpha = DisabledContentAlpha),
+                    disabledContentColor = buttonContentColor.copy(alpha = DisabledContentAlpha),
+                ),
+                onClick = onClick,
+                dimensions = ButtonDefaults.extraSmallButtonSize(),
+                modifier = Modifier.padding(
+                    start = 12.dp + 24.dp.toAdaptiveSize(),
+                    bottom = 8.dp
                 )
+            ) {
+                Text(text = "Read More")
             }
         }
     }
@@ -129,8 +140,7 @@ fun CollapsibleAlert(
 
 // region Previews
 
-
-//@Preview(fontScale = 2f)
+@Preview
 @Composable
 private fun PreviewCollapsibleAlertCollapsed() {
     KrailTheme {
@@ -149,7 +159,7 @@ private fun PreviewCollapsibleAlertCollapsed() {
     }
 }
 
-
+@Preview
 @Composable
 private fun PreviewCollapsibleAlertExpanded() {
     KrailTheme {
