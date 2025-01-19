@@ -95,8 +95,9 @@ fun Button(
 /** TODO
  * Button
  *      Kind
- *      - Cta button - text only
+ *      - CtaButton - text only
  *      - Button - text with background color
+ *      - SubtleButton - text with light background color
  *
  *      Sizing
  *      - Compact - a small button with minimal padding horizontally
