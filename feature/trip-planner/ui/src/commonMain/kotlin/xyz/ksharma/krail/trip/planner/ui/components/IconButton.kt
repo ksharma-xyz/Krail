@@ -1,7 +1,6 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -13,7 +12,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.taj.modifier.klickable
 
+//TODO - Should be RoundIconButton
 @Composable
 fun IconButton(
     painter: Painter,
@@ -25,7 +26,8 @@ fun IconButton(
         modifier = modifier
             .size(56.dp)
             .clip(CircleShape)
-            .clickable { onClick() }, contentAlignment = Alignment.Center
+            .klickable { onClick() },
+        contentAlignment = Alignment.Center,
     ) {
         Image(
             painter = painter,

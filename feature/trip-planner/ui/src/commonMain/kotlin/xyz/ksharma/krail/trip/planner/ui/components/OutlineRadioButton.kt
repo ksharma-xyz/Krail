@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.themeContentColor
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
@@ -63,15 +64,13 @@ fun OutlineRadioButton(
                 .border(
                     width = 2.dp,
                     color = borderColor,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
                 )
-                .padding(vertical = 4.dp, horizontal = 12.dp)
-                .clickable(
+                .klickable(
                     onClick = onClick,
                     enabled = enabled,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null,
-                ),
+                )
+                .padding(vertical = 4.dp, horizontal = 12.dp),
             contentAlignment = Alignment.Center,
         ) {
             Text(

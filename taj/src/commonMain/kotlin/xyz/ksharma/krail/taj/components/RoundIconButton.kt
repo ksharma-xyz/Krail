@@ -1,7 +1,6 @@
 package xyz.ksharma.krail.taj.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -11,9 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
 import xyz.ksharma.krail.taj.LocalContainerColor
 import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.tokens.ButtonTokens.RoundButtonSize
 
@@ -43,10 +42,7 @@ fun RoundIconButton(
                 .size(RoundButtonSize) // TODO - token "SearchButtonHeight"
                 .clip(CircleShape)
                 .background(color = color ?: LocalContainerColor.current)
-                .clickable(
-                    role = Role.Button,
-                    onClickLabel = onClickLabel,
-                ) { onClick() },
+                .klickable(onClick = onClick),
             contentAlignment = Alignment.Center,
         ) {
             content()

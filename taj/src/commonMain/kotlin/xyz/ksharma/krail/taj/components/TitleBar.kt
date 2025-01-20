@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.taj.LocalContainerColor
 import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
@@ -78,19 +79,17 @@ fun TitleBar(
     }
 }
 
+// TODO should be same as IconButton / RoundIconButton
 @Composable
 private fun NavActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier.size(40.dp).clip(CircleShape)
-            .clickable(
-                role = Role.Button,
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null,
-                onClick = onClick,
-            )
+        modifier = modifier
+            .size(48.dp)
+            .clip(CircleShape)
+            .klickable(onClick = onClick)
             .semantics(mergeDescendants = true) {
                 this.contentDescription = "Back"
             },
