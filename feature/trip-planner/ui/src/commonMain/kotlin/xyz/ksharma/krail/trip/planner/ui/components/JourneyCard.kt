@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,10 +50,11 @@ import krail.feature.trip_planner.ui.generated.resources.ic_clock
 import krail.feature.trip_planner.ui.generated.resources.ic_walk
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.components.AlertButton
+import xyz.ksharma.krail.taj.components.ButtonSize
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
-import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.taj.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -234,36 +234,16 @@ fun ExpandedJourneyCardContent(
             },
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            // TODO - display alerts only on Android as of now - ComposeNavigation
-            //    to support iOS, we need to store them in db and use some id to fetch them and display.
-            //    Current approach of passing them as json string does not work on iOS devices.
-            //    See - https://youtrack.jetbrains.com/issue/CMP-7180/iOS-App-Crashes-when-navigating-with-html-content-as-string-argument.
             if (totalUniqueServiceAlerts > 0) {
-                Box(
-                    modifier = Modifier
-                        .padding()
-                        .background(
-                            color = KrailTheme.colors.alert,
-                            shape = RoundedCornerShape(50),
-                        )
-                        .padding(horizontal = 12.dp, vertical = 2.dp)
-                        .clickable(
-                            role = Role.Button,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                        ) { onAlertClick() },
-                    contentAlignment = Alignment.Center,
-                ) {
-                    Text(
-                        text = if (totalUniqueServiceAlerts > 1) {
-                            "$totalUniqueServiceAlerts Alerts"
-                        } else {
-                            "$totalUniqueServiceAlerts Alert"
-                        },
-                        style = KrailTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                        color = getForegroundColor(KrailTheme.colors.alert),
-                    )
-                }
+                AlertButton(
+                    label = if (totalUniqueServiceAlerts > 1) {
+                        "$totalUniqueServiceAlerts Alerts"
+                    } else {
+                        "$totalUniqueServiceAlerts Alert"
+                    },
+                    size = ButtonSize.COMPACT,
+                    onClick = onAlertClick,
+                )
             }
 
             TextWithIcon(
