@@ -19,6 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.Dp
@@ -30,8 +31,10 @@ import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
+import xyz.ksharma.krail.taj.theme.krailRipple
 import xyz.ksharma.krail.taj.themeBackgroundColor
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.EnabledContentAlpha
@@ -148,23 +151,14 @@ fun TextButton(
     ) {
         Box(
             modifier = modifier
-                .then(
-                    when (dimensions) {
-                        ButtonDefaults.largeButtonSize() -> Modifier.fillMaxWidth()
-                        else -> Modifier
-                    }
-                )
-                .clickable(
-                    role = Role.Button,
-                    interactionSource = remember { MutableInteractionSource() },
-                    enabled = enabled,
-                    indication = null,
-                    onClick = onClick,
-                )
                 .heightIn(dimensions.height)
+                .clip(dimensions.shape)
                 .background(
                     color = Color.Transparent,
                     shape = dimensions.shape,
+                ).klickable(
+                    enabled = enabled,
+                    onClick = onClick,
                 )
                 .padding(dimensions.padding),
             contentAlignment = Alignment.Center,
