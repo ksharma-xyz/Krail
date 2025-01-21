@@ -54,6 +54,12 @@ private fun String.isValidHexColorCode(): Boolean {
 }
 
 @Composable
+fun themeColor(): Color {
+    val themeColor by LocalThemeColor.current
+    return themeColor.hexToComposeColor()
+}
+
+@Composable
 fun themeBackgroundColor(): Color {
     val themeColor by LocalThemeColor.current
     return if (isSystemInDarkTheme()) {

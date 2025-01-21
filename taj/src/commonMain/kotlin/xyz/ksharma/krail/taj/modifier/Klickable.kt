@@ -7,7 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import xyz.ksharma.krail.taj.theme.krailRipple
-import xyz.ksharma.krail.taj.themeBackgroundColor
+import xyz.ksharma.krail.taj.themeColor
 
 /**
  * Adds a click listener to the Modifier with a custom ripple effect.
@@ -30,7 +30,7 @@ fun Modifier.klickable(
         role = role,
         interactionSource = interactionSource,
         enabled = enabled,
-        indication = krailRipple(color = themeBackgroundColor()),
+        indication = krailRipple(color = themeColor()),
         onClick = onClick,
     )
 }
