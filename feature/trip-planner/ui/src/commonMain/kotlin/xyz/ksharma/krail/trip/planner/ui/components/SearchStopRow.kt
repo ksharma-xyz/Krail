@@ -24,7 +24,7 @@ import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_reverse
 import krail.feature.trip_planner.ui.generated.resources.ic_search
 import org.jetbrains.compose.resources.painterResource
-import xyz.ksharma.krail.taj.LocalOnContentColor
+import xyz.ksharma.krail.taj.LocalContentColor
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.RoundIconButton
 import xyz.ksharma.krail.taj.components.Text
@@ -93,7 +93,7 @@ fun SearchStopRow(
                     Image(
                         painter = painterResource(Res.drawable.ic_reverse),
                         contentDescription = "Reverse",
-                        colorFilter = ColorFilter.tint(LocalOnContentColor.current),
+                        colorFilter = ColorFilter.tint(LocalContentColor.current),
                         modifier = Modifier.size(24.dp),
                     )
                 },
@@ -105,7 +105,7 @@ fun SearchStopRow(
                     Image(
                         painter = painterResource(Res.drawable.ic_search),
                         contentDescription = "Search",
-                        colorFilter = ColorFilter.tint(LocalOnContentColor.current),
+                        colorFilter = ColorFilter.tint(LocalContentColor.current),
                         modifier = Modifier.size(24.dp),
                     )
                 },

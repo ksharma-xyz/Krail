@@ -10,13 +10,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -27,8 +24,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import krail.feature.trip_planner.ui.generated.resources.Res
-import krail.feature.trip_planner.ui.generated.resources.ic_paint
 import krail.feature.trip_planner.ui.generated.resources.ic_dev
+import krail.feature.trip_planner.ui.generated.resources.ic_paint
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Divider
@@ -36,7 +33,6 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
-import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 @Composable
 fun SettingsScreen(

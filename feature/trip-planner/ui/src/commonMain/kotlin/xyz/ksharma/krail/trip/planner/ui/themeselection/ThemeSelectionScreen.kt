@@ -1,10 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,8 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -46,11 +42,11 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
+import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.transportModeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
-import xyz.ksharma.krail.trip.planner.ui.timetable.ActionButton
 
 private val TransportMode.tagLine: String
     get() {
@@ -92,7 +88,7 @@ fun ThemeSelectionScreen(
 
         Column {
             TitleBar(
-                onNavActionClick= onBackClick,
+                onNavActionClick = onBackClick,
                 title = {},
                 modifier = Modifier.fillMaxWidth(),
             )
@@ -137,15 +133,21 @@ fun ThemeSelectionScreen(
                     .padding(bottom = 10.dp)
             ) {
                 Button(
-                    label = "Let's #KRAIL",
-                    themeColor = buttonBackgroundColor,
+                    colors = ButtonColors(
+                        containerColor = buttonBackgroundColor,
+                        contentColor = getForegroundColor(buttonBackgroundColor),
+                        disabledContainerColor = buttonBackgroundColor.copy(alpha = DisabledContentAlpha),
+                        disabledContentColor = getForegroundColor(buttonBackgroundColor).copy(alpha = DisabledContentAlpha),
+                    ),
                     onClick = {
                         selectedProductClass?.let { productClass ->
                             transportModeSelected(productClass)
                         }
                     },
-                    modifier = Modifier.padding(vertical = 10.dp),
-                )
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 10.dp),
+                ) {
+                    Text(text = "Let's #KRAIL")
+                }
             }
         }
     }

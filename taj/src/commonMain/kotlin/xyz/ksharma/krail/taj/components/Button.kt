@@ -1,30 +1,32 @@
 package xyz.ksharma.krail.taj.components
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import xyz.ksharma.krail.taj.LocalContainerColor
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.LocalContentColor
-import xyz.ksharma.krail.taj.LocalOnContentColor
+import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.hexToComposeColor
@@ -34,173 +36,292 @@ import xyz.ksharma.krail.taj.themeBackgroundColor
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.EnabledContentAlpha
 
-/**
- * Button component for Taj
- *
- * @param label The text to be displayed on the button.
- * @param modifier The modifier to be applied to the button.
- * @param themeColor The background color of the button. If null, a default color is used.
- * @param enabled Whether the button is enabled or not. Defaults to true.
- * @param onClick The callback to be invoked when the button is clicked.
- */
 @Composable
 fun Button(
-    label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    themeColor: Color? = null, // TODO - concrete type for theme
+    colors: ButtonColors = ButtonDefaults.buttonColors(),
+    dimensions: ButtonDimensions = ButtonDefaults.largeButtonSize(),
     enabled: Boolean = true,
-    onClick: () -> Unit = {},
+    content: @Composable () -> Unit,
 ) {
     val contentAlphaProvider =
         rememberSaveable(enabled) { if (enabled) EnabledContentAlpha else DisabledContentAlpha }
 
-    val hexContentColor by LocalThemeColor.current
-    val contentColor by remember(themeColor, hexContentColor) {
-        mutableStateOf(themeColor ?: hexContentColor.hexToComposeColor())
-    }
-    val onContentColor by animateColorAsState(
-        targetValue = getForegroundColor(contentColor),
-        label = "buttonTextColor",
-        animationSpec = tween(durationMillis = 300, easing = FastOutSlowInEasing),
-    )
-
     CompositionLocalProvider(
         LocalContentAlpha provides contentAlphaProvider,
-        LocalTextStyle provides KrailTheme.typography.titleMedium,
-        LocalContentColor provides contentColor,
-        LocalOnContentColor provides onContentColor,
+        LocalContainerColor provides colors.containerColor,
+        LocalTextStyle provides buttonTextStyle(dimensions),
+        LocalTextColor provides colors.contentColor,
     ) {
-        val contentAlpha = LocalContentAlpha.current
-
-        Text(
-            text = label,
-            textAlign = TextAlign.Center,
-            color = LocalOnContentColor.current.copy(alpha = contentAlpha),
-            style = LocalTextStyle.current,
-            modifier = modifier.fillMaxWidth()
-                .padding(horizontal = 24.dp) // TODO - tokens for padding
-                .clip(RoundedCornerShape(50))
-                .background(color = LocalContentColor.current.copy(alpha = contentAlpha)).clickable(
+        Box(
+            modifier = modifier
+                .then(
+                    when (dimensions) {
+                        ButtonDefaults.largeButtonSize() -> Modifier.fillMaxWidth()
+                        else -> Modifier
+                    }
+                )
+                .clickable(
                     role = Role.Button,
                     interactionSource = remember { MutableInteractionSource() },
                     enabled = enabled,
                     indication = null,
                     onClick = onClick,
-                ).padding(10.dp), // TODO - tokens for padding
-        )
+                )
+                .heightIn(dimensions.height)
+                .background(
+                    color = LocalContainerColor.current.copy(alpha = LocalContentAlpha.current),
+                    shape = dimensions.shape,
+                )
+                .padding(dimensions.padding),
+            contentAlignment = Alignment.Center,
+        ) {
+            content()
+        }
     }
 }
 
+
 @Composable
 fun SubtleButton(
-    label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    size: ButtonSize = ButtonSize.DEFAULT,
+    dimensions: ButtonDimensions = ButtonDefaults.largeButtonSize(),
     enabled: Boolean = true,
-    onClick: () -> Unit = {},
+    content: @Composable () -> Unit,
 ) {
     val contentAlphaProvider =
         rememberSaveable(enabled) { if (enabled) EnabledContentAlpha else DisabledContentAlpha }
 
-    val themeColor by LocalThemeColor.current
-    val contentColor by rememberSaveable(themeColor) { mutableStateOf(themeColor) }
-
     CompositionLocalProvider(
         LocalContentAlpha provides contentAlphaProvider,
-        LocalTextStyle provides KrailTheme.typography.titleMedium,
-        LocalContentColor provides contentColor.hexToComposeColor(),
-        LocalOnContentColor provides getForegroundColor(contentColor.hexToComposeColor()),
+        LocalTextStyle provides buttonTextStyle(dimensions),
+        LocalContainerColor provides ButtonDefaults.subtleButtonColors().containerColor,
+        LocalTextColor provides ButtonDefaults.subtleButtonColors().contentColor,
     ) {
-        val contentAlpha = LocalContentAlpha.current
-
-        Text(
-            text = label,
-            style = when (size) {
-                ButtonSize.DEFAULT -> KrailTheme.typography.bodyLarge
-                ButtonSize.COMPACT -> KrailTheme.typography.bodyMedium
-            },
-            color = LocalOnContentColor.current.copy(alpha = contentAlpha),
+        Box(
             modifier = modifier
+                .then(
+                    when (dimensions) {
+                        ButtonDefaults.largeButtonSize() -> Modifier.fillMaxWidth()
+                        else -> Modifier
+                    }
+                )
                 .clickable(
                     role = Role.Button,
                     interactionSource = remember { MutableInteractionSource() },
+                    enabled = enabled,
                     indication = null,
                     onClick = onClick,
                 )
+                .heightIn(dimensions.height)
                 .background(
-                    color = themeBackgroundColor(),
-                    shape = RoundedCornerShape(50),
+                    color = LocalContainerColor.current,
+                    shape = dimensions.shape,
                 )
-                .padding(
-                    horizontal = 12.dp, vertical = when (size) {
-                        ButtonSize.DEFAULT -> 6.dp
-                        ButtonSize.COMPACT -> 4.dp
+                .padding(dimensions.padding),
+            contentAlignment = Alignment.Center,
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+fun TextButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    dimensions: ButtonDimensions = ButtonDefaults.smallButtonSize(),
+    enabled: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    val contentAlphaProvider =
+        rememberSaveable(enabled) { if (enabled) EnabledContentAlpha else DisabledContentAlpha }
+
+    CompositionLocalProvider(
+        LocalContentAlpha provides contentAlphaProvider,
+        LocalTextStyle provides buttonTextStyle(dimensions),
+        LocalContainerColor provides ButtonDefaults.textButtonColors().containerColor,
+        LocalContentColor provides ButtonDefaults.textButtonColors().contentColor,
+        LocalTextColor provides ButtonDefaults.textButtonColors().contentColor,
+    ) {
+        Box(
+            modifier = modifier
+                .then(
+                    when (dimensions) {
+                        ButtonDefaults.largeButtonSize() -> Modifier.fillMaxWidth()
+                        else -> Modifier
                     }
                 )
-        )
+                .clickable(
+                    role = Role.Button,
+                    interactionSource = remember { MutableInteractionSource() },
+                    enabled = enabled,
+                    indication = null,
+                    onClick = onClick,
+                )
+                .heightIn(dimensions.height)
+                .background(
+                    color = Color.Transparent,
+                    shape = dimensions.shape,
+                )
+                .padding(dimensions.padding),
+            contentAlignment = Alignment.Center,
+        ) {
+            content()
+        }
     }
 }
 
 @Composable
 fun AlertButton(
-    label: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    size: ButtonSize = ButtonSize.COMPACT,
+    dimensions: ButtonDimensions = ButtonDefaults.smallButtonSize(),
     enabled: Boolean = true,
-    onClick: () -> Unit = {},
+    content: @Composable () -> Unit,
 ) {
     val contentAlphaProvider =
         rememberSaveable(enabled) { if (enabled) EnabledContentAlpha else DisabledContentAlpha }
 
-    val backgroundColor = KrailTheme.colors.alert
-    val contentColor by remember(backgroundColor) { mutableStateOf(backgroundColor) }
-
     CompositionLocalProvider(
         LocalContentAlpha provides contentAlphaProvider,
-        LocalTextStyle provides KrailTheme.typography.titleSmall,
-        LocalContentColor provides contentColor,
-        LocalOnContentColor provides getForegroundColor(contentColor),
+        LocalTextStyle provides buttonTextStyle(dimensions),
+        LocalContainerColor provides ButtonDefaults.alertButtonColors().containerColor,
+        LocalTextColor provides ButtonDefaults.alertButtonColors().contentColor,
     ) {
-        val contentAlpha = LocalContentAlpha.current
-
-        Text(
-            text = label,
-            style = LocalTextStyle.current,
-            color = LocalOnContentColor.current.copy(alpha = contentAlpha),
+        Box(
             modifier = modifier
+                .then(
+                    when (dimensions) {
+                        ButtonDefaults.largeButtonSize() -> Modifier.fillMaxWidth()
+                        else -> Modifier
+                    }
+                )
                 .clickable(
                     role = Role.Button,
                     interactionSource = remember { MutableInteractionSource() },
+                    enabled = enabled,
                     indication = null,
                     onClick = onClick,
                 )
+                .heightIn(dimensions.height)
                 .background(
-                    color = contentColor,
-                    shape = RoundedCornerShape(50),
+                    color = LocalContainerColor.current.copy(alpha = LocalContentAlpha.current),
+                    shape = dimensions.shape,
                 )
-                .padding(
-                    horizontal = 12.dp, vertical = 2.dp
-                )
+                .padding(dimensions.padding),
+            contentAlignment = Alignment.Center,
+        ) {
+            content()
+        }
+    }
+}
+
+@Composable
+private fun buttonTextStyle(dimensions: ButtonDimensions) =
+    when (dimensions) {
+        ButtonDefaults.extraSmallButtonSize() -> KrailTheme.typography.bodySmall
+        ButtonDefaults.smallButtonSize() -> KrailTheme.typography.titleSmall
+        ButtonDefaults.mediumButtonSize() -> KrailTheme.typography.bodyMedium
+        ButtonDefaults.largeButtonSize() -> KrailTheme.typography.titleLarge
+        else -> KrailTheme.typography.titleSmall
+    }
+
+object ButtonDefaults {
+
+    @Composable
+    fun textButtonColors(): ButtonColors {
+        val hexThemeColor: String by LocalThemeColor.current
+        val themeColor: Color by remember(hexThemeColor) {
+            mutableStateOf(hexThemeColor.hexToComposeColor())
+        }
+        return ButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = themeColor,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = themeColor.copy(alpha = DisabledContentAlpha),
+        )
+    }
+
+    @Composable
+    fun alertButtonColors(): ButtonColors {
+        val containerColor = KrailTheme.colors.alert
+
+        return ButtonColors(
+            containerColor = containerColor,
+            contentColor = getForegroundColor(containerColor),
+            disabledContainerColor = containerColor.copy(alpha = DisabledContentAlpha),
+            disabledContentColor = getForegroundColor(containerColor)
+                .copy(alpha = DisabledContentAlpha),
+        )
+    }
+
+    @Composable
+    fun subtleButtonColors(): ButtonColors {
+        val containerColor = themeBackgroundColor()
+        val contentColor: Color by remember { mutableStateOf(getForegroundColor(containerColor)) }
+
+        return ButtonColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = containerColor.copy(alpha = DisabledContentAlpha),
+            disabledContentColor = contentColor.copy(alpha = DisabledContentAlpha),
+        )
+    }
+
+    @Composable
+    fun buttonColors(): ButtonColors {
+        val hexThemeColor: String by LocalThemeColor.current
+        val hexContainerColor: String by rememberSaveable(hexThemeColor) {
+            mutableStateOf(hexThemeColor)
+        }
+        val containerColor: Color by remember(hexContainerColor) {
+            mutableStateOf(hexContainerColor.hexToComposeColor())
+        }
+        val contentColor: Color by remember { mutableStateOf(getForegroundColor(containerColor)) }
+
+        return ButtonColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = containerColor.copy(alpha = DisabledContentAlpha),
+            disabledContentColor = contentColor.copy(alpha = DisabledContentAlpha),
+        )
+    }
+
+    fun extraSmallButtonSize(): ButtonDimensions {
+        return ButtonDimensions(
+            height = 18.dp,
+            padding = PaddingValues(vertical = 2.dp, horizontal = 8.dp),
+        )
+    }
+
+    fun smallButtonSize(): ButtonDimensions {
+        return ButtonDimensions(
+            height = 20.dp,
+            padding = PaddingValues(vertical = 4.dp, horizontal = 10.dp),
+        )
+    }
+
+    fun mediumButtonSize(): ButtonDimensions {
+        return ButtonDimensions(
+            height = 28.dp,
+            padding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
+        )
+    }
+
+    fun largeButtonSize(): ButtonDimensions {
+        return ButtonDimensions(
+            height = 32.dp,
+            padding = PaddingValues(vertical = 10.dp, horizontal = 16.dp),
         )
     }
 }
 
-enum class ButtonSize {
-    DEFAULT, COMPACT
-}
-
-/** TODO
- * Button
- *      Kind
- *      - CtaButton - text only
- *      - Button - text with background color
- *      - SubtleButton - text with light background color
- *
- *      State
- *      - AlertButton - text with alert background color
- *
- *      Sizing
- *      - Compact - a small button with minimal padding horizontally
- *      - Default - a button with default padding horizontally
- *      - Large - a full width button.
- */
+@Immutable
+data class ButtonDimensions(
+    val height: Dp,
+    val padding: PaddingValues,
+    val shape: RoundedCornerShape = RoundedCornerShape(50),
+)

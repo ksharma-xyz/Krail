@@ -19,6 +19,7 @@ import kotlinx.serialization.Serializable
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.splash.SplashScreen
 import xyz.ksharma.krail.splash.SplashViewModel
+import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -55,6 +56,7 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
     CompositionLocalProvider(
         LocalThemeColor provides themeColorHexCode,
         LocalThemeContentColor provides themeContentColorHexCode,
+        LocalTextColor provides KrailTheme.colors.onSurface,
     ) {
         NavHost(
             navController = navController,

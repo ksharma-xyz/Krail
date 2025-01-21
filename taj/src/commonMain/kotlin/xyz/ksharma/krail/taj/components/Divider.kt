@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import xyz.ksharma.krail.taj.LocalContentColor
+import xyz.ksharma.krail.taj.LocalContainerColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
 
 @Composable
@@ -22,7 +22,7 @@ fun Divider(
     type: DividerType = DividerType.HORIZONTAL,
     color: Color? = null,
 ) {
-    CompositionLocalProvider(LocalContentColor provides KrailTheme.colors.onSurface.copy(alpha = 0.2f)) {
+    CompositionLocalProvider(LocalContainerColor provides KrailTheme.colors.onSurface.copy(alpha = 0.2f)) {
         Box(
             modifier = modifier
                 .then(
@@ -38,7 +38,7 @@ fun Divider(
                                 .width(1.dp)
                     },
                 )
-                .background(color = color ?: LocalContentColor.current),
+                .background(color = color ?: LocalContainerColor.current),
         )
     }
 }

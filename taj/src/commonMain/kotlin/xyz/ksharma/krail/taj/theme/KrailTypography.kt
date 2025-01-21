@@ -154,22 +154,22 @@ internal val krailTypography = KrailTypography(
     titleLarge = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 30.sp,
+        fontSize = 18.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.15.sp,
     ),
     titleMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 20.sp,
-        lineHeight = 28.sp,
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
         letterSpacing = 0.15.sp,
     ),
     titleSmall = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
-        fontSize = 18.sp,
-        lineHeight = 24.sp,
+        fontSize = 14.sp,
+        lineHeight = 18.sp,
         letterSpacing = 0.15.sp,
     ),
     emoji = TextStyle(

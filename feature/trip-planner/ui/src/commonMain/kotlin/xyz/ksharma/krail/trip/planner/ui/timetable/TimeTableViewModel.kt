@@ -32,6 +32,7 @@ import xyz.ksharma.krail.core.datetime.DateTimeHelper.toGenericFormattedTimeStri
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.toHHMM
 import xyz.ksharma.krail.core.datetime.DateTimeHelper.utcToLocalDateTimeAEST
 import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.core.log.logError
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SelectServiceAlertsByJourneyId
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
@@ -410,10 +411,13 @@ class TimeTableViewModel(
                 runCatching {
                     _uiState.value.journeyList.find { it.journeyId == journeyId }?.let { journey ->
                         getAlertsFromJourney(journey)
-                    }.orEmpty()
-                }.getOrElse { emptyList() }
+                    }
+                }.getOrElse {
+                    logError("Error while fetching alerts for journey: $journeyId", it)
+                    emptyList()
+                }
             }
-            if (alerts.isNotEmpty()) {
+            if (alerts?.isNotEmpty() == true) {
                 analytics.track(
                     AnalyticsEvent.JourneyAlertClickEvent(
                         fromStopId = tripInfo?.fromStopId ?: "NA",
@@ -421,7 +425,7 @@ class TimeTableViewModel(
                     ),
                 )
             }
-            onResult(alerts)
+            onResult(alerts ?: emptyList())
         }
     }
 

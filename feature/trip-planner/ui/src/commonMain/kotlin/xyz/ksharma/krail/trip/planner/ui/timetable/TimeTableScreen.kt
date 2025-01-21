@@ -43,7 +43,9 @@ import krail.feature.trip_planner.ui.generated.resources.ic_reverse
 import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
 import org.jetbrains.compose.resources.painterResource
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.SubtleButton
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
@@ -159,10 +161,14 @@ fun TimeTableScreen(
 
             item {
                 SubtleButton(
-                    label = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
                     onClick = dateTimeSelectorClicked,
+                    dimensions = ButtonDefaults.mediumButtonSize(),
                     modifier = Modifier.padding(horizontal = 12.dp),
-                )
+                ) {
+                    Text(
+                        text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
+                    )
+                }
             }
 
             item {

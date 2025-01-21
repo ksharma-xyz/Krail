@@ -1,16 +1,12 @@
 package xyz.ksharma.krail.trip.planner.ui.datetimeselector
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -22,9 +18,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.datetime.Clock
 import kotlinx.datetime.DateTimeUnit
@@ -38,11 +31,13 @@ import xyz.ksharma.krail.core.datetime.incrementDateByOneDay
 import xyz.ksharma.krail.core.datetime.rememberCurrentDateTime
 import xyz.ksharma.krail.core.datetime.toReadableDate
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.Button
+import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.components.TextButton
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
-import xyz.ksharma.krail.trip.planner.ui.components.themeContentColor
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.DateTimeSelectionItem
 import xyz.ksharma.krail.trip.planner.ui.state.datetimeselector.JourneyTimeOptions
 
@@ -117,28 +112,23 @@ fun DateTimeSelectorScreen(
         TitleBar(title = { Text(text = "Plan your trip") },
             onNavActionClick = onBackClick,
             actions = {
-                Text(
-                    text = "Reset",
-                    style = KrailTheme.typography.bodyLarge,
-                    modifier = modifier
-                        .clickable(
-                            role = Role.Button,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = {
-                                val now: LocalDateTime =
-                                    Clock.System.now()
-                                        .toLocalDateTime(TimeZone.currentSystemDefault())
-                                selectedDateStr = now.date.toString()
-                                timePickerState.hour = now.time.hour
-                                timePickerState.minute = now.time.minute
-                                journeyTimeOption = JourneyTimeOptions.LEAVE
-                                reset = true
-                                onResetClick()
-                            },
-                        )
-                        .padding(horizontal = 16.dp, vertical = 10.dp)
-                )
+
+                TextButton(
+                    onClick = {
+                        val now: LocalDateTime =
+                            Clock.System.now()
+                                .toLocalDateTime(TimeZone.currentSystemDefault())
+                        selectedDateStr = now.date.toString()
+                        timePickerState.hour = now.time.hour
+                        timePickerState.minute = now.time.minute
+                        journeyTimeOption = JourneyTimeOptions.LEAVE
+                        reset = true
+                        onResetClick()
+                    },
+                    dimensions = ButtonDefaults.mediumButtonSize(),
+                ) {
+                    Text("Reset")
+                }
             })
 
         LazyColumn(
@@ -184,44 +174,35 @@ fun DateTimeSelectorScreen(
             }
 
             item {
-                Text(
-                    text = if (reset) {
-                        "Leave Now"
-                    } else {
-                        DateTimeSelectionItem(
-                            option = journeyTimeOption,
-                            hour = timePickerState.hour,
-                            minute = timePickerState.minute,
-                            date = selectedDate,
-                        ).toDateTimeText()
-                    },
-                    textAlign = TextAlign.Center,
-                    color = themeContentColor(),
-                    style = KrailTheme.typography.titleMedium,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 16.dp)
-                        .clip(RoundedCornerShape(50))
-                        .background(color = themeColor)
-                        .clickable(
-                            role = Role.Button,
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null,
-                            onClick = {
-                                onDateTimeSelected(
-                                    if (reset) null
-                                    else {
-                                        DateTimeSelectionItem(
-                                            option = journeyTimeOption,
-                                            hour = timePickerState.hour,
-                                            minute = timePickerState.minute,
-                                            date = selectedDate,
-                                        )
-                                    }
+
+                Button(
+                    onClick = {
+                        onDateTimeSelected(
+                            if (reset) null
+                            else {
+                                DateTimeSelectionItem(
+                                    option = journeyTimeOption,
+                                    hour = timePickerState.hour,
+                                    minute = timePickerState.minute,
+                                    date = selectedDate,
                                 )
-                            },
-                        ).padding(vertical = 10.dp, horizontal = 12.dp)
-                )
+                            }
+                        )
+                    },
+                    dimensions = ButtonDefaults.largeButtonSize(),
+                    modifier = Modifier.padding(horizontal = 24.dp, vertical = 16.dp),
+                ) {
+                    Text(
+                        text = if (reset) "Leave Now" else {
+                            DateTimeSelectionItem(
+                                option = journeyTimeOption,
+                                hour = timePickerState.hour,
+                                minute = timePickerState.minute,
+                                date = selectedDate,
+                            ).toDateTimeText()
+                        },
+                    )
+                }
             }
         }
     }
