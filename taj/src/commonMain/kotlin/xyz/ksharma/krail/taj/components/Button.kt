@@ -32,6 +32,7 @@ import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.modifier.klickable
+import xyz.ksharma.krail.taj.modifier.scalingKlickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.theme.krailRipple
@@ -65,11 +66,8 @@ fun Button(
                         else -> Modifier
                     }
                 )
-                .clickable(
-                    role = Role.Button,
-                    interactionSource = remember { MutableInteractionSource() },
+                .scalingKlickable(
                     enabled = enabled,
-                    indication = null,
                     onClick = onClick,
                 )
                 .heightIn(dimensions.height)

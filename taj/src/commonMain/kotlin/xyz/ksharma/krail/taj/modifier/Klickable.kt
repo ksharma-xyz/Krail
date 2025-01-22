@@ -1,10 +1,13 @@
 package xyz.ksharma.krail.taj.modifier
 
+import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.node.DelegatableNode
 import androidx.compose.ui.semantics.Role
 import xyz.ksharma.krail.taj.theme.krailRipple
 import xyz.ksharma.krail.taj.themeColor
@@ -33,4 +36,30 @@ fun Modifier.klickable(
         indication = krailRipple(color = themeColor()),
         onClick = onClick,
     )
+}
+
+@Composable
+fun Modifier.scalingKlickable(
+    role: Role = Role.Button,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: () -> Unit,
+): Modifier {
+    return this.clickable(
+        role = role,
+        interactionSource = interactionSource,
+        enabled = enabled,
+        indication = ScalingIndication,
+        onClick = onClick,
+    )
+}
+
+object ScalingIndication : IndicationNodeFactory {
+    override fun create(interactionSource: InteractionSource): DelegatableNode {
+        return ScaleIndicationNode(interactionSource)
+    }
+
+    override fun equals(other: Any?): Boolean = other === this
+
+    override fun hashCode(): Int = -1
 }
