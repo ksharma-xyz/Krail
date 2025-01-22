@@ -32,7 +32,7 @@ import xyz.ksharma.krail.taj.components.Divider
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
-import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
+import xyz.ksharma.krail.taj.hexToComposeColor
 
 @Composable
 fun SettingsScreen(

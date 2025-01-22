@@ -54,6 +54,7 @@ import xyz.ksharma.krail.taj.components.AlertButton
 import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.SeparatorIcon
 import xyz.ksharma.krail.taj.components.Text
+import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.taj.toAdaptiveSize

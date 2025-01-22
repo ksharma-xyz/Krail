@@ -25,8 +25,8 @@ import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.unspecifiedColor
-import xyz.ksharma.krail.trip.planner.ui.components.hexToComposeColor
-import xyz.ksharma.krail.trip.planner.ui.components.toHex
+import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode

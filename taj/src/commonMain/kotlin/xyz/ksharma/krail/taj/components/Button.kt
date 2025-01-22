@@ -111,17 +111,15 @@ fun SubtleButton(
                         else -> Modifier
                     }
                 )
-                .clickable(
-                    role = Role.Button,
-                    interactionSource = remember { MutableInteractionSource() },
-                    enabled = enabled,
-                    indication = null,
-                    onClick = onClick,
-                )
                 .heightIn(dimensions.height)
+                .clip(dimensions.shape)
                 .background(
                     color = LocalContainerColor.current,
                     shape = dimensions.shape,
+                )
+                .klickable(
+                    enabled = enabled,
+                    onClick = onClick,
                 )
                 .padding(dimensions.padding),
             contentAlignment = Alignment.Center,
@@ -255,7 +253,7 @@ object ButtonDefaults {
     @Composable
     fun subtleButtonColors(): ButtonColors {
         val containerColor = themeBackgroundColor()
-        val contentColor: Color by remember { mutableStateOf(getForegroundColor(containerColor)) }
+        val contentColor: Color = KrailTheme.colors.onSurface
 
         return ButtonColors(
             containerColor = containerColor,

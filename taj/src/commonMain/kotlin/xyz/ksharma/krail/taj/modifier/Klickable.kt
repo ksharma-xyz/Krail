@@ -9,8 +9,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.brighten
 import xyz.ksharma.krail.taj.hexToComposeColor
-import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.theme.krailRipple
 
 /**
@@ -37,7 +37,7 @@ fun Modifier.klickable(
         role = role,
         interactionSource = interactionSource,
         enabled = enabled,
-        indication = krailRipple(color = themeColor),
+        indication = krailRipple(color = themeColor.brighten()),
         onClick = onClick,
     )
 }
