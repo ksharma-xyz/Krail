@@ -1,8 +1,7 @@
-package xyz.ksharma.krail.trip.planner.ui.components
+package xyz.ksharma.krail.taj
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
-import xyz.ksharma.krail.core.log.log
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
