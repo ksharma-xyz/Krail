@@ -112,12 +112,10 @@ fun DateTimeSelectorScreen(
         TitleBar(title = { Text(text = "Plan your trip") },
             onNavActionClick = onBackClick,
             actions = {
-
                 TextButton(
                     onClick = {
-                        val now: LocalDateTime =
-                            Clock.System.now()
-                                .toLocalDateTime(TimeZone.currentSystemDefault())
+                        val now: LocalDateTime = Clock.System.now()
+                            .toLocalDateTime(TimeZone.currentSystemDefault())
                         selectedDateStr = now.date.toString()
                         timePickerState.hour = now.time.hour
                         timePickerState.minute = now.time.minute
@@ -125,7 +123,7 @@ fun DateTimeSelectorScreen(
                         reset = true
                         onResetClick()
                     },
-                    dimensions = ButtonDefaults.mediumButtonSize(),
+                    dimensions = ButtonDefaults.largeButtonSize(),
                 ) {
                     Text("Reset")
                 }

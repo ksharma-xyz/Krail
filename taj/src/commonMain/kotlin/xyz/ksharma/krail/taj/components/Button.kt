@@ -298,7 +298,7 @@ object ButtonDefaults {
 
     fun mediumButtonSize(): ButtonDimensions {
         return ButtonDimensions(
-            height = 28.dp,
+            height = 32.dp,
             padding = PaddingValues(vertical = 6.dp, horizontal = 12.dp),
         )
     }

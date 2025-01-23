@@ -68,6 +68,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.backgroundColorOf
+import xyz.ksharma.krail.taj.modifier.klickable
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @Composable
@@ -229,10 +230,7 @@ fun SearchStopScreen(
                     modifier = Modifier
                         .size(48.dp)
                         .clip(CircleShape)
-                        .clickable(
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                        ) {
+                        .klickable {
                             keyboard?.hide()
                             focusRequester.freeFocus()
                             backClicked = true

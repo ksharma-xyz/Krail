@@ -33,6 +33,7 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.modifier.klickable
 
 @Composable
 fun SettingsScreen(
@@ -66,12 +67,7 @@ fun SettingsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
-                        .clickable(
-                            role = Role.Button,
-                            indication = null,
-                            interactionSource = remember { MutableInteractionSource() },
-                            onClick = { onChangeThemeClick() },
-                        )
+                        .klickable(onClick = { onChangeThemeClick() })
                         .padding(vertical = 24.dp)
                         .semantics(mergeDescendants = true) {},
                     horizontalArrangement = Arrangement.spacedBy(16.dp),

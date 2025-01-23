@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.tokens.TextFieldTokens
 import xyz.ksharma.krail.taj.tokens.TextFieldTokens.TextFieldHeight
@@ -48,9 +49,9 @@ fun TextFieldButton(
             modifier = modifier
                 .fillMaxWidth()
                 .height(TextFieldHeight)
-                .clip(RoundedCornerShape(TextFieldHeight.div(2)))
+                .clip(RoundedCornerShape(50))
                 .background(color = KrailTheme.colors.surface)
-                .clickable(role = Role.Button, onClick = onClick)
+                .klickable(onClick = onClick)
                 .padding(horizontal = 16.dp, vertical = 4.dp),
             contentAlignment = Alignment.CenterStart,
         ) {

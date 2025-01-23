@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -33,6 +31,7 @@ import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -55,11 +54,7 @@ fun SavedTripCard(
                 color = primaryTransportMode?.let { transportModeBackgroundColor(it) }
                     ?: themeBackgroundColor(),
             )
-            .clickable(
-                role = Role.Button,
-                onClickLabel = "Open Trip Details",
-                onClick = onCardClick,
-            )
+            .klickable(onClick = onCardClick)
             .padding(vertical = 16.dp, horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {

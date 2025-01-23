@@ -5,7 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -43,19 +41,19 @@ import krail.feature.trip_planner.ui.generated.resources.ic_reverse
 import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
 import org.jetbrains.compose.resources.painterResource
-import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.SubtleButton
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
+import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.ActionData
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
-import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.AnimatedDots
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -308,8 +306,11 @@ fun ActionButton(
     content: @Composable () -> Unit,
 ) {
     Box(
-        modifier = modifier.size(40.dp).clip(CircleShape)
-            .clickable(role = Role.Button) { onClick() }.semantics(mergeDescendants = true) {
+        modifier = modifier
+            .size(48.dp)
+            .clip(CircleShape)
+            .klickable { onClick() }
+            .semantics(mergeDescendants = true) {
                 this.contentDescription = contentDescription
             },
         contentAlignment = Alignment.Center,

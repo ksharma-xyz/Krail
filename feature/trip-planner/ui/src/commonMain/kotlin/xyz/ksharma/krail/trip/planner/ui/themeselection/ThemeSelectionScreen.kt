@@ -4,8 +4,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,14 +22,12 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableSet
@@ -40,10 +36,11 @@ import kotlinx.collections.immutable.toImmutableSet
 import xyz.ksharma.krail.taj.components.Button
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
+import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
-import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.transportModeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
@@ -170,12 +167,8 @@ private fun TransportModeRadioButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
+            .klickable { onClick(mode) }
             .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
-            .clickable(
-                role = Role.Button,
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-            ) { onClick(mode) }
             .padding(vertical = 24.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
