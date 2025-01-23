@@ -2,15 +2,27 @@ package xyz.ksharma.krail.taj.modifier
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.IndicationNodeFactory
 import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.drawscope.scale
+import androidx.compose.ui.node.DelegatableNode
 import androidx.compose.ui.node.DrawModifierNode
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+object ScalingIndication : IndicationNodeFactory {
+    override fun create(interactionSource: InteractionSource): DelegatableNode {
+        return ScaleIndicationNode(interactionSource)
+    }
+
+    override fun equals(other: Any?): Boolean = other === this
+
+    override fun hashCode(): Int = -1
+}
 
 /**
  * https://developer.android.com/develop/ui/compose/touch-input/user-interactions/migrate-indication-ripple
