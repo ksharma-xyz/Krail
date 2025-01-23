@@ -38,6 +38,7 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.modifier.klickable
+import xyz.ksharma.krail.taj.modifier.scalingKlickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
@@ -167,7 +168,7 @@ private fun TransportModeRadioButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .klickable { onClick(mode) }
+            .scalingKlickable { onClick(mode) }
             .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
             .padding(vertical = 24.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
