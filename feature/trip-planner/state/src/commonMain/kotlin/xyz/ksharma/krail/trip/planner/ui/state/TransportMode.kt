@@ -56,7 +56,7 @@ sealed class TransportMode {
     @Serializable
     data class LightRail(
         override val name: String = "Light Rail",
-        override val colorCode: String = "#EE343F",
+        override val colorCode: String = "#DA1884", //""#F836E5",
         override val productClass: Int = 4,
         override val priority: Int = 4444,
     ) : TransportMode()
