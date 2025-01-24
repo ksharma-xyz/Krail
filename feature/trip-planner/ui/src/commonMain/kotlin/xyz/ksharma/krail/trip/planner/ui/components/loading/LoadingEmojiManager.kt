@@ -85,8 +85,17 @@ object LoadingEmojiManager {
 
         // Can change dates
 
-        // Chinese New Year
+        // Chinese New Year 2025
         FestivalType.CHINESE_NEW_YEAR to MonthDay.of(1, 29),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(1, 30),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(1, 31),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 1),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 2),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 3),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 4),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 5),
+        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 6),
+
         FestivalType.HOLI to MonthDay.of(3, 14),
         FestivalType.EID to MonthDay.of(3, 30),
         FestivalType.EID to MonthDay.of(3, 31),
@@ -112,6 +121,7 @@ object LoadingEmojiManager {
         // Easter 2025
         FestivalType.EASTER to MonthDay.of(4, 20),
 
+        // Vivid Sydney 2025
         FestivalType.VIVID_SYDNEY to MonthDay.of(5, 23),
         FestivalType.VIVID_SYDNEY to MonthDay.of(5, 24),
         FestivalType.VIVID_SYDNEY to MonthDay.of(5, 25),
