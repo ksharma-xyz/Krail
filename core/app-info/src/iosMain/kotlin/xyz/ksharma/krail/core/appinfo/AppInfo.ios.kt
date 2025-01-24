@@ -22,7 +22,7 @@ class IOSAppInfo : AppInfo {
                     ?: "Unknown"
             val buildVersion =
                 NSBundle.mainBundle.infoDictionary?.get("CFBundleVersion") as? String ?: "Unknown"
-            return "$shortVersion ($buildVersion)"
+            return "$shortVersion ${if (isDebug) "($buildVersion)" else ""}"
         }
 
     override val osVersion: String
