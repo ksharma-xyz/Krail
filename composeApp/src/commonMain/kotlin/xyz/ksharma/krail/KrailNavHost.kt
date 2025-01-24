@@ -46,7 +46,7 @@ import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
 fun KrailNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val themeColorHexCode = rememberSaveable { mutableStateOf(unspecifiedColor) }
-    var productClass: Int? by rememberSaveable { mutableStateOf(null) }
+    var themeId: Int? by rememberSaveable { mutableStateOf(null) }
     val themeContentColorHexCode = rememberSaveable { mutableStateOf(unspecifiedColor) }
     themeContentColorHexCode.value =
         getForegroundColor(
@@ -72,11 +72,11 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
                 val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
                 val themeColor by viewModel.uiState.collectAsStateWithLifecycle()
 
-                productClass = themeColor.id
+                themeId = themeColor.id
                 themeColorHexCode.value = themeColor.hexColorCode
 
                 SplashScreen(
-                    logoColor = if (productClass != null && themeColorHexCode.value != unspecifiedColor) {
+                    logoColor = if (themeId != null && themeColorHexCode.value != unspecifiedColor) {
                         themeColorHexCode.value.hexToComposeColor()
                     } else {
                         KrailTheme.colors.onSurface

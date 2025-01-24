@@ -2,8 +2,6 @@ package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
@@ -16,7 +14,6 @@ import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.hexToComposeColor
-import xyz.ksharma.krail.taj.theme.ThemeColor
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.theme.getThemeColors
 import xyz.ksharma.krail.taj.toHex
@@ -30,9 +27,6 @@ internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostCon
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
-        /*var interimSelectedThemeColor: ThemeColor? by remember(state.selectedThemeColor) {
-            mutableStateOf(state.selectedThemeColor)
-        }*/
         themeContentColor =
             getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
