@@ -71,6 +71,7 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
                 val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
                 val themeColor by viewModel.uiState.collectAsStateWithLifecycle()
 
+                // Set theme in CompositionLocal
                 themeId = themeColor.id
                 themeColorHexCode.value = themeColor.hexColorCode
 
