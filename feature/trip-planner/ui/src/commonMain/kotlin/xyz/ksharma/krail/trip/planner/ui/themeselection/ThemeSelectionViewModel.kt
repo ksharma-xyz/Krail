@@ -15,7 +15,8 @@ import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.sandook.Sandook
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.taj.theme.ThemeColor
+import xyz.ksharma.krail.taj.theme.getThemeColors
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionState
 
@@ -31,17 +32,18 @@ class ThemeSelectionViewModel(
         .onStart {
             getThemeTransportMode()
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.ThemeSelection)
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), ThemeSelectionState())
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), ThemeSelectionState())
 
     private var transportSelectionJob: Job? = null
 
     fun onEvent(event: ThemeSelectionEvent) {
         when (event) {
-            is ThemeSelectionEvent.TransportModeSelected -> onTransportModeSelected(event.productClass)
+            is ThemeSelectionEvent.ThemeSelected -> onThemeSelected(event.themeId)
         }
     }
 
-    private fun onTransportModeSelected(productClass: Int) {
+    private fun onThemeSelected(productClass: Int) {
         transportSelectionJob?.cancel()
         transportSelectionJob = viewModelScope.launch(ioDispatcher) {
             sandook.clearTheme() // Only one entry should exist at a time
@@ -56,11 +58,11 @@ class ThemeSelectionViewModel(
     private fun getThemeTransportMode() {
         viewModelScope.launch(ioDispatcher) {
             // First app launch there will be no product class, so use default transport mode theme.
-            val productClass = sandook.getProductClass()?.toInt()
-            val mode =
-                productClass?.let { TransportMode.toTransportModeType(it) } ?: TransportMode.Train()
+            val themeId = sandook.getProductClass()?.toInt() ?: getThemeColors().first().id
+            val themeColor: ThemeColor =
+                getThemeColors().firstOrNull { it.id == themeId } ?: getThemeColors().first()
             updateUiState {
-                copy(selectedTransportMode = mode)
+                copy(selectedThemeColor = themeColor)
             }
         }
     }

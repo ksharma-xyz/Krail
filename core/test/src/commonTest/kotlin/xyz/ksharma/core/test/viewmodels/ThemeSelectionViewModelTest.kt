@@ -55,7 +55,7 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedTransportMode)
+                    assertNull(selectedThemeColor)
                     assertFalse(themeSelected)
                 }
 
@@ -74,7 +74,7 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedTransportMode)
+                    assertNull(selectedThemeColor)
                     assertFalse(themeSelected)
                 }
 
@@ -84,7 +84,7 @@ class ThemeSelectionViewModelTest {
                 // THEN
                 awaitItem().run {
                     assertFalse(themeSelected)
-                    assertEquals(TransportMode.Train(), selectedTransportMode)
+                    assertEquals(TransportMode.Train(), selectedThemeColor)
                 }
 
                 cancelAndIgnoreRemainingEvents()
@@ -107,7 +107,7 @@ class ThemeSelectionViewModelTest {
                 // THEN
                 awaitItem().run {
                     assertFalse(themeSelected)
-                    assertEquals(TransportMode.Metro(), selectedTransportMode)
+                    assertEquals(TransportMode.Metro(), selectedThemeColor)
                 }
 
                 cancelAndIgnoreRemainingEvents()
@@ -121,7 +121,7 @@ class ThemeSelectionViewModelTest {
                 skipItems(1) // initial state
 
                 // WHEN
-                viewModel.onEvent(ThemeSelectionEvent.TransportModeSelected(9))
+                viewModel.onEvent(ThemeSelectionEvent.ThemeSelected(9))
                 advanceUntilIdle()
 
                 // THEN
@@ -144,11 +144,11 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedTransportMode)
+                    assertNull(selectedThemeColor)
                     assertFalse(themeSelected)
                 }
 
-                viewModel.onEvent(ThemeSelectionEvent.TransportModeSelected(1))
+                viewModel.onEvent(ThemeSelectionEvent.ThemeSelected(1))
 
                 awaitItem().run {
                     assertTrue(themeSelected)

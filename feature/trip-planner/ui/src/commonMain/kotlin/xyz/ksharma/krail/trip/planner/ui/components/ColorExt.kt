@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.theme.ThemeColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 /**
@@ -20,5 +21,15 @@ internal fun transportModeBackgroundColor(transportMode: TransportMode): Color {
         transportMode.colorCode.hexToComposeColor().copy(alpha = 0.45f)
     } else {
         transportMode.colorCode.hexToComposeColor().copy(alpha = 0.15f)
+    }
+}
+
+
+@Composable
+internal fun themeBackgroundColor(theme: ThemeColor): Color {
+    return if (isSystemInDarkTheme()) {
+        theme.hexColorCode.hexToComposeColor().copy(alpha = 0.45f)
+    } else {
+        theme.hexColorCode.hexToComposeColor().copy(alpha = 0.15f)
     }
 }

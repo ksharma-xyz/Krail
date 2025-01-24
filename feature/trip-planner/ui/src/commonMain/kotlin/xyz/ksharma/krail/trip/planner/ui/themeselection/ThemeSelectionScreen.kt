@@ -30,40 +30,25 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableSet
-import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toImmutableSet
+import kotlinx.collections.immutable.ImmutableList
 import xyz.ksharma.krail.taj.components.Button
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.hexToComposeColor
-import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.modifier.scalingKlickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.theme.ThemeColor
 import xyz.ksharma.krail.taj.theme.getForegroundColor
+import xyz.ksharma.krail.taj.theme.getThemeColors
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
+import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.transportModeBackgroundColor
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
-import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
-
-private val TransportMode.tagLine: String
-    get() {
-        // TODO - read from remote config
-        return when (this) {
-            is TransportMode.Bus -> "Hoppin' the concrete jungle!"
-            is TransportMode.Coach -> "Coachin' it!"
-            is TransportMode.Ferry -> "Just floatin!"
-            is TransportMode.LightRail -> "Mah city, mah rules!"
-            is TransportMode.Metro -> "Surf the sub, no cap!"
-            is TransportMode.Train -> "On the track, no lookin' back!"
-        }
-    }
 
 @Composable
 fun ThemeSelectionScreen(
-    selectedTransportMode: TransportMode?,
-    transportModes: ImmutableSet<TransportMode>,
-    transportModeSelected: (Int) -> Unit,
+    selectedThemeColor: ThemeColor?,
+    themeColors: ImmutableList<ThemeColor>,
+    onThemeSelected: (Int) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -73,12 +58,12 @@ fun ThemeSelectionScreen(
             .background(color = KrailTheme.colors.surface)
             .statusBarsPadding(),
     ) {
-        var selectedProductClass: Int? by rememberSaveable(selectedTransportMode) {
-            mutableStateOf(selectedTransportMode?.productClass)
+        var selectedThemeColorId: Int? by rememberSaveable(selectedThemeColor) {
+            mutableStateOf(selectedThemeColor?.id)
         }
         val buttonBackgroundColor by animateColorAsState(
-            targetValue = selectedProductClass?.let { productClass ->
-                TransportMode.toTransportModeType(productClass)?.colorCode?.hexToComposeColor()
+            targetValue = selectedThemeColorId?.let { themeId ->
+                getThemeColors().find { it.id == themeId }?.hexColorCode?.hexToComposeColor()
             } ?: KrailTheme.colors.surface,
             label = "buttonBackgroundColor",
             animationSpec = tween(durationMillis = 300, easing = LinearEasing),
@@ -112,19 +97,19 @@ fun ThemeSelectionScreen(
                     )
                 }
 
-                items(items = transportModes.toImmutableList(), key = { it.productClass }) { mode ->
-                    TransportModeRadioButton(
-                        mode = mode,
-                        selected = selectedProductClass == mode.productClass,
-                        onClick = { clickedMode ->
-                            selectedProductClass = clickedMode.productClass
+                items(items = themeColors, key = { it.id }) { theme ->
+                    ThemeSelectionRadioButton(
+                        theme = theme,
+                        selected = selectedThemeColorId == theme.id,
+                        onClick = { clickedThemeColor ->
+                            selectedThemeColorId = clickedThemeColor.id
                         },
                     )
                 }
             }
         }
 
-        if (selectedProductClass != null) {
+        if (selectedThemeColorId != null) {
             Column(
                 modifier = Modifier.align(Alignment.BottomCenter)
                     .navigationBarsPadding()
@@ -138,8 +123,8 @@ fun ThemeSelectionScreen(
                         disabledContentColor = getForegroundColor(buttonBackgroundColor).copy(alpha = DisabledContentAlpha),
                     ),
                     onClick = {
-                        selectedProductClass?.let { productClass ->
-                            transportModeSelected(productClass)
+                        selectedThemeColorId?.let { productClass ->
+                            onThemeSelected(productClass)
                         }
                     },
                     modifier = Modifier.padding(horizontal = 24.dp, vertical = 10.dp),
@@ -152,14 +137,14 @@ fun ThemeSelectionScreen(
 }
 
 @Composable
-private fun TransportModeRadioButton(
-    mode: TransportMode,
-    onClick: (TransportMode) -> Unit,
+private fun ThemeSelectionRadioButton(
+    theme: ThemeColor,
+    onClick: (ThemeColor) -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (selected) transportModeBackgroundColor(mode) else Color.Transparent,
+        targetValue = if (selected) themeBackgroundColor(theme) else Color.Transparent,
         label = "backgroundColor",
         animationSpec = tween(durationMillis = 300, easing = LinearEasing),
     )
@@ -168,7 +153,7 @@ private fun TransportModeRadioButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .scalingKlickable { onClick(mode) }
+            .scalingKlickable { onClick(theme) }
             .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
             .padding(vertical = 24.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -177,27 +162,13 @@ private fun TransportModeRadioButton(
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .background(color = mode.colorCode.hexToComposeColor()),
+                .background(color = theme.hexColorCode.hexToComposeColor()),
         )
 
         Text(
-            text = mode.tagLine,
+            text = theme.tagLine,
             style = KrailTheme.typography.title.copy(fontWeight = FontWeight.Normal),
             modifier = Modifier.padding(start = 16.dp),
         )
-    }
-}
-
-@Composable
-private fun PreviewUsualRideScreen() {
-    KrailTheme {
-        ThemeSelectionScreen(
-            selectedTransportMode = null,
-            transportModes = TransportMode.sortedValues(sortOrder = TransportModeSortOrder.PRODUCT_CLASS)
-                .toImmutableSet(),
-            transportModeSelected = {},
-            onBackClick = {},
-
-            )
     }
 }
