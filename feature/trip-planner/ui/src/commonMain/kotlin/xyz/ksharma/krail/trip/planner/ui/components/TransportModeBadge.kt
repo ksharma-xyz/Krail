@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -29,7 +30,7 @@ fun TransportModeBadge(
 
     Box(
         modifier = modifier
-            .requiredHeight(height = with(density) { 18.sp.toDp() })
+            .requiredHeightIn(with(density) { 22.sp.toDp() })
             .clip(shape = RoundedCornerShape(percent = 20))
             .background(color = backgroundColor),
         contentAlignment = Alignment.Center,
@@ -38,7 +39,7 @@ fun TransportModeBadge(
             text = badgeText,
             color = Color.White,
             // todo - need concrete token for style, meanwhile keep same as TransportModeIcon.
-            style = KrailTheme.typography.labelMedium.copy(fontWeight = FontWeight.Medium),
+            style = KrailTheme.typography.labelLarge,
             modifier = Modifier
                 .padding(2.dp)
                 .wrapContentWidth(),

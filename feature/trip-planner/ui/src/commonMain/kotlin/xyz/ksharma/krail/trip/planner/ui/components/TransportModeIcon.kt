@@ -28,11 +28,11 @@ fun TransportModeIcon(
     backgroundColor: Color,
     modifier: Modifier = Modifier,
     borderEnabled: Boolean = false,
-    iconSize: TextUnit = 18.sp,
+    iconSize: TextUnit = 22.sp,
     fontSize: TextUnit? = null,
 ) {
     val density = LocalDensity.current
-    val textStyle = KrailTheme.typography.labelLarge.copy(fontWeight = FontWeight.Medium)
+    val textStyle = KrailTheme.typography.labelLarge
 
     // Content alphas should always be 100% for Transport related icons
     CompositionLocalProvider(LocalContentAlpha provides 1f) {
@@ -41,18 +41,15 @@ fun TransportModeIcon(
                 .clip(shape = CircleShape)
                 .requiredSize(with(density) { iconSize.toDp() })
                 .aspectRatio(1f)
-                .background(color = backgroundColor)
-                .borderIfEnabled(enabled = borderEnabled),
+                .borderIfEnabled(enabled = borderEnabled)
+                .background(color = backgroundColor),
             contentAlignment = Alignment.Center,
         ) {
             Text(
                 text = "$letter",
                 color = Color.White,
                 // todo - need concrete token for style, meanwhile keep same as TransportModeBadge,
-                style = textStyle.copy(
-                    fontWeight = FontWeight.Medium,
-                    fontSize = fontSize ?: textStyle.fontSize,
-                ),
+                style = textStyle.copy(fontSize = fontSize ?: textStyle.fontSize),
             )
         }
     }
@@ -60,7 +57,7 @@ fun TransportModeIcon(
 
 private fun Modifier.borderIfEnabled(enabled: Boolean): Modifier =
     if (enabled) {
-        this.then(Modifier.border(width = 1.dp, color = Color.White, shape = CircleShape))
+        this.then(border(width = 1.dp, color = Color.White, shape = CircleShape))
     } else {
         this
     }
