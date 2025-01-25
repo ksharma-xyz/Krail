@@ -13,8 +13,13 @@ fun readZip(zipPath: String) {
     // Use the same directory as the zip file for unpacking
     val zipFilePath = zipPath.toPath()
     val parentDir = zipFilePath.parent ?: throw IllegalArgumentException("Invalid path: $zipPath")
+    val destDir = parentDir.resolve("sydneyTrains")
 
-    unpackZip(zipFilePath, parentDir)
+    // Create the "bus" directory
+    fileSystem.createDirectories(destDir)
+
+    // Unpack the zip into the "bus" directory
+    unpackZip(zipFilePath, destDir)
 }
 
 fun unpackZip(zipFile: Path, destDir: Path) {
