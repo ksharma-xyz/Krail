@@ -7,19 +7,18 @@ import okio.openZip
 import okio.use
 import xyz.ksharma.krail.core.log.log
 
-fun readZip(zipPath: String) {
+fun readZip(zipPath: Path) {
     println("Reading Zip: $zipPath")
 
     // Use the same directory as the zip file for unpacking
-    val zipFilePath = zipPath.toPath()
-    val parentDir = zipFilePath.parent ?: throw IllegalArgumentException("Invalid path: $zipPath")
+    val parentDir = zipPath.parent ?: throw IllegalArgumentException("Invalid path: $zipPath")
     val destDir = parentDir.resolve("sydneyTrains")
 
     // Create the "bus" directory
     fileSystem.createDirectories(destDir)
 
     // Unpack the zip into the "bus" directory
-    unpackZip(zipFilePath, destDir)
+    unpackZip(zipPath, destDir)
 }
 
 fun unpackZip(zipFile: Path, destDir: Path) {

@@ -6,6 +6,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readRawBytes
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import okio.Path
 import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.log.log
 
@@ -22,7 +23,8 @@ internal class RealNswGtfsService(
         if (response.status.value == 200) {
             log("Downloading file: ")
             val data = response.readRawBytes()
-            fileStorage.saveFile("sydneytrains.zip", data)
+            val path: Path = fileStorage.saveFile("sydneytrains.zip", data)
+            readZip(path)
             log("File downloaded")
         } else {
             throw Exception("Failed to download file: ${response.status}")
