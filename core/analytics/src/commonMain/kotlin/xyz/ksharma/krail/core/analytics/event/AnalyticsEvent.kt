@@ -1,5 +1,6 @@
 package xyz.ksharma.krail.core.analytics.event
 
+import kotlinx.datetime.Clock
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 
 sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? = null) {
@@ -137,6 +138,7 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
         val deviceModel: String,
         val fontSize: String,
         val isDarkTheme: Boolean,
+        val krailTheme: Int,
     ) : AnalyticsEvent(
         name = "app_start",
         properties = mapOf(
@@ -146,8 +148,9 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
             "deviceModel" to deviceModel,
             "fontSize" to fontSize,
             "isDarkTheme" to isDarkTheme,
+            "krailTheme" to krailTheme,
+            "timeStamp" to Clock.System.now().toString(),
         )
     )
-
     // endregion
 }

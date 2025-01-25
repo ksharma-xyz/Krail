@@ -46,6 +46,7 @@ class SplashViewModel(
                 fontSize = fontSize,
                 isDarkTheme = isDarkTheme,
                 deviceModel = deviceModel,
+                krailTheme = _uiState.value.id,
             )
         )
     }
