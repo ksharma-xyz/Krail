@@ -88,7 +88,7 @@ class TimeTableViewModel(
     private val _autoRefreshTimeTable: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val autoRefreshTimeTable: StateFlow<Boolean> = _autoRefreshTimeTable.onStart {
         while (true) {
-            if (_uiState.value.journeyList.isEmpty().not() &&
+            if ((_uiState.value.journeyList.isEmpty().not() || _uiState.value.isError) &&
                 dateTimeSelectionItem?.date.isFuture().not()
             ) {
                 rateLimiter.triggerEvent()
@@ -105,6 +105,7 @@ class TimeTableViewModel(
     val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
 
     private var tripInfo: Trip? = null
+
     @VisibleForTesting
     var dateTimeSelectionItem: DateTimeSelectionItem? = null
 
