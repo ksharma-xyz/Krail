@@ -1,18 +1,7 @@
 package xyz.ksharma.krail.taj.theme
 
-import androidx.compose.runtime.Immutable
-
 val DEFAULT_THEME_STYLE = KrailThemeStyle.Train
 
-/*
-@Immutable
-data class ThemeColor(
-    val hexColorCode: String,
-    val id: Int,
-    val tagLine: String,
-)
-
-*/
 enum class KrailThemeStyle(val hexColorCode: String, val id: Int, val tagLine: String) {
     Train(
         hexColorCode = "#F6891F",
@@ -45,13 +34,3 @@ enum class KrailThemeStyle(val hexColorCode: String, val id: Int, val tagLine: S
         tagLine = "Mah city, mah rules!"
     ),
 }
-
-/*fun getThemeColors(): List<ThemeColor> {
-    return KrailThemeStyle.entries.map {
-        ThemeColor(
-            hexColorCode = it.hexColorCode,
-            id = it.id,
-            tagLine = it.tagLine
-        )
-    }
-}*/
