@@ -9,8 +9,11 @@ import java.io.File
 class AndroidFileStorage(private val context: Context) : FileStorage {
     override suspend fun saveFile(fileName: String, data: ByteArray) {
         runCatching {
+            println("Try Saving file: $fileName")
             val file = File(context.filesDir, fileName)
             file.writeBytes(data)
+            println("File saved at: ${file.absolutePath}")
+            readZip(file.absolutePath)
         }.onFailure {
             log("Failed to save file: $it")
             Firebase.crashlytics.recordException(it)

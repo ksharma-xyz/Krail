@@ -47,6 +47,9 @@ kotlin {
 
                 api(libs.di.koinComposeViewmodel)
                 implementation(libs.firebase.gitLiveCrashlytics)
+
+                implementation(libs.kotlinx.ioCore)
+                implementation("com.squareup.okio:okio:3.10.2")
             }
         }
 
