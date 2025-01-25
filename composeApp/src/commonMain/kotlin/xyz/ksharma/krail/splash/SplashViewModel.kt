@@ -34,6 +34,8 @@ class SplashViewModel(
         .onStart {
             loadKrailThemeStyle()
             trackAppStartEvent()
+
+            // TODO - handle app stat events separately
             remoteConfig.setup() // App Start Event
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 

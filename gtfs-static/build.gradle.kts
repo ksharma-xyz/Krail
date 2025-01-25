@@ -46,6 +46,7 @@ kotlin {
                 implementation(projects.core.di)
 
                 api(libs.di.koinComposeViewmodel)
+                implementation(libs.firebase.gitLiveCrashlytics)
             }
         }
 
