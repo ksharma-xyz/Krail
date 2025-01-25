@@ -30,24 +30,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
 import xyz.ksharma.krail.taj.components.Button
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.modifier.scalingKlickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
-import xyz.ksharma.krail.taj.theme.ThemeColor
+import xyz.ksharma.krail.taj.theme.KrailThemeStyle
 import xyz.ksharma.krail.taj.theme.getForegroundColor
-import xyz.ksharma.krail.taj.theme.getThemeColors
 import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens.DisabledContentAlpha
 import xyz.ksharma.krail.trip.planner.ui.components.themeBackgroundColor
-import xyz.ksharma.krail.trip.planner.ui.components.transportModeBackgroundColor
 
 @Composable
 fun ThemeSelectionScreen(
-    selectedThemeColor: ThemeColor?,
-    themeColors: ImmutableList<ThemeColor>,
+    selectedThemeStyle: KrailThemeStyle?,
     onThemeSelected: (Int) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -58,12 +54,12 @@ fun ThemeSelectionScreen(
             .background(color = KrailTheme.colors.surface)
             .statusBarsPadding(),
     ) {
-        var selectedThemeColorId: Int? by rememberSaveable(selectedThemeColor) {
-            mutableStateOf(selectedThemeColor?.id)
+        var selectedThemeColorId: Int? by rememberSaveable(selectedThemeStyle) {
+            mutableStateOf(selectedThemeStyle?.id)
         }
         val buttonBackgroundColor by animateColorAsState(
             targetValue = selectedThemeColorId?.let { themeId ->
-                getThemeColors().find { it.id == themeId }?.hexColorCode?.hexToComposeColor()
+               KrailThemeStyle.entries.find { it.id == themeId }?.hexColorCode?.hexToComposeColor()
             } ?: KrailTheme.colors.surface,
             label = "buttonBackgroundColor",
             animationSpec = tween(durationMillis = 300, easing = LinearEasing),
@@ -97,12 +93,12 @@ fun ThemeSelectionScreen(
                     )
                 }
 
-                items(items = themeColors, key = { it.id }) { theme ->
+                items(items = KrailThemeStyle.entries, key = { it.id }) { theme ->
                     ThemeSelectionRadioButton(
-                        theme = theme,
+                        themeStyle = theme,
                         selected = selectedThemeColorId == theme.id,
-                        onClick = { clickedThemeColor ->
-                            selectedThemeColorId = clickedThemeColor.id
+                        onClick = { clickedThemeStyle ->
+                            selectedThemeColorId = clickedThemeStyle.id
                         },
                     )
                 }
@@ -138,13 +134,13 @@ fun ThemeSelectionScreen(
 
 @Composable
 private fun ThemeSelectionRadioButton(
-    theme: ThemeColor,
-    onClick: (ThemeColor) -> Unit,
+    themeStyle: KrailThemeStyle,
+    onClick: (KrailThemeStyle) -> Unit,
     modifier: Modifier = Modifier,
     selected: Boolean = false,
 ) {
     val backgroundColor by animateColorAsState(
-        targetValue = if (selected) themeBackgroundColor(theme) else Color.Transparent,
+        targetValue = if (selected) themeBackgroundColor(themeStyle) else Color.Transparent,
         label = "backgroundColor",
         animationSpec = tween(durationMillis = 300, easing = LinearEasing),
     )
@@ -153,7 +149,7 @@ private fun ThemeSelectionRadioButton(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp)
-            .scalingKlickable { onClick(theme) }
+            .scalingKlickable { onClick(themeStyle) }
             .background(color = backgroundColor, shape = RoundedCornerShape(12.dp))
             .padding(vertical = 24.dp, horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -162,11 +158,11 @@ private fun ThemeSelectionRadioButton(
             modifier = Modifier
                 .size(32.dp)
                 .clip(CircleShape)
-                .background(color = theme.hexColorCode.hexToComposeColor()),
+                .background(color = themeStyle.hexColorCode.hexToComposeColor()),
         )
 
         Text(
-            text = theme.tagLine,
+            text = themeStyle.tagLine,
             style = KrailTheme.typography.title.copy(fontWeight = FontWeight.Normal),
             modifier = Modifier.padding(start = 16.dp),
         )

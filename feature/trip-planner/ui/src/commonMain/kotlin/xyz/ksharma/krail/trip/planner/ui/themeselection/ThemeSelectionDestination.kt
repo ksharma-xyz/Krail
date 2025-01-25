@@ -8,14 +8,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import kotlinx.collections.immutable.toImmutableList
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.theme.KrailThemeStyle
 import xyz.ksharma.krail.taj.theme.getForegroundColor
-import xyz.ksharma.krail.taj.theme.getThemeColors
 import xyz.ksharma.krail.taj.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.ThemeSelectionRoute
@@ -30,8 +29,8 @@ internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostCon
         themeContentColor =
             getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
-        LaunchedEffect(state.selectedThemeColor) {
-            log("selectedTransportMode: ${state.selectedThemeColor}")
+        LaunchedEffect(state.selectedThemeStyle) {
+            log("selectedTransportMode: ${state.selectedThemeStyle}")
         }
         LaunchedEffect(state.themeSelected) {
             if (state.themeSelected) {
@@ -46,10 +45,10 @@ internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostCon
         }
 
         ThemeSelectionScreen(
-            selectedThemeColor = state.selectedThemeColor,
-            themeColors = getThemeColors().toImmutableList(),
+            selectedThemeStyle = state.selectedThemeStyle,
             onThemeSelected = { themeId ->
-                val hexColorCode = getThemeColors().firstOrNull { it.id == themeId }?.hexColorCode
+                val hexColorCode =
+                    KrailThemeStyle.entries.firstOrNull { it.id == themeId }?.hexColorCode
                 check(hexColorCode != null) { "hexColorCode for themeId $themeId not found" }
 
                 // This will change the theme color by updating CompositionLocal

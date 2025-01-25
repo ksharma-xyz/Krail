@@ -14,7 +14,7 @@ import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertScreenViewEventTr
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.taj.theme.KrailThemeStyle
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
 import xyz.ksharma.krail.trip.planner.ui.themeselection.ThemeSelectionViewModel
 import kotlin.test.AfterTest
@@ -55,7 +55,7 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedThemeColor)
+                    assertNull(selectedThemeStyle)
                     assertFalse(themeSelected)
                 }
 
@@ -74,7 +74,7 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedThemeColor)
+                    assertNull(selectedThemeStyle)
                     assertFalse(themeSelected)
                 }
 
@@ -84,7 +84,7 @@ class ThemeSelectionViewModelTest {
                 // THEN
                 awaitItem().run {
                     assertFalse(themeSelected)
-                    assertEquals(TransportMode.Train(), selectedThemeColor)
+                    assertEquals(KrailThemeStyle.Train, selectedThemeStyle)
                 }
 
                 cancelAndIgnoreRemainingEvents()
@@ -107,7 +107,7 @@ class ThemeSelectionViewModelTest {
                 // THEN
                 awaitItem().run {
                     assertFalse(themeSelected)
-                    assertEquals(TransportMode.Metro(), selectedThemeColor)
+                    assertEquals(KrailThemeStyle.Metro, selectedThemeStyle)
                 }
 
                 cancelAndIgnoreRemainingEvents()
@@ -144,7 +144,7 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedThemeColor)
+                    assertNull(selectedThemeStyle)
                     assertFalse(themeSelected)
                 }
 

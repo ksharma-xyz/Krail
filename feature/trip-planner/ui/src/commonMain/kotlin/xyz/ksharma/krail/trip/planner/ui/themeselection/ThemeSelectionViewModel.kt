@@ -15,8 +15,8 @@ import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.sandook.Sandook
-import xyz.ksharma.krail.taj.theme.ThemeColor
-import xyz.ksharma.krail.taj.theme.getThemeColors
+import xyz.ksharma.krail.taj.theme.DEFAULT_THEME_STYLE
+import xyz.ksharma.krail.taj.theme.KrailThemeStyle
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionState
 
@@ -30,7 +30,7 @@ class ThemeSelectionViewModel(
         MutableStateFlow(ThemeSelectionState())
     val uiState: StateFlow<ThemeSelectionState> = _uiState
         .onStart {
-            getThemeTransportMode()
+            loadThemeStyle()
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.ThemeSelection)
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(ANR_TIMEOUT), ThemeSelectionState())
@@ -55,14 +55,14 @@ class ThemeSelectionViewModel(
         }
     }
 
-    private fun getThemeTransportMode() {
+    private fun loadThemeStyle() {
         viewModelScope.launch(ioDispatcher) {
             // First app launch there will be no product class, so use default transport mode theme.
-            val themeId = sandook.getProductClass()?.toInt() ?: getThemeColors().first().id
-            val themeColor: ThemeColor =
-                getThemeColors().firstOrNull { it.id == themeId } ?: getThemeColors().first()
+            val themeId = sandook.getProductClass()?.toInt() ?: DEFAULT_THEME_STYLE.id
+            val themeStyle: KrailThemeStyle =
+                KrailThemeStyle.entries.find { it.id == themeId } ?: DEFAULT_THEME_STYLE
             updateUiState {
-                copy(selectedThemeColor = themeColor)
+                copy(selectedThemeStyle = themeStyle)
             }
         }
     }
