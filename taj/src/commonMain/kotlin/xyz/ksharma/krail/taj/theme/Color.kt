@@ -30,6 +30,8 @@ val ferry_theme = Color(0xFF5AB031)
 val coach_theme = Color(0xFF742282)
 val light_rail_theme = Color(0xFFEE343F)
 
+val barbiePink = Color(0xFFDA1884)
+
 val seed = Color(0xFFFFBA27)
 
 @Immutable

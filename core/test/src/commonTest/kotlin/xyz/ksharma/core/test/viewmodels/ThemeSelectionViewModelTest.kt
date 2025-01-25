@@ -14,7 +14,7 @@ import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertScreenViewEventTr
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.taj.theme.KrailThemeStyle
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
 import xyz.ksharma.krail.trip.planner.ui.themeselection.ThemeSelectionViewModel
 import kotlin.test.AfterTest
@@ -55,7 +55,7 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedTransportMode)
+                    assertNull(selectedThemeStyle)
                     assertFalse(themeSelected)
                 }
 
@@ -74,7 +74,7 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedTransportMode)
+                    assertNull(selectedThemeStyle)
                     assertFalse(themeSelected)
                 }
 
@@ -84,7 +84,7 @@ class ThemeSelectionViewModelTest {
                 // THEN
                 awaitItem().run {
                     assertFalse(themeSelected)
-                    assertEquals(TransportMode.Train(), selectedTransportMode)
+                    assertEquals(KrailThemeStyle.Train, selectedThemeStyle)
                 }
 
                 cancelAndIgnoreRemainingEvents()
@@ -107,7 +107,7 @@ class ThemeSelectionViewModelTest {
                 // THEN
                 awaitItem().run {
                     assertFalse(themeSelected)
-                    assertEquals(TransportMode.Metro(), selectedTransportMode)
+                    assertEquals(KrailThemeStyle.Metro, selectedThemeStyle)
                 }
 
                 cancelAndIgnoreRemainingEvents()
@@ -121,7 +121,7 @@ class ThemeSelectionViewModelTest {
                 skipItems(1) // initial state
 
                 // WHEN
-                viewModel.onEvent(ThemeSelectionEvent.TransportModeSelected(9))
+                viewModel.onEvent(ThemeSelectionEvent.ThemeSelected(9))
                 advanceUntilIdle()
 
                 // THEN
@@ -144,11 +144,11 @@ class ThemeSelectionViewModelTest {
         runTest {
             viewModel.uiState.test {
                 awaitItem().run {
-                    assertNull(selectedTransportMode)
+                    assertNull(selectedThemeStyle)
                     assertFalse(themeSelected)
                 }
 
-                viewModel.onEvent(ThemeSelectionEvent.TransportModeSelected(1))
+                viewModel.onEvent(ThemeSelectionEvent.ThemeSelected(1))
 
                 awaitItem().run {
                     assertTrue(themeSelected)

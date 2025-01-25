@@ -22,14 +22,13 @@ import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
+import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.theme.getForegroundColor
-import xyz.ksharma.krail.taj.unspecifiedColor
-import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.toHex
+import xyz.ksharma.krail.taj.unspecifiedColor
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.tripPlannerDestinations
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 /**
  * TODO - I don't like [NavHost] defined in app module, I would love to refactor it to :core:navigation module
@@ -46,7 +45,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 fun KrailNavHost(modifier: Modifier = Modifier) {
     val navController = rememberNavController()
     val themeColorHexCode = rememberSaveable { mutableStateOf(unspecifiedColor) }
-    var productClass: Int? by rememberSaveable { mutableStateOf(null) }
+    var themeId: Int? by rememberSaveable { mutableStateOf(null) }
     val themeContentColorHexCode = rememberSaveable { mutableStateOf(unspecifiedColor) }
     themeContentColorHexCode.value =
         getForegroundColor(
@@ -70,13 +69,13 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
             composable<SplashScreen> {
                 val viewModel: SplashViewModel = koinViewModel<SplashViewModel>()
                 val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-                val mode by viewModel.uiState.collectAsStateWithLifecycle()
+                val themeColor by viewModel.uiState.collectAsStateWithLifecycle()
 
-                productClass = mode.productClass
-                themeColorHexCode.value = mode.colorCode
+                themeId = themeColor.id
+                themeColorHexCode.value = themeColor.hexColorCode
 
                 SplashScreen(
-                    logoColor = if (productClass != null && themeColorHexCode.value != unspecifiedColor) {
+                    logoColor = if (themeId != null && themeColorHexCode.value != unspecifiedColor) {
                         themeColorHexCode.value.hexToComposeColor()
                     } else {
                         KrailTheme.colors.onSurface
@@ -99,5 +98,3 @@ fun KrailNavHost(modifier: Modifier = Modifier) {
 
 @Serializable
 private data object SplashScreen
-
-internal val DEFAULT_THEME_TRANSPORT_MODE = TransportMode.Train()

@@ -2,26 +2,22 @@ package xyz.ksharma.krail.trip.planner.ui.themeselection
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import kotlinx.collections.immutable.toImmutableSet
 import org.koin.compose.viewmodel.koinViewModel
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.LocalThemeContentColor
 import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.theme.KrailThemeStyle
 import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.taj.toHex
 import xyz.ksharma.krail.trip.planner.ui.navigation.SavedTripsRoute
 import xyz.ksharma.krail.trip.planner.ui.navigation.ThemeSelectionRoute
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
-import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
 import xyz.ksharma.krail.trip.planner.ui.state.usualride.ThemeSelectionEvent
 
 internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostController) {
@@ -30,17 +26,14 @@ internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostCon
         val state by viewModel.uiState.collectAsStateWithLifecycle()
         var themeColor by LocalThemeColor.current
         var themeContentColor by LocalThemeContentColor.current
-        var mode: TransportMode? by remember(state.selectedTransportMode) {
-            mutableStateOf(state.selectedTransportMode)
-        }
         themeContentColor =
             getForegroundColor(backgroundColor = themeColor.hexToComposeColor()).toHex()
 
-        LaunchedEffect(state.selectedTransportMode) {
-            log("selectedTransportMode: ${state.selectedTransportMode}")
+        LaunchedEffect(state.selectedThemeStyle) {
+            log("selectedTransportMode: ${state.selectedThemeStyle}")
         }
         LaunchedEffect(state.themeSelected) {
-            if(state.themeSelected) {
+            if (state.themeSelected) {
                 navController.navigate(
                     route = SavedTripsRoute,
                     navOptions = NavOptions.Builder()
@@ -52,16 +45,16 @@ internal fun NavGraphBuilder.themeSelectionDestination(navController: NavHostCon
         }
 
         ThemeSelectionScreen(
-            selectedTransportMode = state.selectedTransportMode,
-            transportModes = TransportMode.sortedValues(TransportModeSortOrder.PRODUCT_CLASS)
-                .toImmutableSet(),
-            transportModeSelected = { productClass ->
-                mode = TransportMode.toTransportModeType(productClass)
-                check(mode != null) {
-                    "Transport mode not found for product class $productClass"
-                }
-                viewModel.onEvent(ThemeSelectionEvent.TransportModeSelected(productClass))
-                mode?.colorCode?.let { themeColor = it }
+            selectedThemeStyle = state.selectedThemeStyle,
+            onThemeSelected = { themeId ->
+                val hexColorCode =
+                    KrailThemeStyle.entries.firstOrNull { it.id == themeId }?.hexColorCode
+                check(hexColorCode != null) { "hexColorCode for themeId $themeId not found" }
+
+                // This will change the theme color by updating CompositionLocal
+                themeColor = hexColorCode
+                // Save the selected theme color to db.
+                viewModel.onEvent(ThemeSelectionEvent.ThemeSelected(themeId))
             },
             onBackClick = { navController.popBackStack() }
         )

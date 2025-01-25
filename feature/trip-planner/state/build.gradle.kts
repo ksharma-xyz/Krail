@@ -28,6 +28,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.core.dateTime)
+                implementation(projects.taj)
 
                 implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.kotlinx.serialization.json)
