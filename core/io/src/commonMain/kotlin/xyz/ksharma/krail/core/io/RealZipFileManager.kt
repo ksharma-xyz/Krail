@@ -12,6 +12,9 @@ import xyz.ksharma.krail.core.appinfo.DevicePlatformType
 import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.log.log
 
+/**
+ * A real implementation of [ZipFileManager] that uses Okio to unzip files.
+ */
 internal class RealZipFileManager(
     private val appInfoProvider: AppInfoProvider,
     private val ioDispatcher: CoroutineDispatcher = DispatchersComponent().ioDispatcher,
@@ -19,9 +22,17 @@ internal class RealZipFileManager(
 
     override suspend fun unzip(zipPath: Path, destinationPath: Path?) = withContext(ioDispatcher) {
         log("Unpacking Zip: $zipPath")
+        var filePrefix: String? = null
 
         val destDir: Path =
             if (appInfoProvider.getAppInfo().devicePlatformType == DevicePlatformType.IOS) {
+                // Note: For iOS, use the zip file name as a prefix to identify the unzipped files.
+                // This prevents conflicts when multiple files with the same name are extracted
+                // to the same directory from different zip files.
+                // E.g. iOS : sydneytrains.zip -> sydneytrains_*.txt
+                // E.g. Android : sydneytrains.zip -> sydneytrains/*.txt
+                filePrefix = zipPath.name.dropExtension() + "_"
+
                 destinationPath ?: zipPath.parent
                 ?: throw IllegalArgumentException("Invalid path: $zipPath")
             } else {
@@ -40,7 +51,7 @@ internal class RealZipFileManager(
         log("\t" + paths.joinToString("\n"))
         // endregion Debugging Code end
 
-        unpackZipToDirectory(zipPath, destDir)
+        unpackZipToDirectory(zipPath, destDir, prefix = filePrefix)
     }
 
     /**
@@ -49,7 +60,7 @@ internal class RealZipFileManager(
      * @param zipFile The path to the zip file to be unpacked.
      * @param destDir The path to the destination directory where the contents will be unpacked.
      */
-    private suspend fun unpackZipToDirectory(zipFile: Path, destDir: Path) =
+    private suspend fun unpackZipToDirectory(zipFile: Path, destDir: Path, prefix: String? = null) =
         withContext(ioDispatcher) {
             // Open the zip file as a file system
             val zipFileSystem = fileSystem.openZip(zipFile)
@@ -67,7 +78,8 @@ internal class RealZipFileManager(
                 zipFileSystem.source(zipFilePath).buffer().use { source ->
                     // Determine the relative file path and resolve it to the destination directory
                     val relativeFilePath = zipFilePath.toString().trimStart('/')
-                    val fileToWrite = destDir.resolve(relativeFilePath)
+                    val prefixedFilePath = prefix?.let { "$prefix$relativeFilePath" } ?: relativeFilePath
+                    val fileToWrite = destDir.resolve(prefixedFilePath)
                     log("Writing to: $fileToWrite")
 
                     // Create parent directories for the destination file
