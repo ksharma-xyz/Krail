@@ -1,5 +1,5 @@
 android {
-    namespace = "xyz.ksharma.krail.gtfs_static"
+    namespace = "xyz.ksharma.krail.core.io"
 }
 
 plugins {
@@ -19,24 +19,27 @@ kotlin {
     iosSimulatorArm64()
 
     sourceSets {
+        androidMain.dependencies {
+            api(libs.di.koinAndroid)
+        }
+
         commonMain {
             dependencies {
-                implementation(projects.core.di)
-                implementation(projects.core.io)
                 implementation(projects.core.log)
+                implementation(projects.core.di)
 
                 implementation(libs.kotlinx.serialization.json)
-                implementation(libs.ktor.client.core)
-                implementation(libs.ktor.client.auth)
-                implementation(libs.ktor.client.content.negotiation)
-                implementation(libs.ktor.client.logging)
-                implementation(libs.ktor.serialization.kotlinx.json)
-                implementation(libs.kotlinx.datetime)
                 implementation(compose.runtime)
-
                 api(libs.di.koinComposeViewmodel)
                 implementation(libs.firebase.gitLiveCrashlytics)
+
+                implementation(libs.kotlinx.ioCore)
+                implementation(libs.okio)
             }
+        }
+
+        iosMain {
+            dependencies {}
         }
 
         commonTest {

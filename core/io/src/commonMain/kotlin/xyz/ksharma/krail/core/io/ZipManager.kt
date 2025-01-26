@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.gtfs_static
+package xyz.ksharma.krail.core.io
 
 import okio.Path
 import okio.Path.Companion.toPath
@@ -8,7 +8,7 @@ import okio.use
 import xyz.ksharma.krail.core.log.log
 
 fun readZip(zipPath: Path) {
-    println("Reading Zip: $zipPath")
+    log("Reading Zip: $zipPath")
 
     // Use the same directory as the zip file for unpacking
     val parentDir = zipPath.parent ?: throw IllegalArgumentException("Invalid path: $zipPath")
@@ -29,15 +29,15 @@ fun unpackZip(zipFile: Path, destDir: Path) {
     log("Unzipping ${paths.size} files from $zipFile to $destDir")
 
     paths.forEach { zipFilePath ->
-        println("Unzipping: $zipFilePath")
+        log("Unzipping: $zipFilePath")
         zipFileSystem.source(zipFilePath).buffer().use { source ->
             val relativeFilePath = zipFilePath.toString().trimStart('/')
             val fileToWrite = destDir.resolve(relativeFilePath)
-            println("Writing to: $fileToWrite")
+            log("Writing to: $fileToWrite")
             fileToWrite.createParentDirectories()
             fileSystem.sink(fileToWrite).buffer().use { sink ->
                 val bytes = sink.writeAll(source)
-                println("Unzipped: $relativeFilePath to $fileToWrite; $bytes bytes written")
+                log("Unzipped: $relativeFilePath to $fileToWrite; $bytes bytes written")
             }
         }
     }

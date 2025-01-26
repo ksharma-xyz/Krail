@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.gtfs_static
+package xyz.ksharma.krail.core.io
 
 import android.content.Context
 import dev.gitlive.firebase.Firebase
@@ -15,10 +15,10 @@ class AndroidFileStorage(private val context: Context) : FileStorage {
 
     override suspend fun saveFile(fileName: String, data: ByteArray): Path {
         return runCatching {
-            println("Try Saving file: $fileName")
+            log("Try Saving file: $fileName")
             val filePath: Path = context.filesDir.toPath().resolve(fileName).toOkioPath()
             fileSystem.sink(filePath).buffer().use { it.write(data) }
-            println("File saved at: $filePath")
+            log("File saved at: $filePath")
             filePath
         }.onFailure {
             log("Failed to save file: $it")

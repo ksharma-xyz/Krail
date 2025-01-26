@@ -10,8 +10,8 @@ import xyz.ksharma.krail.core.analytics.di.analyticsModule
 import xyz.ksharma.krail.core.appinfo.di.appInfoModule
 import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.IODispatcher
 import xyz.ksharma.krail.core.di.coroutineDispatchersModule
+import xyz.ksharma.krail.core.io.di.ioModule
 import xyz.ksharma.krail.core.remote_config.di.remoteConfigModule
-import xyz.ksharma.krail.gtfs_static.di.fileStorageModule
 import xyz.ksharma.krail.gtfs_static.di.gtfsModule
 import xyz.ksharma.krail.sandook.di.sandookModule
 import xyz.ksharma.krail.splash.SplashViewModel
@@ -30,7 +30,7 @@ val koinConfig = koinConfiguration {
         remoteConfigModule,
         coroutineDispatchersModule,
         gtfsModule,
-        fileStorageModule,
+        ioModule,
     )
 }
 
