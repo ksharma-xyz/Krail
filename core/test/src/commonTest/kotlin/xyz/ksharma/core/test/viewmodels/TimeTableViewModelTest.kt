@@ -5,6 +5,7 @@ import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -33,6 +34,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.timetable.TimeTableUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.timetable.Trip
 import xyz.ksharma.krail.trip.planner.ui.timetable.TimeTableViewModel
 import xyz.ksharma.krail.trip.planner.ui.timetable.TimeTableViewModel.Companion.JOURNEY_ENDED_CACHE_THRESHOLD_TIME
+import xyz.ksharma.krail.trip.planner.ui.timetable.TimeTableViewModel.Companion.REFRESH_TIME_TEXT_DURATION
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 import kotlin.test.Test
@@ -90,6 +92,30 @@ class TimeTableViewModelTest {
                 cancelAndConsumeRemainingEvents()
             }
         }
+
+    // region Test isActive Flow
+
+    @Test
+    fun `GIVEN journeyList is empty in UI State WHEN REFRESH_TIME_TEXT_DURATION passes THEN updateTimeText is not called`() =
+        runTest {
+            // GIVEN No Journey list in UI State
+
+            // THEN
+            viewModel.isActive.test {
+
+                skipItems(1) // initial state
+
+                advanceTimeBy(REFRESH_TIME_TEXT_DURATION.inWholeMilliseconds)
+                expectNoEvents()
+
+                advanceTimeBy(REFRESH_TIME_TEXT_DURATION.inWholeMilliseconds)
+                expectNoEvents()
+
+                cancelAndConsumeRemainingEvents()
+            }
+        }
+
+    // endregion
 
     // region Test for fetchTrip / Trip API call
 
