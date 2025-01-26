@@ -12,6 +12,7 @@ internal class RealZipFileManager : ZipFileManager {
     override fun unZip(zipPath: Path, destinationPath: Path?) {
         log("Unpacking Zip: $zipPath")
 
+        // For ios use zipPath.parent only as dir creation is not allowed
         val destDir: Path = destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
         ?: throw IllegalArgumentException("Invalid path: $zipPath")
         log("Zip Unpack Destination: $destDir")
@@ -44,7 +45,14 @@ internal class RealZipFileManager : ZipFileManager {
 
     private fun Path.createParentDirectories() {
         this.parent?.let { parent ->
-            fileSystem.createDirectories(parent)
+            try {
+                log("Creating directories: $parent")
+                fileSystem.createDirectories(parent)
+                log("Directories created successfully: $parent")
+            } catch (e: Exception) {
+                log("Failed to create directories: $parent. Error: ${e.message}")
+                throw e
+            }
         }
     }
 }

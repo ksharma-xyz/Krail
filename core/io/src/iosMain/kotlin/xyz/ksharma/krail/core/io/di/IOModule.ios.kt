@@ -4,6 +4,6 @@ import org.koin.dsl.module
 import xyz.ksharma.krail.core.io.FileStorage
 import xyz.ksharma.krail.core.io.IosFileStorage
 
-actual val ioModule = module {
+actual val fileStorageModule = module {
     single<FileStorage> { IosFileStorage() }
 }

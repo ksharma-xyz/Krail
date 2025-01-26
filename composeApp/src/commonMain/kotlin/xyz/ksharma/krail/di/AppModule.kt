@@ -10,6 +10,7 @@ import xyz.ksharma.krail.core.analytics.di.analyticsModule
 import xyz.ksharma.krail.core.appinfo.di.appInfoModule
 import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.IODispatcher
 import xyz.ksharma.krail.core.di.coroutineDispatchersModule
+import xyz.ksharma.krail.core.io.di.fileStorageModule
 import xyz.ksharma.krail.core.io.di.ioModule
 import xyz.ksharma.krail.core.remote_config.di.remoteConfigModule
 import xyz.ksharma.krail.gtfs_static.di.gtfsModule
@@ -31,6 +32,7 @@ val koinConfig = koinConfiguration {
         coroutineDispatchersModule,
         gtfsModule,
         ioModule,
+        fileStorageModule,
     )
 }
 
