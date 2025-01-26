@@ -49,6 +49,7 @@ kotlin {
                 implementation(projects.feature.tripPlanner.ui)
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.feature.tripPlanner.network)
+                implementation(projects.gtfsStatic)
                 implementation(projects.taj)
 
                 implementation(libs.test.kotlin)
