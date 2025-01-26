@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.core.io
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import okio.Path
 import okio.Path.Companion.toPath
 import okio.buffer
@@ -7,18 +9,20 @@ import okio.openZip
 import okio.use
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import xyz.ksharma.krail.core.appinfo.DevicePlatformType
+import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.log.log
 
 internal class RealZipFileManager(
     private val appInfoProvider: AppInfoProvider,
+    private val ioDispatcher: CoroutineDispatcher = DispatchersComponent().ioDispatcher,
 ) : ZipFileManager {
 
-    override fun unZip(zipPath: Path, destinationPath: Path?) {
+    override suspend fun unzip(zipPath: Path, destinationPath: Path?) = withContext(ioDispatcher) {
         log("Unpacking Zip: $zipPath")
 
         val destDir: Path =
             if (appInfoProvider.getAppInfo().devicePlatformType == DevicePlatformType.IOS) {
-                destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
+                destinationPath ?: zipPath.parent
                 ?: throw IllegalArgumentException("Invalid path: $zipPath")
             } else {
                 destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
@@ -27,47 +31,65 @@ internal class RealZipFileManager(
 
         log("Zip Unpack Destination: $destDir")
 
-        fileSystem.createDirectories(destDir, true)
-        checkIfPathExists(destDir)
+        fileSystem.createDirectories(destDir)
 
+        // region Debugging Code
+        checkIfPathExists(destDir)
         val paths = listPathsUnderDirectory(zipPath.parent!!)
         log("Paths under directory: $destDir")
         log("\t" + paths.joinToString("\n"))
+        // endregion Debugging Code end
 
         unpackZipToDirectory(zipPath, destDir)
     }
 
-    private fun unpackZipToDirectory(zipFile: Path, destDir: Path) {
-        val zipFileSystem = fileSystem.openZip(zipFile)
-        val paths = zipFileSystem.listRecursively("/".toPath())
-            .filter { zipFileSystem.metadata(it).isRegularFile }.toList()
-        log("Unzipping ${paths.size} files from $zipFile to $destDir")
+    /**
+     * Unpacks the contents of a zip file to a specified destination directory.
+     *
+     * @param zipFile The path to the zip file to be unpacked.
+     * @param destDir The path to the destination directory where the contents will be unpacked.
+     */
+    private suspend fun unpackZipToDirectory(zipFile: Path, destDir: Path) =
+        withContext(ioDispatcher) {
+            // Open the zip file as a file system
+            val zipFileSystem = fileSystem.openZip(zipFile)
 
-        paths.forEach { zipFilePath ->
-            log("Unzipping: $zipFilePath")
-            zipFileSystem.source(zipFilePath).buffer().use { source ->
-                val relativeFilePath = zipFilePath.toString().trimStart('/')
-                val fileToWrite = destDir.resolve(relativeFilePath)
-                log("Writing to: $fileToWrite")
-                fileToWrite.createParentDirectories()
-                fileSystem.sink(fileToWrite).buffer().use { sink ->
-                    val bytes = sink.writeAll(source)
-                    log("Unzipped: $relativeFilePath to $fileToWrite; $bytes bytes written")
+            // List all regular files in the zip file recursively
+            val paths = zipFileSystem.listRecursively("/".toPath())
+                .filter { zipFileSystem.metadata(it).isRegularFile }.toList()
+            log("Unzipping ${paths.size} files from $zipFile to $destDir")
+
+            // Iterate over each file path in the zip file
+            paths.forEach { zipFilePath ->
+                log("Unzipping: $zipFilePath")
+
+                // Open the source file from the zip file system
+                zipFileSystem.source(zipFilePath).buffer().use { source ->
+                    // Determine the relative file path and resolve it to the destination directory
+                    val relativeFilePath = zipFilePath.toString().trimStart('/')
+                    val fileToWrite = destDir.resolve(relativeFilePath)
+                    log("Writing to: $fileToWrite")
+
+                    // Create parent directories for the destination file
+                    fileToWrite.createParentDirectories()
+
+                    // Write the contents of the source file to the destination file
+                    fileSystem.sink(fileToWrite).buffer().use { sink ->
+                        val bytes = sink.writeAll(source)
+                        log("Unzipped: $relativeFilePath to $fileToWrite; $bytes bytes written")
+                    }
                 }
             }
         }
-    }
 
-    private fun Path.createParentDirectories() {
-        this.parent?.let { parent ->
-            try {
-                log("Creating directories: $parent")
-                fileSystem.createDirectories(parent)
-                log("Directories created successfully: $parent")
-            } catch (e: Exception) {
-                log("Failed to create directories: $parent. Error: ${e.message}")
-                throw e
-            }
+    private fun Path.createParentDirectories() = parent?.let { parent ->
+        try {
+            log("Creating directories: $parent")
+            fileSystem.createDirectories(parent)
+            log("Directories created successfully: $parent")
+        } catch (e: Exception) {
+            log("Failed to create directories: $parent. Error: ${e.message}")
+            throw e
         }
     }
 }

@@ -34,7 +34,7 @@ internal class RealNswGtfsService(
                 log("File downloaded at: $path")
 
                 // Unzip the file
-                zipManager.unZip(path)
+                zipManager.unzip(path)
             } else {
                 throw Exception("Failed to download file: ${response.status}")
             }
