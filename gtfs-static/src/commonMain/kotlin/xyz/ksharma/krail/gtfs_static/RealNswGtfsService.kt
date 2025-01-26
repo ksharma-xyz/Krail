@@ -12,6 +12,7 @@ import okio.Path
 import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.io.FileStorage
 import xyz.ksharma.krail.core.io.ZipFileManager
+import xyz.ksharma.krail.core.io.fileSystem
 import xyz.ksharma.krail.core.log.log
 
 internal class RealNswGtfsService(

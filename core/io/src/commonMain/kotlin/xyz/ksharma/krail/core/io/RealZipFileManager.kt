@@ -31,9 +31,9 @@ internal class RealZipFileManager(
                 // to the same directory from different zip files.
                 // E.g. iOS : sydneytrains.zip -> sydneytrains_*.txt
                 // E.g. Android : sydneytrains.zip -> sydneytrains/*.txt
-                filePrefix = zipPath.name.dropExtension() + "_"
+//                filePrefix = zipPath.name.dropExtension() + "_"
 
-                destinationPath ?: zipPath.parent
+                destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
                 ?: throw IllegalArgumentException("Invalid path: $zipPath")
             } else {
                 destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
