@@ -8,9 +8,5 @@ import xyz.ksharma.krail.core.io.ZipFileManager
 expect val fileStorageModule: Module
 
 val ioModule = module {
-    single<ZipFileManager> {
-        RealZipFileManager(
-            appInfoProvider = get(),
-        )
-    }
+    single<ZipFileManager> { RealZipFileManager() }
 }
