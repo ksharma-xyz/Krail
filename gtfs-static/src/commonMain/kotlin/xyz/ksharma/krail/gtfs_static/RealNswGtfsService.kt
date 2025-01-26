@@ -4,30 +4,40 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.readRawBytes
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import okio.Path
 import xyz.ksharma.krail.core.di.DispatchersComponent
+import xyz.ksharma.krail.core.io.FileStorage
+import xyz.ksharma.krail.core.io.ZipFileManager
 import xyz.ksharma.krail.core.log.log
 
 internal class RealNswGtfsService(
     private val httpClient: HttpClient,
     private val fileStorage: FileStorage,
+    private val zipManager: ZipFileManager,
     private val ioDispatcher: CoroutineDispatcher = DispatchersComponent().ioDispatcher,
+    private val coroutineScope: CoroutineScope,
 ) : NswGtfsService {
 
-    override suspend fun getSydneyTrains() = withContext(ioDispatcher) {
-        val response: HttpResponse =
-            httpClient.get("$NSW_TRANSPORT_BASE_URL/$GTFS_SCHEDULE_V1/sydneytrains")
+    override suspend fun getSydneyTrains() {
+        coroutineScope.launch(ioDispatcher) {
+            val response: HttpResponse =
+                httpClient.get("$NSW_TRANSPORT_BASE_URL/$GTFS_SCHEDULE_V1/sydneytrains")
 
-        if (response.status.value == 200) {
-            log("Downloading file: ")
-            val data = response.readRawBytes()
-            val path: Path = fileStorage.saveFile("sydneytrains.zip", data)
-            readZip(path)
-            log("File downloaded")
-        } else {
-            throw Exception("Failed to download file: ${response.status}")
+            if (response.isSuccessful()) {
+                log("Downloading file: ")
+                val data = response.readRawBytes()
+                val path: Path = fileStorage.saveFile("sydneytrains.zip", data)
+                log("File downloaded at: $path")
+
+                // Unzip the file
+                zipManager.unZip(path)
+            } else {
+                throw Exception("Failed to download file: ${response.status}")
+            }
         }
     }
 
@@ -50,6 +60,8 @@ internal class RealNswGtfsService(
         val response: HttpResponse =
             httpClient.get("$NSW_TRANSPORT_BASE_URL/$GTFS_SCHEDULE_V1/ferries/sydneyferries")
     }
+
+    private fun HttpResponse.isSuccessful() = status.value == HttpStatusCode.OK.value
 
     companion object {
         internal const val NSW_TRANSPORT_BASE_URL = "https://api.transport.nsw.gov.au"

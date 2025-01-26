@@ -35,7 +35,8 @@ kotlin {
                 implementation(compose.runtime)
 
                 api(libs.di.koinComposeViewmodel)
-                implementation(libs.firebase.gitLiveCrashlytics)
+                implementation(libs.firebase.gitLiveCrashlytics) // todo - use via own module
+                implementation(libs.okio)
             }
         }
 
