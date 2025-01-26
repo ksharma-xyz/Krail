@@ -25,8 +25,9 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation(projects.core.log)
+                implementation(projects.core.appInfo)
                 implementation(projects.core.di)
+                implementation(projects.core.log)
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(compose.runtime)

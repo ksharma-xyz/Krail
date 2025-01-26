@@ -5,19 +5,34 @@ import okio.Path.Companion.toPath
 import okio.buffer
 import okio.openZip
 import okio.use
+import xyz.ksharma.krail.core.appinfo.AppInfoProvider
+import xyz.ksharma.krail.core.appinfo.DevicePlatformType
 import xyz.ksharma.krail.core.log.log
 
-internal class RealZipFileManager : ZipFileManager {
+internal class RealZipFileManager(
+    private val appInfoProvider: AppInfoProvider,
+) : ZipFileManager {
 
     override fun unZip(zipPath: Path, destinationPath: Path?) {
         log("Unpacking Zip: $zipPath")
 
-        // For ios use zipPath.parent only as dir creation is not allowed
-        val destDir: Path = destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
-        ?: throw IllegalArgumentException("Invalid path: $zipPath")
+        val destDir: Path =
+            if (appInfoProvider.getAppInfo().devicePlatformType == DevicePlatformType.IOS) {
+                destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
+                ?: throw IllegalArgumentException("Invalid path: $zipPath")
+            } else {
+                destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
+                ?: throw IllegalArgumentException("Invalid path: $zipPath")
+            }
+
         log("Zip Unpack Destination: $destDir")
 
-        fileSystem.createDirectories(destDir)
+        fileSystem.createDirectories(destDir, true)
+        checkIfPathExists(destDir)
+
+        val paths = listPathsUnderDirectory(zipPath.parent!!)
+        log("Paths under directory: $destDir")
+        log("\t" + paths.joinToString("\n"))
 
         unpackZipToDirectory(zipPath, destDir)
     }
@@ -55,10 +70,4 @@ internal class RealZipFileManager : ZipFileManager {
             }
         }
     }
-}
-
-// TODO - write UTs
-private fun String.dropExtension(): String {
-    val lastDot = this.lastIndexOf('.')
-    return if (lastDot > 0) this.substring(0, lastDot) else this
 }
