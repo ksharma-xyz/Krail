@@ -18,6 +18,6 @@ interface ZipFileManager {
      * If this is null, the zip will be unpacked into zipFileDirectory/Zip_file_name directory.
      *
      */
-    suspend fun unzip(zipPath: Path, destinationPath: Path? = null)
+    suspend fun unzip(zipPath: Path, destinationPath: Path? = null): Path
 
 }

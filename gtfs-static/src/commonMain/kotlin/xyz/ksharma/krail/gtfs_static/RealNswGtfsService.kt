@@ -12,6 +12,7 @@ import okio.Path
 import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.core.io.FileStorage
 import xyz.ksharma.krail.core.io.ZipFileManager
+import xyz.ksharma.krail.core.io.readCsvFile
 import xyz.ksharma.krail.core.log.log
 
 internal class RealNswGtfsService(
@@ -34,10 +35,18 @@ internal class RealNswGtfsService(
                 log("File downloaded at: $path")
 
                 // Unzip the file
-                zipManager.unzip(path)
+                val unzipPath = zipManager.unzip(path)
 
                 // Store to DB - should happen in another module.
-
+                unzipPath.resolve("stops.txt").also { stopsPath ->
+                    log("Reading Stops file: $stopsPath")
+                    val stops = readCsvFile(stopsPath)
+                    log("Stops: ${stops.size}")
+                    stops
+                        .forEachIndexed { index , stop ->
+                        log("Stop[$index]: $stop")
+                    }
+                }
 
             } else {
                 throw Exception("Failed to download file: ${response.status}")
