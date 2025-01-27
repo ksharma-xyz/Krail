@@ -5,6 +5,8 @@ import dev.gitlive.firebase.crashlytics.crashlytics
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
+import okio.Path
+import okio.Path.Companion.toPath
 import platform.Foundation.NSData
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -14,10 +16,11 @@ import platform.Foundation.writeToFile
 import xyz.ksharma.krail.core.log.log
 
 class IosFileStorage : FileStorage {
+
     @OptIn(ExperimentalForeignApi::class)
-    override suspend fun saveFile(fileName: String, data: ByteArray) {
+    override suspend fun saveFile(fileName: String, data: ByteArray): Path {
         log("Trying to Save file: $fileName")
-        runCatching {
+        return runCatching {
             val fileManager = NSFileManager.defaultManager
             val directory = fileManager.URLForDirectory(
                 directory = NSDocumentDirectory,
@@ -33,11 +36,10 @@ class IosFileStorage : FileStorage {
                     .writeToFile(filePath, true)
             }
             log("File saved: $filePath")
+            filePath.toPath()
         }.onFailure {
             log("Failed to save file: $it")
             Firebase.crashlytics.recordException(it) // todo - move to another module
-        }.onSuccess {
-            log("File saved successfully")
-        }
+        }.getOrThrow()
     }
 }
