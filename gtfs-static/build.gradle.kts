@@ -22,7 +22,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(projects.core.di)
-                implementation(projects.core.io)
+                implementation(projects.core.io) // TODO - ideally :core:io apis should not be in gtfs module.
                 implementation(projects.core.log)
 
                 implementation(libs.kotlinx.serialization.json)
