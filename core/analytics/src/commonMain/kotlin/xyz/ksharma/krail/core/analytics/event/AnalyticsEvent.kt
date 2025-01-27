@@ -132,17 +132,20 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
         )
 
     data class AppStart(
-        val deviceType: String,
+        val platformType: String,
         val appVersion: String,
         val osVersion: String,
         val deviceModel: String,
         val fontSize: String,
         val isDarkTheme: Boolean,
         val krailTheme: Int,
+        val locale: String,
+        val batteryLevel: Int,
+        val timeZone: String,
     ) : AnalyticsEvent(
         name = "app_start",
         properties = mapOf(
-            "deviceType" to deviceType,
+            "platformType" to platformType,
             "appVersion" to appVersion,
             "osVersion" to osVersion,
             "deviceModel" to deviceModel,
@@ -150,6 +153,9 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
             "isDarkTheme" to isDarkTheme,
             "krailTheme" to krailTheme,
             "timeStamp" to Clock.System.now().toString(),
+            "locale" to locale,
+            "batteryLevel" to batteryLevel,
+            "timeZone" to timeZone,
         )
     )
     // endregion
