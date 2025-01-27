@@ -17,7 +17,7 @@ internal class RealZipFileManager(
     private val ioDispatcher: CoroutineDispatcher = DispatchersComponent().ioDispatcher,
 ) : ZipFileManager {
 
-    override suspend fun unzip(zipPath: Path, destinationPath: Path?) = withContext(ioDispatcher) {
+    override suspend fun unzip(zipPath: Path, destinationPath: Path?): Path = withContext(ioDispatcher) {
         log("Unpacking Zip: $zipPath")
 
         val destDir: Path = destinationPath ?: zipPath.parent?.resolve(zipPath.name.dropExtension())
@@ -35,6 +35,8 @@ internal class RealZipFileManager(
         // endregion Debugging Code end
 
         unpackZipToDirectory(zipPath, destDir)
+
+        return@withContext destDir
     }
 
     /**
