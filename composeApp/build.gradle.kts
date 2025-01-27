@@ -107,6 +107,7 @@ kotlin {
             implementation(projects.feature.tripPlanner.ui)
             implementation(projects.sandook)
             implementation(projects.taj)
+            implementation(projects.gtfsStatic)
 
             implementation(libs.navigation.compose)
 

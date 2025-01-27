@@ -11,6 +11,8 @@ import xyz.ksharma.krail.core.appinfo.di.appInfoModule
 import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.IODispatcher
 import xyz.ksharma.krail.core.di.coroutineDispatchersModule
 import xyz.ksharma.krail.core.remote_config.di.remoteConfigModule
+import xyz.ksharma.krail.gtfs_static.di.fileStorageModule
+import xyz.ksharma.krail.gtfs_static.di.gtfsModule
 import xyz.ksharma.krail.sandook.di.sandookModule
 import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.trip.planner.network.api.di.networkModule
@@ -27,6 +29,8 @@ val koinConfig = koinConfiguration {
         analyticsModule,
         remoteConfigModule,
         coroutineDispatchersModule,
+        gtfsModule,
+        fileStorageModule,
     )
 }
 
