@@ -1,0 +1,24 @@
+-- Create Sydney Train Stops Table --
+CREATE TABLE SydneyStops (
+    stopId TEXT PRIMARY KEY,
+    stopName TEXT NOT NULL,
+    stopLat REAL NOT NULL,
+    stopLon REAL NOT NULL,
+    productClass INTEGER NOT NULL
+);
+
+-- Insert data into Stops Table --
+insertStop:
+INSERT OR IGNORE INTO SydneyStops(stopId, stopName, stopLat, stopLon, productClass)
+VALUES (?, ?, ?, ?, ?);
+
+-- Select stops with partial match on stop_name --
+selectStopsByPartialName:
+SELECT * FROM SydneyStops
+WHERE stopName LIKE '%' || ? || '%';
+
+-- Select stops with partial match on stop_name and specific productClass values --
+selectStopsByNameAndProductClass:
+SELECT * FROM SydneyStops
+WHERE stopName LIKE '%' || ? || '%'
+AND productClass IN ?;

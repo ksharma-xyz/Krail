@@ -16,7 +16,7 @@ import xyz.ksharma.krail.core.log.log
 
 internal class RealNswGtfsService(
     private val httpClient: HttpClient,
-    private val fileStorage: FileStorage,
+    private val fileStorage: FileStorage, // TODO - ideally :core:io apis should not be in gtfs module.
     private val zipManager: ZipFileManager,
     private val ioDispatcher: CoroutineDispatcher = DispatchersComponent().ioDispatcher,
     private val coroutineScope: CoroutineScope,
@@ -35,6 +35,10 @@ internal class RealNswGtfsService(
 
                 // Unzip the file
                 zipManager.unzip(path)
+
+                // Store to DB - should happen in another module.
+
+
             } else {
                 throw Exception("Failed to download file: ${response.status}")
             }
