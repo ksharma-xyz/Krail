@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS SydneyStops (
+    stopId TEXT PRIMARY KEY,
+    stopName TEXT NOT NULL,
+    stopLat REAL NOT NULL,
+    stopLon REAL NOT NULL,
+    productClass INTEGER NOT NULL
+);
