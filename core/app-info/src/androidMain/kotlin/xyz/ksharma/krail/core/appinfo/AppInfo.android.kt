@@ -1,8 +1,10 @@
 package xyz.ksharma.krail.core.appinfo
 
 import android.content.Context
-import android.os.Build
+import android.content.Context.BATTERY_SERVICE
 import android.content.res.Configuration
+import android.os.BatteryManager
+import android.os.Build
 
 class AndroidAppInfo(private val context: Context) : AppInfo {
 
@@ -32,16 +34,41 @@ class AndroidAppInfo(private val context: Context) : AppInfo {
             return (uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
         }
 
+    /**
+     * Device model. E.g. "Pixel 4"
+     */
     override val deviceModel: String
         get() = Build.MODEL
 
+    /**
+     * Device manufacturer. E.g. "Google"
+     */
     override val deviceManufacturer: String
         get() = Build.BRAND
 
+    /**
+     * Locale. E.g. "en_US"
+     */
+    override val locale: String
+        get() {
+            val localeList = context.resources.configuration.locales
+            return localeList.toLanguageTags()
+        }
+
+    override val batteryLevel: Int
+        get() {
+            val bm = context.getSystemService(BATTERY_SERVICE) as BatteryManager
+            return bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+        }
+
+    override val timeZone: String
+        get() = java.util.TimeZone.getDefault().id
+
     override fun toString() =
-        "AndroidAppInfo(type=$devicePlatformType, isDebug=${isDebug}, version=$appVersion, osVersion=$osVersion, " +
+        "AndroidAppInfo(type=$devicePlatformType, isDebug=${isDebug}, appVersion=$appVersion, osVersion=$osVersion, " +
                 "fontSize=$fontSize, isDarkTheme=$isDarkTheme, deviceModel=$deviceModel, " +
-                "deviceManufacturer=$deviceManufacturer)"
+                "deviceManufacturer=$deviceManufacturer, locale=$locale, batteryLevel=$batteryLevel, " +
+                "timeZone=$timeZone)"
 }
 
 class AndroidAppInfoProvider(private val context: Context) : AppInfoProvider {

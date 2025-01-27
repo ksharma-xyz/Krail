@@ -1,11 +1,17 @@
 package xyz.ksharma.krail.core.appinfo
 
 import platform.Foundation.NSBundle
+import platform.Foundation.NSLocale
+import platform.Foundation.NSTimeZone
+import platform.Foundation.currentLocale
+import platform.Foundation.localTimeZone
+import platform.Foundation.localeIdentifier
 import platform.UIKit.UIApplication
 import platform.UIKit.UIDevice
 import platform.UIKit.UIScreen
 import platform.UIKit.UIUserInterfaceStyle
 import kotlin.experimental.ExperimentalNativeApi
+import kotlin.math.absoluteValue
 
 class IOSAppInfo : AppInfo {
 
@@ -41,20 +47,30 @@ class IOSAppInfo : AppInfo {
             return userInterfaceStyle == UIUserInterfaceStyle.UIUserInterfaceStyleDark
         }
 
-    /**
-     * TODO - what a hack! This is not the device model.
-     *    There needs to be a better way to do it without using 3rd party libraries.
-     */
+    // Note: this is not real device model, Apple does not share this info.
     override val deviceModel: String
         get() = UIDevice.currentDevice.model
 
     override val deviceManufacturer: String
         get() = "Apple"
 
+    override val locale: String
+        get() = NSLocale.currentLocale.localeIdentifier
+
+    override val batteryLevel: Int
+        get() {
+            val level = UIDevice.currentDevice.batteryLevel
+            return (level * 100).toInt().absoluteValue
+        }
+
+    override val timeZone: String
+        get() = NSTimeZone.localTimeZone.name
+
     override fun toString() =
-        "AndroidAppInfo(type=$devicePlatformType, isDebug=${isDebug}, version=$appVersion, osVersion=$osVersion, " +
+        "iOSAppInfo(type=$devicePlatformType, isDebug=${isDebug}, appVersion=$appVersion, osVersion=$osVersion, " +
                 "fontSize=$fontSize, isDarkTheme=$isDarkTheme, deviceModel=$deviceModel, " +
-                "deviceManufacturer=$deviceManufacturer)"
+                "deviceManufacturer=$deviceManufacturer, locale=$locale, batteryLevel=$batteryLevel, " +
+                "timeZone=$timeZone)"
 }
 
 class IosAppInfoProvider : AppInfoProvider {

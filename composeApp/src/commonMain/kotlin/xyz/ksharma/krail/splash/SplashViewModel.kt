@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.core.remote_config.RemoteConfig
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.taj.theme.DEFAULT_THEME_STYLE
@@ -38,15 +39,19 @@ class SplashViewModel(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
     private fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
+        log("AppInfo: $this")
         analytics.track(
             AnalyticsEvent.AppStart(
-                deviceType = devicePlatformType.name,
+                platformType = devicePlatformType.name,
                 osVersion = osVersion,
                 appVersion = appVersion,
                 fontSize = fontSize,
                 isDarkTheme = isDarkTheme,
                 deviceModel = deviceModel,
                 krailTheme = _uiState.value.id,
+                locale = locale,
+                batteryLevel = batteryLevel,
+                timeZone = timeZone
             )
         )
     }
