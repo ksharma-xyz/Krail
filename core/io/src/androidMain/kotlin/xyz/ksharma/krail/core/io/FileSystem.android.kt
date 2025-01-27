@@ -1,4 +1,4 @@
-package xyz.ksharma.krail.gtfs_static
+package xyz.ksharma.krail.core.io
 
 import okio.FileSystem
 

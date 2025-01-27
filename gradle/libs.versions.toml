@@ -4,7 +4,6 @@ java = "17"
 # AGP - Android API level mapping https://developer.android.com/build/releases/gradle-plugin#api-level-support
 # AGP compatability https://developer.android.com/build/releases/gradle-plugin
 agp = "8.8.0" # Android Gradle Plugin
-kmpIo = "0.1.5"
 kotlin = "2.1.0"
 core-ktx = "1.13.0"
 junit = "4.13.2"
@@ -26,7 +25,7 @@ kermit = "2.0.5"
 sqlDelight = "2.0.2"
 koin = "4.0.1-Beta1"
 firebaseGitLive = "2.1.0"
-okio-bom = "3.10.2"
+okio = "3.10.2"
 
 [libraries]
 buildkonfig-gradle-plugin = { module = "com.codingfeline.buildkonfig:buildkonfig-gradle-plugin", version.ref = "buildkonfigGradlePlugin" }
@@ -82,9 +81,8 @@ db-sqlNativeDriver = { module = "app.cash.sqldelight:native-driver", version.ref
 db-sqlRuntime = { module = "app.cash.sqldelight:runtime", version.ref = "sqlDelight" }
 
 # IO
-kmp-io = { module = "io.github.skolson:kmp-io", version.ref = "kmpIo" }
 kotlinx-ioCore = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinxIoCore" }
-okio-bom = { module = "com.squareup.okio:okio", version.ref = "okio-bom" }
+okio = { module = "com.squareup.okio:okio", version.ref = "okio" }
 
 # Firebase
 firebase-gitLiveCrashlytics = { module = "dev.gitlive:firebase-crashlytics", version.ref = "firebaseGitLive" }
