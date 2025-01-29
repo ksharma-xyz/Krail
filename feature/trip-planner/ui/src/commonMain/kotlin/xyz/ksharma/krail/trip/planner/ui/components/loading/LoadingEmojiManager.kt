@@ -5,6 +5,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.number
 import kotlinx.datetime.todayIn
+import xyz.ksharma.krail.core.log.log
 import kotlin.random.Random
 
 // TODO - Add better logic
@@ -65,79 +66,91 @@ object LoadingEmojiManager {
 
     private val knownFestivalDates = mapOf(
         // Sure dates
-        FestivalType.CHRISTMAS to MonthDay.of(12, 25),
-        FestivalType.BOXING_DAY to MonthDay.of(12, 26),
-        FestivalType.NEW_YEAR_EVE to MonthDay.of(12, 31),
-        FestivalType.NEW_YEAR to MonthDay.of(1, 1),
-        FestivalType.ANZAC_DAY to MonthDay.of(4, 25),
-
-        // Valentines day
-        FestivalType.ROSE_DAY to MonthDay.of(2, 7),
-        FestivalType.PROPOSE_DAY to MonthDay.of(2, 8),
-        FestivalType.CHOCOLATE_DAY to MonthDay.of(2, 9),
-        FestivalType.TEDDY_DAY to MonthDay.of(2, 10),
-        FestivalType.PROMISE_DAY to MonthDay.of(2, 11),
-        FestivalType.HUG_DAY to MonthDay.of(2, 12),
-        FestivalType.KISS_DAY to MonthDay.of(2, 13),
-        FestivalType.VALENTINES_DAY to MonthDay.of(2, 14),
-
-        FestivalType.AUSTRALIA_DAY to MonthDay.of(1, 26),
+        MonthDay.of(12, 25) to FestivalType.CHRISTMAS,
+        MonthDay.of(12, 26) to FestivalType.BOXING_DAY,
+        MonthDay.of(12, 31) to FestivalType.NEW_YEAR_EVE,
+        MonthDay.of(1, 1) to FestivalType.NEW_YEAR,
+        MonthDay.of(4, 25) to FestivalType.ANZAC_DAY,
+        MonthDay.of(1, 26) to FestivalType.AUSTRALIA_DAY,
 
         // Can change dates
 
         // Chinese New Year 2025
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(1, 29),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(1, 30),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(1, 31),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 1),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 2),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 3),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 4),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 5),
-        FestivalType.CHINESE_NEW_YEAR to MonthDay.of(2, 6),
+        MonthDay.of(1, 29) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(1, 30) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(1, 31) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(2, 1) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(2, 2) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(2, 3) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(2, 4) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(2, 5) to FestivalType.CHINESE_NEW_YEAR,
+        MonthDay.of(2, 6) to FestivalType.CHINESE_NEW_YEAR,
 
-        FestivalType.HOLI to MonthDay.of(3, 14),
-        FestivalType.EID to MonthDay.of(3, 30),
-        FestivalType.EID to MonthDay.of(3, 31),
+        // Valentines day
+        MonthDay.of(2, 7) to FestivalType.ROSE_DAY,
+        MonthDay.of(2, 8) to FestivalType.PROPOSE_DAY,
+        MonthDay.of(2, 9) to FestivalType.CHOCOLATE_DAY,
+        MonthDay.of(2, 10) to FestivalType.TEDDY_DAY,
+        MonthDay.of(2, 11) to FestivalType.PROMISE_DAY,
+        MonthDay.of(2, 12) to FestivalType.HUG_DAY,
+        MonthDay.of(2, 13) to FestivalType.KISS_DAY,
+        MonthDay.of(2, 14) to FestivalType.VALENTINES_DAY,
 
         // Mardi Gras 2025
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 15),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 16),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 17),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 18),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 19),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 20),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 21),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 22),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 23),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 24),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 25),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 26),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 27),
-        FestivalType.MARDI_GRAS to MonthDay.of(2, 28),
-        FestivalType.MARDI_GRAS to MonthDay.of(3, 1),
-        FestivalType.MARDI_GRAS to MonthDay.of(3, 2),
+        MonthDay.of(2, 15) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 16) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 17) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 18) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 19) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 20) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 21) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 22) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 23) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 24) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 25) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 26) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 27) to FestivalType.MARDI_GRAS,
+        MonthDay.of(2, 28) to FestivalType.MARDI_GRAS,
+        MonthDay.of(3, 1) to FestivalType.MARDI_GRAS,
+        MonthDay.of(3, 2) to FestivalType.MARDI_GRAS,
+
+        MonthDay.of(3, 14) to FestivalType.HOLI,
+        MonthDay.of(3, 30) to FestivalType.EID,
+        MonthDay.of(3, 31) to FestivalType.EID,
 
         // Easter 2025
-        FestivalType.EASTER to MonthDay.of(4, 20),
+        MonthDay.of(4, 20) to FestivalType.EASTER,
 
         // Vivid Sydney 2025
-        FestivalType.VIVID_SYDNEY to MonthDay.of(5, 23),
-        FestivalType.VIVID_SYDNEY to MonthDay.of(5, 24),
-        FestivalType.VIVID_SYDNEY to MonthDay.of(5, 25),
-        FestivalType.VIVID_SYDNEY to MonthDay.of(5, 26),
-        FestivalType.VIVID_SYDNEY to MonthDay.of(5, 27),
-        FestivalType.VIVID_SYDNEY to MonthDay.of(5, 28),
-        FestivalType.VIVID_SYDNEY to MonthDay.of(5, 29),// till 14 june
+        MonthDay.of(5, 23) to FestivalType.VIVID_SYDNEY,
+        MonthDay.of(5, 24) to FestivalType.VIVID_SYDNEY,
+        MonthDay.of(5, 25) to FestivalType.VIVID_SYDNEY,
+        MonthDay.of(5, 26) to FestivalType.VIVID_SYDNEY,
+        MonthDay.of(5, 27) to FestivalType.VIVID_SYDNEY,
+        MonthDay.of(5, 28) to FestivalType.VIVID_SYDNEY,
+        MonthDay.of(5, 29) to FestivalType.VIVID_SYDNEY, // till 14 June
     )
 
     internal fun getRandomEmoji(overrideEmoji: String? = null): String {
         if (overrideEmoji != null) return overrideEmoji
 
         val today = Clock.System.todayIn(TimeZone.currentSystemDefault())
+        log("Today: $today")
+
         val festivalEmoji = knownFestivalDates.entries
-            .firstOrNull { it.value.month == today.month.number && it.value.dayOfMonth == today.dayOfMonth }
-            ?.let { festivalEmojiMap[it.key]?.randomOrNull() }
+            .firstOrNull {
+                log(
+                    "Checking festival date[${it.key.dayOfMonth} / ${it.key.month}] " +
+                            "| Comparing to ${today.dayOfMonth} / ${today.month.number}"
+                )
+                it.key.month == today.month.number && it.key.dayOfMonth == today.dayOfMonth
+            }
+            ?.let {
+                log("Filter result: $it")
+                festivalEmojiMap[it.value]?.randomOrNull()
+            }
+
+        log("festival Emoji: $festivalEmoji")
         if (festivalEmoji != null) return festivalEmoji
 
         val randomValue = Random.nextInt(100)
