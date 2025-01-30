@@ -1,10 +1,10 @@
 package xyz.ksharma.krail.di
 
+import org.koin.core.context.startKoin
 import org.koin.core.module.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.includes
-import org.koin.dsl.koinConfiguration
 import org.koin.dsl.module
 import xyz.ksharma.krail.core.analytics.di.analyticsModule
 import xyz.ksharma.krail.core.appinfo.di.appInfoModule
@@ -16,18 +16,21 @@ import xyz.ksharma.krail.splash.SplashViewModel
 import xyz.ksharma.krail.trip.planner.network.api.di.networkModule
 import xyz.ksharma.krail.trip.planner.ui.di.viewModelsModule
 
-val koinConfig = koinConfiguration {
-    includes(nativeConfig())
-    modules(
-        networkModule,
-        viewModelsModule,
-        sandookModule,
-        splashModule,
-        appInfoModule,
-        analyticsModule,
-        remoteConfigModule,
-        coroutineDispatchersModule,
-    )
+fun initKoin(config: KoinAppDeclaration? = null) {
+    startKoin {
+        printLogger()
+        includes(config)
+        modules(
+            networkModule,
+            viewModelsModule,
+            sandookModule,
+            splashModule,
+            appInfoModule,
+            analyticsModule,
+            remoteConfigModule,
+            coroutineDispatchersModule,
+        )
+    }
 }
 
 val splashModule = module {
@@ -41,5 +44,3 @@ val splashModule = module {
         )
     }
 }
-
-expect fun nativeConfig(): KoinAppDeclaration

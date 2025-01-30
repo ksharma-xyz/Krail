@@ -2,6 +2,7 @@ import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
+import KrailApp
 
 class AppDelegate: NSObject, UIApplicationDelegate {
   func application(_ application: UIApplication,
@@ -14,8 +15,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct iOSApp: App {
-    init() {
-    }
+
+  init() {
+      KoinAppKt.doInitKoin()
+  }
 
   // register app delegate for Firebase setup
   @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
