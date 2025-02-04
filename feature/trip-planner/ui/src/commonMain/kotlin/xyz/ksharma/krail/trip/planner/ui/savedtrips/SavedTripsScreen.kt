@@ -100,7 +100,7 @@ fun SavedTripsScreen(
                         ErrorMessage(
                             emoji = "🌟",
                             title = "Ready to roll, mate?",
-                            message = "Star your fave trips and they'll be right here!",
+                            message = "Star your trips to see them here!",
                             modifier = Modifier
                                 .padding(horizontal = 16.dp)
                                 .animateItem(),
