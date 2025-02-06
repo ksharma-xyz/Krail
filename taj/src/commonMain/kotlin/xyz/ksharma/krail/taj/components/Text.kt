@@ -26,7 +26,6 @@ fun Text(
     textAlign: TextAlign = TextAlign.Start,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = if (maxLines == Int.MAX_VALUE) TextOverflow.Clip else TextOverflow.Ellipsis,
-    fontFamily: FontFamily? = null,
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     Text(
@@ -37,7 +36,6 @@ fun Text(
         textAlign = textAlign,
         maxLines = maxLines,
         overflow = overflow,
-        fontFamily = fontFamily,
         onTextLayout = onTextLayout,
     )
 }
@@ -55,9 +53,11 @@ fun Text(
     onTextLayout: ((TextLayoutResult) -> Unit)? = null,
 ) {
     val contentAlpha = LocalContentAlpha.current
+    val textStyle = style.merge(LocalTextStyle.current)
+
     BasicText(
         text = text,
-        style = style.merge(
+        style = textStyle.copy(
             color = color?.copy(alpha = contentAlpha)
                 ?: LocalTextColor.current.copy(alpha = contentAlpha),
             textAlign = textAlign,
