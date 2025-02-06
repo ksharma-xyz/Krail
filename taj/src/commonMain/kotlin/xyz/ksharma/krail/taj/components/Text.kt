@@ -54,12 +54,13 @@ fun Text(
 ) {
     val contentAlpha = LocalContentAlpha.current
     val textStyle = style.merge(LocalTextStyle.current)
+    val textColor: Color = LocalTextColor.current
+        .takeIf { it != Color.Unspecified } ?: color ?: KrailTheme.colors.onSurface
 
     BasicText(
         text = text,
         style = textStyle.copy(
-            color = color?.copy(alpha = contentAlpha)
-                ?: LocalTextColor.current.copy(alpha = contentAlpha),
+            color = textColor.copy(alpha = contentAlpha),
             textAlign = textAlign,
             fontFamily = fontFamily,
         ),
