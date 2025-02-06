@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.theme.KrailTheme
 
@@ -158,22 +160,25 @@ private fun AnimatedLetter(
     val letterScale by remember(scale) {
         mutableFloatStateOf(if (animationStarted) scale else 1f)
     }
-
-    Text(
-        text = letter,
-        color = logoColor,
-        style = KrailTheme.typography.displayLarge.copy(
-            fontSize = fontSize,
-            letterSpacing = 4.sp,
-            fontWeight = FontWeight.ExtraBold,
-        ),
-        modifier = modifier
-            .graphicsLayer {
-                scaleX = letterScale
-                scaleY = letterScale
-            }
-            .padding(4.dp),
-    )
+    CompositionLocalProvider(
+        LocalTextColor provides logoColor,
+    ) {
+        Text(
+            text = letter,
+            color = logoColor,
+            style = KrailTheme.typography.displayLarge.copy(
+                fontSize = fontSize,
+                letterSpacing = 4.sp,
+                fontWeight = FontWeight.ExtraBold,
+            ),
+            modifier = modifier
+                .graphicsLayer {
+                    scaleX = letterScale
+                    scaleY = letterScale
+                }
+                .padding(4.dp),
+        )
+    }
 }
 
 @Preview
