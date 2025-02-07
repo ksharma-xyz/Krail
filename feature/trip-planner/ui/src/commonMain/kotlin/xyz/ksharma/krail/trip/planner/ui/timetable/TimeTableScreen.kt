@@ -193,7 +193,7 @@ fun TimeTableScreen(
                         )
 
                         Text(
-                            text = "Hop on mate!",
+                            text = "Hop on, mate!",
                             style = KrailTheme.typography.bodyLarge,
                             textAlign = TextAlign.Center,
                             color = KrailTheme.colors.onSurface,
