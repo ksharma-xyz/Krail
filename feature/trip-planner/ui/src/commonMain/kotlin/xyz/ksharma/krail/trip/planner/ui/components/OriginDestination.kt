@@ -8,10 +8,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,38 +33,30 @@ internal fun OriginDestination(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
-            .padding(top = 4.dp),
+            .padding(horizontal = 16.dp),
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
                 .timeLineTop(
                     color = timeLineColor,
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
-                .padding(start = 16.dp, bottom = 8.dp),
         ) {
             AnimatedContent(
                 targetState = trip.fromStopName,
                 transitionSpec = {
-                    (
-                        fadeIn(
-                            animationSpec = tween(200),
-                        ) + slideInVertically(
-                            initialOffsetY = { it / 2 },
-                            animationSpec = tween(500, easing = EaseOutBounce),
-                        )
-                        ) togetherWith (
-                        fadeOut(
-                            animationSpec = tween(200),
-                        ) + slideOutVertically(
-                            targetOffsetY = { -it / 2 },
-                            animationSpec = tween(500),
-                        )
-                        )
+                    (fadeIn(
+                        animationSpec = tween(200),
+                    ) + slideInVertically(
+                        initialOffsetY = { it / 2 },
+                        animationSpec = tween(500, easing = EaseOutBounce),
+                    )) togetherWith (fadeOut(
+                        animationSpec = tween(200),
+                    ) + slideOutVertically(
+                        targetOffsetY = { -it / 2 },
+                        animationSpec = tween(500),
+                    ))
                 },
                 contentAlignment = Alignment.CenterStart,
                 label = "originStopName",
@@ -72,39 +65,39 @@ internal fun OriginDestination(
                     text = targetText,
                     color = timeLineColor,
                     style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
+                    modifier = Modifier.fillMaxWidth().padding(start = 16.dp),
                 )
             }
         }
 
+        Spacer(
+            modifier = Modifier.fillMaxWidth()
+                .height(12.dp)
+                .timeLineCenter(color = timeLineColor, strokeWidth = 3.dp)
+        )
+
         Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
                 .timeLineBottom(
                     color = timeLineColor,
                     strokeWidth = 3.dp,
                     circleRadius = 5.dp,
                 )
-                .padding(start = 16.dp, top = 8.dp),
         ) {
             AnimatedContent(
                 targetState = trip.toStopName,
                 transitionSpec = {
-                    (
-                        fadeIn(
-                            animationSpec = tween(200),
-                        ) + slideInVertically(
-                            initialOffsetY = { -it / 2 },
-                            animationSpec = tween(500, easing = EaseOutBounce),
-                        )
-                        ) togetherWith (
-                        fadeOut(
-                            animationSpec = tween(200),
-                        ) + slideOutVertically(
-                            targetOffsetY = { it / 2 },
-                            animationSpec = tween(500),
-                        )
-                        )
+                    (fadeIn(
+                        animationSpec = tween(200),
+                    ) + slideInVertically(
+                        initialOffsetY = { -it / 2 },
+                        animationSpec = tween(500, easing = EaseOutBounce),
+                    )) togetherWith (fadeOut(
+                        animationSpec = tween(200),
+                    ) + slideOutVertically(
+                        targetOffsetY = { it / 2 },
+                        animationSpec = tween(500),
+                    ))
                 },
                 contentAlignment = Alignment.CenterStart,
                 label = "destinationStopName",
@@ -113,6 +106,7 @@ internal fun OriginDestination(
                     text = targetText,
                     color = timeLineColor,
                     style = KrailTheme.typography.titleMedium.copy(fontWeight = FontWeight.Normal),
+                    modifier = Modifier.padding(start = 16.dp),
                 )
             }
         }
