@@ -51,9 +51,9 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
 
     // region Theme
 
-    data class ThemeSelectedEvent(val transportMode: String) : AnalyticsEvent(
+    data class ThemeSelectedEvent(val themeId: String) : AnalyticsEvent(
         name = "theme_selected",
-        properties = mapOf("transportMode" to transportMode),
+        properties = mapOf("themeId" to themeId),
     )
 
     // endregion

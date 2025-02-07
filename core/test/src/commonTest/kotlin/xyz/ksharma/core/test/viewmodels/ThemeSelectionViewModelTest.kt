@@ -133,7 +133,7 @@ class ThemeSelectionViewModelTest {
                 assertTrue(fakeAnalytics.isEventTracked("theme_selected"))
                 val event = fakeAnalytics.getTrackedEvent("theme_selected")
                 assertIs<AnalyticsEvent.ThemeSelectedEvent>(event)
-                assertEquals("Ferry", event.transportMode)
+                assertEquals("9", event.themeId)
 
                 cancelAndIgnoreRemainingEvents()
             }
