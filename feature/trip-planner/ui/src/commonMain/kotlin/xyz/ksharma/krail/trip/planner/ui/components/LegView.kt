@@ -104,7 +104,11 @@ fun LegView(
             )
 
             Spacer(modifier = Modifier.height(12.dp))
-            Column(modifier = Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 4.dp),
+            ) {
                 StopInfo(
                     time = stops.first().time,
                     name = stops.first().name,
