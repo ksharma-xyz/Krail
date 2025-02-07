@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -16,6 +17,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -28,22 +30,26 @@ fun TransportModeBadge(
 ) {
     val density = LocalDensity.current
 
-    Box(
-        modifier = modifier
-            .requiredHeightIn(with(density) { 22.sp.toDp() })
-            .clip(shape = RoundedCornerShape(percent = 20))
-            .background(color = backgroundColor),
-        contentAlignment = Alignment.Center,
+    CompositionLocalProvider(
+        LocalTextColor provides Color.White,
     ) {
-        Text(
-            text = badgeText,
-            color = Color.White,
-            // todo - need concrete token for style, meanwhile keep same as TransportModeIcon.
-            style = KrailTheme.typography.labelLarge,
-            modifier = Modifier
-                .padding(2.dp)
-                .wrapContentWidth(),
-        )
+        Box(
+            modifier = modifier
+                .requiredHeightIn(with(density) { 22.sp.toDp() })
+                .clip(shape = RoundedCornerShape(percent = 20))
+                .background(color = backgroundColor),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = badgeText,
+                color = Color.White,
+                // todo - need concrete token for style, meanwhile keep same as TransportModeIcon.
+                style = KrailTheme.typography.labelLarge,
+                modifier = Modifier
+                    .padding(2.dp)
+                    .wrapContentWidth(),
+            )
+        }
     }
 }
 
