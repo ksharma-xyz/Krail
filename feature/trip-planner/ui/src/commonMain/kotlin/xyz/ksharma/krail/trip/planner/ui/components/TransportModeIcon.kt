@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.taj.LocalContentAlpha
+import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -35,7 +36,10 @@ fun TransportModeIcon(
     val textStyle = KrailTheme.typography.labelLarge
 
     // Content alphas should always be 100% for Transport related icons
-    CompositionLocalProvider(LocalContentAlpha provides 1f) {
+    CompositionLocalProvider(
+        LocalContentAlpha provides 1f,
+        LocalTextColor provides Color.White,
+    ) {
         Box(
             modifier = modifier
                 .clip(shape = CircleShape)
