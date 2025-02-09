@@ -123,13 +123,22 @@ fun LegView(
                         .padding(start = 16.dp),
                 )
 
+                Spacer(
+                    modifier = Modifier
+                        .height(12.dp)
+                        .timeLineCenter(
+                            color = timelineColor,
+                            strokeWidth = strokeWidth,
+                        )
+                )
+
                 Column(
                     modifier = Modifier
                         .timeLineCenter(
                             color = timelineColor,
                             strokeWidth = strokeWidth,
                         )
-                        .padding(start = 16.dp, top = 12.dp),
+                        .padding(start = 16.dp),
                 ) {
                     val stopsCount by rememberSaveable(stops) { mutableIntStateOf(stops.size - 1) }
                     if (stopsCount > 1) {
@@ -151,8 +160,19 @@ fun LegView(
                     }
                 }
 
+
                 if (showIntermediateStops) {
                     stops.drop(1).dropLast(1).forEach { stop ->
+
+                        Spacer(
+                            modifier = Modifier
+                                .height(12.dp)
+                                .timeLineCenter(
+                                    color = timelineColor,
+                                    strokeWidth = strokeWidth,
+                                )
+                        )
+
                         StopInfo(
                             time = stop.time,
                             name = stop.name,
@@ -169,10 +189,19 @@ fun LegView(
                                     strokeWidth = strokeWidth,
                                     circleRadius = circleRadius,
                                 )
-                                .padding(start = 16.dp, top = 12.dp),
+                                .padding(start = 16.dp),
                         )
                     }
                 }
+
+                Spacer(
+                    modifier = Modifier
+                        .height(12.dp)
+                        .timeLineCenter(
+                            color = timelineColor,
+                            strokeWidth = strokeWidth,
+                        )
+                )
 
                 StopInfo(
                     time = stops.last().time,
@@ -185,7 +214,7 @@ fun LegView(
                             strokeWidth = strokeWidth,
                             circleRadius = circleRadius,
                         )
-                        .padding(start = 16.dp, top = 12.dp),
+                        .padding(start = 16.dp),
                 )
             }
         }
@@ -210,7 +239,7 @@ private fun RouteSummary(
         ) {
             Text(
                 text = routeText,
-                style = KrailTheme.typography.bodySmall,
+                style = KrailTheme.typography.titleSmall,
                 modifier = Modifier
                     .padding(end = 12.dp)
                     .align(Alignment.CenterVertically),
