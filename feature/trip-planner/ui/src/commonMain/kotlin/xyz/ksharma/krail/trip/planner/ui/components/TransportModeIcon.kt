@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
@@ -27,6 +28,7 @@ fun TransportModeIcon(
     borderColor: Color = Color.White,
     textColor: Color = Color.White,
     displayBorder: Boolean = false,
+    size: TransportModeIconSize = TransportModeIconSize.Small,
 ) {
     CompositionLocalProvider(
         LocalTextColor provides textColor,
@@ -34,7 +36,7 @@ fun TransportModeIcon(
     ) {
         Box(
             modifier = modifier
-                .size(32.dp.toAdaptiveDecorativeIconSize())
+                .size(size.dpSize.toAdaptiveDecorativeIconSize())
                 .clip(CircleShape)
                 .background(
                     color = transportMode.colorCode.hexToComposeColor(),
@@ -50,7 +52,7 @@ fun TransportModeIcon(
                 LocalTextColor provides Color.White,
             ) {
                 Text(
-                    text = transportMode.name.first().toString(),
+                    text = transportMode.name.first().toString().uppercase(),
                     color = Color.White,
                 )
             }
@@ -69,6 +71,10 @@ private fun Modifier.borderIfEnabled(enabled: Boolean, color: Color): Modifier =
             )
         )
     } else this
+
+enum class TransportModeIconSize(val dpSize: Dp) {
+    Small(24.dp), Medium(28.dp), Large(32.dp)
+}
 
 // region Previews
 
