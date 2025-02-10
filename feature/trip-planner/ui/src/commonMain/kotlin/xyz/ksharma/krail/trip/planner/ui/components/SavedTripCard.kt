@@ -59,10 +59,7 @@ fun SavedTripCard(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         primaryTransportMode?.let {
-            TransportModeIcon(
-                letter = primaryTransportMode.name.first().uppercaseChar(),
-                backgroundColor = primaryTransportMode.colorCode.hexToComposeColor(),
-            )
+            TransportModeIcon(transportMode = primaryTransportMode,)
         }
 
         Column(
