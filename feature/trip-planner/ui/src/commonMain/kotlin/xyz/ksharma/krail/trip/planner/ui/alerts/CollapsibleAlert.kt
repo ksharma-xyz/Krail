@@ -24,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import xyz.ksharma.krail.taj.LocalTextColor
+import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Button
 import xyz.ksharma.krail.taj.components.ButtonDefaults
@@ -45,94 +47,94 @@ fun CollapsibleAlert(
 ) {
     val backgroundColor = KrailTheme.colors.alert.copy(alpha = 0.7f)
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = backgroundColor,
-                shape = RoundedCornerShape(16.dp),
-            )
-            .clickable(
-                indication = null,
-                interactionSource = remember { MutableInteractionSource() },
-                onClick = onClick,
-            )
-            .padding(vertical = 8.dp)
-            .animateContentSize(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+    CompositionLocalProvider(
+        LocalTextColor provides getForegroundColor(backgroundColor),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.Top,
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(24.dp.toAdaptiveSize())
-                    .clip(CircleShape)
-                    .alignByBaseline(),
-                contentAlignment = Alignment.Center,
-            ) {
-                Text(
-                    text = "$index",
-                    style = KrailTheme.typography.titleSmall,
-                    color = getForegroundColor(backgroundColor),
-                    modifier = Modifier
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(
+                    color = backgroundColor,
+                    shape = RoundedCornerShape(16.dp),
                 )
-            }
-
-            Text(
-                text = serviceAlert.heading,
-                style = KrailTheme.typography.titleSmall,
-                modifier = Modifier.padding(horizontal = 12.dp).alignByBaseline(),
-                color = getForegroundColor(backgroundColor),
-            )
-        }
-
-        if (collapsed.not()) {
-            val isHtml by remember {
-                mutableStateOf(
-                    "<[a-z][\\s\\S]*>".toRegex().containsMatchIn(serviceAlert.message),
-                )
-            }
-            if (isHtml) {
-                HtmlText(
-                    text = serviceAlert.message,
+                .clickable(
+                    indication = null,
+                    interactionSource = remember { MutableInteractionSource() },
                     onClick = onClick,
-                    color = getForegroundColor(backgroundColor),
-                    urlColor = getForegroundColor(backgroundColor),
-                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
-            } else {
-                Text(
-                    text = serviceAlert.message,
-                    style = KrailTheme.typography.body,
-                    color = getForegroundColor(backgroundColor),
-                    modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
-                )
-            }
-        } else {
-
-            val buttonBackgroundColor by remember {
-                mutableStateOf(getForegroundColor(backgroundColor))
-            }
-            val buttonContentColor by remember(buttonBackgroundColor) {
-                mutableStateOf(getForegroundColor(buttonBackgroundColor))
-            }
-            Button(
-                colors = ButtonColors(
-                    containerColor = buttonBackgroundColor,
-                    contentColor = buttonContentColor,
-                    disabledContainerColor = buttonBackgroundColor.copy(alpha = DisabledContentAlpha),
-                    disabledContentColor = buttonContentColor.copy(alpha = DisabledContentAlpha),
-                ),
-                onClick = onClick,
-                dimensions = ButtonDefaults.extraSmallButtonSize(),
-                modifier = Modifier.padding(
-                    start = 12.dp + 24.dp.toAdaptiveSize(),
-                    bottom = 8.dp
-                )
+                .padding(vertical = 8.dp)
+                .animateContentSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            CompositionLocalProvider(
+                LocalTextStyle provides KrailTheme.typography.titleMedium,
             ) {
-                Text(text = "Read More")
+                Row(
+                    horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top,
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(24.dp.toAdaptiveSize())
+                            .clip(CircleShape)
+                            .alignByBaseline(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(text = "$index")
+                    }
+
+                    Text(
+                        text = serviceAlert.heading,
+                        modifier = Modifier.padding(horizontal = 12.dp).alignByBaseline(),
+                    )
+                }
+            }
+
+            if (collapsed.not()) {
+                val isHtml by remember {
+                    mutableStateOf(
+                        "<[a-z][\\s\\S]*>".toRegex().containsMatchIn(serviceAlert.message),
+                    )
+                }
+                if (isHtml) {
+                    HtmlText(
+                        text = serviceAlert.message,
+                        onClick = onClick,
+                        color = getForegroundColor(backgroundColor),
+                        urlColor = getForegroundColor(backgroundColor),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                } else {
+                    Text(
+                        text = serviceAlert.message,
+                        style = KrailTheme.typography.body,
+                        modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp),
+                    )
+                }
+            } else {
+
+                val buttonBackgroundColor by remember {
+                    mutableStateOf(getForegroundColor(backgroundColor))
+                }
+                val buttonContentColor by remember(buttonBackgroundColor) {
+                    mutableStateOf(getForegroundColor(buttonBackgroundColor))
+                }
+                Button(
+                    colors = ButtonColors(
+                        containerColor = buttonBackgroundColor,
+                        contentColor = buttonContentColor,
+                        disabledContainerColor = buttonBackgroundColor.copy(alpha = DisabledContentAlpha),
+                        disabledContentColor = buttonContentColor.copy(alpha = DisabledContentAlpha),
+                    ),
+                    onClick = onClick,
+                    dimensions = ButtonDefaults.extraSmallButtonSize(),
+                    modifier = Modifier.padding(
+                        start = 12.dp + 24.dp.toAdaptiveSize(),
+                        bottom = 8.dp
+                    )
+                ) {
+                    Text(text = "Read More")
+                }
             }
         }
     }
