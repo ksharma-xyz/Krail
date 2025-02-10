@@ -81,30 +81,12 @@ fun TransportModeChip(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             // Make this a separate component - TransportModeIcon
-            Box(
-                modifier = Modifier
-                    .size(32.dp.toAdaptiveDecorativeIconSize())
-                    .clip(CircleShape)
-                    .background(
-                        color = transportMode.colorCode.hexToComposeColor(),
-                        shape = CircleShape,
-                    )
-                    .border(
-                        3.dp.toAdaptiveDecorativeIconSize(), // 3.dp is token value
-                        modeIconBorderColor,
-                        CircleShape,
-                    ),
-                contentAlignment = Alignment.Center,
-            ) {
-                CompositionLocalProvider(
-                    LocalTextColor provides Color.White,
-                ) {
-                    Text(
-                        text = transportMode.name.first().toString(),
-                        color = Color.White,
-                    )
-                }
-            }
+            TransportModeIcon(
+                transportMode = transportMode,
+                borderColor = modeIconBorderColor,
+                textColor = textColor,
+                displayBorder = true,
+            )
 
             Text(text = transportMode.name)
         }

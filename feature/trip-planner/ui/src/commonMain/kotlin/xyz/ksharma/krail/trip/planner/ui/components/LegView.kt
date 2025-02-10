@@ -152,8 +152,7 @@ fun LegView(
                         )
                     } else {
                         TransportModeInfo(
-                            letter = transportModeLine.transportMode.name.first(),
-                            backgroundColor = transportModeLine.transportMode.colorCode.hexToComposeColor(),
+                            transportMode = transportModeLine.transportMode,
                             badgeText = transportModeLine.lineName,
                             badgeColor = transportModeLine.lineColorCode.hexToComposeColor(),
                         )
@@ -344,8 +343,7 @@ private fun StopsRow(
         }
 
         TransportModeInfo(
-            letter = line.transportMode.name.first(),
-            backgroundColor = line.transportMode.colorCode.hexToComposeColor(),
+            transportMode = line.transportMode,
             badgeText = line.lineName,
             badgeColor = line.lineColorCode.hexToComposeColor(),
             modifier = Modifier.align(Alignment.CenterVertically),
