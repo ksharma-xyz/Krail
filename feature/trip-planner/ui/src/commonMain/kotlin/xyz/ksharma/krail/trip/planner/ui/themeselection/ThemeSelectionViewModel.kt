@@ -51,7 +51,7 @@ class ThemeSelectionViewModel(
             updateUiState {
                 copy(themeSelected = true)
             }
-            analytics.trackThemeSelectionEvent(productClass)
+            analytics.trackThemeSelectionEvent(themeId = productClass)
         }
     }
 
