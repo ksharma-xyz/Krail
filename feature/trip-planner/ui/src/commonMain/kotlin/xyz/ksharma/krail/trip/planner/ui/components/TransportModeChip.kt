@@ -21,6 +21,7 @@ import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 @Composable
@@ -42,7 +43,7 @@ fun TransportModeChip(
     )
 
     val textColor by animateColorAsState(
-        targetValue = if (selected) Color.White else Color.Gray,
+        targetValue = if (selected) getForegroundColor(transportMode.colorCode.hexToComposeColor()) else Color.Gray,
         animationSpec = tween(200),
     )
 
@@ -57,7 +58,7 @@ fun TransportModeChip(
                     shape = RoundedCornerShape(50),
                 )
                 .border(
-                    width = 3.dp, // 3.dp is token , should be 1.dp less than the horizontal padding.
+                    width = 2.dp, // is token , should be 1.dp less than the horizontal padding.
                     color = borderColor,
                     shape = RoundedCornerShape(50),
                 )
@@ -67,7 +68,7 @@ fun TransportModeChip(
                 ) { onClick() }
                 // horizontal padding value should be same as border width of
                 // TransportModeIcon
-                .padding(horizontal = 3.dp, vertical = 4.dp) // 4.dp is token
+                .padding(horizontal = 3.dp, vertical = 4.dp) // is token
                 .padding(end = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
