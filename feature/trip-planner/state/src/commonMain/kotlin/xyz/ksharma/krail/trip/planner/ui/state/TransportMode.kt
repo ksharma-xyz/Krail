@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
  * Line Codes - https://transportnsw.info/plan/help/key-to-icons-line-codes
  *
  * Icons - https://opendata.transport.nsw.gov.au/dataset/transport-mode-symbols-and-pictograms
+ * Symbols - https://opendata.transport.nsw.gov.au/data/dataset/transport-mode-symbols-and-pictograms/resource/ea95a4b5-7d7b-4196-b886-c834953d19b6?inner_span=True
  */
 @Serializable
 sealed class TransportMode {
@@ -56,7 +57,7 @@ sealed class TransportMode {
     @Serializable
     data class LightRail(
         override val name: String = "Light Rail",
-        override val colorCode: String = "#EE343F",
+        override val colorCode: String = "#E4022D",
         override val productClass: Int = 4,
         override val priority: Int = 4444,
     ) : TransportMode()
