@@ -17,6 +17,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import xyz.ksharma.krail.taj.LocalContentAlpha
 import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.components.Text
@@ -24,6 +25,7 @@ import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.toAdaptiveDecorativeIconSize
 import xyz.ksharma.krail.taj.toAdaptiveSize
+import xyz.ksharma.krail.taj.tokens.ContentAlphaTokens
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 @Composable
@@ -39,6 +41,8 @@ fun TransportModeIcon(
         LocalTextColor provides Color.White,
         // should be same as StopsRow and TransportModeInfo
         LocalTextStyle provides KrailTheme.typography.titleSmall,
+        // Alpha should always be 100%
+        LocalContentAlpha provides ContentAlphaTokens.EnabledContentAlpha,
     ) {
         Box(
             modifier = modifier
@@ -59,7 +63,6 @@ fun TransportModeIcon(
         ) {
             Text(
                 text = transportMode.name.first().toString().uppercase(),
-                color = Color.White,
                 modifier = Modifier.padding(2.dp),
             )
         }
