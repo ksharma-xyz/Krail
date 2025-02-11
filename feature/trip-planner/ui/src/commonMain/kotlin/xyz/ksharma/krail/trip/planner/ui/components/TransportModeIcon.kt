@@ -3,6 +3,7 @@ package xyz.ksharma.krail.trip.planner.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.taj.toAdaptiveDecorativeIconSize
+import xyz.ksharma.krail.taj.toAdaptiveSize
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 @Composable
@@ -26,17 +28,17 @@ fun TransportModeIcon(
     transportMode: TransportMode,
     modifier: Modifier = Modifier,
     borderColor: Color = Color.White,
-    textColor: Color = Color.White,
     displayBorder: Boolean = false,
-    size: TransportModeIconSize = TransportModeIconSize.Small,
+    size: TransportModeIconSize = TransportModeIconSize.Medium,
 ) {
     CompositionLocalProvider(
-        LocalTextColor provides textColor,
-        LocalTextStyle provides KrailTheme.typography.titleMedium,
+        LocalTextColor provides Color.White,
+        // should be same as StopsRow and TransportModeInfo
+        LocalTextStyle provides KrailTheme.typography.titleSmall,
     ) {
         Box(
             modifier = modifier
-                .size(size.dpSize.toAdaptiveDecorativeIconSize())
+                .size(size.dpSize.toAdaptiveSize())
                 .clip(CircleShape)
                 .background(
                     color = transportMode.colorCode.hexToComposeColor(),
@@ -48,14 +50,11 @@ fun TransportModeIcon(
                 ),
             contentAlignment = Alignment.Center,
         ) {
-            CompositionLocalProvider(
-                LocalTextColor provides Color.White,
-            ) {
-                Text(
-                    text = transportMode.name.first().toString().uppercase(),
-                    color = Color.White,
-                )
-            }
+            Text(
+                text = transportMode.name.first().toString().uppercase(),
+                color = Color.White,
+                modifier = Modifier.padding(2.dp),
+            )
         }
     }
 }
@@ -73,7 +72,7 @@ private fun Modifier.borderIfEnabled(enabled: Boolean, color: Color): Modifier =
     } else this
 
 enum class TransportModeIconSize(val dpSize: Dp) {
-    Small(24.dp), Medium(28.dp), Large(32.dp)
+    XSmall(20.dp), Small(22.dp), Medium(28.dp), Large(32.dp)
 }
 
 // region Previews
@@ -83,8 +82,6 @@ private fun TrainPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Train(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = false
         )
     }
@@ -95,8 +92,6 @@ private fun BusPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Bus(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = false
         )
     }
@@ -107,8 +102,6 @@ private fun MetroPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Metro(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = false
         )
     }
@@ -119,8 +112,6 @@ private fun LightRailPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.LightRail(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = false
         )
     }
@@ -131,8 +122,6 @@ private fun FerryPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Ferry(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = false
         )
     }
@@ -143,8 +132,6 @@ private fun TrainWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Train(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = true
         )
     }
@@ -155,8 +142,6 @@ private fun BusWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Bus(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = true
         )
     }
@@ -167,8 +152,6 @@ private fun MetroWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Metro(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = true
         )
     }
@@ -179,8 +162,6 @@ private fun LightRailWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.LightRail(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = true
         )
     }
@@ -191,8 +172,6 @@ private fun FerryWithBackgroundPreview() {
     KrailTheme {
         TransportModeIcon(
             transportMode = TransportMode.Ferry(),
-            borderColor = Color.White,
-            textColor = Color.White,
             displayBorder = true,
         )
     }

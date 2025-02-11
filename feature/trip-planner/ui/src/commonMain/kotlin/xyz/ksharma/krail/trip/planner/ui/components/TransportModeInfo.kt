@@ -31,6 +31,7 @@ fun TransportModeInfo(
             TransportModeIcon(
                 transportMode = transportMode,
                 displayBorder = borderEnabled,
+                size = TransportModeIconSize.Small,
             )
 
             TransportModeBadge(
