@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import xyz.ksharma.krail.taj.LocalTextColor
+import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.theme.KrailTheme
@@ -31,6 +32,7 @@ fun TransportModeBadge(
 
     CompositionLocalProvider(
         LocalTextColor provides Color.White,
+        LocalTextStyle provides KrailTheme.typography.titleSmall,
     ) {
         Box(
             modifier = modifier
@@ -42,8 +44,6 @@ fun TransportModeBadge(
             Text(
                 text = badgeText,
                 color = Color.White,
-                // todo - need concrete token for style, meanwhile keep same as TransportModeIcon.
-                style = KrailTheme.typography.labelLarge,
                 modifier = Modifier
                     .padding(2.dp)
                     .wrapContentWidth(),
