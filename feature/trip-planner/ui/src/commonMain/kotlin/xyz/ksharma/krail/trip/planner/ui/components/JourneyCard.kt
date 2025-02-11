@@ -369,10 +369,7 @@ fun DefaultJourneyCardContent(
                         horizontalArrangement = Arrangement.spacedBy(6.dp),
                     ) {
                         transportModeList.forEachIndexed { index, mode ->
-                            TransportModeIcon(
-                                letter = mode.name.first(),
-                                backgroundColor = mode.colorCode.hexToComposeColor(),
-                            )
+                            TransportModeIcon(transportMode = mode)
                             if (index != transportModeList.lastIndex) {
                                 SeparatorIcon(modifier = Modifier.align(Alignment.CenterVertically))
                             }

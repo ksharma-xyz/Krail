@@ -53,10 +53,7 @@ fun StopSearchListItem(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             transportModeSet.forEach { mode ->
-                TransportModeIcon(
-                    letter = mode.name.first(),
-                    backgroundColor = mode.colorCode.hexToComposeColor(),
-                )
+                TransportModeIcon(transportMode = mode)
             }
         }
     }
