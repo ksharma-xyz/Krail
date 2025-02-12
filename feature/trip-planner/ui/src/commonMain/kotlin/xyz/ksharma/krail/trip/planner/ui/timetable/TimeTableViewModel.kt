@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -105,6 +106,7 @@ class TimeTableViewModel(
     val expandedJourneyId: StateFlow<String?> = _expandedJourneyId
 
     private var tripInfo: Trip? = null
+    private val unselectedModes: MutableSet<Int> = mutableSetOf() // all are selected by default
 
     @VisibleForTesting
     var dateTimeSelectionItem: DateTimeSelectionItem? = null
@@ -149,12 +151,27 @@ class TimeTableViewModel(
                 analytics.track(AnalyticsEvent.JourneyLegClickEvent(expanded = event.expanded))
             }
 
-            is TimeTableUiEvent.ModeSelectionChanged -> onModeSelectionChanged()
+            is TimeTableUiEvent.ModeSelectionChanged -> onModeSelectionChanged(event.unselectedModes)
         }
     }
 
-    private fun onModeSelectionChanged() {
+    private fun onModeSelectionChanged(unselectedModes: Set<Int>) {
+        if (hasModeSelectionChanged(unselectedModes)) {
+            this.unselectedModes.clear()
+            this.unselectedModes.addAll(unselectedModes)
 
+            // call api
+            rateLimiter.triggerEvent()
+            updateUiState { copy(isLoading = true) }
+        } else {
+            // do nothing.
+            log("Mode selection not changed")
+        }
+    }
+
+    private fun hasModeSelectionChanged(unselectedModes: Set<Int>): Boolean {
+        log("hasModeSelectionChanged - OLD: ${this.unselectedModes} NEW: $unselectedModes")
+        return this.unselectedModes != unselectedModes
     }
 
     private fun onDateTimeSelectionChanged(item: DateTimeSelectionItem?) {
@@ -279,7 +296,8 @@ class TimeTableViewModel(
                     JourneyTimeOptions.LEAVE -> DepArr.DEP
                     JourneyTimeOptions.ARRIVE -> DepArr.ARR
                     else -> DepArr.DEP
-                }
+                },
+                excludeProductClassSet = unselectedModes,
             )
             Result.success(tripResponse)
         }.getOrElse { error ->
@@ -454,6 +472,7 @@ class TimeTableViewModel(
 
     companion object {
         private const val ANR_TIMEOUT = 5000L
+
         @VisibleForTesting
         val REFRESH_TIME_TEXT_DURATION = 10.seconds
         private val AUTO_REFRESH_TIME_TABLE_DURATION = 30.seconds

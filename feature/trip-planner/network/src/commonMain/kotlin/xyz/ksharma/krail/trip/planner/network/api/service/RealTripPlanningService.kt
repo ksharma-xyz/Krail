@@ -3,14 +3,15 @@ package xyz.ksharma.krail.trip.planner.network.api.service
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.http.ParametersBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import xyz.ksharma.krail.core.di.DispatchersComponent
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.StopType
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.service.stop_finder.StopFinderRequestParams
 import xyz.ksharma.krail.trip.planner.network.api.service.trip.TripRequestParams
+import kotlin.math.log
 
 class RealTripPlanningService(
     private val httpClient: HttpClient,
@@ -23,6 +24,7 @@ class RealTripPlanningService(
         depArr: DepArr,
         date: String?,
         time: String?,
+        excludeProductClassSet: Set<Int>,
     ): TripResponse = withContext(ioDispatcher) {
 
         httpClient.get("$NSW_TRANSPORT_BASE_URL/v1/tp/trip") {
@@ -45,8 +47,41 @@ class RealTripPlanningService(
                 parameters.append(TripRequestParams.cycleSpeed, "16")
                 parameters.append(TripRequestParams.useElevationData, "1")
                 parameters.append(TripRequestParams.outputFormat, "rapidJSON")
+
+                addExcludedTransportModes(
+                    excludeProductClassSet = excludeProductClassSet,
+                    parameters = parameters,
+                )
             }
         }.body()
+    }
+
+    private inline fun addExcludedTransportModes(
+        excludeProductClassSet: Set<Int>,
+        parameters: ParametersBuilder,
+    ) {
+        println("Exclude - $excludeProductClassSet")
+        parameters.append(TripRequestParams.excludedMeans, "checkbox")
+
+        if (excludeProductClassSet.contains(1)) {
+            parameters.append(TripRequestParams.exclMOT1, "1")
+        }
+        if (excludeProductClassSet.contains(2)) {
+            parameters.append(TripRequestParams.exclMOT2, "2")
+        }
+        if (excludeProductClassSet.contains(4)) {
+            parameters.append(TripRequestParams.exclMOT4, "4")
+        }
+        if (excludeProductClassSet.contains(5) || excludeProductClassSet.contains(11)) {
+            parameters.append(TripRequestParams.exclMOT5, "5")
+            parameters.append(TripRequestParams.exclMOT11, "11")
+        }
+        if (excludeProductClassSet.contains(7)) {
+            parameters.append(TripRequestParams.exclMOT7, "7")
+        }
+        if (excludeProductClassSet.contains(9)) {
+            parameters.append(TripRequestParams.exclMOT9, "9")
+        }
     }
 
     override suspend fun stopFinder(

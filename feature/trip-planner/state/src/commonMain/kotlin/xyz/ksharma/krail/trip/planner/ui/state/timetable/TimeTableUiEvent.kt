@@ -21,5 +21,5 @@ sealed interface TimeTableUiEvent {
 
     data class JourneyLegClicked(val expanded: Boolean) : TimeTableUiEvent
 
-    data class ModeSelectionChanged(val x: String) : TimeTableUiEvent
+    data class ModeSelectionChanged(val unselectedModes: Set<Int>) : TimeTableUiEvent
 }

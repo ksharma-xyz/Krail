@@ -47,6 +47,7 @@ import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_check
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
 import org.jetbrains.compose.resources.painterResource
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.Button
 import xyz.ksharma.krail.taj.components.ButtonDefaults
@@ -226,10 +227,11 @@ fun TimeTableScreen(
                                 onClick = {
                                     // Toggle / Set behavior
                                     if (unselectedModesProductClass.contains(it.productClass)) {
-                                        unselectedModesProductClass.remove(it.productClass)
+                                        unselectedModesProductClass.removeAll(listOf(it.productClass))
                                     } else {
                                         unselectedModesProductClass.add(it.productClass)
                                     }
+                                    log("After operation Exclude - : $unselectedModesProductClass")
                                 },
                             )
                         }
