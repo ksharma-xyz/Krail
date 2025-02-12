@@ -20,4 +20,6 @@ sealed interface TimeTableUiEvent {
     data object AnalyticsDateTimeSelectorClicked : TimeTableUiEvent
 
     data class JourneyLegClicked(val expanded: Boolean) : TimeTableUiEvent
+
+    data class ModeSelectionChanged(val x: String) : TimeTableUiEvent
 }

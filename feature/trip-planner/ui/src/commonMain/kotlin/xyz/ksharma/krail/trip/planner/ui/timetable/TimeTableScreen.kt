@@ -27,10 +27,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,14 +40,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_filter
 import krail.feature.trip_planner.ui.generated.resources.ic_reverse
 import krail.feature.trip_planner.ui.generated.resources.ic_star
+import krail.feature.trip_planner.ui.generated.resources.ic_check
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.components.Button
 import xyz.ksharma.krail.taj.components.ButtonDefaults
 import xyz.ksharma.krail.taj.components.SubtleButton
 import xyz.ksharma.krail.taj.components.Text
@@ -83,6 +82,7 @@ fun TimeTableScreen(
     onJourneyLegClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     dateTimeSelectorClicked: () -> Unit = {},
+    onModeSelectionChanged: (Set<Int>) -> Unit = {},
 ) {
     val themeColorHex by LocalThemeColor.current
     val themeColor = themeColorHex.hexToComposeColor()
@@ -191,6 +191,7 @@ fun TimeTableScreen(
                         dimensions = ButtonDefaults.mediumButtonSize(),
                     ) {
                         Row(
+                            //todo -  handle in Button
                             horizontalArrangement = Arrangement.spacedBy(4.dp),
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
@@ -223,6 +224,7 @@ fun TimeTableScreen(
                                 transportMode = it,
                                 selected = !unselectedModesProductClass.contains(it.productClass),
                                 onClick = {
+                                    // Toggle / Set behavior
                                     if (unselectedModesProductClass.contains(it.productClass)) {
                                         unselectedModesProductClass.remove(it.productClass)
                                     } else {
@@ -233,6 +235,32 @@ fun TimeTableScreen(
                         }
                     }
                 }
+
+                item("mode-selection-confirm-button") {
+                    Button(
+                        dimensions = ButtonDefaults.largeButtonSize(),
+                        onClick = {
+                            displayModeSelectionRow = false
+                            onModeSelectionChanged(unselectedModesProductClass.toSet())
+                        },
+                        modifier = Modifier
+                            .padding(vertical = 8.dp, horizontal = 12.dp)
+                            .animateItem()
+                    ) {
+                        //todo -  handle in Button
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Image(
+                                painter = painterResource(Res.drawable.ic_check),
+                                contentDescription = null,
+                                modifier = Modifier.size(20.dp),
+                            )
+                            Text("Done", modifier = Modifier.padding(start = 4.dp))
+                        }
+                    }
+                }
             }
 
             item {
@@ -240,7 +268,7 @@ fun TimeTableScreen(
             }
 
             if (timeTableState.isError) {
-                item {
+                item("error") {
                     ErrorMessage(
                         title = "Eh! That's not looking right mate!",
                         message = "Let's try again.",

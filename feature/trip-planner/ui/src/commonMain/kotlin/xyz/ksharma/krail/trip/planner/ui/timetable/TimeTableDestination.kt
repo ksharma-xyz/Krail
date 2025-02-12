@@ -80,6 +80,10 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             onJourneyLegClick = { journeyId ->
                 viewModel.onEvent(TimeTableUiEvent.JourneyLegClicked(journeyId))
             },
+            onModeSelectionChanged = { unselectedModes ->
+                log(unselectedModes.toString())
+                viewModel.onEvent(TimeTableUiEvent.ModeSelectionChanged(""))
+            }
         )
     }
 }
