@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -24,6 +26,9 @@ import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiManager.
 @Composable
 fun LoadingEmojiAnim(modifier: Modifier = Modifier, emoji: String? = null) {
     val infiniteTransition = rememberInfiniteTransition(label = "333")
+    val randomEmoji by rememberSaveable {
+        mutableStateOf(getRandomEmoji(overrideEmoji = emoji))
+    }
 
     val rotation by infiniteTransition.animateFloat(
         initialValue = 0f,
@@ -57,7 +62,7 @@ fun LoadingEmojiAnim(modifier: Modifier = Modifier, emoji: String? = null) {
 
     Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         Text(
-            text = getRandomEmoji(overrideEmoji = emoji),
+            text = randomEmoji,
             style = KrailTheme.typography.headlineLarge.copy(fontSize = 64.sp),
             modifier = Modifier
                 .graphicsLayer {
