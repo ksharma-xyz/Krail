@@ -151,7 +151,7 @@ fun TimeTableScreen(
         }
 
         LazyColumn(contentPadding = PaddingValues(bottom = 16.dp)) {
-            item {
+            item (key = "Origin-Destination"){
                 timeTableState.trip?.let { trip ->
                     OriginDestination(
                         trip = trip,
@@ -163,8 +163,7 @@ fun TimeTableScreen(
                 }
             }
 
-            item {
-
+            item (key = "trip-actions-row"){
                 Row(
                     modifier = Modifier.fillParentMaxWidth().padding(horizontal = 10.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -201,25 +200,24 @@ fun TimeTableScreen(
             }
 
             if (displayModeSelectionRow) {
-                item {
+                item(key = "transport-mode-selection-row") {
                     var selected by remember { mutableStateOf(false) }
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         contentPadding = PaddingValues(horizontal = 12.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 12.dp, bottom = 4.dp),
+                            .padding(top = 12.dp, bottom = 4.dp)
+                            .animateItem(),
                     ) {
-                        TransportMode.values().forEach {
-                            item {
-                                TransportModeChip(
-                                    transportMode = it,
-                                    selected = selected,
-                                    onClick = {
-                                        selected = !selected
-                                    },
-                                )
-                            }
+                        items(
+                            items = TransportMode.values().toList(),
+                            key = { item -> item.productClass }) {
+                            TransportModeChip(
+                                transportMode = it,
+                                selected = selected,
+                                onClick = { selected = !selected },
+                            )
                         }
                     }
                 }
@@ -242,7 +240,7 @@ fun TimeTableScreen(
                     )
                 }
             } else if (timeTableState.isLoading) {
-                item {
+                item(key = "loading") {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         LoadingEmojiAnim(
                             modifier = Modifier.padding(vertical = 60.dp).animateItem(),
@@ -295,7 +293,7 @@ fun TimeTableScreen(
                     )
                 }
             } else { // Journey list is empty or null
-                item {
+                item(key = "no-results") {
                     ErrorMessage(
                         title = "No route found!",
                         message = "Search for another stop or check back later.",
