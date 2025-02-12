@@ -1,6 +1,9 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -159,37 +162,42 @@ fun LegView(
                     }
                 }
 
+                AnimatedVisibility(
+                    visible = showIntermediateStops,
+                    enter = expandVertically(),
+                    exit = shrinkVertically(),
+                ) {
+                    Column {
+                        stops.drop(1).dropLast(1).forEach { stop ->
 
-                if (showIntermediateStops) {
-                    stops.drop(1).dropLast(1).forEach { stop ->
+                            Spacer(
+                                modifier = Modifier
+                                    .height(12.dp)
+                                    .timeLineCenter(
+                                        color = timelineColor,
+                                        strokeWidth = strokeWidth,
+                                    )
+                            )
 
-                        Spacer(
-                            modifier = Modifier
-                                .height(12.dp)
-                                .timeLineCenter(
-                                    color = timelineColor,
-                                    strokeWidth = strokeWidth,
-                                )
-                        )
-
-                        StopInfo(
-                            time = stop.time,
-                            name = stop.name,
-                            isProminent = false,
-                            isWheelchairAccessible = stop.isWheelchairAccessible,
-                            modifier = Modifier
-                                .timeLineCenterWithStop(
-                                    color = timelineColor,
-                                    strokeWidth = strokeWidth,
-                                    circleRadius = circleRadius,
-                                )
-                                .timeLineTop(
-                                    color = timelineColor,
-                                    strokeWidth = strokeWidth,
-                                    circleRadius = circleRadius,
-                                )
-                                .padding(start = 16.dp),
-                        )
+                            StopInfo(
+                                time = stop.time,
+                                name = stop.name,
+                                isProminent = false,
+                                isWheelchairAccessible = stop.isWheelchairAccessible,
+                                modifier = Modifier
+                                    .timeLineCenterWithStop(
+                                        color = timelineColor,
+                                        strokeWidth = strokeWidth,
+                                        circleRadius = circleRadius,
+                                    )
+                                    .timeLineTop(
+                                        color = timelineColor,
+                                        strokeWidth = strokeWidth,
+                                        circleRadius = circleRadius,
+                                    )
+                                    .padding(start = 16.dp),
+                            )
+                        }
                     }
                 }
 
