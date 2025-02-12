@@ -43,7 +43,7 @@ fun TransportModeChip(
     )
 
     val textColor by animateColorAsState(
-        targetValue = if (selected) getForegroundColor(transportMode.colorCode.hexToComposeColor()) else Color.Gray,
+        targetValue = if (selected) Color.White else Color.Gray,
         animationSpec = tween(200),
     )
 
