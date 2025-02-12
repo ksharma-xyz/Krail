@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -12,8 +13,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import xyz.ksharma.krail.taj.LocalTextColor
 import xyz.ksharma.krail.taj.LocalTextStyle
 import xyz.ksharma.krail.taj.components.Text
@@ -28,6 +31,7 @@ fun TransportModeIcon(
     transportMode: TransportMode,
     modifier: Modifier = Modifier,
     borderColor: Color = Color.White,
+    adaptiveSize: Boolean = false,
     displayBorder: Boolean = false,
     size: TransportModeIconSize = TransportModeIconSize.Medium,
 ) {
@@ -38,7 +42,10 @@ fun TransportModeIcon(
     ) {
         Box(
             modifier = modifier
-                .size(size.dpSize.toAdaptiveSize())
+                .size(
+                    if (adaptiveSize) size.dpSize.toAdaptiveSize()
+                    else size.dpSize.toAdaptiveDecorativeIconSize()
+                )
                 .clip(CircleShape)
                 .background(
                     color = transportMode.colorCode.hexToComposeColor(),
@@ -64,7 +71,7 @@ private fun Modifier.borderIfEnabled(enabled: Boolean, color: Color): Modifier =
     if (enabled) {
         this.then(
             border(
-                width = 3.dp.toAdaptiveDecorativeIconSize(),
+                width = 3.dp,
                 color = color,
                 shape = CircleShape,
             )

@@ -36,23 +36,18 @@ fun TransportModeChip(
         animationSpec = tween(200),
     )
 
-    val textColor by animateColorAsState(
-        targetValue = if (selected) Color.White else Color.Gray, // gray needs to come from token
-        animationSpec = tween(200),
-    )
-
     val borderColor by animateColorAsState(
         targetValue = if (selected) Color.Transparent else transportMode.colorCode.hexToComposeColor(),
         animationSpec = tween(200),
     )
 
-    val modeIconBorderColor by animateColorAsState(
-        targetValue = if (selected) Color.White else KrailTheme.colors.surface,
+    val textColor by animateColorAsState(
+        targetValue = if (selected) Color.White else Color.Gray,
         animationSpec = tween(200),
     )
 
     CompositionLocalProvider(
-        LocalTextColor provides textColor,
+        LocalTextColor provides Color.White,
         LocalTextStyle provides KrailTheme.typography.titleMedium,
     ) {
         Row(
@@ -70,7 +65,9 @@ fun TransportModeChip(
                     indication = null,
                     interactionSource = null,
                 ) { onClick() }
-                .padding(horizontal = 4.dp, vertical = 4.dp) // 4.dp is token
+                // horizontal padding value should be same as border width of
+                // TransportModeIcon
+                .padding(horizontal = 3.dp, vertical = 4.dp) // 4.dp is token
                 .padding(end = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -78,11 +75,15 @@ fun TransportModeChip(
             // Make this a separate component - TransportModeIcon
             TransportModeIcon(
                 transportMode = transportMode,
-                borderColor = modeIconBorderColor,
                 displayBorder = true,
+                adaptiveSize = true,
             )
 
-            Text(text = transportMode.name)
+            CompositionLocalProvider(
+                LocalTextColor provides textColor,
+            ) {
+                Text(text = transportMode.name)
+            }
         }
     }
 }

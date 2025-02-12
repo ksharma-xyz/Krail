@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -25,6 +26,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,6 +59,7 @@ import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCardState
 import xyz.ksharma.krail.trip.planner.ui.components.OriginDestination
+import xyz.ksharma.krail.trip.planner.ui.components.TransportModeChip
 import xyz.ksharma.krail.trip.planner.ui.components.loading.AnimatedDots
 import xyz.ksharma.krail.trip.planner.ui.components.loading.LoadingEmojiAnim
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
@@ -79,6 +83,7 @@ fun TimeTableScreen(
 ) {
     val themeColorHex by LocalThemeColor.current
     val themeColor = themeColorHex.hexToComposeColor()
+    var displayModeSelectionRow by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier.fillMaxSize().background(color = KrailTheme.colors.surface),
@@ -160,6 +165,7 @@ fun TimeTableScreen(
             }
 
             item {
+
                 Row(
                     modifier = Modifier.fillParentMaxWidth().padding(horizontal = 10.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -175,7 +181,7 @@ fun TimeTableScreen(
 
                     SubtleButton(
                         onClick = {
-
+                            displayModeSelectionRow = !displayModeSelectionRow
                         },
                         dimensions = ButtonDefaults.mediumButtonSize(),
                     ) {
@@ -190,6 +196,31 @@ fun TimeTableScreen(
                                 modifier = Modifier.size(18.dp),
                             )
                             Text(text = "Mode")
+                        }
+                    }
+                }
+            }
+
+            if (displayModeSelectionRow) {
+                item {
+                    var selected by remember { mutableStateOf(false) }
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = PaddingValues(horizontal = 12.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp, bottom = 4.dp),
+                    ) {
+                        TransportMode.values().forEach {
+                            item {
+                                TransportModeChip(
+                                    transportMode = it,
+                                    selected = selected,
+                                    onClick = {
+                                        selected = !selected
+                                    },
+                                )
+                            }
                         }
                     }
                 }
