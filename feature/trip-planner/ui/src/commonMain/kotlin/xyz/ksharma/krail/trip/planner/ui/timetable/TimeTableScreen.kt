@@ -40,11 +40,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import krail.feature.trip_planner.ui.generated.resources.Res
-import krail.feature.trip_planner.ui.generated.resources.ic_alert
+import krail.feature.trip_planner.ui.generated.resources.ic_filter
 import krail.feature.trip_planner.ui.generated.resources.ic_reverse
 import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
-import krail.feature.trip_planner.ui.generated.resources.ic_filter
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.ButtonDefaults
