@@ -24,10 +24,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import krail.feature.trip_planner.ui.generated.resources.Res
 import krail.feature.trip_planner.ui.generated.resources.ic_filter
 import krail.feature.trip_planner.ui.generated.resources.ic_reverse
@@ -83,6 +87,9 @@ fun TimeTableScreen(
     val themeColorHex by LocalThemeColor.current
     val themeColor = themeColorHex.hexToComposeColor()
     var displayModeSelectionRow by rememberSaveable { mutableStateOf(false) }
+    val unselectedModesProductClass: MutableList<Int> = remember {
+        mutableStateListOf()
+    }
 
     Column(
         modifier = modifier.fillMaxSize().background(color = KrailTheme.colors.surface),
@@ -151,7 +158,7 @@ fun TimeTableScreen(
         }
 
         LazyColumn(contentPadding = PaddingValues(bottom = 16.dp)) {
-            item (key = "Origin-Destination"){
+            item(key = "Origin-Destination") {
                 timeTableState.trip?.let { trip ->
                     OriginDestination(
                         trip = trip,
@@ -163,7 +170,7 @@ fun TimeTableScreen(
                 }
             }
 
-            item (key = "trip-actions-row"){
+            item(key = "trip-actions-row") {
                 Row(
                     modifier = Modifier.fillParentMaxWidth().padding(horizontal = 10.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -201,7 +208,6 @@ fun TimeTableScreen(
 
             if (displayModeSelectionRow) {
                 item(key = "transport-mode-selection-row") {
-                    var selected by remember { mutableStateOf(false) }
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         contentPadding = PaddingValues(horizontal = 12.dp),
@@ -215,8 +221,14 @@ fun TimeTableScreen(
                             key = { item -> item.productClass }) {
                             TransportModeChip(
                                 transportMode = it,
-                                selected = selected,
-                                onClick = { selected = !selected },
+                                selected = !unselectedModesProductClass.contains(it.productClass),
+                                onClick = {
+                                    if (unselectedModesProductClass.contains(it.productClass)) {
+                                        unselectedModesProductClass.remove(it.productClass)
+                                    } else {
+                                        unselectedModesProductClass.add(it.productClass)
+                                    }
+                                },
                             )
                         }
                     }
