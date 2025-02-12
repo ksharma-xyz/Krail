@@ -37,9 +37,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import krail.feature.trip_planner.ui.generated.resources.Res
+import krail.feature.trip_planner.ui.generated.resources.ic_alert
 import krail.feature.trip_planner.ui.generated.resources.ic_reverse
 import krail.feature.trip_planner.ui.generated.resources.ic_star
 import krail.feature.trip_planner.ui.generated.resources.ic_star_filled
+import krail.feature.trip_planner.ui.generated.resources.ic_filter
 import org.jetbrains.compose.resources.painterResource
 import xyz.ksharma.krail.taj.LocalThemeColor
 import xyz.ksharma.krail.taj.components.ButtonDefaults
@@ -158,14 +160,38 @@ fun TimeTableScreen(
             }
 
             item {
-                SubtleButton(
-                    onClick = dateTimeSelectorClicked,
-                    dimensions = ButtonDefaults.mediumButtonSize(),
-                    modifier = Modifier.padding(horizontal = 12.dp),
+                Row(
+                    modifier = Modifier.fillParentMaxWidth().padding(horizontal = 10.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Text(
-                        text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
-                    )
+                    SubtleButton(
+                        onClick = dateTimeSelectorClicked,
+                        dimensions = ButtonDefaults.mediumButtonSize(),
+                    ) {
+                        Text(
+                            text = dateTimeSelectionItem?.toDateTimeText() ?: "Plan your trip",
+                        )
+                    }
+
+                    SubtleButton(
+                        onClick = {
+
+                        },
+                        dimensions = ButtonDefaults.mediumButtonSize(),
+                    ) {
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Image(
+                                painter = painterResource(Res.drawable.ic_filter),
+                                contentDescription = null,
+                                colorFilter = ColorFilter.tint(ButtonDefaults.subtleButtonColors().contentColor),
+                                modifier = Modifier.size(18.dp),
+                            )
+                            Text(text = "Mode")
+                        }
+                    }
                 }
             }
 
