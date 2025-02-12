@@ -27,6 +27,13 @@ interface TripPlanningService {
          * E.g. 0830 means 8:30am and 2030 means 8:30pm.
          */
         time: String? = null,
+
+        /**
+         * List of product classes to exclude from the response.
+         * Only those journeys will be returned which are different modes of transport to the excluded
+         * product classes.
+         */
+        excludeProductClassSet: Set<Int>,
     ): TripResponse
 
     suspend fun stopFinder(

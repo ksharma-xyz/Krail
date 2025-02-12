@@ -16,6 +16,7 @@ class FakeTripPlanningService : TripPlanningService {
         depArr: DepArr,
         date: String?,
         time: String?,
+        excludeProductClassSet: Set<Int>,
     ): TripResponse {
         return if (isSuccess) FakeTripResponseBuilder.buildTripResponse()
         else throw IllegalStateException("Failed to fetch trip")
