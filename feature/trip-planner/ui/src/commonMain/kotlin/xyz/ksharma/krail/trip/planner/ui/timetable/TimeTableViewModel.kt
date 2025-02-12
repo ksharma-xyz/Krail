@@ -148,7 +148,13 @@ class TimeTableViewModel(
             is TimeTableUiEvent.JourneyLegClicked -> {
                 analytics.track(AnalyticsEvent.JourneyLegClickEvent(expanded = event.expanded))
             }
+
+            is TimeTableUiEvent.ModeSelectionChanged -> onModeSelectionChanged()
         }
+    }
+
+    private fun onModeSelectionChanged() {
+
     }
 
     private fun onDateTimeSelectionChanged(item: DateTimeSelectionItem?) {

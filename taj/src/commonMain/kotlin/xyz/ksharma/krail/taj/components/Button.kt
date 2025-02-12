@@ -47,7 +47,7 @@ fun Button(
     colors: ButtonColors = ButtonDefaults.buttonColors(),
     dimensions: ButtonDimensions = ButtonDefaults.largeButtonSize(),
     enabled: Boolean = true,
-    content: @Composable () -> Unit,
+    content: @Composable () -> Unit, // RowScope and place
 ) {
     val contentAlphaProvider =
         rememberSaveable(enabled) { if (enabled) EnabledContentAlpha else DisabledContentAlpha }
