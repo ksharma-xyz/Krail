@@ -3,6 +3,13 @@ package xyz.ksharma.krail.taj.theme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.luminance
 
+// https://www.w3.org/TR/WCAG21/#contrast-minimum
+private const val DEFAULT_TEXT_SIZE_CONTRAST_AA = 4.5f
+
+// when font scale greater than 1.2f. Text size is 18dp default and 14dp bold.
+private const val LARGE_TEXT_SIZE_CONTRAST_AA = 3.0f
+
+
 /**
  * Calculates the contrast ratio between two colors
  */
@@ -16,11 +23,32 @@ fun Color.contrastRatio(other: Color): Float {
  * Returns a foreground color that has a contrast ratio of at least 4.0 with the provided background
  * color.
  */
-fun getForegroundColor(backgroundColor: Color): Color {
+/**
+ * Determines the appropriate foreground color based on the provided background color.
+ * If a foreground color is provided, it checks the contrast ratio between the foreground
+ * and background colors. If the contrast ratio is sufficient (>= 4.0), it returns the
+ * provided foreground color. Otherwise, it defaults to checking predefined light and dark
+ * theme colors and returns the one with a sufficient contrast ratio.
+ *
+ * @param backgroundColor The background color to compare against.
+ * @param foregroundColor An optional foreground color to check for contrast ratio.
+ * @return The appropriate foreground color with sufficient contrast ratio.
+ */
+fun getForegroundColor(
+    backgroundColor: Color,
+    foregroundColor: Color? = null,
+): Color {
+    // If a foreground color is provided, check its contrast ratio
+    foregroundColor?.let { color ->
+        if (color.contrastRatio(backgroundColor) >= DEFAULT_TEXT_SIZE_CONTRAST_AA) return color
+    }
+
+    // Default to predefined light and dark theme colors
     val lightForegroundColor = md_theme_dark_onSurface
     val darkForegroundColor = md_theme_light_onSurface
 
-    return if (lightForegroundColor.contrastRatio(backgroundColor) >= 4.0f) {
+    // Return the color with a sufficient contrast ratio
+    return if (lightForegroundColor.contrastRatio(backgroundColor) >= DEFAULT_TEXT_SIZE_CONTRAST_AA) {
         lightForegroundColor
     } else {
         darkForegroundColor
@@ -28,5 +56,5 @@ fun getForegroundColor(backgroundColor: Color): Color {
 }
 
 fun shouldUseDarkIcons(backgroundColor: Color): Boolean {
-    return getForegroundColor(backgroundColor) == md_theme_dark_onSurface
+    return getForegroundColor(backgroundColor = backgroundColor) == md_theme_dark_onSurface
 }
