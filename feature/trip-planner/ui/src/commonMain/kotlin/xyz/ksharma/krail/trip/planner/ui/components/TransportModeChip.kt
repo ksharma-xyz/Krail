@@ -43,7 +43,10 @@ fun TransportModeChip(
     )
 
     val textColor by animateColorAsState(
-        targetValue = if (selected) Color.White else Color.Gray,
+        targetValue = if (selected) getForegroundColor(
+            backgroundColor = transportMode.colorCode.hexToComposeColor(),
+            foregroundColor = Color.White,
+        ) else Color.Gray,
         animationSpec = tween(200),
     )
 
@@ -80,11 +83,7 @@ fun TransportModeChip(
                 adaptiveSize = true,
             )
 
-            CompositionLocalProvider(
-                LocalTextColor provides textColor,
-            ) {
-                Text(text = transportMode.name)
-            }
+            Text(text = transportMode.name, color = textColor)
         }
     }
 }
