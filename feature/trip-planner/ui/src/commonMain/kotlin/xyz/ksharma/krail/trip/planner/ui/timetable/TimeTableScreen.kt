@@ -57,6 +57,7 @@ import xyz.ksharma.krail.taj.components.TitleBar
 import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
+import xyz.ksharma.krail.taj.theme.getForegroundColor
 import xyz.ksharma.krail.trip.planner.ui.components.ActionData
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.JourneyCard
@@ -257,6 +258,7 @@ fun TimeTableScreen(
                             Image(
                                 painter = painterResource(Res.drawable.ic_check),
                                 contentDescription = null,
+                                colorFilter = ColorFilter.tint(color = getForegroundColor(themeColor)),
                                 modifier = Modifier.size(20.dp),
                             )
                             Text("Done", modifier = Modifier.padding(start = 4.dp))
