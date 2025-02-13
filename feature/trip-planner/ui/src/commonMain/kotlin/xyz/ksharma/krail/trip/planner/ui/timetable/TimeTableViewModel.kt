@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -152,7 +151,19 @@ class TimeTableViewModel(
             }
 
             is TimeTableUiEvent.ModeSelectionChanged -> onModeSelectionChanged(event.unselectedModes)
+
+            is TimeTableUiEvent.ModeClicked -> trackOnModeClickEvent(event.displayModeSelectionRow)
         }
+    }
+
+    private fun trackOnModeClickEvent(displayModeSelectionRow: Boolean) {
+        analytics.track(
+            AnalyticsEvent.ModeClickEvent(
+                fromStopId = tripInfo?.fromStopId ?: "NA",
+                toStopId = tripInfo?.toStopId ?: "NA",
+                displayModeSelectionRow = displayModeSelectionRow,
+            )
+        )
     }
 
     private fun onModeSelectionChanged(unselectedModes: Set<Int>) {
@@ -163,6 +174,15 @@ class TimeTableViewModel(
             // call api
             rateLimiter.triggerEvent()
             updateUiState { copy(isLoading = true) }
+
+            // analytics
+            analytics.track(
+                AnalyticsEvent.ModeSelectionDoneEvent(
+                    fromStopId = tripInfo?.fromStopId ?: "NA",
+                    toStopId = tripInfo?.toStopId ?: "NA",
+                    unselectedProductClasses = this.unselectedModes,
+                )
+            )
         } else {
             // do nothing.
             log("Mode selection not changed")

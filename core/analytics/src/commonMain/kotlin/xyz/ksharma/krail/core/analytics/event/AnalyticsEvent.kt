@@ -84,6 +84,32 @@ sealed class AnalyticsEvent(val name: String, val properties: Map<String, Any>? 
             properties = mapOf("fromStopId" to fromStopId, "toStopId" to toStopId),
         )
 
+    data class ModeClickEvent(
+        val fromStopId: String,
+        val toStopId: String,
+        val displayModeSelectionRow: Boolean,
+    ) :
+        AnalyticsEvent(
+            name = "mode_click",
+            properties = mapOf(
+                "fromStopId" to fromStopId,
+                "toStopId" to toStopId,
+                "displayModeSelectionRow" to displayModeSelectionRow,
+            ),
+        )
+
+    data class ModeSelectionDoneEvent(
+        val fromStopId: String, val toStopId: String,
+        val unselectedProductClasses: Set<Int>,
+    ) : AnalyticsEvent(
+        name = "mode_selection_done",
+        properties = mapOf(
+            "fromStopId" to fromStopId,
+            "toStopId" to toStopId,
+            "unselected" to unselectedProductClasses.toString(),
+        ),
+    )
+
     data class DateTimeSelectEvent(
         val dayOfWeek: String,
         val time: String,
