@@ -22,4 +22,9 @@ sealed interface TimeTableUiEvent {
     data class JourneyLegClicked(val expanded: Boolean) : TimeTableUiEvent
 
     data class ModeSelectionChanged(val unselectedModes: Set<Int>) : TimeTableUiEvent
+
+    /**
+     * when tru, the selection row is displayed else it is hidden.
+     */
+    data class ModeClicked(val displayModeSelectionRow: Boolean) : TimeTableUiEvent
 }

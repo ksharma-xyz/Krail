@@ -83,6 +83,9 @@ internal fun NavGraphBuilder.timeTableDestination(navController: NavHostControll
             onModeSelectionChanged = { unselectedModes ->
                 log("onModeSelectionChanged Exclude :$unselectedModes")
                 viewModel.onEvent(TimeTableUiEvent.ModeSelectionChanged(unselectedModes))
+            },
+            onModeClick = { displayModeSelectionRow ->
+                viewModel.onEvent(TimeTableUiEvent.ModeClicked(displayModeSelectionRow))
             }
         )
     }

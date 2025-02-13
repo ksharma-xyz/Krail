@@ -85,6 +85,7 @@ fun TimeTableScreen(
     modifier: Modifier = Modifier,
     dateTimeSelectorClicked: () -> Unit = {},
     onModeSelectionChanged: (Set<Int>) -> Unit = {},
+    onModeClick: (Boolean) -> Unit = {},
 ) {
     val themeColorHex by LocalThemeColor.current
     val themeColor = themeColorHex.hexToComposeColor()
@@ -189,6 +190,7 @@ fun TimeTableScreen(
                     SubtleButton(
                         onClick = {
                             displayModeSelectionRow = !displayModeSelectionRow
+                            onModeClick(displayModeSelectionRow)
                         },
                         dimensions = ButtonDefaults.mediumButtonSize(),
                     ) {
