@@ -1,7 +1,9 @@
 package xyz.ksharma.krail.trip.planner.ui.state.timetable
 
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableSet
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.persistentSetOf
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeLine
@@ -14,6 +16,7 @@ data class TimeTableState(
     val journeyList: ImmutableList<JourneyCardInfo> = persistentListOf(),
     val trip: Trip? = null,
     val isError: Boolean = false,
+    val unselectedModes: ImmutableSet<Int> = persistentSetOf(),
 ) {
     data class JourneyCardInfo(
         val timeText: String, // "in x mins"

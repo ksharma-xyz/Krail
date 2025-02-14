@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.collections.immutable.toImmutableSet
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -173,7 +174,12 @@ class TimeTableViewModel(
 
             // call api
             rateLimiter.triggerEvent()
-            updateUiState { copy(isLoading = true) }
+            updateUiState {
+                copy(
+                    isLoading = true,
+                    unselectedModes = this@TimeTableViewModel.unselectedModes.toImmutableSet()
+                )
+            }
 
             // analytics
             analytics.track(

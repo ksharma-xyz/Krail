@@ -29,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -90,8 +91,9 @@ fun TimeTableScreen(
     val themeColorHex by LocalThemeColor.current
     val themeColor = themeColorHex.hexToComposeColor()
     var displayModeSelectionRow by rememberSaveable { mutableStateOf(false) }
-    val unselectedModesProductClass: MutableList<Int> = remember {
-        mutableStateListOf()
+    val unselectedModesProductClass: MutableList<Int> = remember(timeTableState.unselectedModes) {
+        log("Initial Exclude - : ${timeTableState.unselectedModes}")
+        mutableStateListOf(*timeTableState.unselectedModes.toTypedArray())
     }
 
     Column(
