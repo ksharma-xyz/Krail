@@ -78,9 +78,5 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v10000
-          generate_release_notes: true
-          changesNotSentForReview: false
-          prerelease: true
           files: |
             ${{steps.signed_release_aab.outputs.signedReleaseFile}}
