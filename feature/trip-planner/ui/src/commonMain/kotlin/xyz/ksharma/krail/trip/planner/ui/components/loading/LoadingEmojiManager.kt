@@ -46,14 +46,14 @@ object LoadingEmojiManager {
         FestivalType.TEDDY_DAY to listOf("🧸", "💖"),
         FestivalType.PROMISE_DAY to listOf("🤝", "💖"),
         FestivalType.HUG_DAY to listOf("🤗", "💖"),
-        FestivalType.KISS_DAY to listOf("💋", "💖", "❤️", "💞"),
-        FestivalType.VALENTINES_DAY to listOf("❤️", "🌹", "💖"),
+        FestivalType.KISS_DAY to listOf("💖", "❤️", "😘"),
+        FestivalType.VALENTINES_DAY to listOf("❤️", "🌹"),
 
-        FestivalType.HOLI to listOf("🎨", "🌈", "🎉", "🎈"),
+        FestivalType.HOLI to listOf("🎨", "🌈", "🎈"),
 
         FestivalType.AUSTRALIA_DAY to listOf("🇦🇺", "🎉", "🎆"),
-        FestivalType.EID to listOf("🌙", "🕌", "🎉", "🎁"),
-        FestivalType.MARDI_GRAS to listOf("🏳️‍🌈", "💃", "🎭", "🪩", "🎉"),
+        FestivalType.EID to listOf("🌙", "🕌", "🎁"),
+        FestivalType.MARDI_GRAS to listOf("🏳️‍🌈", "🪩"),
         FestivalType.VIVID_SYDNEY to listOf("🎆", "🌈", "🌟", "✨"),
     )
 
@@ -73,19 +73,6 @@ object LoadingEmojiManager {
         MonthDay.of(4, 25) to FestivalType.ANZAC_DAY,
         MonthDay.of(1, 26) to FestivalType.AUSTRALIA_DAY,
 
-        // Can change dates
-
-        // Chinese New Year 2025
-        MonthDay.of(1, 29) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(1, 30) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(1, 31) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(2, 1) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(2, 2) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(2, 3) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(2, 4) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(2, 5) to FestivalType.CHINESE_NEW_YEAR,
-        MonthDay.of(2, 6) to FestivalType.CHINESE_NEW_YEAR,
-
         // Valentines day
         MonthDay.of(2, 7) to FestivalType.ROSE_DAY,
         MonthDay.of(2, 8) to FestivalType.PROPOSE_DAY,
@@ -95,6 +82,9 @@ object LoadingEmojiManager {
         MonthDay.of(2, 12) to FestivalType.HUG_DAY,
         MonthDay.of(2, 13) to FestivalType.KISS_DAY,
         MonthDay.of(2, 14) to FestivalType.VALENTINES_DAY,
+
+        // Can change dates
+
 
         // Mardi Gras 2025
         MonthDay.of(2, 15) to FestivalType.MARDI_GRAS,
