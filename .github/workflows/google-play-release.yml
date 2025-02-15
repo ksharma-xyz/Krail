@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - 'prod/**'
-  pull_request:
-    branches: [ main ]
-    types: [ opened, synchronize, reopened, ready_for_review ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -85,9 +82,9 @@ jobs:
 
       - name: Create Github Release
         uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_KRAIL_GITHUB }}
         with:
           tag_name: v${{ env.VERSION_NAME }}
           generate_release_notes: true
           draft: true
-          files: |
-            ${{steps.signed_release_aab.outputs.signedReleaseFile}}
