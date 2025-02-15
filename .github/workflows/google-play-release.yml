@@ -23,6 +23,11 @@ jobs:
           echo "ANDROID_NSW_TRANSPORT_API_KEY=${{ secrets.ANDROID_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
           echo "IOS_NSW_TRANSPORT_API_KEY=${{ secrets.IOS_NSW_TRANSPORT_API_KEY }}" >> $GITHUB_ENV
 
+      - name: Extract Version Name
+        run: |
+          VERSION_NAME=$(grep -oP 'versionName\s*=\s*"\K[^"]+' composeApp/build.gradle.kts)
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV          
+
       - name: set up JDK
         uses: actions/setup-java@v4
         with:
@@ -78,5 +83,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: v${{ env.VERSION_NAME }}
           files: |
             ${{steps.signed_release_aab.outputs.signedReleaseFile}}
