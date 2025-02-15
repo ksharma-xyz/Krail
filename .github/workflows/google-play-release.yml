@@ -1,9 +1,12 @@
 name: Google Play Release
 
 on:
+  push:
+    branches:
+      - 'prod/**'
   pull_request:
     branches: [ main ]
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [ opened, synchronize, reopened, ready_for_review ]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
@@ -86,6 +89,5 @@ jobs:
           tag_name: v${{ env.VERSION_NAME }}
           generate_release_notes: true
           draft: true
-          make_latest: true
           files: |
             ${{steps.signed_release_aab.outputs.signedReleaseFile}}
