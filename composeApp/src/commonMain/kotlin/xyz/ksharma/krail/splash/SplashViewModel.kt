@@ -3,12 +3,15 @@ package xyz.ksharma.krail.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
@@ -39,7 +42,7 @@ class SplashViewModel(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
     private fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
-        log("AppInfo: $this")
+        log("AppInfo: $this, krailTheme: ${_uiState.value.id}")
         analytics.track(
             AnalyticsEvent.AppStart(
                 platformType = devicePlatformType.name,
@@ -56,13 +59,11 @@ class SplashViewModel(
         )
     }
 
-    private fun loadKrailThemeStyle() {
-        viewModelScope.launch(ioDispatcher) {
-            // First app launch there will be no product class, so use default transport mode theme.
-            val themeId =
-                sandook.getProductClass()?.toInt() ?: DEFAULT_THEME_STYLE.id
-            val themeColor = KrailThemeStyle.entries.find { it.id == themeId }
-            _uiState.value = themeColor ?: DEFAULT_THEME_STYLE
-        }
+    private suspend fun loadKrailThemeStyle() = withContext(ioDispatcher) {
+        // First app launch there will be no product class, so use default transport mode theme.
+        val themeId =
+            sandook.getProductClass()?.toInt() ?: DEFAULT_THEME_STYLE.id
+        val themeColor = KrailThemeStyle.entries.find { it.id == themeId }
+        _uiState.value = themeColor ?: DEFAULT_THEME_STYLE
     }
 }
