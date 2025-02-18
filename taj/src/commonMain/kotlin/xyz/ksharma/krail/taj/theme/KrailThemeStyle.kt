@@ -26,6 +26,6 @@ enum class KrailThemeStyle(val hexColorCode: String, val id: Int, val tagLine: S
     Ferry(
         hexColorCode = "#5AB031",
         id = 9,
-        tagLine = "Just floatin!"
+        tagLine = "Smooth sail, no fail!"
     ),
 }
