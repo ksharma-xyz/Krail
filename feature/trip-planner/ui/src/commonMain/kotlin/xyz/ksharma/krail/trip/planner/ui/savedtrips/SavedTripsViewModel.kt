@@ -18,6 +18,7 @@ import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
 import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.io.gtfs.nswstops.ProtoParser
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SavedTrip
 import xyz.ksharma.krail.trip.planner.ui.state.savedtrip.SavedTripUiEvent
@@ -28,6 +29,7 @@ class SavedTripsViewModel(
     private val sandook: Sandook,
     private val analytics: Analytics,
     private val ioDispatcher: CoroutineDispatcher,
+    private val protoParser: ProtoParser,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SavedTripsState> = MutableStateFlow(SavedTripsState())
@@ -35,6 +37,14 @@ class SavedTripsViewModel(
         .onStart {
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.SavedTrips)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SavedTripsState())
+
+    init {
+        kotlin.runCatching {
+            protoParser.readProtoFile("nsw_stops.pb")
+        }.getOrElse {
+            log("Error reading proto file: $it")
+        }
+    }
 
     fun onEvent(event: SavedTripUiEvent) {
         when (event) {
