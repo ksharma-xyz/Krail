@@ -126,5 +126,21 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
         ).executeAsList()
     }
 
+    /**
+     * Combines exact stopId and partial [stopName] search logic while excluding stops
+     * based on the given list of product classes.
+     */
+    override fun selectStopsByNameExcludingProductClassOrExactId(
+        stopName: String,
+        excludeProductClassList: List<Int>
+    ): List<NswStops> {
+        val stopId = stopName
+        return nswStopsQueries.selectStopsByNameExcludingProductClassOrExactStopId(
+            stopId,
+            stopName,
+            excludeProductClassList.map { it.toLong() }
+        ).executeAsList()
+    }
+
     // endregion NswStops
 }
