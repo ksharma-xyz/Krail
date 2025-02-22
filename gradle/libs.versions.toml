@@ -11,6 +11,7 @@ android-lifecycle = "2.8.7"
 activity-compose = "1.10.1"
 kotlinxCollectionsImmutable = "0.3.8"
 kotlinxDatetime = "0.6.2"
+kotlinxIoCore = "0.6.0"
 lifecycleViewmodelCompose = "2.8.4"
 navigationCompose = "2.8.0-alpha10"
 kotlinxSerializationJson = "1.8.0"
@@ -32,6 +33,7 @@ activity-compose = { group = "androidx.activity", name = "activity-compose", ver
 
 kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
+kotlinx-io-core = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinxIoCore" }
 lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "android-lifecycle" }
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
@@ -97,6 +99,7 @@ kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref =
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqlDelight" }
 firebase-crashlyticsPlugin = { id = "com.google.firebase.crashlytics", version = "3.0.3" }
 firebase-performancePlugin = { id ="com.google.firebase.firebase-perf", version = "1.4.2" }
+wire = { id = "com.squareup.wire", version = "5.3.0" }
 
 #Convention Plugins
 krail-android-application = { id = "krail.android.application", version = "unspecified" }

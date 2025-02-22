@@ -12,4 +12,5 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.firebase.crashlyticsPlugin) apply false
     alias(libs.plugins.firebase.performancePlugin) apply false
+    alias(libs.plugins.wire) apply false
 }
