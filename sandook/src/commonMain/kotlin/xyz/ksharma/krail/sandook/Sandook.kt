@@ -56,7 +56,20 @@ interface Sandook {
      */
     fun selectStopsByNameExcludingProductClass(
         stopName: String,
-        excludeProductClassList: List<Int>,
+        excludeProductClassList: List<Int> = emptyList(),
+    ): List<NswStops>
+
+    /**
+     * Retrieves stops by matching an exact stop \id\ or partially matching a stop \name\.
+     * Excludes stops having product classes in the given \excludeProductClassList\.
+     * \param stopId Exact stop \id\ to match.
+     * \param stopName Partial stop \name\ to match.
+     * \param excludeProductClassList Product class IDs to exclude.
+     * \return List of matching NswStops.
+     */
+    fun selectStopsByNameExcludingProductClassOrExactId(
+        stopName: String,
+        excludeProductClassList: List<Int> = emptyList(),
     ): List<NswStops>
 
     // endregion

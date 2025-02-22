@@ -48,3 +48,18 @@ WHERE s.stopName LIKE '%' || ? || '%'
     FROM NswStopProductClass AS p
     WHERE p.productClass IN ?
   );
+
+selectStopsByNameExcludingProductClassOrExactStopId:
+SELECT DISTINCT s.*
+FROM NswStops AS s
+WHERE (
+-- Exact match scenario: returns a stop if its stopId matches the given parameter
+s.stopId = ?
+   -- Partial match scenario: returns stops whose stopName contains the given parameter
+   OR s.stopName LIKE '%' || ? || '%')
+   AND s.stopId NOT IN (
+	-- Exclusion scenario: filters out any stopIds linked to product classes in the specified list
+    SELECT p.stopId
+    FROM NswStopProductClass AS p
+    WHERE p.productClass IN ?
+  );
