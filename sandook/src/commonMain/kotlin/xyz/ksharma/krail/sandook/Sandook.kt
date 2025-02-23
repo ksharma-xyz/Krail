@@ -2,6 +2,8 @@ package xyz.ksharma.krail.sandook
 
 interface Sandook {
 
+    val nswStopsQueries: NswStopsQueries
+
     // region Theme
     fun insertOrReplaceTheme(productClass: Long)
     fun getProductClass(): Long?
@@ -35,6 +37,8 @@ interface Sandook {
 
     // region NswStops
     fun insertNswStop(stopId: String, stopName: String, stopLat: Double, stopLon: Double)
+
+    fun stopsCount(): Int
 
     fun insertNswStopProductClass(stopId: String, productClass: Int)
 

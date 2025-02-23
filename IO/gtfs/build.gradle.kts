@@ -28,6 +28,7 @@ kotlin {
             dependencies {
                 implementation(projects.core.log)
                 implementation(projects.core.di)
+                implementation(projects.sandook)
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.client.core)

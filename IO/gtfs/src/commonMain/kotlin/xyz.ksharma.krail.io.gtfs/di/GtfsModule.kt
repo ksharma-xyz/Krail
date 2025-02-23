@@ -8,6 +8,9 @@ import xyz.ksharma.krail.io.gtfs.nswstops.StopsProtoParser
 
 val gtfsModule = module {
     single<ProtoParser> {
-        StopsProtoParser(ioDispatcher = get(named(IODispatcher)))
+        StopsProtoParser(
+            ioDispatcher = get(named(IODispatcher)),
+            sandook = get(),
+        )
     }
 }
