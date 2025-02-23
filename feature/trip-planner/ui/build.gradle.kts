@@ -34,7 +34,6 @@ kotlin {
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.sandook)
                 implementation(projects.taj)
-                implementation(projects.io.gtfs)
 
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)

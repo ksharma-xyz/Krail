@@ -43,6 +43,7 @@ val splashModule = module {
             appInfoProvider = get(),
             remoteConfig = get(),
             ioDispatcher = get(named(IODispatcher)),
+            protoParser = get(),
         )
     }
 }
