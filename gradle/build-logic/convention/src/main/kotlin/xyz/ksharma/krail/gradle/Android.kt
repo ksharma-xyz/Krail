@@ -45,7 +45,7 @@ fun Project.configureAndroid(
 
 object AndroidVersion {
     // https://developer.android.com/build/releases/gradle-plugin#api-level-support
-    const val COMPILE_SDK = 34
+    const val COMPILE_SDK = 35
     const val MIN_SDK = 26 // Oreo 8.0
-    const val TARGET_SDK = 34
+    const val TARGET_SDK = 35
 }
