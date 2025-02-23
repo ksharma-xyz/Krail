@@ -6,12 +6,12 @@ import io.ktor.client.request.get
 import io.ktor.http.ParametersBuilder
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.trip.planner.network.api.model.StopFinderResponse
 import xyz.ksharma.krail.trip.planner.network.api.model.StopType
 import xyz.ksharma.krail.trip.planner.network.api.model.TripResponse
 import xyz.ksharma.krail.trip.planner.network.api.service.stop_finder.StopFinderRequestParams
 import xyz.ksharma.krail.trip.planner.network.api.service.trip.TripRequestParams
-import kotlin.math.log
 
 class RealTripPlanningService(
     private val httpClient: HttpClient,
@@ -56,11 +56,11 @@ class RealTripPlanningService(
         }.body()
     }
 
-    private inline fun addExcludedTransportModes(
+    private fun addExcludedTransportModes(
         excludeProductClassSet: Set<Int>,
         parameters: ParametersBuilder,
     ) {
-        println("Exclude - $excludeProductClassSet")
+        log("Exclude transport mode - $excludeProductClassSet")
         parameters.append(TripRequestParams.excludedMeans, "checkbox")
 
         if (excludeProductClassSet.contains(1)) {
