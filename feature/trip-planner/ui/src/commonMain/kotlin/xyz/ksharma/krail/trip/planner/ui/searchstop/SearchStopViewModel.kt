@@ -23,10 +23,12 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
 import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.sandook.Sandook
 
 class SearchStopViewModel(
     private val tripPlanningService: TripPlanningService,
     private val analytics: Analytics,
+    private val sandook: Sandook,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SearchStopState> = MutableStateFlow(SearchStopState())
@@ -60,6 +62,14 @@ class SearchStopViewModel(
 
                 val results = response.toStopResults()
                 log("results: $results")
+
+                val resultsDb = sandook.selectStopsByNameExcludingProductClassOrExactId(
+                    stopName = query,
+                    excludeProductClassList = emptyList(),
+                ).take(10)
+                resultsDb.forEach {
+                    log("resultsDb [$query]: ${it.stopName}")
+                }
 
                 updateUiState { displayData(results) }
             }.getOrElse {
