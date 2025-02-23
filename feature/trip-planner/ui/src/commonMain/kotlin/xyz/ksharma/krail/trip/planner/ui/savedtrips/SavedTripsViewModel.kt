@@ -39,10 +39,13 @@ class SavedTripsViewModel(
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SavedTripsState())
 
     init {
-        kotlin.runCatching {
-            protoParser.readProtoFile("nsw_stops.pb")
-        }.getOrElse {
-            log("Error reading proto file: $it")
+        viewModelScope.launch {
+            kotlin.runCatching {
+                log("Reading NSW_STOPS proto file - StopsParser:")
+                protoParser.readStops()
+            }.getOrElse {
+                log("Error reading proto file: $it")
+            }
         }
     }
 
