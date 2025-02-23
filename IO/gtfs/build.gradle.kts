@@ -7,6 +7,8 @@ plugins {
     alias(libs.plugins.krail.kotlin.multiplatform)
     alias(libs.plugins.krail.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.wire)
 }
 
@@ -35,6 +37,7 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.kotlinx.datetime)
                 implementation(compose.runtime)
+                implementation(compose.components.resources)
 
                 api(libs.di.koinComposeViewmodel)
             }
