@@ -1,7 +1,14 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.EaseOutBounce
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
@@ -75,18 +83,55 @@ fun SearchStopRow(
             verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             TextFieldButton(onClick = fromButtonClick) {
-                Text(
-                    text = fromStopItem?.stopName
-                        ?: "Starting from",
-                    maxLines = 1,
-                )
+                AnimatedContent(
+                    targetState = fromStopItem?.stopName ?: "Starting from",
+                    transitionSpec = {
+                        (fadeIn(
+                            animationSpec = tween(200),
+                        ) + slideInVertically(
+                            initialOffsetY = { it / 2 },
+                            animationSpec = tween(500, easing = EaseOutBounce),
+                        )) togetherWith (fadeOut(
+                            animationSpec = tween(200),
+                        ) + slideOutVertically(
+                            targetOffsetY = { -it / 2 },
+                            animationSpec = tween(500),
+                        ))
+                    },
+                    contentAlignment = Alignment.CenterStart,
+                    label = "startingFromText",
+                ) { targetText ->
+                    Text(
+                        text = targetText,
+                        maxLines = 1,
+                    )
+                }
             }
+
             TextFieldButton(onClick = toButtonClick) {
-                Text(
-                    text = toStopItem?.stopName
-                        ?: "Destination",
-                    maxLines = 1,
-                )
+                AnimatedContent(
+                    targetState = toStopItem?.stopName ?: "Destination",
+                    transitionSpec = {
+                        (fadeIn(
+                            animationSpec = tween(200),
+                        ) + slideInVertically(
+                            initialOffsetY = { -it / 2 },
+                            animationSpec = tween(500, easing = EaseOutBounce),
+                        )) togetherWith (fadeOut(
+                            animationSpec = tween(200),
+                        ) + slideOutVertically(
+                            targetOffsetY = { it / 2 },
+                            animationSpec = tween(500),
+                        ))
+                    },
+                    contentAlignment = Alignment.CenterStart,
+                    label = "destinationText",
+                ) { targetText ->
+                    Text(
+                        text = targetText,
+                        maxLines = 1,
+                    )
+                }
             }
         }
 
