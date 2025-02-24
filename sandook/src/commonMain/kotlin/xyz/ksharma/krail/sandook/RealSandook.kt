@@ -148,6 +148,13 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
 
     override fun insertTransaction(block: () -> Unit) {
         nswStopsQueries.transaction { block() }
+
+    override fun clearNswStopsTable() {
+        nswStopsQueries.clearNswStopsTable()
+    }
+
+    override fun clearNswProductClassTable() {
+        nswStopsQueries.clearNswStopProductClassTable()
     }
 
     // endregion NswStops

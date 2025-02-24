@@ -26,6 +26,9 @@ class StopsProtoParser(
     override suspend fun parseAndInsertStops(): NswStopList = withContext(ioDispatcher) {
         var start = Clock.System.now()
 
+        sandook.clearNswStopsTable()
+        sandook.clearNswProductClassTable()
+
         val byteArray = Res.readBytes("files/NSW_STOPS.pb")
         val decodedStops = NswStopList.ADAPTER.decode(byteArray)
 

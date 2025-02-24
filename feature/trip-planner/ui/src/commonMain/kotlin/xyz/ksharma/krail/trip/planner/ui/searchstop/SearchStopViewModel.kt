@@ -23,7 +23,9 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
 import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.sandook.NswStops
 import xyz.ksharma.krail.sandook.Sandook
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 class SearchStopViewModel(
     private val tripPlanningService: TripPlanningService,
@@ -57,21 +59,25 @@ class SearchStopViewModel(
         searchJob = viewModelScope.launch {
             delay(300)
             runCatching {
-                val response = tripPlanningService.stopFinder(stopSearchQuery = query)
-                log("response VM: $response")
+                /*  val response = tripPlanningService.stopFinder(stopSearchQuery = query)
+                  log("response VM: $response")
 
-                val results = response.toStopResults()
-                log("results: $results")
+                  val results = response.toStopResults()
+                  log("results: $results")*/
 
-                val resultsDb = sandook.selectStopsByNameExcludingProductClassOrExactId(
-                    stopName = query,
-                    excludeProductClassList = emptyList(),
-                ).take(10)
+                val resultsDb: List<NswStops> =
+                    sandook.selectStopsByNameExcludingProductClassOrExactId(
+                        stopName = query,
+                        excludeProductClassList = emptyList(),
+                    ).take(50)
                 resultsDb.forEach {
                     log("resultsDb [$query]: ${it.stopName}")
                 }
+                val stopResults = resultsDb.map {
+                    it.toStopResult()
+                }
 
-                updateUiState { displayData(results) }
+                updateUiState { displayData(stopResults) }
             }.getOrElse {
                 delay(1500) // buffer for API response before displaying error.
                 // TODO- ideally cache all stops and error will never happen.
@@ -99,3 +105,9 @@ class SearchStopViewModel(
         _uiState.update(block)
     }
 }
+
+private fun NswStops.toStopResult() = SearchStopState.StopResult(
+    stopId = stopId,
+    stopName = stopName,
+    transportModeType = listOf(TransportMode.Train()).toImmutableList(),
+)

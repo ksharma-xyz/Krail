@@ -79,5 +79,9 @@ interface Sandook {
      */
     fun insertTransaction(block: () -> Unit)
 
+    fun clearNswStopsTable()
+
+    fun clearNswProductClassTable()
+
     // endregion
 }
