@@ -83,5 +83,14 @@ interface Sandook {
 
     fun clearNswProductClassTable()
 
+    /**
+     *      * Retrieves stops by matching an exact stop \id\ or partially matching a stop \name\.
+     *      * Excludes stops having product classes in the given \excludeProductClassList\.
+     */
+    fun selectStops(
+        stopName: String,
+        excludeProductClassList: List<Int> = emptyList(),
+    ): List<SelectProductClassesForStop>
+
     // endregion
 }
