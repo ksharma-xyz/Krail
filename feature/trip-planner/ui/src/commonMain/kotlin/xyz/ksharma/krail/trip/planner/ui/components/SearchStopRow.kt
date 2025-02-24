@@ -1,5 +1,7 @@
 package xyz.ksharma.krail.trip.planner.ui.components
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,8 +18,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import krail.feature.trip_planner.ui.generated.resources.Res
@@ -45,6 +50,7 @@ fun SearchStopRow(
     onSearchButtonClick: () -> Unit = {},
 ) {
     val themeColor by LocalThemeColor.current
+    var isReverseButtonRotated by rememberSaveable { mutableStateOf(false) }
 
     Row(
         modifier = modifier
@@ -89,6 +95,11 @@ fun SearchStopRow(
                 .padding(start = 16.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp), // TODO - token "SearchFieldSpacing"
         ) {
+            val rotation by animateFloatAsState(
+                targetValue = if (isReverseButtonRotated) 180f else 0f,
+                animationSpec = tween(durationMillis = 300)
+            )
+
             RoundIconButton(
                 content = {
                     Image(
@@ -98,7 +109,13 @@ fun SearchStopRow(
                         modifier = Modifier.size(24.dp),
                     )
                 },
-                onClick = onReverseButtonClick,
+                onClick = {
+                    isReverseButtonRotated = !isReverseButtonRotated
+                    onReverseButtonClick()
+                },
+                modifier = Modifier.graphicsLayer {
+                    rotationZ = rotation
+                }
             )
 
             RoundIconButton(
