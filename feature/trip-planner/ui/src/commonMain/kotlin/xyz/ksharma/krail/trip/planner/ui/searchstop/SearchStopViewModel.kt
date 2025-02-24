@@ -68,13 +68,16 @@ class SearchStopViewModel(
                     sandook.selectStops(
                         stopName = query,
                         excludeProductClassList = emptyList(),
-                    ).take(50)
-                resultsDb.forEach {
-                    log("resultsDb [$query]: ${it.stopName}")
-                }
-                val stopResults = resultsDb.map {
-                    it.toStopResult()
-                }.let(::prioritiseStops)
+                    )
+                /*
+                                resultsDb.forEach {
+                                    log("resultsDb [$query]: ${it.stopName}")
+                                }
+                */
+                val stopResults = resultsDb
+                    .map { it.toStopResult() }
+                    .let(::prioritiseStops)
+                    .take(50)
 
                 updateUiState { displayData(stopResults) }
             }.getOrElse {
@@ -94,7 +97,9 @@ class SearchStopViewModel(
 
         return stopResults.sortedWith(compareBy(
             { stopResult ->
-                stopResult.transportModeType.minOfOrNull { transportModePriorityMap[it.productClass] ?: Int.MAX_VALUE } ?: Int.MAX_VALUE
+                stopResult.transportModeType.minOfOrNull {
+                    transportModePriorityMap[it.productClass] ?: Int.MAX_VALUE
+                } ?: Int.MAX_VALUE
             },
             { it.stopName }
         ))
