@@ -22,6 +22,7 @@ import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SelectProductClassesForStop
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 
@@ -73,7 +74,7 @@ class SearchStopViewModel(
                 }
                 val stopResults = resultsDb.map {
                     it.toStopResult()
-                }
+                }.let(::prioritiseStops)
 
                 updateUiState { displayData(stopResults) }
             }.getOrElse {
@@ -82,6 +83,21 @@ class SearchStopViewModel(
                 updateUiState { displayError() }
             }
         }
+    }
+
+    // TODO - move to another file and add UT for it. Inject and use.
+    private fun prioritiseStops(stopResults: List<SearchStopState.StopResult>): List<SearchStopState.StopResult> {
+        val sortedTransportModes = TransportMode.sortedValues(TransportModeSortOrder.PRIORITY)
+        val transportModePriorityMap = sortedTransportModes.mapIndexed { index, transportMode ->
+            transportMode.productClass to index
+        }.toMap()
+
+        return stopResults.sortedWith(compareBy(
+            { stopResult ->
+                stopResult.transportModeType.minOfOrNull { transportModePriorityMap[it.productClass] ?: Int.MAX_VALUE } ?: Int.MAX_VALUE
+            },
+            { it.stopName }
+        ))
     }
 
     private fun SearchStopState.displayData(stopsResult: List<SearchStopState.StopResult>) = copy(
@@ -104,6 +120,7 @@ class SearchStopViewModel(
     }
 }
 
+/// TODO - move to mapper:
 private fun SelectProductClassesForStop.toStopResult() = SearchStopState.StopResult(
     stopId = stopId,
     stopName = stopName,
