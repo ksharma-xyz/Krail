@@ -68,3 +68,9 @@ s.stopId = ?
     FROM NswStopProductClass AS p
     WHERE p.productClass IN ?
   );
+
+clearNswStopsTable:
+DELETE FROM NswStops;
+
+clearNswStopProductClassTable:
+DELETE FROM NswStopProductClass;
