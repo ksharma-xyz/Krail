@@ -1,6 +1,8 @@
 package xyz.ksharma.krail.trip.planner.ui.timetable
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
@@ -34,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
@@ -95,6 +98,7 @@ fun TimeTableScreen(
         log("Initial Exclude - : ${timeTableState.unselectedModes}")
         mutableStateListOf(*timeTableState.unselectedModes.toTypedArray())
     }
+    var isReverseButtonRotated by rememberSaveable { mutableStateOf(false) }
 
     Column(
         modifier = modifier.fillMaxSize().background(color = KrailTheme.colors.surface),
@@ -126,8 +130,17 @@ fun TimeTableScreen(
                     }
                 },
                 actions = {
+                    val rotation by animateFloatAsState(
+                        targetValue = if (isReverseButtonRotated) 180f else 0f,
+                        animationSpec = tween(durationMillis = 300)
+                    )
                     ActionButton(
+                        modifier = Modifier
+                            .graphicsLayer {
+                                rotationZ = rotation
+                            },
                         onClick = {
+                            isReverseButtonRotated = !isReverseButtonRotated
                             onEvent(TimeTableUiEvent.ReverseTripButtonClicked)
                         },
                         contentDescription = "Reverse Trip Search",
