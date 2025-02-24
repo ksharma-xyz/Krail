@@ -31,46 +31,25 @@ insertStopProductClass:
 INSERT INTO NswStopProductClass(stopId, productClass)
 VALUES (?, ?);
 
--- Select stops with partial match on stopName --
-selectStopsByPartialName:
-SELECT * FROM NswStops
-WHERE stopName LIKE '%' || ? || '%';
-
--- Select stops with partial match on stopName and specific productClass values --
-selectStopsByNameAndProductClass:
-SELECT DISTINCT s.*
-FROM NswStops AS s
-JOIN NswStopProductClass AS p ON s.stopId = p.stopId
-WHERE s.stopName LIKE '%' || ? || '%'
-  AND p.productClass IN ?;
-
-selectStopsByNameExcludingProductClass:
-SELECT DISTINCT s.*
-FROM NswStops AS s
-WHERE s.stopName LIKE '%' || ? || '%'
-  AND s.stopId NOT IN (
-    SELECT p.stopId
-    FROM NswStopProductClass AS p
-    WHERE p.productClass IN ?
-  );
-
-selectStopsByNameExcludingProductClassOrExactStopId:
-SELECT DISTINCT s.*
-FROM NswStops AS s
-WHERE (
--- Exact match scenario: returns a stop if its stopId matches the given parameter
-s.stopId = ?
-   -- Partial match scenario: returns stops whose stopName contains the given parameter
-   OR s.stopName LIKE '%' || ? || '%')
-   AND s.stopId NOT IN (
-	-- Exclusion scenario: filters out any stopIds linked to product classes in the specified list
-    SELECT p.stopId
-    FROM NswStopProductClass AS p
-    WHERE p.productClass IN ?
-  );
-
 clearNswStopsTable:
 DELETE FROM NswStops;
 
 clearNswStopProductClassTable:
 DELETE FROM NswStopProductClass;
+
+-- select stops and theier prodcut classes for a given stopId / name --
+selectProductClassesForStop:
+SELECT s.*,
+       COALESCE(GROUP_CONCAT(p.productClass), '') AS productClasses
+FROM NswStops AS s
+LEFT JOIN NswStopProductClass AS p ON s.stopId = p.stopId
+WHERE (
+    s.stopId = ?  -- Exact match scenario
+    OR s.stopName LIKE '%' || ? || '%'  -- Partial match scenario
+)
+AND s.stopId NOT IN (
+    SELECT stopId
+    FROM NswStopProductClass
+    WHERE productClass IN ?
+)
+GROUP BY s.stopId;

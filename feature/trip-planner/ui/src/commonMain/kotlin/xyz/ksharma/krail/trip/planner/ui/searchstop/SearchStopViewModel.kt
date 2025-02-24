@@ -17,15 +17,13 @@ import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
+import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.sandook.Sandook
+import xyz.ksharma.krail.sandook.SelectProductClassesForStop
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
-import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
-import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
-import xyz.ksharma.krail.core.log.log
-import xyz.ksharma.krail.sandook.NswStops
-import xyz.ksharma.krail.sandook.Sandook
-import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 
 class SearchStopViewModel(
     private val tripPlanningService: TripPlanningService,
@@ -65,8 +63,8 @@ class SearchStopViewModel(
                   val results = response.toStopResults()
                   log("results: $results")*/
 
-                val resultsDb: List<NswStops> =
-                    sandook.selectStopsByNameExcludingProductClassOrExactId(
+                val resultsDb: List<SelectProductClassesForStop> =
+                    sandook.selectStops(
                         stopName = query,
                         excludeProductClassList = emptyList(),
                     ).take(50)
@@ -106,8 +104,10 @@ class SearchStopViewModel(
     }
 }
 
-private fun NswStops.toStopResult() = SearchStopState.StopResult(
+private fun SelectProductClassesForStop.toStopResult() = SearchStopState.StopResult(
     stopId = stopId,
     stopName = stopName,
-    transportModeType = listOf(TransportMode.Train()).toImmutableList(),
+    transportModeType = this.productClasses.split(",").mapNotNull {
+        TransportMode.toTransportModeType(it.toInt())
+    }.toImmutableList(),
 )

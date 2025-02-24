@@ -157,5 +157,16 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
         nswStopsQueries.clearNswStopProductClassTable()
     }
 
+    override fun selectStops(
+        stopName: String,
+        excludeProductClassList: List<Int>
+    ) : List<SelectProductClassesForStop>{
+        return nswStopsQueries.selectProductClassesForStop(
+            stopName,
+            stopName,
+            productClass = excludeProductClassList.map { it.toLong() },
+        ).executeAsList()
+    }
+
     // endregion NswStops
 }
