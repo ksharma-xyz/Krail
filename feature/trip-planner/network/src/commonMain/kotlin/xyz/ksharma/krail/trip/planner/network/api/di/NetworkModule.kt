@@ -1,6 +1,9 @@
 package xyz.ksharma.krail.trip.planner.network.api.di
 
 import io.ktor.client.HttpClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.qualifier.named
@@ -15,7 +18,12 @@ import xyz.ksharma.krail.trip.planner.network.api.service.httpClient
 
 val networkModule = module {
     singleOf(::NetworkRateLimiter) { bind<RateLimiter>() }
-    single<HttpClient> { httpClient(appInfoProvider = get()) }
+    single<HttpClient> {
+        httpClient(
+            appInfoProvider = get(),
+            coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+        )
+    }
 
     single {
         RealTripPlanningService(

@@ -39,6 +39,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(libs.kotlinx.serialization.json)
+                implementation(projects.core.di)
 
                 implementation(compose.runtime)
                 api(libs.di.koinComposeViewmodel)

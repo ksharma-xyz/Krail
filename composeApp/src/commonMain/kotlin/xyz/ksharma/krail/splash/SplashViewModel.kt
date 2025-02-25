@@ -41,7 +41,7 @@ class SplashViewModel(
             remoteConfig.setup() // App Start Event
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
-    private fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
+    private suspend fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
         log("AppInfo: $this, krailTheme: ${_uiState.value.id}")
         analytics.track(
             AnalyticsEvent.AppStart(

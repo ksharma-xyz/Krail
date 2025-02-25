@@ -5,6 +5,8 @@ import android.content.Context.BATTERY_SERVICE
 import android.content.res.Configuration
 import android.os.BatteryManager
 import android.os.Build
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 
 class AndroidAppInfo(private val context: Context) : AppInfo {
 
@@ -71,9 +73,12 @@ class AndroidAppInfo(private val context: Context) : AppInfo {
                 "timeZone=$timeZone)"
 }
 
-class AndroidAppInfoProvider(private val context: Context) : AppInfoProvider {
-    override fun getAppInfo(): AppInfo {
-        return AndroidAppInfo(context)
+class AndroidAppInfoProvider(
+    private val context: Context,
+    private val defaultDispatcher: CoroutineDispatcher,
+) : AppInfoProvider {
+    override suspend fun getAppInfo(): AppInfo = withContext(defaultDispatcher) {
+        AndroidAppInfo(context)
     }
 }
 

@@ -1,6 +1,8 @@
 package xyz.ksharma.krail.core.analytics
 
 import dev.gitlive.firebase.analytics.FirebaseAnalytics
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import xyz.ksharma.krail.core.log.log
@@ -8,14 +10,17 @@ import xyz.ksharma.krail.core.log.log
 class RealAnalytics(
     private val firebaseAnalytics: FirebaseAnalytics,
     private val appInfoProvider: AppInfoProvider,
+    private val coroutineScope: CoroutineScope,
 ) : Analytics {
 
     override fun track(event: AnalyticsEvent) {
-        // Only track prod builds analytics events
-        if (appInfoProvider.getAppInfo().isDebug.not()) {
-            firebaseAnalytics.logEvent(event.name, event.properties)
-        } else {
-            log("ANALYTICS EVENT: $event")
+        coroutineScope.launch {
+            // Only track prod builds analytics events
+            if (appInfoProvider.getAppInfo().isDebug.not()) {
+                firebaseAnalytics.logEvent(event.name, event.properties)
+            } else {
+                log("ANALYTICS EVENT: $event")
+            }
         }
     }
 
