@@ -42,14 +42,10 @@ selectProductClassesForStop:
 SELECT s.*,
        COALESCE(GROUP_CONCAT(p.productClass), '') AS productClasses
 FROM NswStops AS s
-LEFT JOIN NswStopProductClass AS p ON s.stopId = p.stopId
+LEFT JOIN NswStopProductClass AS p
+    ON s.stopId = p.stopId
 WHERE (
-    s.stopId = ?  -- Exact match scenario
-    OR s.stopName LIKE '%' || ? || '%'  -- Partial match scenario
-)
-AND s.stopId NOT IN (
-    SELECT stopId
-    FROM NswStopProductClass
-    WHERE productClass IN ?
+    s.stopId = :stopId  -- Use named parameter :stopId
+    OR s.stopName LIKE '%' || :stopName || '%'  -- Use named parameter :stopName
 )
 GROUP BY s.stopId;
