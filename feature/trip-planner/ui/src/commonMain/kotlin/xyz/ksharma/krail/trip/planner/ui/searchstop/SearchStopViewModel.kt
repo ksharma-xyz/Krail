@@ -17,7 +17,6 @@ import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
-import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SelectProductClassesForStop
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
@@ -65,10 +64,7 @@ class SearchStopViewModel(
                   log("results: $results")*/
 
                 val resultsDb: List<SelectProductClassesForStop> =
-                    sandook.selectStops(
-                        stopName = query,
-                        excludeProductClassList = emptyList(),
-                    )
+                    sandook.selectStops(stopName = query)
                 /*
                                 resultsDb.forEach {
                                     log("resultsDb [$query]: ${it.stopName}")
@@ -76,6 +72,12 @@ class SearchStopViewModel(
                 */
                 val stopResults = resultsDb
                     .map { it.toStopResult() }
+                    .let {
+                        filterProductClasses(
+                            stopResults = it,
+                            excludedProductClasses = listOf(TransportMode.Ferry())
+                        )
+                    }
                     .let(::prioritiseStops)
                     .take(50)
 
@@ -123,6 +125,13 @@ class SearchStopViewModel(
     private fun updateUiState(block: SearchStopState.() -> SearchStopState) {
         _uiState.update(block)
     }
+}
+
+fun filterProductClasses(
+    stopResults: List<SearchStopState.StopResult>,
+    excludedProductClasses: Any,
+): List<SearchStopState.StopResult> {
+
 }
 
 /// TODO - move to mapper:
