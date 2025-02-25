@@ -75,7 +75,7 @@ class SearchStopViewModel(
                     .let {
                         filterProductClasses(
                             stopResults = it,
-                            excludedProductClasses = listOf(TransportMode.Ferry())
+                            excludedProductClasses = listOf(TransportMode.Ferry().productClass).toImmutableList()
                         )
                     }
                     .let(::prioritiseStops)
@@ -129,9 +129,12 @@ class SearchStopViewModel(
 
 fun filterProductClasses(
     stopResults: List<SearchStopState.StopResult>,
-    excludedProductClasses: Any,
+    excludedProductClasses: List<Int>,
 ): List<SearchStopState.StopResult> {
-
+    return stopResults.filter { stopResult ->
+        val productClasses = stopResult.transportModeType.map { it.productClass }
+        productClasses.any { it !in excludedProductClasses }
+    }
 }
 
 /// TODO - move to mapper:
