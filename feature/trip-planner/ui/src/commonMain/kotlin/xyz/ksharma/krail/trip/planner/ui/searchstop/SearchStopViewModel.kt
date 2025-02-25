@@ -93,7 +93,19 @@ class SearchStopViewModel(
             transportMode.productClass to index
         }.toMap()
 
-        val highPriorityStopIds = listOf("10101234", "10101235", "10101236", "10101237", "10101238")
+        // TODO - these should come from Firebase config and have only these hardcoded as fallback.
+        val highPriorityStopIds = listOf(
+            "200060",
+            "200070",
+            "200080",
+            "206010",
+            "2150106",
+            "200017",
+            "200039",
+            "201016",
+            "201039",
+            "201080"
+        )
 
         return stopResults.sortedWith(compareBy(
             { stopResult ->
