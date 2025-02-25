@@ -1,5 +1,5 @@
 [versions]
-desugar_jdk_libs = "2.1.4"
+desugar_jdk_libs = "2.1.5"
 java = "17"
 # AGP - Android API level mapping https://developer.android.com/build/releases/gradle-plugin#api-level-support
 # AGP compatability https://developer.android.com/build/releases/gradle-plugin
