@@ -65,11 +65,7 @@ class SearchStopViewModel(
 
                 val resultsDb: List<SelectProductClassesForStop> =
                     sandook.selectStops(stopName = query)
-                /*
-                                resultsDb.forEach {
-                                    log("resultsDb [$query]: ${it.stopName}")
-                                }
-                */
+
                 val stopResults = resultsDb
                     .map { it.toStopResult() }
                     .let {
@@ -97,7 +93,12 @@ class SearchStopViewModel(
             transportMode.productClass to index
         }.toMap()
 
+        val highPriorityStopIds = listOf("10101234", "10101235", "10101236", "10101237", "10101238")
+
         return stopResults.sortedWith(compareBy(
+            { stopResult ->
+                if (stopResult.stopId in highPriorityStopIds) 0 else 1
+            },
             { stopResult ->
                 stopResult.transportModeType.minOfOrNull {
                     transportModePriorityMap[it.productClass] ?: Int.MAX_VALUE
