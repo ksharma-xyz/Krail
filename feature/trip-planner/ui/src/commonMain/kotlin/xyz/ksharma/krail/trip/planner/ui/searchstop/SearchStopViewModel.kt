@@ -104,7 +104,12 @@ class SearchStopViewModel(
             "200039",
             "201016",
             "201039",
-            "201080"
+            "201080",
+            "200066",
+            "200030",
+            "200046",
+            "200050",
+
         )
 
         return stopResults.sortedWith(compareBy(
