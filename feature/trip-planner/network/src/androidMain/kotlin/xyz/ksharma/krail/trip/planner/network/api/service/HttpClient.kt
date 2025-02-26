@@ -9,11 +9,16 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import xyz.ksharma.krail.trip.planner.network.BuildKonfig
 
-actual fun httpClient(appInfoProvider: AppInfoProvider): HttpClient {
+actual fun httpClient(
+    appInfoProvider: AppInfoProvider,
+    coroutineScope: CoroutineScope,
+): HttpClient {
     return HttpClient(OkHttp) {
         expectSuccess = true
         install(ContentNegotiation) {
@@ -24,16 +29,18 @@ actual fun httpClient(appInfoProvider: AppInfoProvider): HttpClient {
             })
         }
         install(Logging) {
-            if (appInfoProvider.getAppInfo().isDebug) {
-                level = LogLevel.BODY
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        println(message)
+            coroutineScope.launch {
+                if (appInfoProvider.getAppInfo().isDebug) {
+                    level = LogLevel.BODY
+                    logger = object : Logger {
+                        override fun log(message: String) {
+                            println(message)
+                        }
                     }
+                    sanitizeHeader { header -> header == HttpHeaders.Authorization }
+                } else {
+                    level = LogLevel.NONE
                 }
-                sanitizeHeader { header -> header == HttpHeaders.Authorization }
-            } else {
-                level = LogLevel.NONE
             }
         }
 

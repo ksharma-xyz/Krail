@@ -25,7 +25,7 @@ class SettingsViewModel(
             analytics.trackScreenViewEvent(screen = AnalyticsScreen.Settings)
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), SettingsState())
 
-    private fun fetchAppVersion() {
+    private suspend fun fetchAppVersion() {
         val appVersion = appInfoProvider.getAppInfo().appVersion
         _uiState.value = _uiState.value.copy(appVersion = appVersion)
     }
