@@ -37,21 +37,16 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
         if (originTimeUTC != null && arrivalTimeUTC != null && totalStops > 0 && legsList != null &&
             transportModeLines != null
         ) {
-            // A walking leg consists of walking leg + footpath info from public transport leg
-            val (totalDuration, footPathDuration) = legs.fold(0L to 0L) { acc, leg ->
-                val walkingDuration = if (leg.isWalkingLeg()) leg.duration ?: 0L else 0L
-                val footPathDuration = if (leg.footPathInfoRedundant == true) 0L else leg.footPathInfo?.firstOrNull()?.duration ?: 0L
-                acc.first + walkingDuration to acc.second + footPathDuration
+            // A walking leg consists of walking leg
+            // + footpath info from public transport leg (if footPathInfoRedundant is true)
+            val totalWalkingDuration = legs.sumOf { leg ->
+                if (leg.isWalkingLeg() && leg.footPathInfoRedundant != true)
+                    leg.duration ?: 0L else 0L
             }
 
-            val walkingDurationStr = (totalDuration + footPathDuration).let { combinedDuration ->
-                if (combinedDuration == 0L) {
-                    null
-                } else {
-                    combinedDuration.toDuration(DurationUnit.SECONDS)
-                        .toFormattedDurationTimeString()
-                }
-            }
+            val walkingDurationStr =
+                totalWalkingDuration.takeIf { it > 0L }?.toDuration(DurationUnit.SECONDS)
+                    ?.toFormattedDurationTimeString()
 
             TimeTableState.JourneyCardInfo(
                 timeText = originTimeUTC.getTimeText(),
@@ -171,11 +166,9 @@ private fun TripResponse.Leg.toUiModel(): TimeTableState.JourneyCardInfo.Leg? {
 
     return when {
         // Walking Leg - Always check before public transport leg
-        isWalkingLeg() -> {
-            displayDuration?.let {
-                TimeTableState.JourneyCardInfo.Leg.WalkingLeg(duration = displayDuration)
-            }
-        }
+        isWalkingLeg() -> if (displayDuration != null && this.footPathInfoRedundant != true) {
+            TimeTableState.JourneyCardInfo.Leg.WalkingLeg(duration = displayDuration)
+        } else null
 
         else -> { // Public Transport Leg
             if (transportMode != null && lineName != null && displayText != null &&
