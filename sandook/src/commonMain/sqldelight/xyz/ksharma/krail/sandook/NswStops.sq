@@ -31,6 +31,11 @@ insertStopProductClass:
 INSERT INTO NswStopProductClass(stopId, productClass)
 VALUES (?, ?);
 
+-- Select count of items in NswStopProductClass
+selectStopProductClassCount:
+SELECT COUNT(*) AS totalItems
+FROM NswStopProductClass;
+
 clearNswStopsTable:
 DELETE FROM NswStops;
 
