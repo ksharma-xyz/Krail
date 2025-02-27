@@ -15,27 +15,29 @@ class RealAppStart(
 ) : AppStart {
     override fun start() {
         coroutineScope.launch {
-
-            remoteConfig.setup() // App Start Event
-
             parseAndInsertNswStopsIfNeeded()
+            setupRemoteConfig()
         }
+    }
+
+    private fun setupRemoteConfig() = runCatching {
+        remoteConfig.setup()
+    }.getOrElse {
+        log("Error setting up remote config: $it")
     }
 
     /**
      * Parses and inserts NSW_STOPS data in the database if they are not already inserted.
      */
-    private suspend fun parseAndInsertNswStopsIfNeeded() {
-        kotlin.runCatching {
-            if (isStopsNotInserted()) {
-                protoParser.parseAndInsertStops()
-            } else {
-                log("Stops already inserted in the database.")
-            }
-        }.getOrElse {
-            log("Error reading proto file: $it")
-            // TODO - Firebase performance track.
+    private suspend fun parseAndInsertNswStopsIfNeeded() = runCatching {
+        if (isStopsNotInserted()) {
+            protoParser.parseAndInsertStops()
+        } else {
+            log("Stops already inserted in the database.")
         }
+    }.getOrElse {
+        log("Error reading proto file: $it")
+        // TODO - Firebase performance track.
     }
 
     private fun isStopsNotInserted(): Boolean {
