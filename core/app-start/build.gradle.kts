@@ -33,6 +33,7 @@ kotlin {
                 implementation(projects.core.log)
                 implementation(projects.core.remoteConfig)
                 implementation(projects.io.gtfs)
+                implementation(projects.sandook)
 
                 implementation(compose.runtime)
                 api(libs.di.koinComposeViewmodel)
