@@ -106,48 +106,9 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
         nswStopsQueries.insertStopProductClass(stopId, productClass.toLong())
     }
 
-    override fun selectStopsByPartialName(stopName: String): List<NswStops> {
-        return nswStopsQueries.selectStopsByPartialName(stopName).executeAsList()
-    }
-
-    override fun selectStopsByNameAndProductClass(
-        stopName: String,
-        includeProductClassList: List<Int>,
-    ): List<NswStops> {
-        return nswStopsQueries.selectStopsByNameAndProductClass(
-            stopName,
-            includeProductClassList.map { it.toLong() }
-        ).executeAsList()
-    }
-
-    override fun selectStopsByNameExcludingProductClass(
-        stopName: String,
-        excludeProductClassList: List<Int>
-    ): List<NswStops> {
-        return nswStopsQueries.selectStopsByNameExcludingProductClass(
-            stopName,
-            excludeProductClassList.map { it.toLong() }
-        ).executeAsList()
-    }
-
-    /**
-     * Combines exact stopId and partial [stopName] search logic while excluding stops
-     * based on the given list of product classes.
-     */
-    override fun selectStopsByNameExcludingProductClassOrExactId(
-        stopName: String,
-        excludeProductClassList: List<Int>
-    ): List<NswStops> {
-        val stopId = stopName
-        return nswStopsQueries.selectStopsByNameExcludingProductClassOrExactStopId(
-            stopId,
-            stopName,
-            excludeProductClassList.map { it.toLong() }
-        ).executeAsList()
-    }
-
     override fun insertTransaction(block: () -> Unit) {
         nswStopsQueries.transaction { block() }
+    }
 
     override fun clearNswStopsTable() {
         nswStopsQueries.clearNswStopsTable()
@@ -159,8 +120,8 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
 
     override fun selectStops(
         stopName: String,
-        excludeProductClassList: List<Int>
-    ) : List<SelectProductClassesForStop>{
+        excludeProductClassList: List<Int>,
+    ): List<SelectProductClassesForStop> {
         return nswStopsQueries.selectProductClassesForStop(
             stopName,
             stopName,
