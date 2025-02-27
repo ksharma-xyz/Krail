@@ -29,19 +29,13 @@ actual fun httpClient(
             })
         }
         install(Logging) {
-            coroutineScope.launch {
-                if (appInfoProvider.getAppInfo().isDebug) {
-                    level = LogLevel.BODY
-                    logger = object : Logger {
-                        override fun log(message: String) {
-                            println(message)
-                        }
-                    }
-                    sanitizeHeader { header -> header == HttpHeaders.Authorization }
-                } else {
-                    level = LogLevel.NONE
+            level = LogLevel.BODY
+            logger = object : Logger {
+                override fun log(message: String) {
+                    println(message)
                 }
             }
+            sanitizeHeader { header -> header == HttpHeaders.Authorization }
         }
 
         defaultRequest {
