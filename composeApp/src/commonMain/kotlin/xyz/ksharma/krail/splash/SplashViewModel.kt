@@ -3,6 +3,7 @@ package xyz.ksharma.krail.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -33,9 +34,13 @@ class SplashViewModel(
     private val _isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
         .onStart {
-            loadKrailThemeStyle()
-            trackAppStartEvent()
-            appStart.start()
+            coroutineScope {
+                appStart.start()
+            }
+            coroutineScope {
+                loadKrailThemeStyle()
+                trackAppStartEvent()
+            }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
     private suspend fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
