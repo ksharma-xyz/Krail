@@ -3,22 +3,16 @@ package xyz.ksharma.krail.splash
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
 import xyz.ksharma.krail.core.log.log
-import xyz.ksharma.krail.core.remote_config.RemoteConfig
-import xyz.ksharma.krail.io.gtfs.nswstops.ProtoParser
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.taj.theme.DEFAULT_THEME_STYLE
 import xyz.ksharma.krail.taj.theme.KrailThemeStyle
@@ -27,9 +21,7 @@ class SplashViewModel(
     private val sandook: Sandook,
     private val analytics: Analytics,
     private val appInfoProvider: AppInfoProvider,
-    private val remoteConfig: RemoteConfig,
     private val ioDispatcher: CoroutineDispatcher,
-    private val protoParser: ProtoParser,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<KrailThemeStyle> =
@@ -41,14 +33,6 @@ class SplashViewModel(
         .onStart {
             loadKrailThemeStyle()
             trackAppStartEvent()
-            remoteConfig.setup() // App Start Event
-
-            kotlin.runCatching {
-                log("Reading NSW_STOPS proto file - StopsParser:")
-                protoParser.parseAndInsertStops()
-            }.getOrElse {
-                log("Error reading proto file: $it")
-            }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
     private suspend fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {
