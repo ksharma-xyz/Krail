@@ -45,7 +45,7 @@ class SplashViewModel(
 
             kotlin.runCatching {
                 log("Reading NSW_STOPS proto file - StopsParser:")
-                protoParser.readStops()
+                protoParser.parseAndInsertStops()
             }.getOrElse {
                 log("Error reading proto file: $it")
             }

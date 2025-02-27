@@ -7,7 +7,7 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
     private val sandook = KrailSandook(factory.createDriver())
     private val query = sandook.krailSandookQueries
 
-    override val nswStopsQueries = sandook.nswStopsQueries
+    private val nswStopsQueries = sandook.nswStopsQueries
 
     // region Theme
     override fun insertOrReplaceTheme(productClass: Long) {
@@ -144,6 +144,10 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
             stopName,
             excludeProductClassList.map { it.toLong() }
         ).executeAsList()
+    }
+
+    override fun insertTransaction(block: () -> Unit) {
+        nswStopsQueries.transaction { block() }
     }
 
     // endregion NswStops

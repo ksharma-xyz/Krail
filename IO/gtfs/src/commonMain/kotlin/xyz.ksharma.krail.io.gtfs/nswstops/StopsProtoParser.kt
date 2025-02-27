@@ -17,33 +17,38 @@ class StopsProtoParser(
     private val sandook: Sandook,
 ) : ProtoParser {
 
+    /**
+     * Reads and decodes the NSW stops from a protobuf file, then inserts the stops into the database.
+     *
+     * @return The decoded `NswStopList` containing the NSW stops.
+     */
     @OptIn(ExperimentalResourceApi::class)
-    override suspend fun readStops(): NswStopList =
-        withContext(ioDispatcher) {
-            var start = Clock.System.now()
+    override suspend fun parseAndInsertStops(): NswStopList = withContext(ioDispatcher) {
+        var start = Clock.System.now()
 
-            val byteArray = Res.readBytes("files/NSW_STOPS.pb")
-            val decoded = NswStopList.ADAPTER.decode(byteArray)
+        val byteArray = Res.readBytes("files/NSW_STOPS.pb")
+        val decodedStops = NswStopList.ADAPTER.decode(byteArray)
 
-            var duration = start.until(
-                Clock.System.now(), DateTimeUnit.MILLISECOND, TimeZone.currentSystemDefault()
-            )
-            log("Decoded #Stops: ${decoded.nswStops.size} - duration: $duration ms")
+        var duration = start.until(
+            Clock.System.now(), DateTimeUnit.MILLISECOND,
+            TimeZone.currentSystemDefault(),
+        )
+        log("Decoded #Stops: ${decodedStops.nswStops.size} - duration: $duration ms")
 
-            log("Start inserting stops. Currently ${sandook.stopsCount()} stops in the database")
-            start = Clock.System.now()
-            insertStopsInTransaction(decoded)
+        log("Start inserting stops. Currently ${sandook.stopsCount()} stops in the database")
+        start = Clock.System.now()
+        insertStopsInTransaction(decodedStops)
+        duration = start.until(
+            Clock.System.now(), DateTimeUnit.MILLISECOND, TimeZone.currentSystemDefault()
+        )
+        log("Inserted #Stops: ${decodedStops.nswStops.size} in duration: $duration ms")
 
-            duration = start.until(
-                Clock.System.now(), DateTimeUnit.MILLISECOND, TimeZone.currentSystemDefault()
-            )
-            log("Inserted #Stops: ${decoded.nswStops.size} in duration: $duration ms")
-
-            decoded
-        }
+        decodedStops
+    }
 
     private suspend fun insertStopsInTransaction(decoded: NswStopList) = withContext(ioDispatcher) {
-        sandook.nswStopsQueries.transaction {
+        val start = Clock.System.now()
+        sandook.insertTransaction {
             decoded.nswStops.forEach { nswStop ->
                 sandook.insertNswStop(
                     stopId = nswStop.stopId,
@@ -59,7 +64,13 @@ class StopsProtoParser(
                 }
             }
         }
+
+        val duration = start.until(
+            Clock.System.now(), DateTimeUnit.MILLISECOND, TimeZone.currentSystemDefault(),
+        )
         // Log less frequently, for example once after the transaction completes
-        println("Inserted ${decoded.nswStops.size} stops in a single transaction.")
+        println("Inserted ${decoded.nswStops.size} stops in a single transaction in $duration ms")
+        // TODO - analytics track how much time it took to insert stops.
+        // Also track based on Firebase for performance.
     }
 }

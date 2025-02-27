@@ -4,7 +4,8 @@ import app.krail.kgtfs.proto.NswStopList
 
 interface ProtoParser {
     /**
-     * Reads the stops from the proto file packaged in the resources
+     * Reads and decodes the NSW stops from a protobuf file, then inserts the stops into the database.
+     * @return The decoded `NswStopList` containing the NSW stops.
      */
-    suspend fun readStops(): NswStopList?
+    suspend fun parseAndInsertStops(): NswStopList?
 }
