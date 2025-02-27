@@ -38,13 +38,13 @@ internal fun TripResponse.buildJourneyList(): ImmutableList<TimeTableState.Journ
             transportModeLines != null
         ) {
             // A walking leg consists of walking leg + footpath info from public transport leg
-            val walkingDurationStr = legs.sumOf { leg ->
-                if (leg.isWalkingLeg()) leg.duration ?: 0L else 0L
-            }.let { totalDuration ->
-                val footPathDuration = legs.sumOf { leg ->
-                    leg.footPathInfo?.firstOrNull()?.duration ?: 0L
-                }
-                val combinedDuration = totalDuration + footPathDuration
+            val (totalDuration, footPathDuration) = legs.fold(0L to 0L) { acc, leg ->
+                val walkingDuration = if (leg.isWalkingLeg()) leg.duration ?: 0L else 0L
+                val footPathDuration = if (leg.footPathInfoRedundant == true) 0L else leg.footPathInfo?.firstOrNull()?.duration ?: 0L
+                acc.first + walkingDuration to acc.second + footPathDuration
+            }
+
+            val walkingDurationStr = (totalDuration + footPathDuration).let { combinedDuration ->
                 if (combinedDuration == 0L) {
                     null
                 } else {

@@ -80,6 +80,11 @@ data class TripResponse(
         @SerialName("footPathInfo") val footPathInfo: List<FootPathInfo>? = null,
 
         /**
+         * This element indicates whether the walking directions are redundant in [footPathInfo].
+         */
+        @SerialName("footPathInfoRedundant") val footPathInfoRedundant: Boolean? = null,
+
+        /**
          * This element describes a single information message that may be associated with a journey leg.
          * The data in this is similar to that from add_info endpoint, but is presented differently.
          */
