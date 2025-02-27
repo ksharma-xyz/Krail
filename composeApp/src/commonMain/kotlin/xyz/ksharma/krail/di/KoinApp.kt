@@ -44,6 +44,7 @@ val splashModule = module {
             analytics = get(),
             appInfoProvider = get(),
             ioDispatcher = get(named(IODispatcher)),
+            appStart = get(),
         )
     }
 }
