@@ -10,7 +10,10 @@ import xyz.ksharma.krail.core.appstart.RealAppStart
 val appStartModule = module {
     single<AppStart> {
         RealAppStart(
-            coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+            coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+            remoteConfig = get(),
+            protoParser = get(),
+            sandook = get(),
         )
     }
 }

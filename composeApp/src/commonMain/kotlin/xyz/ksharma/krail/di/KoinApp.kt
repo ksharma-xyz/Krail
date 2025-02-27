@@ -43,9 +43,7 @@ val splashModule = module {
             sandook = get(),
             analytics = get(),
             appInfoProvider = get(),
-            remoteConfig = get(),
             ioDispatcher = get(named(IODispatcher)),
-            protoParser = get(),
         )
     }
 }
