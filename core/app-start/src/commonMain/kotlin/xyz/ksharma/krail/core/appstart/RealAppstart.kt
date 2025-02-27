@@ -13,6 +13,11 @@ class RealAppStart(
     private val protoParser: ProtoParser,
     private val sandook: Sandook,
 ) : AppStart {
+
+    init {
+        log("RealAppStart created.")
+    }
+
     override fun start() {
         coroutineScope.launch {
             parseAndInsertNswStopsIfNeeded()
@@ -30,7 +35,7 @@ class RealAppStart(
      * Parses and inserts NSW_STOPS data in the database if they are not already inserted.
      */
     private suspend fun parseAndInsertNswStopsIfNeeded() = runCatching {
-        if (isStopsNotInserted()) {
+        if (shouldInsertStops()) {
             protoParser.parseAndInsertStops()
         } else {
             log("Stops already inserted in the database.")
@@ -40,7 +45,7 @@ class RealAppStart(
         // TODO - Firebase performance track.
     }
 
-    private fun isStopsNotInserted(): Boolean {
+    private fun shouldInsertStops(): Boolean {
         return sandook.stopsCount() == 0 || sandook.productClassCount() == 0
     }
 }

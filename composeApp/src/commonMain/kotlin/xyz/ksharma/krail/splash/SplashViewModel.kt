@@ -12,6 +12,7 @@ import kotlinx.coroutines.withContext
 import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.appinfo.AppInfoProvider
+import xyz.ksharma.krail.core.appstart.AppStart
 import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.taj.theme.DEFAULT_THEME_STYLE
@@ -22,6 +23,7 @@ class SplashViewModel(
     private val analytics: Analytics,
     private val appInfoProvider: AppInfoProvider,
     private val ioDispatcher: CoroutineDispatcher,
+    private val appStart: AppStart,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<KrailThemeStyle> =
@@ -33,6 +35,7 @@ class SplashViewModel(
         .onStart {
             loadKrailThemeStyle()
             trackAppStartEvent()
+            appStart.start()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
 
     private suspend fun trackAppStartEvent() = with(appInfoProvider.getAppInfo()) {

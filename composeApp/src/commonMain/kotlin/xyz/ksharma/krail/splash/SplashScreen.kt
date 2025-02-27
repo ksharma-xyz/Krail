@@ -57,7 +57,7 @@ fun SplashScreen(
 
         val splashComplete by rememberUpdatedState(onSplashComplete)
         LaunchedEffect(key1 = Unit) {
-            delay(2000) // TODO - replace back
+            delay(1200)
             splashComplete()
         }
     }
