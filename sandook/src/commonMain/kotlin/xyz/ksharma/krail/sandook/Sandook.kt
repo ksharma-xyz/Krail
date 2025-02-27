@@ -38,6 +38,8 @@ interface Sandook {
 
     fun stopsCount(): Int
 
+    fun productClassCount(): Int
+
     fun insertNswStopProductClass(stopId: String, productClass: Int)
 
     /**
