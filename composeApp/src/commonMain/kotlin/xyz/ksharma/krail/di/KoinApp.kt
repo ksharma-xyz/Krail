@@ -8,6 +8,7 @@ import org.koin.dsl.includes
 import org.koin.dsl.module
 import xyz.ksharma.krail.core.analytics.di.analyticsModule
 import xyz.ksharma.krail.core.appinfo.di.appInfoModule
+import xyz.ksharma.krail.core.appstart.di.appStartModule
 import xyz.ksharma.krail.core.di.DispatchersComponent.Companion.IODispatcher
 import xyz.ksharma.krail.core.di.coroutineDispatchersModule
 import xyz.ksharma.krail.core.remote_config.di.remoteConfigModule
@@ -31,6 +32,7 @@ fun initKoin(config: KoinAppDeclaration? = null) {
             remoteConfigModule,
             coroutineDispatchersModule,
             gtfsModule,
+            appStartModule,
         )
     }
 }
