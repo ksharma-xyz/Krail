@@ -64,7 +64,7 @@ class SearchStopViewModel(
                   log("results: $results")*/
 
                 val resultsDb: List<SelectProductClassesForStop> =
-                    sandook.selectStops(stopName = query)
+                    sandook.selectStops(stopName = query, excludeProductClassList = listOf())
 
                 val stopResults = resultsDb
                     .map { it.toStopResult() }
