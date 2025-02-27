@@ -40,40 +40,6 @@ interface Sandook {
 
     fun insertNswStopProductClass(stopId: String, productClass: Int)
 
-    fun selectStopsByPartialName(stopName: String): List<NswStops>
-
-    /**
-     * Select stops by name and product class. This is useful for selecting stops that are of a certain product class.
-     * Use with care, because it may also include those stops which are of multiple product classes,
-     * that are not included in the include list.
-     */
-    fun selectStopsByNameAndProductClass(
-        stopName: String,
-        includeProductClassList: List<Int>,
-    ): List<NswStops>
-
-    /**
-     * Select stops by name excluding product classes. This is useful for selecting stops that are
-     * not of a certain product class.
-     */
-    fun selectStopsByNameExcludingProductClass(
-        stopName: String,
-        excludeProductClassList: List<Int> = emptyList(),
-    ): List<NswStops>
-
-    /**
-     * Retrieves stops by matching an exact stop \id\ or partially matching a stop \name\.
-     * Excludes stops having product classes in the given \excludeProductClassList\.
-     * \param stopId Exact stop \id\ to match.
-     * \param stopName Partial stop \name\ to match.
-     * \param excludeProductClassList Product class IDs to exclude.
-     * \return List of matching NswStops.
-     */
-    fun selectStopsByNameExcludingProductClassOrExactId(
-        stopName: String,
-        excludeProductClassList: List<Int> = emptyList(),
-    ): List<NswStops>
-
     /**
      * Inserts a list of stops in a single transaction.
      */
@@ -84,8 +50,8 @@ interface Sandook {
     fun clearNswProductClassTable()
 
     /**
-     *      * Retrieves stops by matching an exact stop \id\ or partially matching a stop \name\.
-     *      * Excludes stops having product classes in the given \excludeProductClassList\.
+     * Retrieves stops by matching an exact stop \id\ or partially matching a stop \name\.
+     * Excludes stops having product classes in the given \excludeProductClassList\.
      */
     fun selectStops(
         stopName: String,
