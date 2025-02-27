@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import xyz.ksharma.core.test.fakes.FakeAnalytics
+import xyz.ksharma.core.test.fakes.FakeSandook
 import xyz.ksharma.core.test.fakes.FakeTripPlanningService
 import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertScreenViewEventTracked
 import xyz.ksharma.krail.core.analytics.Analytics
@@ -42,6 +43,7 @@ class SearchStopViewModelTest {
         viewModel = SearchStopViewModel(
             tripPlanningService = tripPlanningService,
             analytics = fakeAnalytics,
+            sandook = FakeSandook(),
         )
     }
 
@@ -68,6 +70,7 @@ class SearchStopViewModelTest {
             }
         }
 
+/* This test is not valid anymore, as we're not calling API.
     @Test
     fun `GIVEN search query WHEN SearchTextChanged is triggered and api is success THEN uiState is updated with results`() =
         runTest {
@@ -95,6 +98,7 @@ class SearchStopViewModelTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
+*/
 
     @Test
     fun `GIVEN search query WHEN SearchTextChanged and api fails THEN uiState is updated with error`() =
