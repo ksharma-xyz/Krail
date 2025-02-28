@@ -34,7 +34,6 @@ class SearchStopViewModel(
     private val tripPlanningService: TripPlanningService,
     private val analytics: Analytics,
     private val sandook: Sandook,
-    private val flag: Flag,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SearchStopState> = MutableStateFlow(SearchStopState())
@@ -46,7 +45,7 @@ class SearchStopViewModel(
     private var searchJob: Job? = null
 
     private val isLocalStopsEnabled: Boolean by lazy {
-        flag.getFlagValue(FlagKeys.LOCAL_STOPS_ENABLED.key).asBoolean()
+        false
     }
 
     fun onEvent(event: SearchStopUiEvent) {
