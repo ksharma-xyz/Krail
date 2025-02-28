@@ -34,7 +34,7 @@ actual fun httpClient(
                     level = LogLevel.BODY
                     logger = object : Logger {
                         override fun log(message: String) {
-                            println(message)
+                            log(message)
                         }
                     }
                     sanitizeHeader { header -> header == HttpHeaders.Authorization }
