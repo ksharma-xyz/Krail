@@ -1,11 +1,5 @@
 android {
     namespace = "xyz.ksharma.krail.gtfs_static"
-
-    buildTypes {
-        debug {}
-
-        release {}
-    }
 }
 
 plugins {

@@ -1,5 +1,10 @@
 android {
     namespace = "xyz.ksharma.krail.io.gtfs"
+
+    buildTypes {
+        debug {}
+        release {}
+    }
 }
 
 plugins {
@@ -7,6 +12,8 @@ plugins {
     alias(libs.plugins.krail.kotlin.multiplatform)
     alias(libs.plugins.krail.compose.multiplatform)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.wire)
 }
 
@@ -26,6 +33,7 @@ kotlin {
             dependencies {
                 implementation(projects.core.log)
                 implementation(projects.core.di)
+                implementation(projects.sandook)
 
                 implementation(libs.kotlinx.serialization.json)
                 implementation(libs.ktor.client.core)
@@ -35,6 +43,7 @@ kotlin {
                 implementation(libs.ktor.serialization.kotlinx.json)
                 implementation(libs.kotlinx.datetime)
                 implementation(compose.runtime)
+                implementation(compose.components.resources)
 
                 api(libs.di.koinComposeViewmodel)
             }
@@ -54,7 +63,6 @@ kotlin {
         }
     }
 }
-
 
 wire {
     kotlin {

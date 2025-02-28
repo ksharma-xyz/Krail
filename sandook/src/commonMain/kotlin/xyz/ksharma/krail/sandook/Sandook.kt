@@ -36,6 +36,8 @@ interface Sandook {
     // region NswStops
     fun insertNswStop(stopId: String, stopName: String, stopLat: Double, stopLon: Double)
 
+    fun stopsCount(): Int
+
     fun insertNswStopProductClass(stopId: String, productClass: Int)
 
     fun selectStopsByPartialName(stopName: String): List<NswStops>
@@ -71,6 +73,11 @@ interface Sandook {
         stopName: String,
         excludeProductClassList: List<Int> = emptyList(),
     ): List<NswStops>
+
+    /**
+     * Inserts a list of stops in a single transaction.
+     */
+    fun insertTransaction(block: () -> Unit)
 
     // endregion
 }

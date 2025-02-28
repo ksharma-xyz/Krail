@@ -21,6 +21,11 @@ insertStop:
 INSERT OR IGNORE INTO NswStops(stopId, stopName, stopLat, stopLon)
 VALUES (?, ?, ?, ?);
 
+-- Select count of items in NswStops
+selectStopsCount:
+SELECT COUNT(*) AS totalStops
+FROM NswStops;
+
 -- Insert each productClass value for a given stop into NswStopProductClass --
 insertStopProductClass:
 INSERT INTO NswStopProductClass(stopId, productClass)

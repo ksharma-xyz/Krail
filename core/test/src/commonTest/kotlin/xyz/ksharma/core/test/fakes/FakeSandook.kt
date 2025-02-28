@@ -80,6 +80,10 @@ class FakeSandook : Sandook {
         stops.add(NswStops(stopId, stopName, stopLat, stopLon))
     }
 
+    override fun stopsCount(): Int {
+        return stops.size
+    }
+
     override fun insertNswStopProductClass(stopId: String, productClass: Int) {
         val productClasses = stopProductClasses.getOrPut(stopId) { mutableListOf() }
         productClasses.add(productClass)
@@ -118,5 +122,9 @@ class FakeSandook : Sandook {
                     stop.stopId == stopName) &&
                     stopProductClasses[stop.stopId]?.none { it in excludeProductClassList } == true
         }
+    }
+
+    override fun insertTransaction(block: () -> Unit) {
+        block()
     }
 }
