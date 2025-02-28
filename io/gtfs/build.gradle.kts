@@ -1,5 +1,10 @@
 android {
     namespace = "xyz.ksharma.krail.io.gtfs"
+
+    buildTypes {
+        debug {}
+        release {}
+    }
 }
 
 plugins {
@@ -58,7 +63,6 @@ kotlin {
         }
     }
 }
-
 
 wire {
     kotlin {
