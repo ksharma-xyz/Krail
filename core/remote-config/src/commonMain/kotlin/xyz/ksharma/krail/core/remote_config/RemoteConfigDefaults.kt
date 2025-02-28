@@ -14,6 +14,7 @@ object RemoteConfigDefaults {
     fun getDefaults(): Array<Pair<String, Any?>> {
         return arrayOf(
             Pair("test", false),
+            Pair("local_stops_enabled", true),
         )
     }
 }
