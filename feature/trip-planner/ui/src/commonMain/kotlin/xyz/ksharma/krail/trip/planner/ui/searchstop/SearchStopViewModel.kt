@@ -49,7 +49,8 @@ class SearchStopViewModel(
         false
     }
     private val highlightStopIdList: List<String> by lazy {
-        flag.getFlagValue(FlagKeys.HIGH_PRIORITY_STOP_IDS.key).toStopsIdList()
+        emptyList()
+//        flag.getFlagValue(FlagKeys.HIGH_PRIORITY_STOP_IDS.key).toStopsIdList()
     }
 
     fun onEvent(event: SearchStopUiEvent) {
