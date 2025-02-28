@@ -99,15 +99,25 @@ class FakeSandook : Sandook {
     }
 
     override fun clearNswStopsTable() {
+        stops.clear()
     }
 
     override fun clearNswProductClassTable() {
+        stopProductClasses.clear()
     }
 
     override fun selectStops(
         stopName: String,
         excludeProductClassList: List<Int>,
     ): List<SelectProductClassesForStop> {
-        TODO("Not yet implemented")
+        return stops.map { stop ->
+            SelectProductClassesForStop(
+                stop.stopId,
+                stop.stopName,
+                stop.stopLat,
+                stop.stopLon,
+                productClasses = stopProductClasses[stop.stopId]?.joinToString(",") ?: ""
+            )
+        }
     }
 }
