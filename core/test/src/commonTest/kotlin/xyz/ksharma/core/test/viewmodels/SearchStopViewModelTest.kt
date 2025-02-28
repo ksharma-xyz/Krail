@@ -72,7 +72,7 @@ class SearchStopViewModelTest {
             }
         }
 
-/*
+/* This test is not valid anymore, as we're not calling API.
     @Test
     fun `GIVEN search query WHEN SearchTextChanged is triggered and api is success THEN uiState is updated with results`() =
         runTest {

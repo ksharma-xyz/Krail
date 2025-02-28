@@ -17,11 +17,11 @@ import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
-import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SelectProductClassesForStop
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
+import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 
@@ -64,16 +64,18 @@ class SearchStopViewModel(
                   log("results: $results")*/
 
                 val resultsDb: List<SelectProductClassesForStop> =
-                    sandook.selectStops(
-                        stopName = query,
-                        excludeProductClassList = emptyList(),
-                    ).take(50)
-                resultsDb.forEach {
-                    log("resultsDb [$query]: ${it.stopName}")
-                }
-                val stopResults = resultsDb.map {
-                    it.toStopResult()
-                }
+                    sandook.selectStops(stopName = query, excludeProductClassList = listOf())
+
+                val stopResults = resultsDb
+                    .map { it.toStopResult() }
+                    .let {
+                        filterProductClasses(
+                            stopResults = it,
+                            excludedProductClasses = listOf(TransportMode.Ferry().productClass).toImmutableList()
+                        )
+                    }
+                    .let(::prioritiseStops)
+                    .take(50)
 
                 updateUiState { displayData(stopResults) }
             }.getOrElse {
@@ -82,6 +84,45 @@ class SearchStopViewModel(
                 updateUiState { displayError() }
             }
         }
+    }
+
+    // TODO - move to another file and add UT for it. Inject and use.
+    private fun prioritiseStops(stopResults: List<SearchStopState.StopResult>): List<SearchStopState.StopResult> {
+        val sortedTransportModes = TransportMode.sortedValues(TransportModeSortOrder.PRIORITY)
+        val transportModePriorityMap = sortedTransportModes.mapIndexed { index, transportMode ->
+            transportMode.productClass to index
+        }.toMap()
+
+        // TODO - these should come from Firebase config and have only these hardcoded as fallback.
+        val highPriorityStopIds = listOf(
+            "200060",
+            "200070",
+            "200080",
+            "206010",
+            "2150106",
+            "200017",
+            "200039",
+            "201016",
+            "201039",
+            "201080",
+            "200066",
+            "200030",
+            "200046",
+            "200050",
+
+        )
+
+        return stopResults.sortedWith(compareBy(
+            { stopResult ->
+                if (stopResult.stopId in highPriorityStopIds) 0 else 1
+            },
+            { stopResult ->
+                stopResult.transportModeType.minOfOrNull {
+                    transportModePriorityMap[it.productClass] ?: Int.MAX_VALUE
+                } ?: Int.MAX_VALUE
+            },
+            { it.stopName }
+        ))
     }
 
     private fun SearchStopState.displayData(stopsResult: List<SearchStopState.StopResult>) = copy(
@@ -104,6 +145,17 @@ class SearchStopViewModel(
     }
 }
 
+fun filterProductClasses(
+    stopResults: List<SearchStopState.StopResult>,
+    excludedProductClasses: List<Int>,
+): List<SearchStopState.StopResult> {
+    return stopResults.filter { stopResult ->
+        val productClasses = stopResult.transportModeType.map { it.productClass }
+        productClasses.any { it !in excludedProductClasses }
+    }
+}
+
+/// TODO - move to mapper:
 private fun SelectProductClassesForStop.toStopResult() = SearchStopState.StopResult(
     stopId = stopId,
     stopName = stopName,

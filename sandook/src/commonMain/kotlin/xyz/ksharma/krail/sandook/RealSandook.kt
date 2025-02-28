@@ -123,9 +123,8 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
         excludeProductClassList: List<Int>,
     ): List<SelectProductClassesForStop> {
         return nswStopsQueries.selectProductClassesForStop(
-            stopName,
-            stopName,
-            productClass = excludeProductClassList.map { it.toLong() },
+            stopId = stopName,
+            stopName = stopName,
         ).executeAsList()
     }
 

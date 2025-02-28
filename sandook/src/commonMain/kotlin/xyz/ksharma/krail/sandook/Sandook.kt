@@ -55,8 +55,6 @@ interface Sandook {
      */
     fun selectStops(
         stopName: String,
-        excludeProductClassList: List<Int> = emptyList(),
+        excludeProductClassList: List<Int>,
     ): List<SelectProductClassesForStop>
-
-    // endregion
 }
