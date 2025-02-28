@@ -17,16 +17,18 @@ import xyz.ksharma.krail.core.analytics.Analytics
 import xyz.ksharma.krail.core.analytics.AnalyticsScreen
 import xyz.ksharma.krail.core.analytics.event.AnalyticsEvent
 import xyz.ksharma.krail.core.analytics.event.trackScreenViewEvent
+import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.sandook.Sandook
+import xyz.ksharma.krail.sandook.SelectProductClassesForStop
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
-import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
+import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
-import xyz.ksharma.krail.trip.planner.ui.state.settings.SettingsState
-import xyz.ksharma.krail.core.log.log
 
 class SearchStopViewModel(
     private val tripPlanningService: TripPlanningService,
     private val analytics: Analytics,
+    private val sandook: Sandook,
 ) : ViewModel() {
 
     private val _uiState: MutableStateFlow<SearchStopState> = MutableStateFlow(SearchStopState())
@@ -55,13 +57,25 @@ class SearchStopViewModel(
         searchJob = viewModelScope.launch {
             delay(300)
             runCatching {
-                val response = tripPlanningService.stopFinder(stopSearchQuery = query)
-                log("response VM: $response")
+                /*  val response = tripPlanningService.stopFinder(stopSearchQuery = query)
+                  log("response VM: $response")
 
-                val results = response.toStopResults()
-                log("results: $results")
+                  val results = response.toStopResults()
+                  log("results: $results")*/
 
-                updateUiState { displayData(results) }
+                val resultsDb: List<SelectProductClassesForStop> =
+                    sandook.selectStops(
+                        stopName = query,
+                        excludeProductClassList = emptyList(),
+                    ).take(50)
+                resultsDb.forEach {
+                    log("resultsDb [$query]: ${it.stopName}")
+                }
+                val stopResults = resultsDb.map {
+                    it.toStopResult()
+                }
+
+                updateUiState { displayData(stopResults) }
             }.getOrElse {
                 delay(1500) // buffer for API response before displaying error.
                 // TODO- ideally cache all stops and error will never happen.
@@ -89,3 +103,11 @@ class SearchStopViewModel(
         _uiState.update(block)
     }
 }
+
+private fun SelectProductClassesForStop.toStopResult() = SearchStopState.StopResult(
+    stopId = stopId,
+    stopName = stopName,
+    transportModeType = this.productClasses.split(",").mapNotNull {
+        TransportMode.toTransportModeType(it.toInt())
+    }.toImmutableList(),
+)
