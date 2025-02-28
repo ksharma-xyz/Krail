@@ -102,6 +102,10 @@ internal class RealSandook(factory: SandookDriverFactory) : Sandook {
         return nswStopsQueries.selectStopsCount().executeAsOne().toInt()
     }
 
+    override fun productClassCount(): Int {
+        return nswStopsQueries.selectStopProductClassCount().executeAsOne().toInt()
+    }
+
     override fun insertNswStopProductClass(stopId: String, productClass: Int) {
         nswStopsQueries.insertStopProductClass(stopId, productClass.toLong())
     }
