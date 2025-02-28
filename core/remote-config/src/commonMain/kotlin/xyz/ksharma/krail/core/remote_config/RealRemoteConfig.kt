@@ -39,7 +39,7 @@ internal class RealRemoteConfig(
      */
     private suspend fun setDebugFetchInterval() {
         if (appInfoProvider.getAppInfo().isDebug) {
-            remoteConfig.settings { minimumFetchInterval = 10.minutes }
+            remoteConfig.settings { minimumFetchInterval = 1.minutes }
         }
     }
 }
