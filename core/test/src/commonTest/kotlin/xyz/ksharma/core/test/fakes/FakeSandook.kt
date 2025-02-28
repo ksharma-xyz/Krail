@@ -85,6 +85,10 @@ class FakeSandook : Sandook {
         return stops.size
     }
 
+    override fun productClassCount(): Int {
+        return stopProductClasses.size
+    }
+
     override fun insertNswStopProductClass(stopId: String, productClass: Int) {
         val productClasses = stopProductClasses.getOrPut(stopId) { mutableListOf() }
         productClasses.add(productClass)
