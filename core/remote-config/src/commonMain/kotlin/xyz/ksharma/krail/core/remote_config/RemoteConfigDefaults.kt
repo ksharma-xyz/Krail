@@ -13,8 +13,11 @@ object RemoteConfigDefaults {
      */
     fun getDefaults(): Array<Pair<String, Any?>> {
         return arrayOf(
-            Pair("test", false),
             Pair("local_stops_enabled", true),
+            Pair(
+                "high_priority_stop_ids",
+                """["200060", "200070", "200080", "206010", "2150106", "200017", "200039", "201016", "201039", "201080", "200066", "200030", "200046", "200050"]""".trimMargin()
+            )
         )
     }
 }

@@ -21,6 +21,7 @@ import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.core.remote_config.flag.Flag
 import xyz.ksharma.krail.core.remote_config.flag.FlagKeys
 import xyz.ksharma.krail.core.remote_config.flag.asBoolean
+import xyz.ksharma.krail.core.remote_config.flag.toStopsIdList
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SelectProductClassesForStop
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
@@ -46,6 +47,10 @@ class SearchStopViewModel(
 
     private val isLocalStopsEnabled: Boolean by lazy {
         false
+    }
+    private val highlightStopIdList: List<String> by lazy {
+        emptyList()
+//        flag.getFlagValue(FlagKeys.HIGH_PRIORITY_STOP_IDS.key).toStopsIdList()
     }
 
     fun onEvent(event: SearchStopUiEvent) {
@@ -106,27 +111,9 @@ class SearchStopViewModel(
             transportMode.productClass to index
         }.toMap()
 
-        // TODO - these should come from Firebase config and have only these hardcoded as fallback.
-        val highPriorityStopIds = listOf(
-            "200060",
-            "200070",
-            "200080",
-            "206010",
-            "2150106",
-            "200017",
-            "200039",
-            "201016",
-            "201039",
-            "201080",
-            "200066",
-            "200030",
-            "200046",
-            "200050",
-            )
-
         return stopResults.sortedWith(compareBy(
             { stopResult ->
-                if (stopResult.stopId in highPriorityStopIds) 0 else 1
+                if (stopResult.stopId in highlightStopIdList) 0 else 1
             },
             { stopResult ->
                 stopResult.transportModeType.minOfOrNull {
