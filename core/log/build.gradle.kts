@@ -41,6 +41,7 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 api(libs.di.koinComposeViewmodel)
+                implementation(libs.log.kermit)
             }
         }
 
