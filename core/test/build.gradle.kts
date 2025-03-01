@@ -26,11 +26,6 @@ kotlin {
     }
 
     sourceSets {
-        androidMain {
-            dependencies {
-            }
-        }
-
         commonMain {
             dependencies {
                 implementation(projects.core.log)
@@ -45,21 +40,20 @@ kotlin {
                 implementation(projects.core.analytics)
                 implementation(projects.core.dateTime)
                 implementation(projects.core.log)
+                implementation(projects.core.remoteConfig)
                 implementation(projects.sandook)
                 implementation(projects.feature.tripPlanner.ui)
                 implementation(projects.feature.tripPlanner.state)
                 implementation(projects.feature.tripPlanner.network)
                 implementation(projects.taj)
 
+                implementation(libs.test.junit)
                 implementation(libs.test.kotlin)
                 implementation(libs.test.kotlinxCoroutineTest)
                 implementation(libs.test.turbine)
                 implementation(libs.kotlinx.collections.immutable)
                 implementation(libs.kotlinx.datetime)
             }
-        }
-
-        iosMain.dependencies {
         }
     }
 }

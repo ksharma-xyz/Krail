@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import xyz.ksharma.core.test.fakes.FakeAnalytics
 import xyz.ksharma.core.test.fakes.FakeSandook
+import xyz.ksharma.core.test.fakes.FakeStopResultsManager
 import xyz.ksharma.core.test.fakes.FakeTripPlanningService
 import xyz.ksharma.core.test.helpers.AnalyticsTestHelper.assertScreenViewEventTracked
 import xyz.ksharma.krail.core.analytics.Analytics
@@ -34,8 +35,8 @@ class SearchStopViewModelTest {
 
     private val fakeAnalytics: Analytics = FakeAnalytics()
     private val tripPlanningService = FakeTripPlanningService()
-    private val sandook: Sandook = FakeSandook()
     private lateinit var viewModel: SearchStopViewModel
+    private val fakeStopResultsManager = FakeStopResultsManager()
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -43,9 +44,8 @@ class SearchStopViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         viewModel = SearchStopViewModel(
-            tripPlanningService = tripPlanningService,
             analytics = fakeAnalytics,
-            sandook = sandook,
+            stopResultsManager = fakeStopResultsManager,
         )
     }
 
@@ -72,35 +72,35 @@ class SearchStopViewModelTest {
             }
         }
 
-/* This test is not valid anymore, as we're not calling API.
-    @Test
-    fun `GIVEN search query WHEN SearchTextChanged is triggered and api is success THEN uiState is updated with results`() =
-        runTest {
-            tripPlanningService.isSuccess = true
+    /* This test is not valid anymore, as we're not calling API.
+        @Test
+        fun `GIVEN search query WHEN SearchTextChanged is triggered and api is success THEN uiState is updated with results`() =
+            runTest {
+                tripPlanningService.isSuccess = true
 
-            viewModel.uiState.test {
-                skipItems(1) // initial state
+                viewModel.uiState.test {
+                    skipItems(1) // initial state
 
-                viewModel.onEvent(SearchStopUiEvent.SearchTextChanged("abcd"))
+                    viewModel.onEvent(SearchStopUiEvent.SearchTextChanged("abcd"))
 
-                awaitItem().run {
-                    assertTrue(isLoading)
-                    assertFalse(isError)
-                    assertTrue(stops.isEmpty())
+                    awaitItem().run {
+                        assertTrue(isLoading)
+                        assertFalse(isError)
+                        assertTrue(stops.isEmpty())
+                    }
+
+
+                    viewModel.onEvent(SearchStopUiEvent.SearchTextChanged("stop"))
+                    awaitItem().run {
+                        assertFalse(isLoading)
+                        assertFalse(isError)
+                        assertEquals(2, stops.size)
+                    }
+
+                    cancelAndIgnoreRemainingEvents()
                 }
-
-
-                viewModel.onEvent(SearchStopUiEvent.SearchTextChanged("stop"))
-                awaitItem().run {
-                    assertFalse(isLoading)
-                    assertFalse(isError)
-                    assertEquals(2, stops.size)
-                }
-
-                cancelAndIgnoreRemainingEvents()
             }
-        }
-*/
+    */
 
     @Test
     fun `GIVEN search query WHEN SearchTextChanged and api fails THEN uiState is updated with error`() =
