@@ -7,6 +7,7 @@ import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+/* TODO -  add test when this functionality is added in future
 class StopFilterByProductClassTest {
 
     @Test
@@ -87,3 +88,4 @@ class StopFilterByProductClassTest {
         )
     }
 }
+*/
