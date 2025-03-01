@@ -48,12 +48,12 @@ class SearchStopViewModel(
         updateUiState { displayLoading() }
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(150)
+            delay(100)
             runCatching {
                 val stopResults = stopResultsManager.fetchStopResults(query)
                 updateUiState { displayData(stopResults) }
             }.getOrElse {
-                delay(1500) // buffer for API response before displaying error.
+                delay(1000) // buffer for API response before displaying error.
                 updateUiState { displayError() }
             }
         }
@@ -76,15 +76,5 @@ class SearchStopViewModel(
 
     private fun updateUiState(block: SearchStopState.() -> SearchStopState) {
         _uiState.update(block)
-    }
-}
-
-fun filterProductClasses(
-    stopResults: List<SearchStopState.StopResult>,
-    excludedProductClasses: List<Int>,
-): List<SearchStopState.StopResult> {
-    return stopResults.filter { stopResult ->
-        val productClasses = stopResult.transportModeType.map { it.productClass }
-        productClasses.any { it !in excludedProductClasses }
     }
 }
