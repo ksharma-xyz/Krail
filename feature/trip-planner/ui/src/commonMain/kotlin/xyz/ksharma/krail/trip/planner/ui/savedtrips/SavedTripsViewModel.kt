@@ -80,7 +80,7 @@ class SavedTripsViewModel(
             val trips = mutableSetOf<Trip>()
 
             val savedTrips = sandook.selectAllTrips()
-            log("SavedTrips: $savedTrips")
+//            log("SavedTrips: $savedTrips")
             savedTrips.forEachIndexed { index, savedTrip ->
                 val trip = savedTrip.toTrip()
                 log("Trip: #$index $trip")
@@ -89,7 +89,7 @@ class SavedTripsViewModel(
 
             trips.addAll(savedTrips.map { savedTrip -> savedTrip.toTrip() })
 
-            log("SavedTrips: ${trips.size} number")
+            //log("SavedTrips: ${trips.size} number")
             trips.forEachIndexed { index, trip ->
                 log("\t SavedTrip: #$index ${trip.fromStopName} -> ${trip.toStopName}")
             }

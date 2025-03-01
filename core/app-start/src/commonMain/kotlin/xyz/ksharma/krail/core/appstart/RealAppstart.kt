@@ -47,6 +47,8 @@ class RealAppStart(
     }
 
     private fun shouldInsertStops(): Boolean {
+        log("Stop count: ${sandook.stopsCount()}, Product class count: ${sandook.productClassCount()}")
+
         return sandook.stopsCount() == 0 || sandook.productClassCount() == 0
     }
 }

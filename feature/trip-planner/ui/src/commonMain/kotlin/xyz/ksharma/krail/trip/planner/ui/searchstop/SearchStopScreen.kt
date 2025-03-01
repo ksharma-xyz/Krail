@@ -5,8 +5,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -53,22 +51,22 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.datetime.Clock
+import xyz.ksharma.krail.core.log.log
 import xyz.ksharma.krail.taj.LocalThemeColor
+import xyz.ksharma.krail.taj.backgroundColorOf
 import xyz.ksharma.krail.taj.components.Divider
 import xyz.ksharma.krail.taj.components.Text
 import xyz.ksharma.krail.taj.components.TextField
+import xyz.ksharma.krail.taj.hexToComposeColor
+import xyz.ksharma.krail.taj.modifier.klickable
 import xyz.ksharma.krail.taj.theme.KrailTheme
 import xyz.ksharma.krail.trip.planner.ui.components.ErrorMessage
 import xyz.ksharma.krail.trip.planner.ui.components.StopSearchListItem
-import xyz.ksharma.krail.taj.hexToComposeColor
 import xyz.ksharma.krail.trip.planner.ui.components.loading.AnimatedDots
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopUiEvent
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.model.StopItem
-import xyz.ksharma.krail.core.log.log
-import xyz.ksharma.krail.taj.backgroundColorOf
-import xyz.ksharma.krail.taj.modifier.klickable
 
 @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
 @Composable
@@ -305,11 +303,7 @@ fun SearchStopScreen(
                 item(key = "no_match") {
                     ErrorMessage(
                         title = "No match found!",
-                        message = if (textFieldText.length < 4) {
-                            "Throw in a few more chars! \uD83D\uDE0E"
-                        } else {
-                            "Try tweaking your search. \uD83D\uDD0D✨"
-                        },
+                        message = "Try something else. \uD83D\uDD0D✨",
                         modifier = Modifier
                             .fillMaxWidth()
                             .animateItem(),

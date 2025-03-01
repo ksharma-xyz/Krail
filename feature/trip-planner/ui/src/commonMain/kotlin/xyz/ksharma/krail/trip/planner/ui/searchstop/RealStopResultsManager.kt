@@ -1,18 +1,22 @@
 package xyz.ksharma.krail.trip.planner.ui.searchstop
 
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
 import xyz.ksharma.krail.core.log.log
+import xyz.ksharma.krail.core.remote_config.RemoteConfigDefaults
 import xyz.ksharma.krail.core.remote_config.flag.Flag
 import xyz.ksharma.krail.core.remote_config.flag.FlagKeys
+import xyz.ksharma.krail.core.remote_config.flag.FlagValue
 import xyz.ksharma.krail.core.remote_config.flag.asBoolean
-import xyz.ksharma.krail.core.remote_config.flag.toStopsIdList
 import xyz.ksharma.krail.sandook.Sandook
 import xyz.ksharma.krail.sandook.SelectProductClassesForStop
 import xyz.ksharma.krail.trip.planner.network.api.service.TripPlanningService
+import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
 import xyz.ksharma.krail.trip.planner.ui.state.TransportMode
 import xyz.ksharma.krail.trip.planner.ui.state.TransportModeSortOrder
 import xyz.ksharma.krail.trip.planner.ui.state.searchstop.SearchStopState
-import xyz.ksharma.krail.trip.planner.ui.searchstop.StopResultMapper.toStopResults
 
 class RealStopResultsManager(
     private val tripPlanningService: TripPlanningService,
@@ -35,15 +39,7 @@ class RealStopResultsManager(
                 sandook.selectStops(stopName = query, excludeProductClassList = listOf())
 
             val results = resultsDb
-                .map {
-                    it.toStopResult()
-                }
-                .let {
-                    filterProductClasses(
-                        stopResults = it,
-                        excludedProductClasses = listOf(TransportMode.Ferry().productClass).toImmutableList()
-                    )
-                }
+                .map { it.toStopResult() }
                 .let(::prioritiseStops)
                 .take(50)
 
@@ -55,8 +51,8 @@ class RealStopResultsManager(
             response.toStopResults()
         }
 
-    override fun prioritiseStops(stopResults: List<SearchStopState.StopResult>):
-            List<SearchStopState.StopResult> {
+    // TODO - move to another file and add UT for it. Inject and use.
+    override fun prioritiseStops(stopResults: List<SearchStopState.StopResult>): List<SearchStopState.StopResult> {
         val sortedTransportModes = TransportMode.sortedValues(TransportModeSortOrder.PRIORITY)
         val transportModePriorityMap = sortedTransportModes.mapIndexed { index, transportMode ->
             transportMode.productClass to index
@@ -71,24 +67,17 @@ class RealStopResultsManager(
                     transportModePriorityMap[it.productClass] ?: Int.MAX_VALUE
                 } ?: Int.MAX_VALUE
             },
-            {
-                it.stopName
-            }
+            { it.stopName }
         ))
     }
 
     private fun filterProductClasses(
         stopResults: List<SearchStopState.StopResult>,
-        excludedProductClasses:
-        List<Int>,
+        excludedProductClasses: List<Int> = emptyList(),
     ): List<SearchStopState.StopResult> {
         return stopResults.filter { stopResult ->
-            val productClasses = stopResult.transportModeType.map {
-                it.productClass
-            }
-            productClasses.any {
-                it !in excludedProductClasses
-            }
+            val productClasses = stopResult.transportModeType.map { it.productClass }
+            productClasses.any { it !in excludedProductClasses }
         }
     }
 
@@ -99,4 +88,24 @@ class RealStopResultsManager(
             TransportMode.toTransportModeType(it.toInt())
         }.toImmutableList(),
     )
+
+    private fun FlagValue.toStopsIdList(): List<String> {
+        return when (this) {
+            is FlagValue.JsonValue -> {
+                log("flagValue: ${this.value}")
+                val jsonObject = Json.parseToJsonElement(value).jsonObject
+                jsonObject["stop_ids"]?.jsonArray?.map {
+                    it.toString().trim('"')
+                } ?: emptyList()
+            }
+
+            else -> {
+                val defaultJson: String = RemoteConfigDefaults.getDefaults()
+                    .firstOrNull { it.first == FlagKeys.HIGH_PRIORITY_STOP_IDS.key }?.second as String
+                Json.parseToJsonElement(defaultJson).jsonArray.map {
+                    it.toString().trim('"')
+                }
+            }
+        }
+    }
 }
